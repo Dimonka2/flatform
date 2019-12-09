@@ -4,6 +4,7 @@ namespace dimonka2\platform;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Foundation\AliasLoader;
+use Illuminate\Support\Facades\Blade;
 
 class PlatformServiceProvider extends ServiceProvider
 {
@@ -29,6 +30,10 @@ class PlatformServiceProvider extends ServiceProvider
             $this->publishes([
                 $this->getConfigFile() => config_path(self::config),
             ], 'config');
+        } else {
+            Blade::directive('platform', function ($form) {
+                return "<?php echo \dimonka2\platform\Platform::render($form); ?>";
+            }); 
         }
     }
 

@@ -2,11 +2,12 @@
 
 namespace dimonka2\platform\Form;
 
-use Element;
+use dimonka2\platform\Form\Element;
 use dimonka2\platform\Form\Context;
 use Illuminate\Support\Collection;
+use dimonka2\platform\Form\Contracts\IContainer;
 
-class ElementContainer extends Element
+class ElementContainer extends Element implements IContainer
 {
     protected $elements;
 
@@ -19,12 +20,31 @@ class ElementContainer extends Element
         parent::read($element, $context);
     }
 
-    protected function readItems(array $items, Context $context)
+    public function readItems(array $items, Context $context)
     {
-        $element = new Collection;
+        $this->elements = new Collection;
         foreach ($items as $item) {
-            $this->elements->push($context->create($item));
+            $item = $context->createElement($item);
+            $this->elements->push($item);
         }
+    }
+
+    // IContainer inteface
+
+    public function items()
+    {
+        return $this->elements;
+    }
+
+    public function renderItems($context)
+    {
+        $html = '';
+        foreach($this->elements as $element) {
+            if(!$element->getHidden()) {
+                $html .= $element->render($context);
+            }
+        }
+        return $html;
     }
 
 }

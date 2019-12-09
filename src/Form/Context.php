@@ -2,24 +2,24 @@
 
 namespace dimonka2\platform\Form;
 
-use Element;
-use ElementContainer;
-use ReflectionClass;
+use dimonka2\platform\Form\Element;
+use dimonka2\platform\Form\ElementFactory;
+use dimonka2\platform\Form\ElementContainer;
+use dimonka2\platform\Form\Contracts\IContainer;
+use \ReflectionClass;
 
 class Context
 {
     protected $elements = [];
     protected $next_id = 100;
+    private $factory;
 
-    protected $binds = [
-        'div' => ElementContainer::class,
-        'span' => ElementContainer::class,
-        '_text' => Element::class,
-    ];
 
     public function __construct(array $elements = [])
     {
-        $elements = new ElementContainer($elements, $this);
+        $this->factory = new ElementFactory;
+        $this->elements = new ElementContainer([], $this);
+        $this->elements->readItems($elements, $this);
     }
 
     public function getID($name)
@@ -27,34 +27,43 @@ class Context
         return $this->next_id++;
     }
 
-    public function create(array $element)
+    public function createElement(array $element)
     {
-        $def_type = config('platform.form.default-type');
-        $type = $element['type'] ?? $def_type;
-        $class = isset($this->binds[$type]) ? $this->binds[$type] : $this->binds[$def_type];
-        // make class
-        $reflection = new ReflectionClass($class);
-        return $reflection->newInstanceArgs($element);
+        return $this->factory->createElement($element, $this);
     }
 
     public function render()
     {
-        foreach($this->elements as $element) {
-            $element->render($this);
-        }
+        return $this->elements->renderItems($this);
     }
 
-    public static function renderElement(Element $element, $text = null)
+    public function renderTag(Element $element, $text = null)
     {
-        $html = '<' . $element->getTag();
+        $tag = $element->getTag();
+        $html = '<' . $tag;
+        $options = $element->getOptions(['id', 'class', 'style']);
         foreach($options as $key => $value) {
-            $html .= ' ' . $key . '="' . htmlentities($value) . '"';
+            if(!is_array($value)) $html .= ' ' . $key . '="' . htmlentities($value) . '"';
         }
         if(is_null($text)) {
             $html .= ' />';
         } else {
-            $html .= '>' . $text . '</' . $element . '>';
+            $html .= '>' . $text . '</' . $tag . '>';
         }
+        $surround = $element->getSurround();
+        if(is_array($surround)) return $this->renderTag($surround, $html);
+        
         return $html;
+    }
+
+    public function renderElement(Element $element)
+    {
+        // todo get template from config
+        if ($element instanceof IContainer) {
+            $html = $element->renderItems($this);
+            return self::renderTag($element, $html);
+        } else {
+            return self::renderTag($element);
+        }
     }
 }

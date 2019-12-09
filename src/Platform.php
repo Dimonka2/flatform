@@ -2,6 +2,7 @@
 namespace dimonka2\platform;
 
 use laravelcollective\html\Form;
+use dimonka2\platform\Form\Context;
 class Platform
 {
     // partial view locations
@@ -10,6 +11,12 @@ class Platform
     private static $cssList = [];
     private static $jsList = [];
     private static $includes = [];
+
+    public static function render(array $element)
+    {
+        // dd($element);
+        return (new Context($element))->render();
+    }
 
     public function isIncluded($element_name)
     {

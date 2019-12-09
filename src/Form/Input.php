@@ -2,7 +2,7 @@
 
 namespace dimonka2\platform\Form;
 
-use Element;
+use dimonka2\platform\Form\Element;
 
 class Input extends Element
 {
