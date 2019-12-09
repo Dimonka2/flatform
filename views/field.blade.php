@@ -22,21 +22,6 @@
         @switch($el['type'])
 
 
-            @case('radio')
-                {!! Form::radio($el['name'], $el['name'], $value, $setting) !!}
-                @break
-
-            @case('date')
-                @php($setting['class'] = $setting['class'] . ' datepicker' )
-
-                @inject('viewHelper', 'App\Helpers\ViewHelper')
-                @if(!$viewHelper->isIncluded('datepicker'))
-                    @include($viewHelper::datapicker)
-                    @php($viewHelper->include('datepicker'))
-                @endif
-                {!! Form::text($el['name'], $value, $setting) !!}
-                @break
-
             @case('summernote')
                 @php($setting['class'] = $setting['class'] . ' summernote' )
 
@@ -48,20 +33,6 @@
                 {!! Form::textarea($el['name'], $value, $setting) !!}
                 @break
 
-            @case('select2')
-                @php($setting['class'] = $setting['class'] . ' select2' )
-                @isset($el['ajax-url'])
-                    @php($setting['ajax-url'] = $el['ajax-url'] )
-                @endisset
-                @php($setting['style'] = isset($setting['style'])? $setting['style'] : 'width: 100%;' )
-
-                @inject('viewHelper', 'App\Helpers\ViewHelper')
-                @if(!$viewHelper->isIncluded('select2'))
-                    @include($viewHelper::select2)
-                    @php($viewHelper->include('select2'))
-                @endif
-                {!! Form::select($el['name'], (isset($el['list']) ? $el['list'] : []), $value, $setting) !!}
-                @break
         @endswitch
     @endif
 </div>

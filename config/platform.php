@@ -13,7 +13,9 @@ return [
     'states' => [
 
     ],
+    'assets' =>[
 
+    ],
     'form' => [
         'default-type' => 'div',
         'checkbox' => [
@@ -25,7 +27,7 @@ return [
         ],
     ],
     'aliases' => [
-        'Form'                => Collective\Html\FormFacade::class,
-        'HTML'                => Collective\Html\HtmlFacade::class,
+        'Form'  => Collective\Html\FormFacade::class,
+        'HTML'  => Collective\Html\HtmlFacade::class,
     ],
 ];

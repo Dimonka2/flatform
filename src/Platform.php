@@ -18,31 +18,31 @@ class Platform
         return (new Context($element))->render();
     }
 
-    public function isIncluded($element_name)
+    public static function isIncluded($element_name)
     {
         return in_array($element_name, static::$includes);
     }
 
-    public function include($element_name)
+    public static function include($element_name)
     {
-        if( !$this->isIncluded($element_name) ) static::$includes[] = $element_name;
+        if( !static::isIncluded($element_name) ) static::$includes[] = $element_name;
     }
 
-    public function addCSS($css)
+    public static function addCSS($css)
     {
         if( !in_array($css, static::$cssList) ) static::$cssList[] = $css;
     }
 
-    public function addJS($js)
+    public static function addJS($js)
     {
         if( !in_array($js, static::$jsList) ) static::$jsList[] = $js;
     }
-    public function CSS()
+    public static function CSS()
     {
         return static::$cssList;
     }
 
-    public function JS()
+    public static function JS()
     {
         return static::$jsList;
     }

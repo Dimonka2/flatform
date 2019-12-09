@@ -13,14 +13,21 @@ class ElementFactory
         'text' => Inputs\Text::class,
         'password' => Inputs\Password::class,
         'number' => Inputs\Number::class,        
-        'textarea' => Inputs\Textarea::class,     
-        'select' => Inputs\Select::class,    
+        'textarea' => Inputs\Textarea::class,  
+        'summernote' => Inputs\Summernote::class,        
+        'select' => Inputs\Select::class,   
+        'select2' => Inputs\Select2::class,   
+        'file' => Inputs\File::class, 
+        'radio' => Inputs\Radio::class,   
+        'date' => Inputs\Date::class,        
         
         'div' => ElementContainer::class,
         'span' => ElementContainer::class,
         'i' => ElementContainer::class,
         'b' => ElementContainer::class,
         'u' => ElementContainer::class,
+        'ul' => ElementContainer::class,
+        'li' => ElementContainer::class,
         '_text' => Element::class,
     ];
 

@@ -6,10 +6,11 @@ use dimonka2\platform\Form\Input;
 use dimonka2\platform\Form\Context;
 use Form;
 
-class File extends Input
+class Radio extends Input
 {
     public function render(Context $context)
     {
-        return Form::file($this->name, $this->getOptions(['id', 'class', 'style']));
+        return Form::radio($this->name, $this->name, $this->value,
+            $this->getOptions(['id', 'class', 'style']));
     }
 }
