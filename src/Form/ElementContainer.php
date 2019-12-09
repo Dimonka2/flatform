@@ -3,7 +3,7 @@
 namespace dimonka2\platform\Form;
 
 use Element;
-use Context;
+use dimonka2\platform\Form\Context;
 use Illuminate\Support\Collection;
 
 class ElementContainer extends Element
@@ -15,8 +15,8 @@ class ElementContainer extends Element
         if(isset($element['items'])) {
             $this->readItems($element['items'], $context);
             unset($element['items']);
-            parent::read($element, $context);
         }
+        parent::read($element, $context);
     }
 
     protected function readItems(array $items, Context $context)

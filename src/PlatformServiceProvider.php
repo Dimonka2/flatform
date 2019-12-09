@@ -3,6 +3,7 @@
 namespace dimonka2\platform;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Foundation\AliasLoader;
 
 class PlatformServiceProvider extends ServiceProvider
 {
@@ -14,7 +15,7 @@ class PlatformServiceProvider extends ServiceProvider
     private const config = 'platform.php';
     public function register()
     {
-        //
+        AliasLoader::getInstance(config('platform.aliases', []));
     }
 
     /**

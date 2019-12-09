@@ -6,6 +6,7 @@ use Element;
 
 class Input extends Element
 {
+
     protected $name;
     protected $required;
     protected $disabled;
@@ -16,10 +17,15 @@ class Input extends Element
 
     protected function read(array $element, Context $context)
     {
-        if(isset($element['items'])) {
-            $this->readItems($element['items'], $context);
-            unset($element['items']);
-            parent::read($element, $context);
+        $fields = 'name,required,disabled,readonly,placeholder,label,value';
+        $this->readSettings($element, explode(',', $fields));
+        parent::read($element, $context);
+    }
+
+    protected function requireID(Context $context)
+    {
+        if(is_null($this->id)) {
+            $this->id = $context->getID($this->name ?? 'id');
         }
     }
 }

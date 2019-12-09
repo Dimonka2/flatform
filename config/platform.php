@@ -23,5 +23,9 @@ return [
                 ],
             'label-class' => 'form-check-label custom-control-label',
         ],
-    ]
+    ],
+    'aliases' => [
+        'Form'                => Collective\Html\FormFacade::class,
+        'HTML'                => Collective\Html\HtmlFacade::class,
+    ],
 ];
