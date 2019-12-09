@@ -11,6 +11,7 @@ class PlatformServiceProvider extends ServiceProvider
      *
      * @return void
      */
+    private const config = 'platform.php';
     public function register()
     {
         //
@@ -23,6 +24,16 @@ class PlatformServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        if ($this->app->runningInConsole()) {
+            $this->publishes([
+                $this->getConfigFile() => config_path(self::config),
+            ], 'config');
+        }
+    }
+
+    protected function getConfigFile(): string
+    {
+        return __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'config'
+            . DIRECTORY_SEPARATOR . self::config;
     }
 }
