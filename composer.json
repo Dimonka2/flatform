@@ -1,0 +1,27 @@
+{
+    "name": "dimonka2/platform",
+    "description": "Form helper for Laravel and laravelcollective/html",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Dimonka2",
+            "email": "dimonka@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "laravelcollective/html": "^5.5"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "dimonka2\\platform\\PlatformServiceProvider"
+            ]
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "dimonka2\\platform\\": "src/"
+        }
+    }
+}
