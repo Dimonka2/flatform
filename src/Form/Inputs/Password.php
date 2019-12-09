@@ -6,11 +6,11 @@ use dimonka2\platform\Form\Input;
 use dimonka2\platform\Form\Context;
 use Form;
 
-class Text extends Input
+class Password extends Input
 {
     public function render(Context $context)
     {
-        return Form::text($this->name, $this->value,
+        return Form::password($this->name, $this->value,
             $this->getOptions(['id', 'class', 'style']));
     }
 }

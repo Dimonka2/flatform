@@ -11,6 +11,10 @@ class ElementFactory
 {
     private $binds = [
         'text' => Inputs\Text::class,
+        'password' => Inputs\Password::class,
+        'number' => Inputs\Number::class,        
+        'textarea' => Inputs\Textarea::class,     
+        'select' => Inputs\Select::class,    
         
         'div' => ElementContainer::class,
         'span' => ElementContainer::class,
@@ -22,8 +26,8 @@ class ElementFactory
 
     public function createElement(array $element, $context)
     {
-        $def_type = config('platform.form.default-type');
-        $type = $element['type'] ?? $def_type;
+        $def_type = config('platform.form.default-type', 'div');
+        $type = strtolower($element['type'] ?? $def_type);
         $class = isset($this->binds[$type]) ? $this->binds[$type] : $this->binds[$def_type];
         // make class
         $reflection = new ReflectionClass($class);

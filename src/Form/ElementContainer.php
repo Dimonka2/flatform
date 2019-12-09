@@ -38,6 +38,7 @@ class ElementContainer extends Element implements IContainer
 
     public function renderItems($context)
     {
+        if(is_null($this->elements)) return;
         $html = '';
         foreach($this->elements as $element) {
             if(!$element->getHidden()) {

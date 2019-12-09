@@ -20,36 +20,10 @@
         {!! Form::text($el['name'], $value, $setting) !!}
     @else
         @switch($el['type'])
-            @case('text')
-                {!! Form::text($el['name'], $value, $setting) !!}
-                @break
 
-            @case('password')
-                {!! Form::password($el['name'], $value, $setting) !!}
-                @break
-
-            @case('select')
-
-                @isset($el['state-list'])
-                    @php( $el['list'] = \App\Helpers\StateHelper::selectStateList($el['state-list']) )
-                @endisset
-                {!! Form::select($el['name'], $el['list'], $value, $setting) !!}
-                @break
-
-            @case('textarea')
-                {!! Form::textarea($el['name'], $value, $setting) !!}
-                @break
-
-            @case('file')
-                {!! Form::file($el['name'], $setting) !!}
-                @break
 
             @case('radio')
                 {!! Form::radio($el['name'], $el['name'], $value, $setting) !!}
-                @break
-
-            @case('number')
-                {!! Form::number($el['name'], $value, $setting) !!}
                 @break
 
             @case('date')
