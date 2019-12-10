@@ -10,10 +10,11 @@ class Input extends Element
     protected $name;
     protected $label;
     protected $value;
+    protected $help;
 
     protected function read(array $element, Context $context)
     {
-        $fields = 'name,label,value';
+        $fields = 'name,label,value,help';
         $this->readSettings($element, explode(',', $fields));
         parent::read($element, $context);
     }

@@ -18,8 +18,11 @@ class ElementFactory
         'select' => Inputs\Select::class,   
         'select2' => Inputs\Select2::class,   
         'file' => Inputs\File::class, 
+        'checkbox' => Inputs\Checkbox::class,   
         'radio' => Inputs\Radio::class,   
-        'date' => Inputs\Date::class,        
+        'date' => Inputs\Date::class,     
+        
+        'button' => Buttons\Button::class,
         
         'div' => ElementContainer::class,
         'span' => ElementContainer::class,
