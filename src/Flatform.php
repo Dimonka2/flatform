@@ -1,9 +1,9 @@
 <?php
-namespace dimonka2\platform;
+namespace dimonka2\flatform;
 
 use laravelcollective\html\Form;
-use dimonka2\platform\Form\Context;
-class Platform
+use dimonka2\flatform\Form\Context;
+class Flatform
 {
     // partial view locations
     private const checkbox_group_class = 'custom-control custom-checkbox mb-3';
@@ -119,7 +119,7 @@ class Platform
                     }
                     return static::renderElement('button', $options, $text);
                 case 'checkbox':
-                    $check_config = config('platform.form.checkbox');
+                    $check_config = config('flatform.form.checkbox');
                     $html = '<div class="form-group"><div class="' . static::checkbox_group_class .'">';
                     $id = $options['id'] ?? ('cb-' . $options['name'] ?? '0');
 

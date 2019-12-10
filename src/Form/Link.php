@@ -1,9 +1,9 @@
 <?php
 
-namespace dimonka2\platform\Form;
+namespace dimonka2\flatform\Form;
 
-use dimonka2\platform\Form\ElementContainer;
-use dimonka2\platform\Form\Context;
+use dimonka2\flatform\Form\ElementContainer;
+use dimonka2\flatform\Form\Context;
 use Illuminate\Support\Collection;
 
 class Link extends ElementContainer
@@ -23,8 +23,8 @@ class Link extends ElementContainer
     {
         if(!is_null($this->post)) {
             // render form
-            
-        } else  { 
+
+        } else  {
             return $context->renderElement($this);
         }
     }

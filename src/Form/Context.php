@@ -1,11 +1,11 @@
 <?php
 
-namespace dimonka2\platform\Form;
+namespace dimonka2\flatform\Form;
 
-use dimonka2\platform\Form\Element;
-use dimonka2\platform\Form\ElementFactory;
-use dimonka2\platform\Form\ElementContainer;
-use dimonka2\platform\Form\Contracts\IContainer;
+use dimonka2\flatform\Form\Element;
+use dimonka2\flatform\Form\ElementFactory;
+use dimonka2\flatform\Form\ElementContainer;
+use dimonka2\flatform\Form\Contracts\IContainer;
 use \ReflectionClass;
 
 class Context
@@ -53,7 +53,7 @@ class Context
         }
         $surround = $element->getSurround();
         if(is_array($surround)) return $this->renderTag($surround, $html);
-        
+
         return $html;
     }
 

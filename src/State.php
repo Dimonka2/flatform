@@ -1,5 +1,5 @@
 <?php
-namespace dimonka2\platform;
+namespace dimonka2\flatform;
 
 use Illuminate\Support\Facades\Cache;
 

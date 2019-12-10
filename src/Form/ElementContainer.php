@@ -1,11 +1,11 @@
 <?php
 
-namespace dimonka2\platform\Form;
+namespace dimonka2\flatform\Form;
 
-use dimonka2\platform\Form\Element;
-use dimonka2\platform\Form\Context;
+use dimonka2\flatform\Form\Element;
+use dimonka2\flatform\Form\Context;
 use Illuminate\Support\Collection;
-use dimonka2\platform\Form\Contracts\IContainer;
+use dimonka2\flatform\Form\Contracts\IContainer;
 
 class ElementContainer extends Element implements IContainer
 {
@@ -27,7 +27,7 @@ class ElementContainer extends Element implements IContainer
     }
 
     public function readItems(array $items, Context $context)
-    {        
+    {
         foreach ($items as $item) {
             $item = $context->createElement($item);
             $this->elements->push($item);

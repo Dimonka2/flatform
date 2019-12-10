@@ -1,5 +1,5 @@
 {
-    "name": "dimonka2/platform",
+    "name": "dimonka2/flatform",
     "description": "Form helper for Laravel and laravelcollective/html",
     "type": "library",
     "authors": [
@@ -15,13 +15,13 @@
     "extra": {
         "laravel": {
             "providers": [
-                "dimonka2\\platform\\PlatformServiceProvider"
+                "dimonka2\\flatform\\FlatformServiceProvider"
             ]
         }
     },
     "autoload": {
         "psr-4": {
-            "dimonka2\\platform\\": "src/"
+            "dimonka2\\flatform\\": "src/"
         }
     }
 }

@@ -1,8 +1,8 @@
 <?php
 
-namespace dimonka2\platform\Form;
+namespace dimonka2\flatform\Form;
 
-use dimonka2\platform\Form\Context;
+use dimonka2\flatform\Form\Context;
 
 class Element
 {

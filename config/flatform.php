@@ -1,6 +1,6 @@
 <?php
 
-// use dimonka2\platform\State;
+// use dimonka2\flatform\State;
 
 /*
     _surround - add outer element

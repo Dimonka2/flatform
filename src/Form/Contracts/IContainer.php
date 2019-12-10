@@ -1,6 +1,6 @@
 <?php
 
-namespace dimonka2\platform\Form\Contracts;
+namespace dimonka2\flatform\Form\Contracts;
 
 interface IContainer
 {

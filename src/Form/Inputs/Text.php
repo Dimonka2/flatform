@@ -1,9 +1,9 @@
 <?php
 
-namespace dimonka2\platform\Form\Inputs;
+namespace dimonka2\flatform\Form\Inputs;
 
-use dimonka2\platform\Form\Input;
-use dimonka2\platform\Form\Context;
+use dimonka2\flatform\Form\Input;
+use dimonka2\flatform\Form\Context;
 use Form;
 
 class Text extends Input

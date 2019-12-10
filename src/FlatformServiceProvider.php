@@ -1,22 +1,22 @@
 <?php
 
-namespace dimonka2\platform;
+namespace dimonka2\flatform;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\Facades\Blade;
 
-class PlatformServiceProvider extends ServiceProvider
+class FlatformServiceProvider extends ServiceProvider
 {
     /**
      * Register services.
      *
      * @return void
      */
-    private const config = 'platform.php';
+    private const config = 'flatform.php';
     public function register()
     {
-        AliasLoader::getInstance(config('platform.aliases', []));
+        AliasLoader::getInstance(config('flatform.aliases', []));
     }
 
     /**
@@ -31,9 +31,9 @@ class PlatformServiceProvider extends ServiceProvider
                 $this->getConfigFile() => config_path(self::config),
             ], 'config');
         } else {
-            Blade::directive('platform', function ($form) {
-                return "<?php echo \dimonka2\platform\Platform::render($form); ?>";
-            }); 
+            Blade::directive('flatform', function ($form) {
+                return "<?php echo \dimonka2\flatform\Flatform::render($form); ?>";
+            });
         }
     }
 
