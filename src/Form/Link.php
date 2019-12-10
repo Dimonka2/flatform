@@ -19,13 +19,13 @@ class Link extends ElementContainer
         if($this->text != '') $this->addTextElement($context, $this->text);
     }
 
-    public function render(IContext $context)
+    protected function render(IContext $context, $aroundHTML)
     {
         if(!is_null($this->post)) {
             // render form
 
         } else  {
-            return $context->renderElement($this);
+            return $context->renderElement($this, $aroundHTML);
         }
     }
 }

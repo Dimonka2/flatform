@@ -8,7 +8,7 @@ use Form;
 
 class Number extends Input
 {
-    public function render(IContext $context)
+    protected function render(IContext $context, $aroundHTML)
     {
         return Form::number($this->name, $this->value,
             $this->getOptions(['id', 'class', 'style']));

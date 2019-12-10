@@ -8,7 +8,7 @@ use Form;
 
 class Checkbox extends Input
 {
-    public function render(IContext $context)
+    protected function render(IContext $context, $aroundHTML)
     {
         return Form::checkbox($this->name, $this->name, $this->value,
             $this->getOptions(['id', 'class', 'style']));

@@ -19,7 +19,7 @@ class Select2 extends Input
         parent::read($element, $context);
     }
 
-    public function render(IContext $context)
+    protected function render(IContext $context, $aroundHTML)
     {
         return Form::select($this->name, $this->items, $this->value,
             $this->getOptions(['id', 'class', 'style']));

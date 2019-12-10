@@ -8,7 +8,7 @@ use Form;
 
 class Password extends Input
 {
-    public function render(IContext $context)
+    protected function render(IContext $context, $aroundHTML)
     {
         return Form::password($this->name, $this->value,
             $this->getOptions(['id', 'class', 'style']));

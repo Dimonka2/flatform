@@ -49,14 +49,20 @@ class ElementContainer extends Element implements IContainer
         return $this->elements;
     }
 
+    protected function render(IContext $context, $aroundHTML)
+    {
+        if($this->hidden) return;
+        // special case
+        $aroundHTML .= $this->renderItems($context);
+        return $context->renderElement($this, $aroundHTML);
+    }
+
     public function renderItems(IContext $context)
     {
         if(is_null($this->elements)) return;
         $html = '';
         foreach($this->elements as $element) {
-            if(!$element->getHidden()) {
-                $html .= $element->render($context);
-            }
+            $html .= $element->renderElement($context, null);
         }
         return $html;
     }

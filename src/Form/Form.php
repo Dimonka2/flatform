@@ -21,7 +21,7 @@ class Form extends ElementContainer
         parent::read($element, $context);
     }
 
-    public function render(IContext $context)
+    protected function render(IContext $context, $aroundHTML)
     {
         $options = $this->getOptions(['method', 'route', 'files']);
         if(!is_object($this->model)) {

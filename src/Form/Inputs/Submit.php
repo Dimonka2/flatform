@@ -8,7 +8,7 @@ use Form;
 
 class Submit extends Input
 {
-    public function render(IContext $context)
+    protected function render(IContext $context, $aroundHTML)
     {
         return Form::submit($this->name, $this->getOptions(['id', 'class', 'style']));
     }

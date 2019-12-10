@@ -8,7 +8,7 @@ use Form;
 
 class File extends Input
 {
-    public function render(IContext $context)
+    protected function render(IContext $context, $aroundHTML)
     {
         return Form::file($this->name, $this->getOptions(['id', 'class', 'style']));
     }

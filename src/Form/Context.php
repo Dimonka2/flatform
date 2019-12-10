@@ -52,21 +52,14 @@ class Context implements IContext
         } else {
             $html .= '>' . $text . '</' . $tag . '>';
         }
-        $surround = $element->getSurround();
-        if(is_array($surround)) return $this->renderTag($surround, $html);
-
         return $html;
     }
 
-    public function renderElement(IElement $element)
+    public function renderElement(IElement $element, $aroundHTML)
     {
         // todo get template from config
         if($element->getTag() == '_text') return $element->getText();
-        if ($element instanceof IContainer) {
-            $html = $element->renderItems($this);
-            return self::renderTag($element, $html);
-        } else {
-            return self::renderTag($element);
-        }
+
+        return self::renderTag($element, $aroundHTML);
     }
 }
