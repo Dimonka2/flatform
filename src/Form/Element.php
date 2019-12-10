@@ -17,6 +17,7 @@ class Element implements IElement
     protected $templ_attributes = [];
     protected $_surround = null;
     protected $surround = null;
+    protected $text;
 
     protected function hash()
     {
@@ -37,27 +38,21 @@ class Element implements IElement
     protected function read(array $element, IContext $context)
     {
         // echo $this->hash() . " Reading new element: \r\n";
-        print_r($element);
-        $this->readSettings($element, explode(',', '_surround,style,class,id,type,hidden'));
+        // print_r($element);
+        debug($element);
+        $this->readSettings($element, explode(',', 'text,_surround,style,class,id,type,hidden'));
         if(!is_null($this->_surround)) $this->pushSurround($this->_surround, $context);
-        foreach($element as $attr => $val) {
-            echo $attr . ' => ' . substr($attr, 1) . ' ';
-            if(substr($attr, 0, 1) == self::template_prefix) {
-                $this->templ_attributes[substr($attr, 1)] = $val;
-            } else {
-                $this->attributes[$attr] = $val;
-            }
-        }
         if(!is_null($this->hidden)) $this->hidden = !!$this->hidden;
         $this->processTemplate($context);
-        echo print_r($this->templ_attributes, true) . ' ';
+        debug($this);
+        // echo print_r($this->templ_attributes, true) . ' ';
     }
 
     public function processTemplate(IContext $context)
     {
         // echo "process templates: " . print_r($this->type, true);
         // read properties
-        $template = $context->getTemplate($this->type);
+        $template = $this->getTemplate($context);
         if (is_array($template)) {
             // add template to the element
             // set this element as a templatable to the context (if possible)
@@ -94,6 +89,11 @@ class Element implements IElement
 
     }
 
+    protected function getTemplate(IContext $context)
+    {
+        return $context->getTemplate($this->type);
+    }
+
     protected function getTemplateAttr($attr)
     {
         return $this->templ_attributes[$attr] ?? null;
@@ -107,7 +107,7 @@ class Element implements IElement
             if(substr($attribute, 0, 1) == self::template_prefix) {
                 $new_attr = substr($attribute, 1);
                 unset($element[$attribute]);
-                if(is_object($templatable)) {
+                if(is_object($templatable)) { 
                     if(is_array($value)) {
 
                     } else {
@@ -116,6 +116,8 @@ class Element implements IElement
                             $element[$new_attr] = $new_val;
                         }
                     }
+                } else {
+                    $this->templ_attributes[$new_attr] = $value;
                 }
             }
         }

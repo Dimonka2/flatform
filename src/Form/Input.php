@@ -26,4 +26,11 @@ class Input extends Element
             $this->id = $context->getID($this->name ?? 'id');
         }
     }
+
+    protected function getTemplate(IContext $context)
+    {
+        $template = parent::getTemplate($context);
+        if(!is_null($template)) return $template;
+        return $context->getTemplate('input');
+    }
 }

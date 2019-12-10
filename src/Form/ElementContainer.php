@@ -10,7 +10,6 @@ use dimonka2\flatform\Form\Contracts\IContainer;
 class ElementContainer extends Element implements IContainer
 {
     protected $elements;
-    protected $text;
 
     public function __construct(array $element, IContext $context)
     {
@@ -60,16 +59,20 @@ class ElementContainer extends Element implements IContainer
     {
         if($this->hidden) return;
         // special case
-        $aroundHTML .= $this->renderItems($context);
+        $aroundHTML = $this->renderItems($context, $aroundHTML);
         return $context->renderElement($this, $aroundHTML);
     }
 
-    public function renderItems(IContext $context)
+    public function renderItems(IContext $context, $aroundHTML = null)
     {
         if(is_null($this->elements)) return;
         $html = '';
         foreach($this->elements as $element) {
-            $html .= $element->renderElement($context, null);
+            if($element->getTag() == 'parent') {
+                $html .= $aroundHTML;
+            } else {
+                $html .= $element->renderElement($context, null);
+            }
         }
         return $html;
     }

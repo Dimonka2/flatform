@@ -11,7 +11,7 @@ class Select extends Input
     protected $items;
     protected $state_list;
 
-    protected function read(array $element, Context $context)
+    protected function read(array $element, IContext $context)
     {
         $fields = 'items,state_list';
         $this->readSettings($element, explode(',', $fields));
