@@ -2,13 +2,14 @@
 
 namespace dimonka2\flatform\Form;
 
-use dimonka2\flatform\Form\Element;
 use dimonka2\flatform\Form\ElementFactory;
 use dimonka2\flatform\Form\ElementContainer;
+use dimonka2\flatform\Form\Contracts\IElement;
 use dimonka2\flatform\Form\Contracts\IContainer;
+use dimonka2\flatform\Form\Contracts\IContext;
 use \ReflectionClass;
 
-class Context
+class Context implements IContext
 {
     protected $elements = [];
     protected $next_id = 100;
@@ -38,7 +39,7 @@ class Context
         return $this->elements->renderItems($this);
     }
 
-    public function renderTag(Element $element, $text = null)
+    public function renderTag(IElement $element, $text = null)
     {
         $tag = $element->getTag();
         $html = '<' . $tag;
@@ -57,7 +58,7 @@ class Context
         return $html;
     }
 
-    public function renderElement(Element $element)
+    public function renderElement(IElement $element)
     {
         // todo get template from config
         if($element->getTag() == '_text') return $element->getText();

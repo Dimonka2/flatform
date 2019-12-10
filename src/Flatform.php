@@ -46,19 +46,6 @@ class Flatform
     {
         return static::$jsList;
     }
-    private static function renderElement($element, $options, $text = null)
-    {
-        $html = '<' . $element;
-        foreach($options as $key => $value) {
-            $html .= ' ' . $key . '="' . htmlentities($value) . '"';
-        }
-        if(is_null($text)) {
-            $html .= ' />';
-        } else {
-            $html .= '>' . $text . '</' . $element . '>';
-        }
-        return $html;
-    }
 
     private static function renderPostForm($options)
     {

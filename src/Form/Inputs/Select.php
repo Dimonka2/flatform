@@ -3,7 +3,7 @@
 namespace dimonka2\flatform\Form\Inputs;
 
 use dimonka2\flatform\Form\Input;
-use dimonka2\flatform\Form\Context;
+use dimonka2\flatform\Form\Contracts\IContext;
 use Form;
 
 class Select extends Input
@@ -19,7 +19,7 @@ class Select extends Input
         parent::read($element, $context);
     }
 
-    public function render(Context $context)
+    public function render(IContext $context)
     {
         return Form::select($this->name, $this->items, $this->value,
             $this->getOptions(['id', 'class', 'style']));

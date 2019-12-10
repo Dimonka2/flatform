@@ -21,9 +21,11 @@ class ElementFactory
         'checkbox' => Inputs\Checkbox::class,
         'radio' => Inputs\Radio::class,
         'date' => Inputs\Date::class,
+        'submit' => Inputs\Submit::class,
 
         'button' => Buttons\Button::class,
-
+        'a' => Link::class,
+        'form' => Form::class,
         'div' => ElementContainer::class,
         'span' => ElementContainer::class,
         'i' => ElementContainer::class,

@@ -3,21 +3,21 @@
 namespace dimonka2\flatform\Form;
 
 use dimonka2\flatform\Form\Element;
-use dimonka2\flatform\Form\Context;
 use Illuminate\Support\Collection;
+use dimonka2\flatform\Form\Contracts\IContext;
 use dimonka2\flatform\Form\Contracts\IContainer;
 
 class ElementContainer extends Element implements IContainer
 {
     protected $elements;
 
-    public function __construct(array $element, Context $context)
+    public function __construct(array $element, IContext $context)
     {
         $this->elements = new Collection;
         parent::__construct($element, $context);
     }
 
-    protected function read(array $element, Context $context)
+    protected function read(array $element, IContext $context)
     {
         if(isset($element['items'])) {
             $this->readItems($element['items'], $context);
@@ -26,7 +26,7 @@ class ElementContainer extends Element implements IContainer
         parent::read($element, $context);
     }
 
-    public function readItems(array $items, Context $context)
+    public function readItems(array $items, IContext $context)
     {
         foreach ($items as $item) {
             $item = $context->createElement($item);
@@ -34,7 +34,7 @@ class ElementContainer extends Element implements IContainer
         }
     }
 
-    protected function addTextElement($context, $text)
+    protected function addTextElement(IContext $context, $text)
     {
         $item = $context->createElement(['type' => '_text']);
         $item->text = $text;
@@ -49,7 +49,7 @@ class ElementContainer extends Element implements IContainer
         return $this->elements;
     }
 
-    public function renderItems($context)
+    public function renderItems(IContext $context)
     {
         if(is_null($this->elements)) return;
         $html = '';

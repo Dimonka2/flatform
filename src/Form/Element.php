@@ -2,9 +2,10 @@
 
 namespace dimonka2\flatform\Form;
 
-use dimonka2\flatform\Form\Context;
+use dimonka2\flatform\Form\Contracts\IContext;
+use dimonka2\flatform\Form\Contracts\IElement;
 
-class Element
+class Element implements IElement
 {
     private $type;
     protected $hidden;
@@ -26,14 +27,14 @@ class Element
         }
     }
 
-    protected function read(array $element, Context $context)
+    protected function read(array $element, IContext $context)
     {
         $this->readSettings($element, explode(',', '_surround,text,style,class,id,type,hidden'));
         if(!is_null($this->hidden)) $this->hidden = !!$this->hidden;
         $this->attributes = $element;
     }
 
-    public function __construct(array $element, Context $context)
+    public function __construct(array $element, IContext $context)
     {
         $this->read($element, $context);
     }
@@ -47,7 +48,7 @@ class Element
         return $options;
     }
 
-    public function render(Context $context)
+    public function render(IContext $context)
     {
         if($this->hidden) return;
         // special case

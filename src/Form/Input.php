@@ -3,6 +3,7 @@
 namespace dimonka2\flatform\Form;
 
 use dimonka2\flatform\Form\Element;
+use dimonka2\flatform\Form\Contracts\IContext;
 
 class Input extends Element
 {
@@ -12,14 +13,14 @@ class Input extends Element
     protected $value;
     protected $help;
 
-    protected function read(array $element, Context $context)
+    protected function read(array $element, IContext $context)
     {
         $fields = 'name,label,value,help';
         $this->readSettings($element, explode(',', $fields));
         parent::read($element, $context);
     }
 
-    protected function requireID(Context $context)
+    protected function requireID(IContext $context)
     {
         if(is_null($this->id)) {
             $this->id = $context->getID($this->name ?? 'id');
