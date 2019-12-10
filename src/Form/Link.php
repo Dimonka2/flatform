@@ -4,7 +4,6 @@ namespace dimonka2\flatform\Form;
 
 use dimonka2\flatform\Form\ElementContainer;
 use dimonka2\flatform\Form\Contracts\IContext;
-use Illuminate\Support\Collection;
 
 class Link extends ElementContainer
 {
@@ -15,7 +14,6 @@ class Link extends ElementContainer
     {
         $this->readSettings($element, ['href', 'post']);
         parent::read($element, $context);
-        if($this->text != '') $this->addTextElement($context, $this->text);
     }
 
     public function getOptions(array $keys)

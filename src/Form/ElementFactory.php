@@ -33,6 +33,7 @@ class ElementFactory
         'u' => ElementContainer::class,
         'ul' => ElementContainer::class,
         'li' => ElementContainer::class,
+        'label' => Label::class,
         '_text' => Element::class,
         '_template' => Element::class,
     ];
