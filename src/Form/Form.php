@@ -9,10 +9,10 @@ use Form as LaForm;
 
 class Form extends ElementContainer
 {
-    protected const form_fields = ['method', 'model', 'route', 'files'];
+    protected const form_fields = ['method', 'model', 'url', 'files'];
     protected $method;
     protected $model;
-    protected $route;
+    protected $url;
     protected $files;
 
     public function read(array $element, IContext $context)
@@ -23,12 +23,13 @@ class Form extends ElementContainer
 
     protected function render(IContext $context, $aroundHTML)
     {
-        $options = $this->getOptions(['method', 'route', 'files']);
+        $options = $this->getOptions(['method', 'url', 'files']);
         if(!is_object($this->model)) {
             $html = LaForm::model($this->model , $options);
         } else  {
             $html = LaForm::open($this->model , $options);
         }
+        $html .= $aroundHTML;
         $html .= $this->renderItems($context);
         $html .= LaForm::close();
         return $html;

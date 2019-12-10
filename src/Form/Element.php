@@ -13,9 +13,14 @@ class Element implements IElement
     protected $class;
     protected $style;
     protected $attributes = [];
-    protected $_surround;
+    protected $_surround = null;
     protected $surround = null;
     protected $text;
+
+    protected function hash()
+    {
+        return substr(spl_object_hash($this), 11, 5);
+    }
 
     protected function readSettings(array &$element, array $keys)
     {
@@ -30,6 +35,8 @@ class Element implements IElement
 
     protected function read(array $element, IContext $context)
     {
+        // echo $this->hash() . " Reading new element: \r\n";
+        // print_r($element);
         $this->readSettings($element, explode(',', '_surround,text,style,class,id,type,hidden'));
         if(!is_null($this->hidden)) $this->hidden = !!$this->hidden;
         if(!is_null($this->_surround)) $this->pushSurround($this->_surround, $context);
@@ -50,19 +57,20 @@ class Element implements IElement
         return $options;
     }
 
-    public function setSurround(IElement $element)
+    public function setSurround(IElement $surround)
     {
+        // echo $this->hash() . ": Element.setSurround \r\n";
         if(is_object($this->surround)) {
-            $this->surround->setSurround( $element );
+            $this->surround->setSurround( $surround );
         } else {
-            $this->surround = $element;
+            $this->surround = $surround;
         }
     }
 
-    protected function pushSurround(array $element, IContext $context)
+    protected function pushSurround(array $surround, IContext $context)
     {
-        $item = $context->createElement($element);
-        $item->read($element, $context);
+        // echo $this->hash() . ": Element.pushSurround \r\n";
+        $item = $context->createElement($surround);
         $this->setSurround($item);
     }
 
@@ -90,9 +98,5 @@ class Element implements IElement
         return $this->type;
     }
 
-    public function getText()
-    {
-        return $this->text;
-    }
 
 }

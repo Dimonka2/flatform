@@ -19,11 +19,12 @@ class ElementContainer extends Element implements IContainer
 
     protected function read(array $element, IContext $context)
     {
+        parent::read($element, $context);
+        // echo $this->hash() . " Read items: \r\n";
         if(isset($element['items'])) {
             $this->readItems($element['items'], $context);
             unset($element['items']);
         }
-        parent::read($element, $context);
     }
 
     public function readItems(array $items, IContext $context)

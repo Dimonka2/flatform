@@ -58,8 +58,6 @@ class Context implements IContext
     public function renderElement(IElement $element, $aroundHTML)
     {
         // todo get template from config
-        if($element->getTag() == '_text') return $element->getText();
-
-        return self::renderTag($element, $aroundHTML);
+        return $this->renderTag($element, $aroundHTML);
     }
 }
