@@ -66,14 +66,12 @@ class Context implements IContext
         return config('flatform.templates.' . $tag);
     }
 
-    public function setTemplatable(IElement $element)
+    public function setTemplatable(IElement $element = null)
     {
         if( isset($element)) {
-            if(!is_null($this->template)) {
+            if(is_null($this->template)) {
                 $this->template = $element;
                 return true;
-            } else {
-                return false;
             }
         } else {
             $this->template = null;

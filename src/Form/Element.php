@@ -7,15 +7,16 @@ use dimonka2\flatform\Form\Contracts\IElement;
 
 class Element implements IElement
 {
+    public const template_prefix = "_";
     private $type;
     protected $hidden;
     protected $id;
     protected $class;
     protected $style;
     protected $attributes = [];
+    protected $templ_attributes = [];
     protected $_surround = null;
     protected $surround = null;
-    protected $text;
 
     protected function hash()
     {
@@ -36,12 +37,20 @@ class Element implements IElement
     protected function read(array $element, IContext $context)
     {
         // echo $this->hash() . " Reading new element: \r\n";
-        // print_r($element);
-        $this->readSettings($element, explode(',', '_surround,text,style,class,id,type,hidden'));
+        print_r($element);
+        $this->readSettings($element, explode(',', '_surround,style,class,id,type,hidden'));
         if(!is_null($this->_surround)) $this->pushSurround($this->_surround, $context);
-        $this->attributes = $element;
+        foreach($element as $attr => $val) {
+            echo $attr . ' => ' . substr($attr, 1) . ' ';
+            if(substr($attr, 0, 1) == self::template_prefix) {
+                $this->templ_attributes[substr($attr, 1)] = $val;
+            } else {
+                $this->attributes[$attr] = $val;
+            }
+        }
         if(!is_null($this->hidden)) $this->hidden = !!$this->hidden;
         $this->processTemplate($context);
+        echo print_r($this->templ_attributes, true) . ' ';
     }
 
     public function processTemplate(IContext $context)
@@ -51,10 +60,9 @@ class Element implements IElement
         $template = $context->getTemplate($this->type);
         if (is_array($template)) {
             // add template to the element
-            // echo "found template: " . print_r($template, true);
             // set this element as a templatable to the context (if possible)
             $is_templatable = $context->setTemplatable($this);
-
+            // print_r($this);
             foreach($template as $attribute => $value) {
                 switch ($attribute) {
                     case '_surround':
@@ -81,9 +89,14 @@ class Element implements IElement
                         break;
                 }
             }
-            if ($is_templatable) $context->setTemplatable(null);
+            if ($is_templatable) $context->setTemplatable();
         }
 
+    }
+
+    protected function getTemplateAttr($attr)
+    {
+        return $this->templ_attributes[$attr] ?? null;
     }
 
     private function processTemplatableAttributes(array &$element, IContext $context)
@@ -91,17 +104,16 @@ class Element implements IElement
         $templatable = $context->getTemplatable();
         foreach($element as $attribute => $value) {
             // check for a special prefix
-            if(substr($attribute, 0, 1) == '#') {
+            if(substr($attribute, 0, 1) == self::template_prefix) {
                 $new_attr = substr($attribute, 1);
-                echo "found: " . $new_attr . "\r\n";
-                print_r($templatable, true);
                 unset($element[$attribute]);
                 if(is_object($templatable)) {
                     if(is_array($value)) {
 
                     } else {
-                        if(isset($templatable->attributes[$value])) {
-                            $element[$new_attr] = $templatable->attributes[$value];
+                        $new_val = $templatable->getTemplateAttr($value);
+                        if(!is_null($new_val)) {
+                            $element[$new_attr] = $new_val;
                         }
                     }
                 }

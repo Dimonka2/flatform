@@ -10,6 +10,7 @@ use dimonka2\flatform\Form\Contracts\IContainer;
 class ElementContainer extends Element implements IContainer
 {
     protected $elements;
+    protected $text;
 
     public function __construct(array $element, IContext $context)
     {
@@ -19,12 +20,17 @@ class ElementContainer extends Element implements IContainer
 
     protected function read(array $element, IContext $context)
     {
-        parent::read($element, $context);
-        // echo $this->hash() . " Read items: \r\n";
         if(isset($element['items'])) {
             $this->readItems($element['items'], $context);
             unset($element['items']);
         }
+        $this->readSettings($element, ['text']);
+        parent::read($element, $context);
+        if(!is_null($this->text)) {
+            $this->addTextElement($context, $this->text);
+        }
+        // echo $this->hash() . " Read items: \r\n";
+
     }
 
     public function readItems(array $items, IContext $context)
