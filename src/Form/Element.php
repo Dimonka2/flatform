@@ -38,13 +38,80 @@ class Element implements IElement
         // echo $this->hash() . " Reading new element: \r\n";
         // print_r($element);
         $this->readSettings($element, explode(',', '_surround,text,style,class,id,type,hidden'));
-        if(!is_null($this->hidden)) $this->hidden = !!$this->hidden;
         if(!is_null($this->_surround)) $this->pushSurround($this->_surround, $context);
         $this->attributes = $element;
+        if(!is_null($this->hidden)) $this->hidden = !!$this->hidden;
+        $this->processTemplate($context);
+    }
+
+    public function processTemplate(IContext $context)
+    {
+        // echo "process templates: " . print_r($this->type, true);
+        // read properties
+        $template = $context->getTemplate($this->type);
+        if (is_array($template)) {
+            // add template to the element
+            // echo "found template: " . print_r($template, true);
+            // set this element as a templatable to the context (if possible)
+            $is_templatable = $context->setTemplatable($this);
+
+            foreach($template as $attribute => $value) {
+                switch ($attribute) {
+                    case '_surround':
+                        $this->pushSurround($value, $context);
+                        break;
+
+                    case 'id':
+                        $this->id = $value;
+                        break;
+                    case 'type':
+                        $this->type = $value;
+                        break;
+                    case 'class':
+                        $this->class = $value;
+                        break;
+                    case 'style':
+                        $this->style = $value;
+                        break;
+                    case '+class':
+                        $this->class .= $value;
+                        break;
+                    case '+style':
+                        $this->style .= $value;
+                        break;
+                }
+            }
+            if ($is_templatable) $context->setTemplatable(null);
+        }
+
+    }
+
+    private function processTemplatableAttributes(array &$element, IContext $context)
+    {
+        $templatable = $context->getTemplatable();
+        foreach($element as $attribute => $value) {
+            // check for a special prefix
+            if(substr($attribute, 0, 1) == '#') {
+                $new_attr = substr($attribute, 1);
+                echo "found: " . $new_attr . "\r\n";
+                print_r($templatable, true);
+                unset($element[$attribute]);
+                if(is_object($templatable)) {
+                    if(is_array($value)) {
+
+                    } else {
+                        if(isset($templatable->attributes[$value])) {
+                            $element[$new_attr] = $templatable->attributes[$value];
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public function __construct(array $element, IContext $context)
     {
+        $this->processTemplatableAttributes($element, $context);
         $this->read($element, $context);
     }
 

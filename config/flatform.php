@@ -16,15 +16,19 @@ return [
     'assets' =>[
 
     ],
-    'form' => [
-        'default-type' => 'div',
+    'templates' =>[
         'checkbox' => [
             '_surround' =>
                 ['type' => 'div', 'class' => 'custom-control custom-checkbox mb-3',
-                    '_surround' => ['type' => 'div', 'class' => 'form-group', ]
+                    '_surround' => ['type' => 'div', 'class' => 'form-group', 'items' => [
+                        ['type' => 'label', '#text' => 'title', ],
+                    ]]
                 ],
-            'label-class' => 'form-check-label custom-control-label',
         ],
+
+    ],
+    'form' => [
+        'default-type' => 'div',
     ],
     'aliases' => [
         'Form'  => Collective\Html\FormFacade::class,

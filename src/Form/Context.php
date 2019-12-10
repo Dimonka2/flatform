@@ -14,7 +14,7 @@ class Context implements IContext
     protected $elements = [];
     protected $next_id = 100;
     private $factory;
-
+    private $template = null;
 
     public function __construct(array $elements = [])
     {
@@ -59,5 +59,29 @@ class Context implements IContext
     {
         // todo get template from config
         return $this->renderTag($element, $aroundHTML);
+    }
+
+    public function getTemplate($tag)
+    {
+        return config('flatform.templates.' . $tag);
+    }
+
+    public function setTemplatable(IElement $element)
+    {
+        if( isset($element)) {
+            if(!is_null($this->template)) {
+                $this->template = $element;
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            $this->template = null;
+        }
+    }
+
+    public function getTemplatable()
+    {
+        return $this->template;
     }
 }

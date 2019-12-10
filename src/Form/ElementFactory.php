@@ -34,16 +34,22 @@ class ElementFactory
         'ul' => ElementContainer::class,
         'li' => ElementContainer::class,
         '_text' => Element::class,
+        '_template' => Element::class,
     ];
+
+    protected static function _createElement($class, array $element, $context)
+    {
+        $reflection = new ReflectionClass($class);
+        return $reflection->newInstanceArgs([$element, $context]);
+    }
 
     public function createElement(array $element, $context)
     {
         $def_type = config('flatform.form.default-type', 'div');
         $type = strtolower($element['type'] ?? $def_type);
         $class = isset($this->binds[$type]) ? $this->binds[$type] : $this->binds[$def_type];
-        // make class
-        $reflection = new ReflectionClass($class);
-        return $reflection->newInstanceArgs([$element, $context]);
+        $item = self::_createElement($class, $element, $context);
+        return $item;
     }
 
 }

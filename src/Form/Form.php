@@ -4,7 +4,6 @@ namespace dimonka2\flatform\Form;
 
 use dimonka2\flatform\Form\ElementContainer;
 use dimonka2\flatform\Form\Contracts\IContext;
-use Illuminate\Support\Collection;
 use Form as LaForm;
 
 class Form extends ElementContainer
