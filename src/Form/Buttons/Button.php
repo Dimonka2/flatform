@@ -8,9 +8,5 @@ use Form;
 
 class Button extends Link
 {
-    public function render(Context $context)
-    {
-        return Form::text($this->name, $this->value,
-            $this->getOptions(['id', 'class', 'style']));
-    }
+
 }

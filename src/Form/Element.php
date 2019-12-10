@@ -13,7 +13,7 @@ class Element
     protected $style;
     protected $attributes = [];
     protected $_surround;
-    private $text;
+    protected $text;
 
     protected function readSettings(array &$element, array $keys)
     {

@@ -11,6 +11,12 @@ class ElementContainer extends Element implements IContainer
 {
     protected $elements;
 
+    public function __construct(array $element, Context $context)
+    {
+        $this->elements = new Collection;
+        parent::__construct($element, $context);
+    }
+
     protected function read(array $element, Context $context)
     {
         if(isset($element['items'])) {
@@ -21,12 +27,19 @@ class ElementContainer extends Element implements IContainer
     }
 
     public function readItems(array $items, Context $context)
-    {
-        $this->elements = new Collection;
+    {        
         foreach ($items as $item) {
             $item = $context->createElement($item);
             $this->elements->push($item);
         }
+    }
+
+    protected function addTextElement($context, $text)
+    {
+        $item = $context->createElement(['type' => '_text']);
+        $item->text = $text;
+        $this->elements->push($item);
+        return $item;
     }
 
     // IContainer inteface

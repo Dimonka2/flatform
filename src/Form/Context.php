@@ -34,6 +34,7 @@ class Context
 
     public function render()
     {
+        // dd($this->elements);
         return $this->elements->renderItems($this);
     }
 
@@ -59,6 +60,7 @@ class Context
     public function renderElement(Element $element)
     {
         // todo get template from config
+        if($element->getTag() == '_text') return $element->getText();
         if ($element instanceof IContainer) {
             $html = $element->renderItems($this);
             return self::renderTag($element, $html);
