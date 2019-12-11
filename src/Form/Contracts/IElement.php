@@ -6,7 +6,7 @@ use dimonka2\flatform\Form\Contracts\IContext;
 
 interface IElement
 {
-    public function renderElement(IContext $context, $aroundHTML);
+    public function renderElement();
     public function getOptions(array $keys);
     public function getTag();
 }

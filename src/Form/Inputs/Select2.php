@@ -11,17 +11,17 @@ class Select2 extends Input
     protected $items;
     protected $state_list;
 
-    protected function read(array $element, IContext $context)
+    protected function read(array $element)
     {
         $fields = 'items,state_list';
         $this->readSettings($element, explode(',', $fields));
         if(is_null($this->items)) $this->items = [];
-        parent::read($element, $context);
+        parent::read($element);
     }
 
-    protected function render(IContext $context, $aroundHTML)
+    protected function render()
     {
         return Form::select($this->name, $this->items, $this->value,
-            $this->getOptions(['id', 'class', 'style']));
+            $this->getOptions([]));
     }
 }

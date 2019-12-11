@@ -32,7 +32,7 @@ class FlatformServiceProvider extends ServiceProvider
             ], 'config');
         } else {
             Blade::directive(config('flatform.blade_directive', 'form'), function ($form) {
-                return "<?php echo \dimonka2\flatform\Flatform::render($form); ?>";
+                return "<?php echo \dimonka2\\flatform\Flatform::render($form); ?>";
             });
             $this->loadViewsFrom(
                 config('flatform.views_directory', __DIR__.'/../views'), 'flatform');
@@ -41,7 +41,6 @@ class FlatformServiceProvider extends ServiceProvider
 
     protected function getConfigFile(): string
     {
-        return __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'config'
-            . DIRECTORY_SEPARATOR . self::config;
+        return __DIR__ . '/../config/' . self::config;
     }
 }

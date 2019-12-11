@@ -6,7 +6,7 @@ use dimonka2\flatform\Form\Contracts\IContext;
 
 interface IContainer
 {
-    public function renderItems(IContext $context);
+    public function renderItems();
     public function items();
 
 }

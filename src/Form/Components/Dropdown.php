@@ -1,6 +1,6 @@
 <?php
 
-namespace dimonka2\flatform\Form\Buttons;
+namespace dimonka2\flatform\Form\Components;
 
 use dimonka2\flatform\Form\ElementContainer;
 use dimonka2\flatform\Form\Contracts\IContext;
@@ -13,15 +13,15 @@ class Dropdown extends ElementContainer
     public $title;
     public $direction;
 
-    protected function read(array $element, IContext $context)
+    protected function read(array $element)
     {
         $this->readSettings($element, ['toggle', 'shadow', 'title', 'direction']);
-        parent::read($element, $context);
+        parent::read($element);
     }
 
-    protected function render(IContext $context, $aroundHTML)
+    protected function render()
     {
-        return $this->renderItems($context, $aroundHTML);
+        return $this->renderItems();
     }
 
 }

@@ -15,6 +15,8 @@ class Flatform
     public static function render(array $element)
     {
         // dd($element);
+        // backward compatibility with old version
+        if(isset($element['elements'])) $element = $element['elements'];
         return (new Context($element))->render();
     }
 

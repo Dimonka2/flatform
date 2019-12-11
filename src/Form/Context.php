@@ -8,6 +8,7 @@ use dimonka2\flatform\Form\Contracts\IElement;
 use dimonka2\flatform\Form\Contracts\IContainer;
 use dimonka2\flatform\Form\Contracts\IContext;
 use \ReflectionClass;
+use Closure;
 
 class Context implements IContext
 {
@@ -18,7 +19,7 @@ class Context implements IContext
 
     public function __construct(array $elements = [])
     {
-        $this->factory = new ElementFactory;
+        $this->factory = new ElementFactory($this);
         $this->elements = new ElementContainer([], $this);
         $this->elements->readItems($elements, $this);
     }
@@ -33,6 +34,14 @@ class Context implements IContext
         return $this->factory->createElement($element, $this);
     }
 
+    public function createTemplate($template)
+    {
+        if($template == '') return;
+        $template = $this->getTemplate($template);
+        if(!is_array($template)) return;
+        return $this->createElement($template);
+    }
+
     public function render()
     {
         // dd($this->elements);
@@ -43,7 +52,7 @@ class Context implements IContext
     {
         $tag = $element->getTag();
         $html = '<' . $tag;
-        $options = $element->getOptions(['id', 'class', 'style']);
+        $options = $element->getOptions([]);
         foreach($options as $key => $value) {
             if(!is_array($value)) $html .= ' ' . $key . '="' . htmlentities($value) . '"';
         }
@@ -55,7 +64,7 @@ class Context implements IContext
         return $html;
     }
 
-    public function renderElement(IElement $element, $aroundHTML)
+    public function renderElement(IElement $element, $aroundHTML = null)
     {
         // todo get template from config
         return $this->renderTag($element, $aroundHTML);

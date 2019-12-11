@@ -17,32 +17,32 @@ class ElementContainer extends Element implements IContainer
         parent::__construct($element, $context);
     }
 
-    protected function read(array $element, IContext $context)
+    protected function read(array $element)
     {
         if(isset($element['items'])) {
-            $this->readItems($element['items'], $context);
+            $this->readItems($element['items']);
             unset($element['items']);
         }
         $this->readSettings($element, ['text']);
-        parent::read($element, $context);
+        parent::read($element);
         if(!is_null($this->text)) {
-            $this->addTextElement($context, $this->text);
+            $this->addTextElement( $this->text);
         }
         // echo $this->hash() . " Read items: \r\n";
 
     }
 
-    public function readItems(array $items, IContext $context)
+    public function readItems(array $items)
     {
         foreach ($items as $item) {
-            $item = $context->createElement($item);
+            $item = $this->context->createElement($item);
             $this->elements->push($item);
         }
     }
 
-    protected function addTextElement(IContext $context, $text)
+    protected function addTextElement($text)
     {
-        $item = $context->createElement(['type' => '_text']);
+        $item = $this->context->createElement(['type' => '_text']);
         $item->text = $text;
         $this->elements->push($item);
         return $item;
@@ -55,24 +55,20 @@ class ElementContainer extends Element implements IContainer
         return $this->elements;
     }
 
-    protected function render(IContext $context, $aroundHTML)
+    protected function render()
     {
         if($this->hidden) return;
         // special case
-        $aroundHTML = $this->renderItems($context, $aroundHTML);
-        return $context->renderElement($this, $aroundHTML);
+        $aroundHTML = $this->renderItems();
+        return $this->context->renderElement($this, $aroundHTML);
     }
 
-    public function renderItems(IContext $context, $aroundHTML = null)
+    public function renderItems()
     {
         if(is_null($this->elements)) return;
         $html = '';
         foreach($this->elements as $element) {
-            if($element->getTag() == 'parent') {
-                $html .= $aroundHTML;
-            } else {
-                $html .= $element->renderElement($context, null);
-            }
+             $html .= $element->renderElement( null);
         }
         return $html;
     }

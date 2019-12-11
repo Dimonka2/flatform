@@ -8,15 +8,15 @@ use dimonka2\flatform\Form\Contracts\IContext;
 class Label extends ElementContainer
 {
 
-    protected function read(array $element, IContext $context)
+    protected function read(array $element)
     {
-        parent::read($element, $context);
+        parent::read($element);
     }
 
-    protected function render(IContext $context, $aroundHTML)
+    protected function render()
     {
         if($this->elements->count() == 0 && $aroundHTML == '') return;
-        return parent::render($context, $aroundHTML);
+        return parent::render();
     }
 
 }

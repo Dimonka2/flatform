@@ -8,20 +8,21 @@ use Form;
 
 class Select extends Input
 {
-    protected $items;
     protected $state_list;
+    protected $list;
 
-    protected function read(array $element, IContext $context)
+    protected function read(array $element)
     {
-        $fields = 'items,state_list';
+        $fields = 'state_list,list';
         $this->readSettings($element, explode(',', $fields));
-        if(is_null($this->items)) $this->items = [];
-        parent::read($element, $context);
+        parent::read($element);
+        if(is_null($this->list)) $this->list = [];
     }
 
-    protected function render(IContext $context, $aroundHTML)
+    protected function render()
     {
-        return Form::select($this->name, $this->items, $this->value,
-            $this->getOptions(['id', 'class', 'style']));
+        // dd($this);
+        return Form::select($this->name, $this->list, $this->value,
+            $this->getOptions([]));
     }
 }

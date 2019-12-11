@@ -11,11 +11,14 @@ class Element implements IElement
     protected const element_attributes = [
         'id', 'class', 'style',
     ];
-    private $type;
-    protected $hidden;
+
     public $id;
     public $class;
     public $style;
+
+    protected $context;
+    protected $type;
+    protected $hidden;
     protected $attributes = [];
     protected $text;
     protected $template;
@@ -36,11 +39,11 @@ class Element implements IElement
         }
     }
 
-    public function processTemplate(IContext $context)
+    public function processTemplate()
     {
         // echo "process templates: " . var_dump($this);
         // read properties
-        $template = $this->getTemplate($context);
+        $template = $this->getTemplate();
         // echo "processing template: " . var_dump($template);
         if (is_array($template)) {
 
@@ -62,11 +65,11 @@ class Element implements IElement
                         $this->style = $value;
                         break;
                     case '+class':
-                        $this->class .= $value;
+                        $this->addClass($value);
 
                         break;
                     case '+style':
-                        $this->style .= $value;
+                        $this->addStyle($value);
                         break;
                 }
             }
@@ -74,21 +77,32 @@ class Element implements IElement
 
     }
 
-    protected function read(array $element, IContext $context)
+    public function addClass($class)
+    {
+        $this->class .= ' ' . $class;
+    }
+
+    public function addStyle($style)
+    {
+        $this->style .= ' ' . $style;
+    }
+
+    protected function read(array $element)
     {
         $this->readSettings($element, explode(',', 'text,style,class,id,type,hidden'));
         if(!is_null($this->hidden)) $this->hidden = !!$this->hidden;
-        $this->processTemplate($context);
+        $this->processTemplate();
     }
 
-    protected function getTemplate(IContext $context)
+    protected function getTemplate()
     {
-        return $context->getTemplate($this->type);
+        return $this->context->getTemplate($this->type);
     }
 
     public function __construct(array $element, IContext $context)
     {
-        $this->read($element, $context);
+        $this->context = $context;
+        $this->read($element);
     }
 
     public function getOptions(array $keys)
@@ -100,10 +114,10 @@ class Element implements IElement
         return $options;
     }
 
-    public function renderElement(IContext $context, $aroundHTML)
+    public function renderElement()
     {
         if(!$this->hidden) {
-            $html = $this->render($context, $aroundHTML);
+            $html = $this->render();
             $template = $this->template;
             if($template != "") return view($template)
                 ->with('element', $this)
@@ -112,12 +126,12 @@ class Element implements IElement
         }
     }
 
-    protected function render(IContext $context, $aroundHTML)
+    protected function render()
     {
         if($this->hidden) return;
         // special case
         if($this->type == '_text') return $this->text;
-        return $context->renderElement($this, $aroundHTML);
+        return $this->context->renderElement($this);
     }
 
     public function getTag()

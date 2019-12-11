@@ -8,32 +8,32 @@ use dimonka2\flatform\Form\Contracts\IContext;
 class Input extends Element
 {
     public const input_fields = [
-        'name', 'title', 'value', 'help', 'col',
+        'name', 'label', 'value', 'help', 'col',
     ];
     public $name;
-    public $title;
+    public $label;
     public $value;
     public $help;
     public $col;
 
-    protected function read(array $element, IContext $context)
+    protected function read(array $element)
     {
         $this->readSettings($element, self::input_fields);
-        parent::read($element, $context);
-        $this->requireID($context);
+        parent::read($element);
+        $this->requireID();
     }
 
-    protected function requireID(IContext $context)
+    protected function requireID()
     {
         if(is_null($this->id)) {
-            $this->id = $context->getID($this->name ?? 'id');
+            $this->id = $this->context->getID($this->name ?? 'id');
         }
     }
 
-    protected function getTemplate(IContext $context)
+    protected function getTemplate()
     {
-        $template = parent::getTemplate($context);
+        $template = parent::getTemplate();
         if(!is_null($template)) return $template;
-        return $context->getTemplate('input');
+        return $this->context->getTemplate('input');
     }
 }

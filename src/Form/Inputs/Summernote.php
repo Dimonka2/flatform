@@ -8,9 +8,9 @@ use Form;
 
 class Summernote extends Input
 {
-    protected function render(IContext $context, $aroundHTML)
+    protected function render()
     {
         return Form::textarea($this->name, $this->value,
-            $this->getOptions(['id', 'class', 'style']));
+            $this->getOptions([]));
     }
 }

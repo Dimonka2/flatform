@@ -10,15 +10,15 @@ class Checkbox extends Input
 {
     public $label;
 
-    protected function render(IContext $context, $aroundHTML)
+    protected function render()
     {
         return Form::checkbox($this->name, $this->name, $this->value,
-            $this->getOptions(['id', 'class', 'style']));
+            $this->getOptions([]));
     }
 
-    protected function read(array $element, IContext $context)
+    protected function read(array $element)
     {
         $this->readSettings($element, ['label']);
-        parent::read($element, $context);
+        parent::read($element);
     }
 }

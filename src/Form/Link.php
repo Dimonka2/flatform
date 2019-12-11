@@ -9,11 +9,13 @@ class Link extends ElementContainer
 {
     protected $href;
     protected $post;
+    public $title;
+    public $icon;
 
-    public function read(array $element, IContext $context)
+    protected function read(array $element)
     {
-        $this->readSettings($element, ['href', 'post', 'title']);
-        parent::read($element, $context);
+        $this->readSettings($element, ['href', 'post', 'title', 'icon']);
+        parent::read($element);
     }
 
     public function getOptions(array $keys)
@@ -23,7 +25,12 @@ class Link extends ElementContainer
         return $options;
     }
 
-    protected function render(IContext $context, $aroundHTML)
+    protected function getTitle()
+    {
+        return $this->title;
+    }
+
+    protected function render()
     {
         if(!is_null($this->post)) {
             // render form
@@ -37,12 +44,12 @@ class Link extends ElementContainer
                 'method' => $method,
                 'url' => $this->href,
             ];
-            $surround = $context->createElement($form);
-            $surround->read($form, $context);
-            return $surround->renderElement($context, $context->renderElement($this, $aroundHTML));
+            $surround = $this->context->createElement($form);
+            $surround->read($form);
+            return $surround->renderElement( $this->context->renderElement($this, $this->getTitle()));
 
         } else  {
-            return $context->renderElement($this, $aroundHTML);
+            return $this->context->renderElement($this, $this->getTitle());
         }
     }
 

@@ -19,6 +19,11 @@ return [
         'input' => ['template' => 'flatform::input', '+class' => ' form-control form-control-alt'],
         'checkbox' => ['template' => 'flatform::checkbox',],
         'dropdown' => ['type' => 'div', 'template' => 'flatform::dropdown'],
+        'button' => ['+class' => 'btn'],
+        'row' => ['type' => 'div', 'class' => 'row',],
+        'dd-item' => ['template' => 'flatform::dropdown-item'],
+        'dd-item-icon' => ['type' => 'i', 'class' => 'kt-nav__link-icon',],
+        'dd-item-title' => ['type' => 'span', 'class' => 'kt-nav__link-text',],
         'form' => ['+class' => 'kt-form',],
     ],
 

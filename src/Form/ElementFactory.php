@@ -2,13 +2,12 @@
 
 namespace dimonka2\flatform\Form;
 
-use dimonka2\flatform\Form\Element;
-use dimonka2\flatform\Form\ElementContainer;
-use dimonka2\flatform\Form\Contracts\IContainer;
+use dimonka2\flatform\Form\Contracts\IContext;
 use \ReflectionClass;
 
 class ElementFactory
 {
+    private $context;
     private $binds = [
         'text' => Inputs\Text::class,
         'password' => Inputs\Password::class,
@@ -21,10 +20,11 @@ class ElementFactory
         'checkbox' => Inputs\Checkbox::class,
         'radio' => Inputs\Radio::class,
         'date' => Inputs\Date::class,
-        'submit' => Inputs\Submit::class,
 
-        'button' => Buttons\Button::class,
-        'dropdown' => Buttons\Dropdown::class,
+        'submit' => Components\Button::class,
+        'button' => Components\Button::class,
+        'dropdown' => Components\Dropdown::class,
+        'dd-item' => Components\DropdownItem::class,
         'a' => Link::class,
 
         'form' => Form::class,
@@ -41,19 +41,32 @@ class ElementFactory
         '_template' => Element::class,
     ];
 
+    public function __construct(IContext $context)
+    {
+        $this->context = $context;
+    }
+
     protected static function _createElement($class, array $element, $context)
     {
         $reflection = new ReflectionClass($class);
         return $reflection->newInstanceArgs([$element, $context]);
     }
 
-    public function createElement(array $element, $context)
+    public function createElement(array $element)
     {
         $def_type = config('flatform.form.default-type', 'div');
         $type = strtolower($element['type'] ?? $def_type);
-        $class = isset($this->binds[$type]) ? $this->binds[$type] : $this->binds[$def_type];
-        $item = self::_createElement($class, $element, $context);
-        return $item;
+        if (isset($this->binds[$type])) {
+            return self::_createElement($this->binds[$type], $element, $this->context);
+        }
+        $template = $this->context->getTemplate($type);
+        if(is_array($template)) {
+            $type = $template['type'] ?? $def_type;
+            return self::_createElement($this->binds[$type],
+                array_merge($template, $element), $this->context);
+        }
+        $class = $this->binds[$def_type];
+        return self::_createElement($class, $element, $this->context);
     }
 
 }

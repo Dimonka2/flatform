@@ -14,13 +14,13 @@ class Form extends ElementContainer
     protected $url;
     protected $files;
 
-    public function read(array $element, IContext $context)
+    public function read(array $element)
     {
         $this->readSettings($element, self::form_fields);
-        parent::read($element, $context);
+        parent::read($element);
     }
 
-    protected function render(IContext $context, $aroundHTML)
+    protected function render()
     {
         $options = $this->getOptions(['method', 'url', 'files']);
         if(!is_object($this->model)) {
@@ -28,8 +28,7 @@ class Form extends ElementContainer
         } else  {
             $html = LaForm::open($this->model , $options);
         }
-        $html .= $aroundHTML;
-        $html .= $this->renderItems($context);
+        $html .= $this->renderItems();
         $html .= LaForm::close();
         return $html;
     }
