@@ -25,6 +25,7 @@ class ElementFactory
 
         'submit' => Components\Button::class,
         'button' => Components\Button::class,
+        'tabs' => Components\Tabs::class,
         'dropdown' => Components\Dropdown::class,
         'dd-item' => Components\DropdownItem::class,
         'a' => Link::class,

@@ -9,12 +9,12 @@ use \dimonka2\flatform\Flatform;
 
 class Select2 extends Input
 {
-    protected $items;
+    protected $list;
     protected $ajax_url;
 
     protected function read(array $element)
     {
-        $fields = 'items,ajax-url';
+        $fields = 'list,ajax-url';
         $this->readSettings($element, explode(',', $fields));
         if(is_null($this->items)) $this->items = [];
         parent::read($element);
@@ -33,6 +33,6 @@ class Select2 extends Input
         $html = $this->addAssets();
         $options = $this->getOptions(['placeholder', 'readonly', 'disabled']);
         if(!is_null($this->ajax_url)) $options['ajax-url'] = $this->ajax_url;
-        return $html . Form::select($this->name, $this->items, $this->value, $options);
+        return $html . Form::select($this->name, $this->list ?? [], $this->value, $options);
     }
 }

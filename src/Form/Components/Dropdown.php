@@ -4,7 +4,6 @@ namespace dimonka2\flatform\Form\Components;
 
 use dimonka2\flatform\Form\ElementContainer;
 use dimonka2\flatform\Form\Contracts\IContext;
-use Form;
 
 class Dropdown extends ElementContainer
 {

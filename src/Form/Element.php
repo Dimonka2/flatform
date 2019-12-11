@@ -145,5 +145,17 @@ class Element implements IElement
         return $this->type;
     }
 
+    
+    public function getHidden()
+    {
+        return $this->hidden;
+    }
+    
+    protected function requireID()
+    {
+        if(is_null($this->id)) {
+            $this->id = $this->context->getID($this->name ?? 'id');
+        }
+    }
 
 }

@@ -25,13 +25,6 @@ class Input extends Element
         $this->requireID();
     }
 
-    protected function requireID()
-    {
-        if(is_null($this->id)) {
-            $this->id = $this->context->getID($this->name ?? 'id');
-        }
-    }
-
     protected function getTemplate()
     {
         $template = parent::getTemplate();

@@ -17,6 +17,11 @@ class ElementContainer extends Element implements IContainer
         parent::__construct($element, $context);
     }
 
+    public function getElements()
+    {
+        return $this->elements;
+    }
+
     protected function read(array $element)
     {
         if(isset($element['items'])) {

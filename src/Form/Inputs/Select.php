@@ -17,7 +17,6 @@ class Select extends Input
         $this->readSettings($element, explode(',', $fields));
         parent::read($element);
         if(is_null($this->list) && !is_null($this->state_list)) {
-            $this->list = [];
             // a temporary feature
             if(class_exists ('\App\Helpers\StateHelper') ) {
                 $this->list = \App\Helpers\StateHelper::selectStateList($this->state_list);
@@ -28,7 +27,7 @@ class Select extends Input
     protected function render()
     {
         // dd($this);
-        return Form::select($this->name, $this->list, $this->value,
+        return Form::select($this->name, $this->list ?? [], $this->value,
             $this->getOptions(['placeholder', 'readonly', 'disabled']));
     }
 }

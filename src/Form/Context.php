@@ -16,12 +16,15 @@ class Context implements IContext
     protected $next_id = 100;
     private $factory;
     private $template = null;
+    private $cofig_template_path;
 
     public function __construct(array $elements = [])
     {
+        $this->cofig_template_path = config('flatform.form.style');
         $this->factory = new ElementFactory($this);
         $this->elements = new ElementContainer([], $this);
         $this->elements->readItems($elements, $this);
+        
     }
 
     public function getID($name)
@@ -72,7 +75,7 @@ class Context implements IContext
 
     public function getTemplate($tag)
     {
-        return config('flatform.templates.' . $tag);
+        return config('flatform.' . $this->cofig_template_path . '.' . $tag);
     }
 
     public function setTemplatable(IElement $element = null)
