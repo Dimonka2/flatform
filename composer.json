@@ -4,12 +4,20 @@
     "type": "library",
     "authors": [
         {
-            "name": "Dimonka2",
+            "name": "Dmitry Gultyaev",
             "email": "dimonka@gmail.com"
         }
     ],
+    "keywords": [
+        "laravel",
+        "laravelcollective",
+        "php",
+        "forms",
+        "helper"
+      ],
     "minimum-stability": "dev",
     "require": {
+        "php": "^7.0",
         "laravelcollective/html": "^5.5"
     },
     "extra": {
