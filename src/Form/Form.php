@@ -20,7 +20,7 @@ class Form extends ElementContainer
         parent::read($element);
     }
 
-    protected function render()
+    public function renderForm($aroundHTML = null)
     {
         $options = $this->getOptions(['method', 'url', 'files']);
         if(!is_object($this->model)) {
@@ -28,8 +28,14 @@ class Form extends ElementContainer
         } else  {
             $html = LaForm::open($this->model , $options);
         }
+        $html .= $aroundHTML;
         $html .= $this->renderItems();
         $html .= LaForm::close();
         return $html;
+    }
+
+    protected function render()
+    {
+        return $this->renderForm();
     }
 }

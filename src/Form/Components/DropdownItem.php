@@ -35,8 +35,4 @@ class DropdownItem extends Link
         return $html;
     }
 
-    public function getTag()
-    {
-        return 'a';
-    }
 }

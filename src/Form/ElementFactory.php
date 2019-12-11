@@ -20,6 +20,7 @@ class ElementFactory
         'checkbox' => Inputs\Checkbox::class,
         'radio' => Inputs\Radio::class,
         'date' => Inputs\Date::class,
+        'hidden' => Inputs\Hidden::class,
 
         'submit' => Components\Button::class,
         'button' => Components\Button::class,

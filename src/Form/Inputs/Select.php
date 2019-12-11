@@ -13,10 +13,16 @@ class Select extends Input
 
     protected function read(array $element)
     {
-        $fields = 'state_list,list';
+        $fields = 'state-list,list';
         $this->readSettings($element, explode(',', $fields));
         parent::read($element);
-        if(is_null($this->list)) $this->list = [];
+        if(is_null($this->list) && !is_null($this->state_list)) {
+            $this->list = [];
+            // a temporary feature
+            if(class_exists ('\App\Helpers\StateHelper') ) {
+                $this->list = \App\Helpers\StateHelper::selectStateList($this->state_list);
+            }
+        }
     }
 
     protected function render()

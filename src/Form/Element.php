@@ -9,7 +9,7 @@ class Element implements IElement
 {
     public const template_prefix = "_";
     protected const element_attributes = [
-        'id', 'class', 'style',
+        'id', 'class', 'style'
     ];
 
     public $id;
@@ -19,6 +19,7 @@ class Element implements IElement
     protected $context;
     protected $type;
     protected $hidden;
+    protected $exclude; // depricated
     protected $attributes = [];
     protected $text;
     protected $template;
@@ -31,9 +32,11 @@ class Element implements IElement
     protected function readSettings(array &$element, array $keys)
     {
         foreach($keys as $key){
+            $key = trim($key);
             if (isset($element[$key])) {
                 $value = $element[$key];
                 unset($element[$key]);
+                $key = str_replace('-', '_', $key);
                 $this->$key = $value;
             }
         }
@@ -41,7 +44,9 @@ class Element implements IElement
 
     public function processTemplate()
     {
-        // echo "process templates: " . var_dump($this);
+        // check if template is desabled
+        if(!is_null($this->template) && $this->template == false) return;
+
         // read properties
         $template = $this->getTemplate();
         // echo "processing template: " . var_dump($template);
@@ -89,8 +94,9 @@ class Element implements IElement
 
     protected function read(array $element)
     {
-        $this->readSettings($element, explode(',', 'text,style,class,id,type,hidden'));
+        $this->readSettings($element, explode(',', 'text,style,class,id,type,hidden,exclude'));
         if(!is_null($this->hidden)) $this->hidden = !!$this->hidden;
+        if(!is_null($this->exclude)) $this->hidden = !!$this->exclude;
         $this->processTemplate();
     }
 

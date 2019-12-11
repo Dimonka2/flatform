@@ -8,7 +8,7 @@ use Form;
 
 class Button extends Link
 {
-    protected function render()
+    protected function renderLink()
     {
         if($this->type == 'submit') return Form::submit($this->title, $this->getOptions([]));
         return parent::render();
