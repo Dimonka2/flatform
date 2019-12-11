@@ -8,16 +8,18 @@ use dimonka2\flatform\Form\Contracts\IContext;
 class Input extends Element
 {
 
-    protected $name;
-    protected $label;
-    protected $value;
-    protected $help;
+    public $name;
+    public $title;
+    public $value;
+    public $help;
+    public $col;
 
     protected function read(array $element, IContext $context)
     {
-        $fields = 'name,label,value,help';
+        $fields = 'name,title,value,help,col';
         $this->readSettings($element, explode(',', $fields));
         parent::read($element, $context);
+        $this->requireID($context);
     }
 
     protected function requireID(IContext $context)

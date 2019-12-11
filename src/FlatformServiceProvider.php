@@ -32,8 +32,10 @@ class FlatformServiceProvider extends ServiceProvider
             ], 'config');
         } else {
             Blade::directive('flatform', function ($form) {
-                return "<?php echo \dimonka2\flatform\Flatform::render($form); ?>";
+            
+                return "<?php echo \dimonka2\\flatform\Flatform::render($form); ?>";
             });
+            $this->loadViewsFrom(__DIR__.'/../views', 'flatform');
         }
     }
 

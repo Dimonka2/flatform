@@ -14,18 +14,11 @@ return [
 
     ],
     'assets' =>[
-
+        
     ],
     'templates' =>[
-        'checkbox' => [
-            '_surround' =>
-                ['type' => 'div', 'class' => 'custom-control custom-checkbox mb-3',
-                    '_surround' => ['type' => 'div', 'class' => 'form-group', 'items' => [
-                        ['type' => 'label', '#text' => 'title', ],
-                    ]]
-                ],
-        ],
-
+        'input' => ['template' => 'flatform::input', '+class' => ' form-control form-control-alt'],
+        'checkbox' => ['template' => 'flatform::checkbox',],
     ],
     'form' => [
         'default-type' => 'div',

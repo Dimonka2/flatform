@@ -10,14 +10,12 @@ class Element implements IElement
     public const template_prefix = "_";
     private $type;
     protected $hidden;
-    protected $id;
-    protected $class;
-    protected $style;
+    public $id;
+    public $class;
+    public $style;
     protected $attributes = [];
-    protected $templ_attributes = [];
-    protected $_surround = null;
-    protected $surround = null;
     protected $text;
+    protected $template;
 
     protected function hash()
     {
@@ -35,35 +33,18 @@ class Element implements IElement
         }
     }
 
-    protected function read(array $element, IContext $context)
-    {
-        // echo $this->hash() . " Reading new element: \r\n";
-        // print_r($element);
-        debug($element);
-        $this->readSettings($element, explode(',', 'text,_surround,style,class,id,type,hidden'));
-        if(!is_null($this->_surround)) $this->pushSurround($this->_surround, $context);
-        if(!is_null($this->hidden)) $this->hidden = !!$this->hidden;
-        $this->processTemplate($context);
-        debug($this);
-        // echo print_r($this->templ_attributes, true) . ' ';
-    }
-
     public function processTemplate(IContext $context)
     {
         // echo "process templates: " . print_r($this->type, true);
         // read properties
         $template = $this->getTemplate($context);
         if (is_array($template)) {
-            // add template to the element
-            // set this element as a templatable to the context (if possible)
-            $is_templatable = $context->setTemplatable($this);
-            // print_r($this);
+
             foreach($template as $attribute => $value) {
                 switch ($attribute) {
-                    case '_surround':
-                        $this->pushSurround($value, $context);
+                    case 'template':
+                        $this->template = $value;
                         break;
-
                     case 'id':
                         $this->id = $value;
                         break;
@@ -84,9 +65,15 @@ class Element implements IElement
                         break;
                 }
             }
-            if ($is_templatable) $context->setTemplatable();
         }
 
+    }
+
+    protected function read(array $element, IContext $context)
+    {
+        $this->readSettings($element, explode(',', 'text,style,class,id,type,hidden'));
+        if(!is_null($this->hidden)) $this->hidden = !!$this->hidden;
+        $this->processTemplate($context);
     }
 
     protected function getTemplate(IContext $context)
@@ -94,38 +81,8 @@ class Element implements IElement
         return $context->getTemplate($this->type);
     }
 
-    protected function getTemplateAttr($attr)
-    {
-        return $this->templ_attributes[$attr] ?? null;
-    }
-
-    private function processTemplatableAttributes(array &$element, IContext $context)
-    {
-        $templatable = $context->getTemplatable();
-        foreach($element as $attribute => $value) {
-            // check for a special prefix
-            if(substr($attribute, 0, 1) == self::template_prefix) {
-                $new_attr = substr($attribute, 1);
-                unset($element[$attribute]);
-                if(is_object($templatable)) { 
-                    if(is_array($value)) {
-
-                    } else {
-                        $new_val = $templatable->getTemplateAttr($value);
-                        if(!is_null($new_val)) {
-                            $element[$new_attr] = $new_val;
-                        }
-                    }
-                } else {
-                    $this->templ_attributes[$new_attr] = $value;
-                }
-            }
-        }
-    }
-
     public function __construct(array $element, IContext $context)
     {
-        $this->processTemplatableAttributes($element, $context);
         $this->read($element, $context);
     }
 
@@ -138,30 +95,14 @@ class Element implements IElement
         return $options;
     }
 
-    public function setSurround(IElement $surround)
-    {
-        // echo $this->hash() . ": Element.setSurround \r\n";
-        if(is_object($this->surround)) {
-            $this->surround->setSurround( $surround );
-        } else {
-            $this->surround = $surround;
-        }
-    }
-
-    protected function pushSurround(array $surround, IContext $context)
-    {
-        // echo $this->hash() . ": Element.pushSurround \r\n";
-        $item = $context->createElement($surround);
-        $this->setSurround($item);
-    }
-
     public function renderElement(IContext $context, $aroundHTML)
     {
         if(!$this->hidden) {
             $html = $this->render($context, $aroundHTML);
-            if(is_object($this->surround)) {
-                $html = $this->surround->renderElement($context, $html);
-            }
+            $template = $this->template;
+            if($template != "") return view($template)
+                ->with('element', $this)
+                ->with('html', $html)->render();
             return $html;
         }
     }

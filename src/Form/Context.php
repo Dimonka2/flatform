@@ -25,7 +25,7 @@ class Context implements IContext
 
     public function getID($name)
     {
-        return $this->next_id++;
+        return $name . '-' . $this->next_id++;
     }
 
     public function createElement(array $element)
