@@ -24,7 +24,7 @@ return [
         'row' => ['type' => 'div', 'class' => 'row',],
         // templates
         'link-form' => ['type' => 'form', 'class' => '', 'template' => false,],
-        'dd-item' => ['class' => 'dropdown-item',],
+        'dd-item' => ['class' => 'dropdown-item kt-nav__link', 'template' => 'flatform::dd-item', ],
         'dd-item-icon' => ['type' => 'i', 'class' => 'kt-nav__link-icon',],
         'dd-item-title' => ['type' => 'span', 'class' => 'kt-nav__link-text',],
         'form' => ['+class' => 'kt-form',],
