@@ -5,8 +5,6 @@
             // console.log(selector, url);
             $(selector).select2({
                 theme: 'bootstrap4',
-                containerCssClass : "",
-                // width: 'resolve',
                 ajax: {
                 dataType: 'json',
                 url: url,

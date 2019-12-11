@@ -12,7 +12,7 @@ class Link extends ElementContainer
 
     public function read(array $element, IContext $context)
     {
-        $this->readSettings($element, ['href', 'post']);
+        $this->readSettings($element, ['href', 'post', 'title']);
         parent::read($element, $context);
     }
 

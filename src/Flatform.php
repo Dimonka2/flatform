@@ -47,39 +47,6 @@ class Flatform
         return static::$jsList;
     }
 
-    private static function renderPostForm($options)
-    {
-        $formOptions = [];
-        if(isset($options['form_class'])) {
-            $formOptions['class'] = $options['form_class'];
-            unset($options['form_class']);
-        }
-
-        $formOptions['action'] = $options['href'];
-        $formOptions['method'] = 'POST';
-        if(isset($options['id'])) $formOptions['id'] = $options['id'];
-        $button = [];
-        $text = $options['title'] ?? null;
-        if(isset($options['class'])) $button['class'] = $options['class'];
-        // debug($button);
-        $post = $options['post'];
-        $_moreText = '';
-        if(is_array($post)) {
-            if (isset($post['method'])) {
-                $_post = $post['method'];
-                unset($post['method']);
-            } else {
-                $_post = 'POST';
-            }
-            foreach ($post as $key => $value) {
-                $_moreText .= Form::hidden($key, $value);
-            }
-            $post = $_post;
-        }
-
-        return static::renderElement('form', $formOptions, csrf_field() . method_field($post) . $_moreText .
-            Form::submit($text, $button) );
-    }
 
     public static function renderButton($options)
     {

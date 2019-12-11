@@ -7,7 +7,9 @@ use dimonka2\flatform\Form\Contracts\IContext;
 
 class Input extends Element
 {
-
+    public const input_fields = [
+        'name', 'title', 'value', 'help', 'col',
+    ];
     public $name;
     public $title;
     public $value;
@@ -16,8 +18,7 @@ class Input extends Element
 
     protected function read(array $element, IContext $context)
     {
-        $fields = 'name,title,value,help,col';
-        $this->readSettings($element, explode(',', $fields));
+        $this->readSettings($element, self::input_fields);
         parent::read($element, $context);
         $this->requireID($context);
     }

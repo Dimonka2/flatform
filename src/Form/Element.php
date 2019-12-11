@@ -8,6 +8,9 @@ use dimonka2\flatform\Form\Contracts\IElement;
 class Element implements IElement
 {
     public const template_prefix = "_";
+    protected const element_attributes = [
+        'id', 'class', 'style',
+    ];
     private $type;
     protected $hidden;
     public $id;
@@ -35,9 +38,10 @@ class Element implements IElement
 
     public function processTemplate(IContext $context)
     {
-        // echo "process templates: " . print_r($this->type, true);
+        // echo "process templates: " . var_dump($this);
         // read properties
         $template = $this->getTemplate($context);
+        // echo "processing template: " . var_dump($template);
         if (is_array($template)) {
 
             foreach($template as $attribute => $value) {
@@ -59,6 +63,7 @@ class Element implements IElement
                         break;
                     case '+class':
                         $this->class .= $value;
+
                         break;
                     case '+style':
                         $this->style .= $value;
@@ -89,7 +94,7 @@ class Element implements IElement
     public function getOptions(array $keys)
     {
         $options = $this->attributes;
-        foreach($keys as $key){
+        foreach(array_merge($keys, self::element_attributes) as $key){
             if(isset($this->$key) && !is_null($this->$key)) $options[$key] = $this->$key;
         }
         return $options;

@@ -1,7 +1,7 @@
 # flatform
 Form helper for Laravel and laravelcollective/html
 
-This is just an idea. 
+This is just an idea. Not even an alpha version. 
 
 Install
 

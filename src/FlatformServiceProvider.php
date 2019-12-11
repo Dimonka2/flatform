@@ -31,11 +31,11 @@ class FlatformServiceProvider extends ServiceProvider
                 $this->getConfigFile() => config_path(self::config),
             ], 'config');
         } else {
-            Blade::directive('flatform', function ($form) {
-            
-                return "<?php echo \dimonka2\\flatform\Flatform::render($form); ?>";
+            Blade::directive(config('flatform.blade_directive', 'form'), function ($form) {
+                return "<?php echo \dimonka2\flatform\Flatform::render($form); ?>";
             });
-            $this->loadViewsFrom(__DIR__.'/../views', 'flatform');
+            $this->loadViewsFrom(
+                config('flatform.views_directory', __DIR__.'/../views'), 'flatform');
         }
     }
 

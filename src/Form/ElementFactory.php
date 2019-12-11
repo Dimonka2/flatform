@@ -24,8 +24,11 @@ class ElementFactory
         'submit' => Inputs\Submit::class,
 
         'button' => Buttons\Button::class,
+        'dropdown' => Buttons\Dropdown::class,
         'a' => Link::class,
+
         'form' => Form::class,
+
         'div' => ElementContainer::class,
         'span' => ElementContainer::class,
         'i' => ElementContainer::class,
