@@ -2,6 +2,7 @@
 
 namespace dimonka2\flatform\Form;
 
+use dimonka2\flatform\Form\Form;
 use dimonka2\flatform\Form\Contracts\IContext;
 use \ReflectionClass;
 

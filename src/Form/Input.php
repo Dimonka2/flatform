@@ -8,12 +8,14 @@ use dimonka2\flatform\Form\Contracts\IContext;
 class Input extends Element
 {
     public const input_fields = [
-        'name', 'label', 'value', 'help', 'col',
+        'name', 'label', 'value', 'help', 'col', 'readonly', 'disabled'
     ];
     public $name;
     public $label;
     public $value;
     public $help;
+    public $readonly;
+    public $disabled;
     public $col;
 
     protected function read(array $element)

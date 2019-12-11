@@ -14,7 +14,7 @@ class Text extends Input
     protected function render()
     {
         return Form::text($this->name, $this->value,
-            $this->getOptions(['placeholder']));
+            $this->getOptions(['placeholder', 'readonly', 'disabled']));
     }
 
     protected function read(array $element)

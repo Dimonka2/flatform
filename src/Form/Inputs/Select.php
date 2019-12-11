@@ -29,6 +29,6 @@ class Select extends Input
     {
         // dd($this);
         return Form::select($this->name, $this->list, $this->value,
-            $this->getOptions([]));
+            $this->getOptions(['placeholder', 'readonly', 'disabled']));
     }
 }

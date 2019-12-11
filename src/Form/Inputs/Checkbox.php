@@ -12,7 +12,7 @@ class Checkbox extends Input
 
     protected function render()
     {
-        return Form::checkbox($this->name, $this->name, $this->value,
+        return Form::checkbox($this->name, $this->value, null,
             $this->getOptions([]));
     }
 
