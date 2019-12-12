@@ -42,7 +42,7 @@ return [
 
         // templates
         'link-form' => ['type' => 'form', 'class' => '', 'template' => false,],
-        'dd-item' => ['class' => 'dropdown-item', 'template' => 'flatform::one.dd-item', ],
+        'dd-item' => ['class' => 'dropdown-item', 'type' => 'a', ],
         'dd-item-icon' => ['type' => 'i',],
         'dd-item-title' => ['type' => 'span',],
         'tab-item' => ['type' => 'a',],

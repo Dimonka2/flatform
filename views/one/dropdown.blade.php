@@ -6,8 +6,6 @@
     </button>
 
     <div class="dropdown-menu dropdown-menu-fit dropdown-menu-{{$element->direction ?? 'right'}} {{ $element->shadow ? ' shadow': '' }}">
-        <ul class="kt-nav">
-            {!! $html !!}
-        </ul>
+        {!! $html !!}
     </div>
 </div>
