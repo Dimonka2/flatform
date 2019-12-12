@@ -10,7 +10,7 @@ class Password extends Input
 {
     protected function render()
     {
-        return Form::password($this->name, $this->value,
+        return Form::password($this->name, 
             $this->getOptions([]));
     }
 }
