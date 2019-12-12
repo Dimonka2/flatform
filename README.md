@@ -26,7 +26,7 @@ Coming soon
 
 ## Using in the blade
 
-Following text creates a text input with label
+Following text creates text inputs with labels
 ```
 @form([
     ['type' => 'row', 'items' => [
@@ -36,7 +36,7 @@ Following text creates a text input with label
 ])
 ```
 
-Depending on styles it will produce something like:
+Depending on styles the code above will generate something like:
 
 ```
 <div class="row">

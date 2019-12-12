@@ -31,15 +31,18 @@ class Tabs extends ElementContainer
         if($this->hidden) return;
         $html = '';
         $template = $this->template;
-        if($template != "") $html .= view($template)
+        if($template != "") $html .= $this->context->renderView(
+            view($template)
             ->with('element', $this)
-            ->with('html', $html)->render();
+            ->with('html', $html)
+        );
 
         $template = $this->context->getTemplate('tab-content');
         if(is_array($template) && isset($template['template'])){
-            $html .= view($template['template'])
+            $html .= $this->context->renderView(view($template['template'])
                 ->with('element', $this)
-                ->with('html', $html)->render();
+                ->with('html', $html)
+            );
         }
         return $this->context->renderElement($this, $html);
     }

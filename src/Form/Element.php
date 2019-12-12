@@ -125,9 +125,11 @@ class Element implements IElement
         if(!$this->hidden) {
             $html = $this->render();
             $template = $this->template;
-            if($template != "") return view($template)
+            if($template != "") return $this->context->renderView(
+                view($template)
                 ->with('element', $this)
-                ->with('html', $html)->render();
+                ->with('html', $html)
+            );
             return $html;
         }
     }
@@ -145,12 +147,12 @@ class Element implements IElement
         return $this->type;
     }
 
-    
+
     public function getHidden()
     {
         return $this->hidden;
     }
-    
+
     protected function requireID()
     {
         if(is_null($this->id)) {

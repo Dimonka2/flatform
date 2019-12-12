@@ -2,6 +2,7 @@
     "name": "dimonka2/flatform",
     "description": "Form helper for Laravel and laravelcollective/html",
     "type": "library",
+    "version": "0.0.1",
     "authors": [
         {
             "name": "Dmitry Gultyaev",

@@ -12,7 +12,7 @@ return [
 
     // change the blade directive here in case you already using "form" in your project
     'blade_directive' => 'form',
-    
+
     // template definitions
 
     'metronic_templates' =>[
@@ -28,6 +28,7 @@ return [
         'dd-item-icon' => ['type' => 'i', 'class' => 'kt-nav__link-icon',],
         'dd-item-title' => ['type' => 'span', 'class' => 'kt-nav__link-text',],
         'form' => ['+class' => 'kt-form',],
+        'checkbox-list' => ['type' => 'div', 'class' => 'kt-checkbox-list mt-5', ],
     ],
 
     'one_templates' =>[
@@ -37,7 +38,7 @@ return [
         'button' => ['+class' => 'btn'],
         'select2' => ['+class' => 'select2', '+style' => 'width:100%;'],
         'row' => ['type' => 'div', 'class' => 'row',],
-        'tabs' => ['type' => 'div', 'class' => 'js-wizard-simple block', 
+        'tabs' => ['type' => 'div', 'class' => 'js-wizard-simple block',
             'template' => 'flatform::one.tab-navs'],
 
         // templates
@@ -52,7 +53,7 @@ return [
     //  default tag type
     'form' => [
         'default-type' => 'div',
-        'style' => 'one_templates', 
+        'style' => 'metronic_templates',
     ],
     'aliases' => [
         'Form'  => Collective\Html\FormFacade::class,

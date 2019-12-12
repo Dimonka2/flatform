@@ -2,13 +2,13 @@
 
 namespace dimonka2\flatform\Form;
 
+use \ReflectionClass;
+
 use dimonka2\flatform\Form\ElementFactory;
 use dimonka2\flatform\Form\ElementContainer;
 use dimonka2\flatform\Form\Contracts\IElement;
 use dimonka2\flatform\Form\Contracts\IContainer;
 use dimonka2\flatform\Form\Contracts\IContext;
-use \ReflectionClass;
-use Closure;
 
 class Context implements IContext
 {
@@ -24,7 +24,7 @@ class Context implements IContext
         $this->factory = new ElementFactory($this);
         $this->elements = new ElementContainer([], $this);
         $this->elements->readItems($elements, $this);
-        
+
     }
 
     public function getID($name)
@@ -49,6 +49,11 @@ class Context implements IContext
     {
         // dd($this->elements);
         return $this->elements->renderItems($this);
+    }
+
+    public function renderView($view)
+    {
+        return $view->with('context', $this)->render();
     }
 
     public function renderTag(IElement $element, $text = null)
