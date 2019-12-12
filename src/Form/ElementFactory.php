@@ -47,6 +47,11 @@ class ElementFactory
         'label' => Label::class,
         '_text' => Element::class,
         '_template' => Element::class,
+
+        // blade directives
+        'include'   => BladeDirective::class,
+        'stack'     => BladeDirective::class,
+        'yield'     => BladeDirective::class,
     ];
 
     public function __construct(IContext $context)

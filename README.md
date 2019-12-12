@@ -27,7 +27,7 @@ Coming soon
 ## Using in the blade
 
 Following text creates text inputs with labels
-```
+```php
 @form([
     ['type' => 'row', 'items' => [
         ['type' => 'text', 'label' => 'First name', 'name' => 'first_name',],
@@ -38,7 +38,7 @@ Following text creates text inputs with labels
 
 Depending on styles the code above will generate something like:
 
-```
+```html
 <div class="row">
     <div class="col-6 form-group">
         <label for="first_name-100">First name</label>

@@ -15,9 +15,7 @@
         @endif
         @if( $element->hasTools() )
         <div class="kt-portlet__head-toolbar">
-            <div class="btn-group" role="group">
-               {!! $element->renderTools() !!}
-            </div>
+            {!! $element->renderTools() !!}
         </div>
         @endif
     </div>
@@ -28,7 +26,7 @@
     </div>
     @endif
     @if ($element->hasFooter())
-    <div class="kt-portlet__footer">
+    <div class="kt-portlet__foot">
         {!! $element->renderFooter() !!}
     </div>
     @endif

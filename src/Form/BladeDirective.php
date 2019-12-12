@@ -7,19 +7,20 @@ use dimonka2\flatform\Form\Contracts\IContainer;
 
 class BladeDirective extends Element
 {
-    protected $directive;
+    public $name;
+    public $with;
 
     public function read(array $element)
     {
-        $this->readSettings($element, ['directive']);
+        $this->readSettings($element, ['name', 'with']);
         parent::read($element);
     }
 
     protected function render()
     {
-        // special case
-        if(is_array($this->directive)){
-
-        }
+        return $this->context->renderView(
+            view('flatform::directive')
+            ->with('element', $this)
+        );
     }
 }

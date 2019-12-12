@@ -7,7 +7,6 @@ use dimonka2\flatform\Form\Contracts\IElement;
 
 class Element implements IElement
 {
-    public const template_prefix = "_";
     protected const element_attributes = [
         'id', 'class', 'style'
     ];
