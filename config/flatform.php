@@ -29,6 +29,7 @@ return [
         'dd-item-title' => ['type' => 'span', 'class' => 'kt-nav__link-text',],
         'form' => ['+class' => 'kt-form',],
         'checkbox-list' => ['type' => 'div', 'class' => 'kt-checkbox-list mt-5', ],
+
     ],
 
     'one_templates' =>[

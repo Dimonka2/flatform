@@ -10,6 +10,7 @@ class ElementFactory
 {
     private $context;
     private $binds = [
+        // inputs
         'text' => Inputs\Text::class,
         'password' => Inputs\Password::class,
         'number' => Inputs\Number::class,
@@ -23,12 +24,16 @@ class ElementFactory
         'date' => Inputs\Date::class,
         'hidden' => Inputs\Hidden::class,
 
-        'submit' => Components\Button::class,
-        'button' => Components\Button::class,
+        // components
         'tabs' => Components\Tabs::class,
+        'widget' => Components\Widget::class,
         'dropdown' => Components\Dropdown::class,
         'dd-item' => Components\DropdownItem::class,
+
+        // links and buttons
         'a' => Link::class,
+        'submit' => Components\Button::class,
+        'button' => Components\Button::class,
 
         'form' => Form::class,
 

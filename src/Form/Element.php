@@ -49,6 +49,7 @@ class Element implements IElement
 
         // read properties
         $template = $this->getTemplate();
+
         // echo "processing template: " . var_dump($template);
         if (is_array($template)) {
 
