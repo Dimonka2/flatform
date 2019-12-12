@@ -13,7 +13,7 @@ class Tabs extends ElementContainer
     public function readItems(array $items)
     {
         foreach ($items as $item) {
-            $tab = $this->context->createTemplate('tab-item');
+            $tab = $this->createTemplate('tab-item');
             $tab->read($item);
             $tab->requireID();
             $this->elements->push($tab);

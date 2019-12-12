@@ -105,6 +105,15 @@ class Element implements IElement
         return $this->context->getTemplate($this->type);
     }
 
+    protected function createTemplate($template)
+    {
+        return $this->context->createTemplate($template);
+    }
+    protected function createElement($element)
+    {
+        return $this->context->createElement($element);
+    }
+
     public function __construct(array $element, IContext $context)
     {
         $this->context = $context;

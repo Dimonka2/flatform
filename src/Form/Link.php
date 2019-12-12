@@ -44,14 +44,14 @@ class Link extends ElementContainer
     protected function renderForm()
     {
         // render form
-        $form = $this->context->createTemplate('link-form');
+        $form = $this->createTemplate('link-form');
         $method = 'POST';
         if(is_array($this->post)) {
             foreach($this->post as $key => $item) {
                 if($item == 'post') {
                     $method = $item;
                 } else {
-                    $form->elements->push($this->context->createElement([
+                    $form->elements->push($this->createElement([
                         'type' => 'hidden',
                         'name' => $key,
                         'value' => $item,

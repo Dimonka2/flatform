@@ -19,14 +19,14 @@ class DropdownItem extends Link
     {
         $html = '';
         if(!is_null($this->icon)) {
-            $template = $this->context->createTemplate('dd-item-icon');
+            $template = $this->createTemplate('dd-item-icon');
             if(is_object($template)) {
                 $template->addClass($this->icon);
                 $html .= $template->renderElement();
             }
         }
         if(!is_null($this->title)) {
-            $template = $this->context->createTemplate('dd-item-title');
+            $template = $this->createTemplate('dd-item-title');
             if(is_object($template)) {
                 $template->addTextElement($this->title);
                 $html .= $template->renderElement();

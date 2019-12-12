@@ -40,14 +40,14 @@ class ElementContainer extends Element implements IContainer
     public function readItems(array $items)
     {
         foreach ($items as $item) {
-            $item = $this->context->createElement($item);
+            $item = $this->createElement($item);
             $this->elements->push($item);
         }
     }
 
     protected function addTextElement($text)
     {
-        $item = $this->context->createElement(['type' => '_text']);
+        $item = $this->createElement(['type' => '_text']);
         $item->text = $text;
         $this->elements->push($item);
         return $item;
