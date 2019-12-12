@@ -1,4 +1,4 @@
-@push('js')
+@push(config('flatform.form.js_stack', 'js'))
     <script src="{!! asset('assets/plugins/select2/js/select2.full.min.js') !!}"></script>
     <script>
         function select2init(selector, url) {
@@ -35,7 +35,7 @@
     </script>
 
 @endpush
-@push('css')
-<link href="{!! asset('assets/plugins/select2/css/select2.min.css') !!}" rel="stylesheet" type="text/css">
-<link href="{!! asset('assets/plugins/select2/css/select2-bootstrap4.css') !!}" rel="stylesheet" type="text/css">
+@push(config('flatform.form.css_stack', 'css'))
+    <link href="{!! asset('assets/plugins/select2/css/select2.min.css') !!}" rel="stylesheet" type="text/css">
+    <link href="{!! asset('assets/plugins/select2/css/select2-bootstrap4.css') !!}" rel="stylesheet" type="text/css">
 @endpush

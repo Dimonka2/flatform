@@ -23,10 +23,6 @@ class Element implements IElement
     protected $text;
     protected $template;
 
-    protected function hash()
-    {
-        return substr(spl_object_hash($this), 11, 5);
-    }
 
     protected function readSettings(array &$element, array $keys)
     {
@@ -155,7 +151,6 @@ class Element implements IElement
     {
         return $this->type;
     }
-
 
     public function getHidden()
     {
