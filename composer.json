@@ -18,7 +18,7 @@
     "minimum-stability": "dev",
     "require": {
         "php": "^7.0",
-        "laravelcollective/html": "^5.5"
+        "laravelcollective/html": "^6.0"
     },
     "extra": {
         "laravel": {

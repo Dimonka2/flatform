@@ -15,7 +15,7 @@ class DropdownItem extends Link
         parent::read($element);
     }
 
-    protected function getTitle()
+    public function getTitle()
     {
         $html = '';
         if(!is_null($this->icon)) {

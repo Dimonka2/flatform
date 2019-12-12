@@ -7,6 +7,9 @@ use dimonka2\flatform\Form\Contracts\IContext;
 
 class Tabs extends ElementContainer
 {
+    public $pills = false;
+    public $justified = false;
+
     public function readItems(array $items)
     {
         foreach ($items as $item) {
@@ -17,6 +20,12 @@ class Tabs extends ElementContainer
         }
     }
 
+    protected function read(array $element)
+    {
+        $this->readSettings($element, ['pills', 'justified']);
+        parent::read($element);
+    }
+
     public function renderElement()
     {
         if($this->hidden) return;
@@ -25,7 +34,7 @@ class Tabs extends ElementContainer
         if($template != "") $html .= view($template)
             ->with('element', $this)
             ->with('html', $html)->render();
-        
+
         $template = $this->context->getTemplate('tab-content');
         if(is_array($template) && isset($template['template'])){
             $html .= view($template['template'])

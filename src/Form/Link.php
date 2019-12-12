@@ -36,7 +36,7 @@ class Link extends ElementContainer
         return $options;
     }
 
-    protected function getTitle()
+    public function getTitle()
     {
         return $this->title;
     }

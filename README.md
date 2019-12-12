@@ -13,7 +13,8 @@ This is just an idea. Not even an alpha version.
 
 
 ## Install
-<i> This package is not yet published.. </i>
+
+composer require dimonka2/flatform
 
 Publish provider:
 
