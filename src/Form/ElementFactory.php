@@ -68,7 +68,7 @@ class ElementFactory
     public function createElement(array $element)
     {
         $def_type = config('flatform.form.default-type', 'div');
-        $type = strtolower($element['type'] ?? $def_type);
+        $type = strtolower($element['type'] ?? '');
         if (isset($this->binds[$type])) {
             return self::_createElement($this->binds[$type], $element, $this->context);
         }
@@ -79,6 +79,7 @@ class ElementFactory
                 array_merge($template, $element), $this->context);
         }
         $class = $this->binds[$def_type];
+        $element['type'] = $def_type;
         return self::_createElement($class, $element, $this->context);
     }
 
