@@ -7,7 +7,6 @@ use dimonka2\flatform\Form\Contracts\IElement;
 
 class Element implements IElement
 {
-    public const template_prefix = "_";
     protected const element_attributes = [
         'id', 'class', 'style'
     ];
@@ -24,10 +23,6 @@ class Element implements IElement
     protected $text;
     protected $template;
 
-    protected function hash()
-    {
-        return substr(spl_object_hash($this), 11, 5);
-    }
 
     protected function readSettings(array &$element, array $keys)
     {
@@ -49,6 +44,7 @@ class Element implements IElement
 
         // read properties
         $template = $this->getTemplate();
+
         // echo "processing template: " . var_dump($template);
         if (is_array($template)) {
 
@@ -105,6 +101,15 @@ class Element implements IElement
         return $this->context->getTemplate($this->type);
     }
 
+    protected function createTemplate($template)
+    {
+        return $this->context->createTemplate($template);
+    }
+    protected function createElement($element)
+    {
+        return $this->context->createElement($element);
+    }
+
     public function __construct(array $element, IContext $context)
     {
         $this->context = $context;
@@ -125,9 +130,11 @@ class Element implements IElement
         if(!$this->hidden) {
             $html = $this->render();
             $template = $this->template;
-            if($template != "") return view($template)
+            if($template != "") return $this->context->renderView(
+                view($template)
                 ->with('element', $this)
-                ->with('html', $html)->render();
+                ->with('html', $html)
+            );
             return $html;
         }
     }
@@ -145,12 +152,11 @@ class Element implements IElement
         return $this->type;
     }
 
-    
     public function getHidden()
     {
         return $this->hidden;
     }
-    
+
     protected function requireID()
     {
         if(is_null($this->id)) {

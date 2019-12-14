@@ -13,7 +13,8 @@ This is just an idea. Not even an alpha version.
 
 
 ## Install
-<i> This package is not yet published.. </i>
+
+composer require dimonka2/flatform
 
 Publish provider:
 
@@ -25,8 +26,8 @@ Coming soon
 
 ## Using in the blade
 
-Following text creates a text input with label
-```
+Following text creates text inputs with labels
+```php
 @form([
     ['type' => 'row', 'items' => [
         ['type' => 'text', 'label' => 'First name', 'name' => 'first_name',],
@@ -35,9 +36,9 @@ Following text creates a text input with label
 ])
 ```
 
-Depending on styles it will produce something like:
+Depending on styles the code above will generate something like:
 
-```
+```html
 <div class="row">
     <div class="col-6 form-group">
         <label for="first_name-100">First name</label>

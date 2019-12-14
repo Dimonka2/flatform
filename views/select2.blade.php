@@ -1,4 +1,4 @@
-@push('js')
+@push(config('flatform.form.js_stack', 'js'))
     <script src="{!! asset('assets/plugins/select2/js/select2.full.min.js') !!}"></script>
     <script>
         function select2init(selector, url) {

@@ -16,7 +16,7 @@ class Select2 extends Input
     {
         $fields = 'list,ajax-url';
         $this->readSettings($element, explode(',', $fields));
-        if(is_null($this->items)) $this->items = [];
+        if(is_null($this->list)) $this->list = [];
         parent::read($element);
     }
 
@@ -24,7 +24,9 @@ class Select2 extends Input
     {
         if(!Flatform::isIncluded('select2')){
             Flatform::include('select2');
-            return view(config('flatform.assets.select2'))->render();
+            return $this->context->renderView(
+                view(config('flatform.assets.select2'))
+            );
         }
     }
 
