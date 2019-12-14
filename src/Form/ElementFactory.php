@@ -9,44 +9,12 @@ use \ReflectionClass;
 class ElementFactory
 {
     private $context;
-    private $binds = [
-        'text' => Inputs\Text::class,
-        'password' => Inputs\Password::class,
-        'number' => Inputs\Number::class,
-        'textarea' => Inputs\Textarea::class,
-        'summernote' => Inputs\Summernote::class,
-        'select' => Inputs\Select::class,
-        'select2' => Inputs\Select2::class,
-        'file' => Inputs\File::class,
-        'checkbox' => Inputs\Checkbox::class,
-        'radio' => Inputs\Radio::class,
-        'date' => Inputs\Date::class,
-        'hidden' => Inputs\Hidden::class,
-
-        'submit' => Components\Button::class,
-        'button' => Components\Button::class,
-        'tabs' => Components\Tabs::class,
-        'dropdown' => Components\Dropdown::class,
-        'dd-item' => Components\DropdownItem::class,
-        'a' => Link::class,
-
-        'form' => Form::class,
-
-        'div' => ElementContainer::class,
-        'span' => ElementContainer::class,
-        'i' => ElementContainer::class,
-        'b' => ElementContainer::class,
-        'u' => ElementContainer::class,
-        'ul' => ElementContainer::class,
-        'li' => ElementContainer::class,
-        'label' => Label::class,
-        '_text' => Element::class,
-        '_template' => Element::class,
-    ];
+    private $binds = [];
 
     public function __construct(IContext $context)
     {
         $this->context = $context;
+        $this->binds = config('flatform.bindings');
     }
 
     protected static function _createElement($class, array $element, $context)
