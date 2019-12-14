@@ -99,4 +99,14 @@ class Context implements IContext
     {
         return $this->template;
     }
+
+    public function getJsStack()
+    {
+        return config('flatform.form.js_stack', 'js');
+    }
+
+    public function getCssStack()
+    {
+        return config('flatform.form.css_stack', 'css');
+    }
 }

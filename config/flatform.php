@@ -3,11 +3,9 @@
 // use dimonka2\flatform\State;
 
 return [
-    'states' => [
-
-    ],
     'assets' =>[
         'select2' => 'flatform::select2',
+        'datatable' => 'flatform::datatable',
         'datepicker' => 'flatform::datepicker',
     ],
 

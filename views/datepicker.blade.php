@@ -1,4 +1,4 @@
-@push(config('flatform.form.js_stack', 'js'))
+@push($context->getJsStack())
     <script>
         $(document).ready(function () {
             $('.datepicker').datepicker({

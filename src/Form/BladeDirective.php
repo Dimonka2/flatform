@@ -3,7 +3,6 @@
 namespace dimonka2\flatform\Form;
 
 use dimonka2\flatform\Form\Contracts\IContext;
-use dimonka2\flatform\Form\Contracts\IContainer;
 
 class BladeDirective extends Element
 {

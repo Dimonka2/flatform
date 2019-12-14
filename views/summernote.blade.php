@@ -1,10 +1,10 @@
 
- @push(config('flatform.form.css_stack', 'css'))
+ @push($context->getCssStack())
     <link href="{!! asset('summernote/summernote.css') !!}" rel="stylesheet" />
     <link href="{!! asset('summernote/summernote-bs4.css') !!}" rel="stylesheet" />
 @endpush
 
-@push(config('flatform.form.js_stack', 'js'))
+@push($context->getJsStack())
     <!-- Summernote -->
     <script src="{!! asset('summernote/summernote.min.js') !!}"></script>
     <script src="{!! asset('summernote/summernote-bs4.min.js') !!}"></script>
