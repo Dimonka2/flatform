@@ -5,6 +5,7 @@ namespace dimonka2\flatform;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\Facades\Blade;
+use dimonka2\flatform\FlatformService;
 
 class FlatformServiceProvider extends ServiceProvider
 {
@@ -32,11 +33,12 @@ class FlatformServiceProvider extends ServiceProvider
             ], 'config');
         } else {
             Blade::directive(config('flatform.blade_directive', 'form'), function ($form) {
-                return "<?php echo \dimonka2\\flatform\Flatform::render($form); ?>";
+                return "<?php echo Flatform::render($form); ?>";
             });
             $this->loadViewsFrom(
                 config('flatform.views_directory', __DIR__.'/../views'), 'flatform');
         }
+        $this->app->bind('flatform', FlatformService::class);
     }
 
     protected function getConfigFile(): string
