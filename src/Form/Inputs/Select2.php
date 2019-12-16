@@ -5,7 +5,7 @@ namespace dimonka2\flatform\Form\Inputs;
 use dimonka2\flatform\Form\Input;
 use dimonka2\flatform\Form\Contracts\IContext;
 use Form;
-use \dimonka2\flatform\Flatform;
+use Flatform;
 
 class Select2 extends Input
 {

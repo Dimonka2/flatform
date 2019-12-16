@@ -4,7 +4,6 @@ namespace dimonka2\flatform\Form\Inputs;
 
 use dimonka2\flatform\Form\Input;
 use dimonka2\flatform\Form\Contracts\IContext;
-use dimonka2\flatform\Flatform;
 use Form;
 
 class Date extends Input
