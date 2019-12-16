@@ -18,15 +18,19 @@ class Column extends ElementContainer
     {
         $this->readSettings($element, ['col', 'col-md', 'col-lg', 'col-xl']);
         parent::read($element);
-        if(!is_null($this->col)) $this->addStyle('col-' . $this->col);
-        if(!is_null($this->col_md)) $this->addStyle('col-md-' . $this->col_md);
-        if(!is_null($this->col_lg)) $this->addStyle('col-lg-' . $this->col_lg);
-        if(!is_null($this->col_xl)) $this->addStyle('col-xl-' . $this->col_xl);
+        if(!is_null($this->col)) $this->addClass('col-' . $this->col);
+        if(!is_null($this->col_md)) $this->addClass('col-md-' . $this->col_md);
+        if(!is_null($this->col_lg)) $this->addClass('col-lg-' . $this->col_lg);
+        if(!is_null($this->col_xl)) $this->addClass('col-xl-' . $this->col_xl);
         if (
             is_null($this->col) && is_null($this->col_md) && is_null($this->col_md) && is_null($this->col_md)
-            ) $this->addStyle(config('flatform.form.col', 'col-6'));
-
+            ) $this->addClass(config('flatform.form.col', 'col-6'));
+        // dd($this);
     }
 
+    public function getTag()
+    {
+        return 'div';
+    }
 
 }
