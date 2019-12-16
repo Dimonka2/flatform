@@ -37,7 +37,7 @@ class ElementFactory
                 array_merge($template, $element), $this->context);
         }
         $class = $this->binds[$def_type];
-        $element['type'] = $def_type;
+        if (empty($element['type']) ) $element['type'] = $def_type;
         return self::_createElement($class, $element, $this->context);
     }
 
