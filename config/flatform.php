@@ -21,6 +21,9 @@ return [
         // name of the stacks for JS and CSS
         'css_stack' => 'css',
         'js_stack'  => 'js',
+
+        // default column style
+        'col' => 'col-6',
     ],
 
     // template definitions
@@ -99,6 +102,7 @@ return [
 
         'div' => dimonka2\flatform\Form\ElementContainer::class,
         'span' => dimonka2\flatform\Form\ElementContainer::class,
+        'col' => dimonka2\flatform\Form\Column::class,
         'i' => dimonka2\flatform\Form\ElementContainer::class,
         'b' => dimonka2\flatform\Form\ElementContainer::class,
         'u' => dimonka2\flatform\Form\ElementContainer::class,
