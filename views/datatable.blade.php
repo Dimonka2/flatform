@@ -27,6 +27,7 @@
                         @isset($column['title'])  , title: "{{$column['title']}}" @endisset
                         @isset($column['hide']) , "visible": false @endisset
                         @if(isset($column['sort']) and !$column['sort']) , "orderable": false @endisset
+                        @if(isset($column['sortDesc']) and $column['sortDesc']) , "orderSequence": ["desc", "asc"] @endisset
                         @isset($column['defs']) {!! $column['defs'] !!} @endisset },
 
                     @endforeach
