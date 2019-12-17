@@ -11,6 +11,7 @@ class Link extends ElementContainer
     protected $post;
     public $title;
     public $icon;
+    public $form_class;
 
     protected function is_post()
     {
@@ -24,7 +25,7 @@ class Link extends ElementContainer
 
     protected function read(array $element)
     {
-        $this->readSettings($element, ['href', 'post', 'title', 'icon']);
+        $this->readSettings($element, ['href', 'post', 'title', 'icon', 'form-class']);
         parent::read($element);
     }
 
@@ -38,7 +39,8 @@ class Link extends ElementContainer
 
     public function getTitle()
     {
-        return $this->title .  $this->renderItems();
+        return (!is_null($this->icon) ?
+            $this->createElement(['type' => 'i', 'class' => $this->icon])->render() : '') . $this->title .  $this->renderItems();
     }
 
     protected function renderForm()
