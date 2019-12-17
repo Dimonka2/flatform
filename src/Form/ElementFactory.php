@@ -26,6 +26,7 @@ class ElementFactory
     public function createElement(array $element)
     {
         $def_type = config('flatform.form.default-type', 'div');
+
         $type = strtolower($element['type'] ?? '');
         if (isset($this->binds[$type])) {
             return self::_createElement($this->binds[$type], $element, $this->context);

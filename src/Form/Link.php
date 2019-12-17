@@ -57,6 +57,7 @@ class Link extends ElementContainer
                         'type' => 'hidden',
                         'name' => $key,
                         'value' => $item,
+                        'class' => $this->form_class,
                     ]));
                 }
             }
