@@ -57,15 +57,18 @@ class Link extends ElementContainer
                         'type' => 'hidden',
                         'name' => $key,
                         'value' => $item,
-                        'class' => $this->form_class,
                     ]));
                 }
             }
         } else {
             $method = $this->post;
         }
-        $form->read(['method' => $method, 'url' => $this->href]);
-        // dd($form);
+        $form->read([
+            'method' => $method,
+            'url' => $this->href,
+            'class' => $this->form_class,
+            'template' => false,]);
+        // debug($form);
         return $form->renderForm( $this->renderLink() );
 
     }
