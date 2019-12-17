@@ -3,6 +3,8 @@
 namespace dimonka2\flatform\Form\Components;
 
 use dimonka2\flatform\Form\Contracts\IContext;
+use dimonka2\flatform\Form\ElementContainer;
+use Flatform;
 
 class Datatable extends ElementContainer
 {
@@ -18,9 +20,9 @@ class Datatable extends ElementContainer
     protected function read(array $element)
     {
         $this->readSettings($element, [
-            'ajax_url', 
-            'ajax_dataType', 
-            'ajax_method', 
+            'ajax_url',
+            'ajax_dataType',
+            'ajax_method',
             'columns',
             'order',
             'options',
@@ -33,13 +35,13 @@ class Datatable extends ElementContainer
 
     protected function render()
     {
-        $addAssets = !Flatform::isIncluded('datatable'); 
+        $addAssets = !Flatform::isIncluded('datatable');
         if($addAssets) Flatform::include('datatable');
         return $this->context->renderView(
             view(config('flatform.assets.datatable'))
                 ->with('element', $this)
                 ->with('addAssets', $addAssets)
         );
-        
+
     }
 }

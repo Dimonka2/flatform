@@ -8,10 +8,10 @@
         @isset($element->js_variable)
         var {{$element->js_variable}} = false;
         @endisset
-        
+
         $(document).ready(function () {
             @isset($element->js_variable)
-                {{$element->js_variable}} = 
+                {{$element->js_variable}} =
             @endisset $('#{{$element->id}}').DataTable({
                 "processing": true,
                 "serverSide": true,
@@ -20,7 +20,7 @@
                 },
                 {!! $element->options ?? '' !!}
                 {!! $element->order ?? '' !!}
-               
+
                 columnDefs: [
                     @foreach ($element->columns as $column)
                         {targets: [ {{$loop->index}} ]
@@ -34,7 +34,7 @@
                 "ajax":{
                         "url": "{{ $element->ajax_url }}",
                         "dataType": "{{ $element->ajax_dataType ?? 'json' }}",
-                        "type": "{{ $element->jax_type ?? 'GET' }}",
+                        "type": "{{ $element->ajax_method ?? 'GET' }}",
                         "data": function ( d ) {
                             d._token = "{{csrf_token()}}";
                             {{$element->ajax_data_function ?? ''}}

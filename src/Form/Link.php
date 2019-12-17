@@ -38,7 +38,7 @@ class Link extends ElementContainer
 
     public function getTitle()
     {
-        return $this->title;
+        return $this->title .  $this->renderItems();
     }
 
     protected function renderForm()
