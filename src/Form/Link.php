@@ -40,7 +40,7 @@ class Link extends ElementContainer
     public function getTitle()
     {
         return (!is_null($this->icon) ?
-            $this->createElement(['type' => 'i', 'class' => $this->icon])->render() : '') . $this->title .  $this->renderItems();
+            $this->createElement(['type' => 'i', 'class' => $this->icon])->render() . ' ' : '') . $this->title .  $this->renderItems();
     }
 
     protected function renderForm()
