@@ -12,6 +12,7 @@ class Link extends ElementContainer
     public $title;
     public $icon;
     public $form_class;
+    public $items_in_title = true;
 
     protected function is_post()
     {
@@ -40,7 +41,8 @@ class Link extends ElementContainer
     public function getTitle()
     {
         return (!is_null($this->icon) ?
-            $this->createElement(['type' => 'i', 'class' => $this->icon])->render() . ' ' : '') . $this->title .  $this->renderItems();
+            $this->createElement(['type' => 'i', 'class' => $this->icon])->render() . 
+            ' ' : '') . $this->title .  ($this->items_in_title ? $this->renderItems() : '');
     }
 
     protected function renderForm()

@@ -3,7 +3,6 @@
 namespace dimonka2\flatform\Form\Components;
 
 use dimonka2\flatform\Form\ElementContainer;
-use dimonka2\flatform\Form\Contracts\IContext;
 
 class Tabs extends ElementContainer
 {
@@ -15,6 +14,7 @@ class Tabs extends ElementContainer
         foreach ($items as $item) {
             $tab = $this->createTemplate('tab-item');
             $tab->read($item);
+            $tab->items_in_title = false;            
             $tab->requireID();
             $this->elements->push($tab);
         }
@@ -25,6 +25,7 @@ class Tabs extends ElementContainer
         $this->readSettings($element, ['pills', 'justified']);
         parent::read($element);
     }
+    
 
     public function renderElement()
     {
