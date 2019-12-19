@@ -24,6 +24,12 @@ return [
 
         // default column style
         'col' => 'col-6',
+
+        // inputs that require div.col and label
+        'inputs' => [
+            'text', 'password', 'number', 'textarea', 'summernote',
+            'select', 'select2', 'file', 'date',
+        ],
     ],
 
     // template definitions

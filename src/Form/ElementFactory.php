@@ -28,29 +28,38 @@ class ElementFactory
         $def_type = config('flatform.form.default-type', 'div');
 
         $type = strtolower($element['type'] ?? '');
-
+        $template = null;
         if (isset($element['template'])) {
             // template is already given
             $template = $element['template'];
             if ($template != false) {
                 $template = $this->context->getTemplate($template);
-                if(is_array($template)) {
-                    $element = array_merge($template, $element);
-                }
+            }
+        } else {
+            if(in_array($type, config('flatform.form.inputs', [])) ){
+                // apply input template
+                $template = $this->context->getTemplate('input');
+
             }
         }
+        if(is_array($template)) {
+            $element = array_merge($template, $element);
+            if(isset($template['type'])) $element['type'] = $template['type'];
+        }
 
+        $template = null;
         $type = $element['type'] ?? $def_type;
         // use type as a template
         if (!isset($element['template']) || $element['template'] != false) {
             $template = $this->context->getTemplate($type);
-            if(is_array($template)) {
-                $element = array_merge($template, $element);
-            }
-            // important
+            if(is_array($template)) $element = array_merge($template, $element);
+
+        }
+        if(is_array($template)) {
+            $element = array_merge($template, $element);
             if(isset($template['type'])) $element['type'] = $template['type'];
         }
-        // debug($element);
+
         if (isset($this->binds[$type])) {
             return self::_createElement($this->binds[$type], $element, $this->context);
         }
