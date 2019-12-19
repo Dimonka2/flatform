@@ -68,7 +68,7 @@ trait DatatableAjaxTrait
         // add select
         $fields = [];
         foreach($options['fields'] as $field) {
-            if (self::isTrue($field, 'system') && !self::isTrue($field, 'system')) {
+            if (!self::isTrue($field, 'noSelect') && !self::isTrue($field, 'system')) {
                 $fieldName = $field['name'] . (isset($field['as']) ? ' as ' . $field['as'] : '' );
                 $fields[] = $fieldName;
                 // $query = $query->addSelect($fieldName);

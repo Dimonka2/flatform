@@ -16,6 +16,7 @@ class Dropdown extends ElementContainer
     {
         $this->readSettings($element, ['toggle', 'shadow', 'title', 'direction']);
         parent::read($element);
+        debug($this);
     }
 
     protected function render()

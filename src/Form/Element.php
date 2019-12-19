@@ -37,45 +37,21 @@ class Element implements IElement
         }
     }
 
-    public function processTemplate()
+    public function processAttributes($element)
     {
-        // check if template is desabled
-        if(!is_null($this->template) && $this->template == false) return;
 
-        // read properties
-        $template = $this->getTemplate();
-
-        // echo "processing template: " . var_dump($template);
-        if (is_array($template)) {
-
-            foreach($template as $attribute => $value) {
-                switch ($attribute) {
-                    case 'template':
-                        $this->template = $value;
-                        break;
-                    case 'id':
-                        $this->id = $value;
-                        break;
-                    case 'type':
-                        $this->type = $value;
-                        break;
-                    case 'class':
-                        $this->class = $value;
-                        break;
-                    case 'style':
-                        $this->style = $value;
-                        break;
-                    case '+class':
-                        $this->addClass($value);
-
-                        break;
-                    case '+style':
-                        $this->addStyle($value);
-                        break;
-                }
+        foreach($element as $attribute => $value) {
+            switch ($attribute) {
+                case '+class':
+                    $this->addClass($value);
+                    break;
+                case '+style':
+                    $this->addStyle($value);
+                    break;
+                default:
+                    $this->attributes[$attribute] = $value;
             }
         }
-
     }
 
     public function addClass($class)
@@ -90,10 +66,10 @@ class Element implements IElement
 
     protected function read(array $element)
     {
-        $this->readSettings($element, explode(',', 'text,style,class,id,type,hidden,exclude'));
+        $this->readSettings($element, explode(',', 'text,style,class,id,type,hidden,exclude,template'));
         if(!is_null($this->hidden)) $this->hidden = !!$this->hidden;
         if(!is_null($this->exclude)) $this->hidden = !!$this->exclude;
-        $this->processTemplate();
+        $this->processAttributes($element);
     }
 
     protected function getTemplate()
@@ -130,7 +106,7 @@ class Element implements IElement
         if(!$this->hidden) {
             $html = $this->render();
             $template = $this->template;
-            if($template != "") return $this->context->renderView(
+            if(!is_null($template) &&  $template != false) return $this->context->renderView(
                 view($template)
                 ->with('element', $this)
                 ->with('html', $html)
@@ -149,7 +125,7 @@ class Element implements IElement
 
     public function getTag()
     {
-        return $this->type;
+        return ($this->type ?? config('flatform.form.default-type', 'div') );
     }
 
     public function getHidden()

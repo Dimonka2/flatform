@@ -9,16 +9,17 @@ use Form;
 class Checkbox extends Input
 {
     public $label;
+    public $checked;
 
     protected function render()
     {
-        return Form::checkbox($this->name, $this->value, null,
+        return Form::checkbox($this->name, $this->value, $this->checked,
             $this->getOptions([]));
     }
 
     protected function read(array $element)
     {
-        $this->readSettings($element, ['label']);
+        $this->readSettings($element, ['label', 'checked']);
         parent::read($element);
     }
 }

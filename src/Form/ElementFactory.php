@@ -28,15 +28,34 @@ class ElementFactory
         $def_type = config('flatform.form.default-type', 'div');
 
         $type = strtolower($element['type'] ?? '');
+
+        if (isset($element['template'])) {
+            // template is already given
+            $template = $element['template'];
+            if ($template != false) {
+                $template = $this->context->getTemplate($template);
+                if(is_array($template)) {
+                    $element = array_merge($template, $element);
+                }
+            }
+        }
+
+        $type = $element['type'] ?? $def_type;
+        // use type as a template
+        if (!isset($element['template']) || $element['template'] != false) {
+            $template = $this->context->getTemplate($type);
+            if(is_array($template)) {
+                $element = array_merge($template, $element);
+            }
+            // important
+            if(isset($template['type'])) $element['type'] = $template['type'];
+        }
+        // debug($element);
         if (isset($this->binds[$type])) {
             return self::_createElement($this->binds[$type], $element, $this->context);
         }
-        $template = $this->context->getTemplate($type);
-        if(is_array($template)) {
-            $type = $template['type'] ?? $def_type;
-            return self::_createElement($this->binds[$type],
-                array_merge($template, $element), $this->context);
-        }
+
+
         $class = $this->binds[$def_type];
         if (empty($element['type']) ) $element['type'] = $def_type;
         return self::_createElement($class, $element, $this->context);
