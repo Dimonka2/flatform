@@ -35,4 +35,27 @@ class DropdownItem extends Link
         return $html;
     }
 
+    protected function renderLink()
+    {
+        $html = $this->context->renderElement($this, $this->getTitle());
+        $template = $this->template;
+        if($template != "") return $this->context->renderView(
+            view($template)
+            ->with('element', $this)
+            ->with('html', $html)
+        );
+        return $html;
+    }
+
+    public function renderElement()
+    {
+        if(!$this->hidden) {
+            if($this->is_post()) {
+                return $this->renderForm();
+            } else  {
+                return $this->renderLink();
+            }
+        }
+    }
+
 }

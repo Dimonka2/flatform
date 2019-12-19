@@ -16,8 +16,8 @@ return [
     'form' => [
         //  default tag type
         'default-type' => 'div',
-        // active style config pah
-        'style' => 'metronic_templates',
+        // active styles config paths delimited by comma with a priority left to right
+        'style' => 'metronic_templates,bootstrap',
         // name of the stacks for JS and CSS
         'css_stack' => 'css',
         'js_stack'  => 'js',
@@ -27,22 +27,29 @@ return [
     ],
 
     // template definitions
+    'bootstrap' => [
+        'button' => ['+class' => 'btn'],
+        'select2' => ['+class' => 'select2', '+style' => 'width:100%;'],
+        'row' => ['type' => 'div', 'class' => 'row',],
+        'tab-item' => ['type' => 'a',],
+        'dd-item' => ['class' => 'dropdown-item', 'type' => 'a', ],
+        'dd-item-icon' => ['type' => 'i',],
+        'dd-item-title' => ['type' => 'span',],
+        'link-form' => ['type' => 'form', 'class' => '', 'template' => false,],
+    ],
+
     'metronic_templates' =>[
         'input' => ['template' => 'flatform::metronic.input', '+class' => ' form-control form-control-alt'],
         'checkbox' => ['template' => 'flatform::metronic.checkbox', '+class' => 'kt-checkbox'],
         'dropdown' => ['type' => 'div', 'template' => 'flatform::metronic.dropdown'],
-        'button' => ['+class' => 'btn'],
-        'select2' => ['+class' => 'select2', '+style' => 'width:100%;'],
-        'row' => ['type' => 'div', 'class' => 'row',],
         'tabs' => ['type' => 'div', 'template' => 'flatform::metronic.tab-navs'],
         'widget' => ['template' => 'flatform::metronic.widget'],
         // templates
-        'link-form' => ['type' => 'form', 'class' => '', 'template' => false,],
         'dd-item' => ['class' => 'dropdown-item kt-nav__link', 'template' => 'flatform::metronic.dd-item', ],
         'dd-item-icon' => ['type' => 'i', 'class' => 'kt-nav__link-icon',],
         'dd-item-title' => ['type' => 'span', 'class' => 'kt-nav__link-text',],
         'form' => ['+class' => 'kt-form',],
-        'tab-item' => ['type' => 'a',],
+
         'tab-content' => ['template' => 'flatform::metronic.tab-content',],
         'checkbox-list' => ['type' => 'div', 'class' => 'kt-checkbox-list mt-5', ],
 
@@ -52,18 +59,11 @@ return [
         'input' => ['template' => 'flatform::one.input', '+class' => ' form-control form-control-alt'],
         'checkbox' => ['template' => 'flatform::one.checkbox', '+class' => 'kt-checkbox'],
         'dropdown' => ['type' => 'div', 'template' => 'flatform::one.dropdown'],
-        'button' => ['+class' => 'btn'],
-        'select2' => ['+class' => 'select2', '+style' => 'width:100%;'],
-        'row' => ['type' => 'div', 'class' => 'row',],
+
         'tabs' => ['type' => 'div', 'class' => 'js-wizard-simple block',
             'template' => 'flatform::one.tab-navs'],
 
         // templates
-        'link-form' => ['type' => 'form', 'class' => '', 'template' => false,],
-        'dd-item' => ['class' => 'dropdown-item', 'type' => 'a', ],
-        'dd-item-icon' => ['type' => 'i',],
-        'dd-item-title' => ['type' => 'span',],
-        'tab-item' => ['type' => 'a',],
         'tab-content' => ['template' => 'flatform::one.tab-content',],
     ],
 
@@ -92,6 +92,7 @@ return [
         'widget' => dimonka2\flatform\Form\Components\Widget::class,
         'dropdown' => dimonka2\flatform\Form\Components\Dropdown::class,
         'dd-item' => dimonka2\flatform\Form\Components\DropdownItem::class,
+        'datatable' => dimonka2\flatform\Form\Components\Datatable::class,
 
         // links and buttons
         'a' => dimonka2\flatform\Form\Link::class,
