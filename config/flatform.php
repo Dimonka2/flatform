@@ -35,6 +35,7 @@ return [
 
     // template definitions
     'bootstrap' => [
+        'error-class' => ['+class' => 'is-invalid', ],
         'button' => ['+class' => 'btn'],
         'select2' => ['+class' => 'select2', '+style' => 'width:100%;'],
         'row' => ['type' => 'div', 'class' => 'row',],

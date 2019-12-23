@@ -8,12 +8,13 @@ use dimonka2\flatform\Form\Contracts\IContext;
 class Input extends Element
 {
     public const input_fields = [
-        'name', 'label', 'value', 'help', 'col', 'readonly', 'disabled'
+        'name', 'label', 'value', 'help', 'error', 'col', 'readonly', 'disabled'
     ];
     public $name;
     public $label;
     public $value;
     public $help;
+    public $error;
     public $readonly;
     public $disabled;
     public $col;
@@ -23,11 +24,18 @@ class Input extends Element
         $this->readSettings($element, self::input_fields);
         parent::read($element);
         $this->requireID();
+        if(!is_null($this->name) && $this->context->getErrors()->has($this->name)) {
+            // add error
+            $this->error = \implode('<br/>', $this->context->getErrors()->get($this->name));
+            //dd($this->error);
+            $template = $this->getTemplate('error-class');
+            if(!is_null($template)) $this->processAttributes($template);
+        }
     }
 
-    protected function getTemplate()
+    protected function getTemplate($tag = null)
     {
-        $template = parent::getTemplate();
+        $template = parent::getTemplate($tag);
         if(!is_null($template)) return $template;
         return $this->context->getTemplate('input');
     }

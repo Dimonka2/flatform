@@ -72,9 +72,9 @@ class Element implements IElement
         $this->processAttributes($element);
     }
 
-    protected function getTemplate()
+    protected function getTemplate($tag = null)
     {
-        return $this->context->getTemplate($this->type);
+        return $this->context->getTemplate($tag ?? $this->type);
     }
 
     protected function createTemplate($template)

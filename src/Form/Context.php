@@ -9,6 +9,7 @@ use dimonka2\flatform\Form\ElementContainer;
 use dimonka2\flatform\Form\Contracts\IElement;
 use dimonka2\flatform\Form\Contracts\IContainer;
 use dimonka2\flatform\Form\Contracts\IContext;
+use Illuminate\Support\MessageBag;
 
 class Context implements IContext
 {
@@ -17,19 +18,26 @@ class Context implements IContext
     private $factory;
     private $template = null;
     private $cofig_template_path;
+    private $errors;
 
     public function __construct(array $elements = [])
     {
         $this->cofig_template_path = config('flatform.form.style');
         $this->factory = new ElementFactory($this);
+        $this->errors = request()->session()->get('errors', new MessageBag);
         $this->elements = new ElementContainer([], $this);
         $this->elements->readItems($elements, $this);
-
+        debug($this->errors);
     }
 
     public function getID($name)
     {
         return $name . '-' . $this->next_id++;
+    }
+
+    public function getErrors()
+    {
+        return $this->errors;
     }
 
     public function createElement(array $element)
