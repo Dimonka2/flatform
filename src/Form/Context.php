@@ -27,7 +27,6 @@ class Context implements IContext
         $this->errors = request()->session()->get('errors', new MessageBag);
         $this->elements = new ElementContainer([], $this);
         $this->elements->readItems($elements, $this);
-        debug($this->errors);
     }
 
     public function getID($name)
