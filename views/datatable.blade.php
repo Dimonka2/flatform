@@ -15,9 +15,11 @@
             @endisset $('#{{$element->id}}').DataTable({
                 "processing": true,
                 "serverSide": true,
+            @if(config('flatform.assets.datatable_lang_path', '') != '')
                 "language": {
-                    "url": "{{ asset('datatable/'. \App::getLocale() . '.json' ) }}"
+                    "url": "{{ asset(config('flatform.assets.datatable_lang_path'). \App::getLocale() . '.json' ) }}"
                 },
+            @endif
                 {!! $element->options ?? '' !!}
                 {!! $element->order ?? '' !!}
 

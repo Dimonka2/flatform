@@ -6,6 +6,7 @@ return [
     'assets' =>[
         'select2' => 'flatform::select2',
         'datatable' => 'flatform::datatable',
+        'datatable_lang_path' => 'datatable/',
         'datepicker' => 'flatform::datepicker',
     ],
 
