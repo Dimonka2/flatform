@@ -26,7 +26,7 @@ class Context implements IContext
         $this->factory = new ElementFactory($this);
         $this->errors = request()->session()->get('errors', new MessageBag);
         $this->elements = new ElementContainer([], $this);
-        $this->elements->readItems($elements, $this);
+        $this->elements->readItems($elements);
     }
 
     public function getID($name)

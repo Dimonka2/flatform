@@ -56,12 +56,12 @@ class Element implements IElement
 
     public function addClass($class)
     {
-        $this->class .= ' ' . $class;
+        $this->class = ($this->class ?? '') . ' ' . $class;
     }
 
     public function addStyle($style)
     {
-        $this->style .= ' ' . $style;
+        $this->style = ($this->style ?? '') . ' ' . $style;
     }
 
     protected function read(array $element)

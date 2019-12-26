@@ -7,4 +7,12 @@
         @break
     @case('yield')
         @yield($element->name)
+        @break
+    @case('section')
+        @section($element->name)
+            @isset($element->items)
+                {!! $element->items->renderItems() !!}
+            @endisset
+        @endsection
+        @break
 @endswitch

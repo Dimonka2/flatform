@@ -125,5 +125,7 @@ return [
         'include'   => dimonka2\flatform\Form\BladeDirective::class,
         'stack'     => dimonka2\flatform\Form\BladeDirective::class,
         'yield'     => dimonka2\flatform\Form\BladeDirective::class,
+        'extends'     => dimonka2\flatform\Form\BladeDirective::class,
+        'section'     => dimonka2\flatform\Form\BladeDirective::class,
     ],
 ];
