@@ -71,7 +71,7 @@ return [
         'tabs' => ['type' => 'div', 'class' => 'js-wizard-simple block',
             'template' => 'flatform::one.tab-navs'],
         'widget' => ['template' => 'flatform::one.widget'],
-
+        'breadcrumbs' => ['template' => 'flatform::one.breadcrumbs'],
         // templates
         'tab-content' => ['template' => 'flatform::one.tab-content',],
     ],
@@ -102,6 +102,7 @@ return [
         'dropdown' => dimonka2\flatform\Form\Components\Dropdown::class,
         'dd-item' => dimonka2\flatform\Form\Components\DropdownItem::class,
         'datatable' => dimonka2\flatform\Form\Components\Datatable::class,
+        'breadcrumbs' => dimonka2\flatform\Form\Components\Breadcrumbs::class,
 
         // links and buttons
         'a' => dimonka2\flatform\Form\Link::class,
