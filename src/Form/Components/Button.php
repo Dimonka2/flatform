@@ -19,13 +19,14 @@ class Button extends Link
     public function getOptions(array $keys)
     {
         $options = parent::getOptions($keys);
-        $options['class'] .=  ' btn-' . ($this->color ?? 'primary');
+        $options['class'] = ($options['class'] ?? 'btn') .  ' btn-' . ($this->color ?? 'primary');
+        if($this->type == 'submit') $options['type'] = 'submit';
         return $options;
     }
 
-    protected function renderLink()
+    public function getTag()
     {
-        if($this->type == 'submit') return Form::submit($this->title, $this->getOptions([]));
-        return parent::renderLink();
+        if($this->type == 'submit') return 'button';
+        return parent::getTag();
     }
 }

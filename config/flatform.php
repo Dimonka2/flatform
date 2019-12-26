@@ -70,6 +70,7 @@ return [
 
         'tabs' => ['type' => 'div', 'class' => 'js-wizard-simple block',
             'template' => 'flatform::one.tab-navs'],
+        'widget' => ['template' => 'flatform::one.widget'],
 
         // templates
         'tab-content' => ['template' => 'flatform::one.tab-content',],

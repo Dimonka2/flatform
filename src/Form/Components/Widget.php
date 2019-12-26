@@ -105,6 +105,4 @@ class Widget extends ElementContainer
 
     }
 
-
-
 }
