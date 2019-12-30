@@ -67,7 +67,7 @@ return [
         'input' => ['template' => 'flatform::one.input', '+class' => ' form-control form-control-alt'],
         'checkbox' => ['template' => 'flatform::one.checkbox', '+class' => 'kt-checkbox'],
         'dropdown' => ['type' => 'div', 'template' => 'flatform::one.dropdown'],
-
+        
         'tabs' => ['type' => 'div', 'class' => 'js-wizard-simple block',
             'template' => 'flatform::one.tab-navs'],
         'widget' => ['template' => 'flatform::one.widget'],
