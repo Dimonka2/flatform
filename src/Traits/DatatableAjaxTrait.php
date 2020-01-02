@@ -63,7 +63,11 @@ trait DatatableAjaxTrait
         if ($request->has('order.0.column')) {
             $orderColumn = $options['fields'][$request->input('order.0.column')];
             $orderDir = $request->input('order.0.dir');
-            $query = $query->orderBy($orderColumn['name'], $orderDir);
+            if(!self::isTrue($options, 'nulls_last')) {
+                $query = $query->orderBy($orderColumn['name'], $orderDir);
+            } else {
+                $query = $query->orderByRaw($orderColumn['name'] . ' ' . $orderDir . ' NULLS LAST');
+            }
         }
         // add select
         $fields = [];
@@ -78,7 +82,7 @@ trait DatatableAjaxTrait
         $items = $query->get();
         if (\App::environment('local')) {
             debug($query->toSql() );
-            debug($items);
+            debug($items, $options);
         }
         $data = $this->formatJSON($items, $options['fields']);
         $json_data = array(
