@@ -44,6 +44,7 @@ return [
         'dd-item-icon' => ['type' => 'i',],
         'dd-item-title' => ['type' => 'span',],
         'link-form' => ['type' => 'form', 'class' => '', 'template' => false,],
+        'progress' => ['template' => 'flatform::progress-bar', ],
     ],
 
     'metronic_templates' =>[
@@ -61,13 +62,15 @@ return [
         'tab-content' => ['template' => 'flatform::metronic.tab-content',],
         'checkbox-list' => ['type' => 'div', 'class' => 'kt-checkbox-list mt-5', ],
 
+        'progress' => ['template' => 'flatform::flatform.progress-bar', ],
+
     ],
 
     'one_templates' =>[
         'input' => ['template' => 'flatform::one.input', '+class' => ' form-control form-control-alt'],
         'checkbox' => ['template' => 'flatform::one.checkbox', '+class' => 'kt-checkbox'],
         'dropdown' => ['type' => 'div', 'template' => 'flatform::one.dropdown'],
-        
+
         'tabs' => ['type' => 'div', 'class' => 'js-wizard-simple block',
             'template' => 'flatform::one.tab-navs'],
         'widget' => ['template' => 'flatform::one.widget'],
@@ -103,6 +106,7 @@ return [
         'dd-item' => dimonka2\flatform\Form\Components\DropdownItem::class,
         'datatable' => dimonka2\flatform\Form\Components\Datatable::class,
         'breadcrumbs' => dimonka2\flatform\Form\Components\Breadcrumbs::class,
+        'progress' => dimonka2\flatform\Form\Components\Progress::class,
 
         // links and buttons
         'a' => dimonka2\flatform\Form\Link::class,
