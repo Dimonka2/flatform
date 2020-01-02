@@ -12,7 +12,7 @@ class Link extends ElementContainer
     public $title;
     public $icon;
     public $form_class;
-    protected $items_in_title = true;
+    public $items_in_title = true;
 
     protected function is_post()
     {
