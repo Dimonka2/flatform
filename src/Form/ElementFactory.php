@@ -23,6 +23,19 @@ class ElementFactory
         return $reflection->newInstanceArgs([$element, $context]);
     }
 
+    protected static function smartMerge($element1, $element2)
+    {
+        if(isset($element2['+style'])) {
+            $element1['+style'] = (isset($element1['+style']) ? $element1['+style'] . ';' : '') . $element2['+style'];
+            unset($element2['+style']);
+        }
+        if(isset($element2['+class'])) {
+            $element1['+class'] = (isset($element1['+class']) ? $element1['+class'] . ' ' : '') . $element2['+class'];
+            unset($element2['+class']);
+        }
+        return array_merge($element1, $element2);
+    }
+
     public function createElement(array $element)
     {
         $def_type = config('flatform.form.default-type', 'div');
@@ -52,7 +65,7 @@ class ElementFactory
         // use type as a template
         if (!isset($element['template']) || $element['template'] != false) {
             $template = $this->context->getTemplate($type);
-            if(is_array($template)) $element = array_merge($template, $element);
+            if(is_array($template)) $element = self::smartMerge($template, $element);
 
         }
         if(is_array($template)) {
