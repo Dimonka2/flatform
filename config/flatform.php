@@ -44,8 +44,9 @@ return [
         'dd-item-icon' => ['type' => 'i',],
         'dd-item-title' => ['type' => 'span',],
         'link-form' => ['type' => 'form', 'class' => '', 'template' => false,],
-        'progress' => ['template' => 'flatform::progress-bar', ],
+        'progress' => ['template' => 'flatform::bootstrap.progress-bar', ],
         'alert' => ['template' => 'flatform::bootstrap.alert', ] ,
+        'breadcrumbs' => ['template' => 'flatform::bootstrap.breadcrumbs'],
     ],
 
     'metronic_templates' =>[
@@ -63,7 +64,7 @@ return [
         'tab-content' => ['template' => 'flatform::metronic.tab-content',],
         'checkbox-list' => ['type' => 'div', 'class' => 'kt-checkbox-list mt-5', ],
 
-        'progress' => ['template' => 'flatform::flatform.progress-bar', ],
+        'breadcrumbs' => ['template' => 'flatform::metronic.breadcrumbs'],
 
     ],
 

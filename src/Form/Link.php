@@ -9,10 +9,12 @@ class Link extends ElementContainer
 {
     protected $href;
     protected $post;
+    public $btn_group;
     public $title;
     public $icon;
     public $form_class;
     public $items_in_title = true;
+    public $group;
 
     protected function is_post()
     {
@@ -26,7 +28,8 @@ class Link extends ElementContainer
 
     protected function read(array $element)
     {
-        $this->readSettings($element, ['href', 'post', 'title', 'icon', 'form-class']);
+        $this->readSettings($element,
+            ['href', 'post', 'title', 'icon', 'form-class', 'group']);
         parent::read($element);
     }
 
@@ -49,6 +52,7 @@ class Link extends ElementContainer
     {
         // render form
         $form = $this->createTemplate('link-form');
+        if($this->group) $form->addClass('btn-group');
         $method = 'POST';
         if(is_array($this->post)) {
             foreach($this->post as $key => $item) {
