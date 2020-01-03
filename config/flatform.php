@@ -45,6 +45,7 @@ return [
         'dd-item-title' => ['type' => 'span',],
         'link-form' => ['type' => 'form', 'class' => '', 'template' => false,],
         'progress' => ['template' => 'flatform::progress-bar', ],
+        'alert' => ['template' => 'flatform::bootstrap.alert', ] ,
     ],
 
     'metronic_templates' =>[
@@ -107,6 +108,7 @@ return [
         'datatable' => dimonka2\flatform\Form\Components\Datatable::class,
         'breadcrumbs' => dimonka2\flatform\Form\Components\Breadcrumbs::class,
         'progress' => dimonka2\flatform\Form\Components\Progress::class,
+        'alert' => dimonka2\flatform\Form\Components\Alert::class,
 
         // links and buttons
         'a' => dimonka2\flatform\Form\Link::class,

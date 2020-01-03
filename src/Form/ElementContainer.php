@@ -62,8 +62,6 @@ class ElementContainer extends Element implements IContainer
 
     protected function render()
     {
-        if($this->hidden) return;
-        // special case
         $aroundHTML = $this->renderItems();
         return $this->context->renderElement($this, $aroundHTML);
     }
