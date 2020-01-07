@@ -8,6 +8,9 @@ return [
         'datatable' => 'flatform::datatable',
         'datatable_lang_path' => 'datatable/',
         'datepicker' => 'flatform::datepicker',
+        'bootstrap-select-css' => null,
+        'bootstrap-select-js' => null,
+        'bootstrap-select' => 'flatform::bootstrap-select',
     ],
 
     // change the blade directive here in case you already using "form" in your project

@@ -31,11 +31,21 @@ class FlatformService
 
     public static function addCSS($css)
     {
+        if(is_array($css)) {
+            foreach($css as $asset) self::addCSS($asset);
+            return;
+        }
+        if(is_null($css)) return;
         if( !in_array($css, static::$cssList) ) static::$cssList[] = $css;
     }
 
     public static function addJS($js)
     {
+        if(is_array($js)) {
+            foreach($js as $asset) self::addJS($asset);
+            return;
+        }
+        if(is_null($js)) return;
         if( !in_array($js, static::$jsList) ) static::$jsList[] = $js;
     }
     public static function CSS()

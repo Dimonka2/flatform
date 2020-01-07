@@ -16,19 +16,17 @@ class BootstrapSelect extends Input
         $this->readSettings($element, ['color', 'state_list', 'list', 'ajax-url']);
         parent::read($element);
 
-        if(is_array($this->title)) {
-            $this->title = $this->createContainer($this->title);
-        }
-
-        if(is_array($this->text)) {
-            $this->text = $this->createContainer($this->text);
-        }
+        if(is_null($this->list)) $this->list = [];
     }
 
     protected function render()
     {
-        $addAssets = !Flatform::isIncluded('datatable');
-        if($addAssets) Flatform::include('datatable');
+        $addAssets = !Flatform::isIncluded('bselect');
+        if($addAssets) {
+            Flatform::include('bselect');
+            Flatform::addCSS(config('flatform.assets.bootstrap-select-css'));
+            Flatform::addJS(config('flatform.assets.bootstrap-select-js'));
+        }
         parent::render();
     }
 }
