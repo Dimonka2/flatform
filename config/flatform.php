@@ -32,7 +32,7 @@ return [
         // inputs that require div.col and label
         'inputs' => [
             'text', 'password', 'number', 'textarea', 'summernote',
-            'select', 'select2', 'file', 'date',
+            'select', 'select2', 'file', 'date', 'bselect',
         ],
     ],
 
@@ -50,6 +50,7 @@ return [
         'progress' => ['template' => 'flatform::bootstrap.progress-bar', ],
         'alert' => ['template' => 'flatform::bootstrap.alert', ] ,
         'breadcrumbs' => ['template' => 'flatform::bootstrap.breadcrumbs'],
+        'bselect' => ['type' => 'select', '+class' => 'bselect'],
     ],
 
     'metronic_templates' =>[
@@ -98,6 +99,7 @@ return [
         'summernote' => dimonka2\flatform\Form\Inputs\Summernote::class,
         'select' => dimonka2\flatform\Form\Inputs\Select::class,
         'select2' => dimonka2\flatform\Form\Inputs\Select2::class,
+        'bselect' => dimonka2\flatform\Form\Inputs\BootstrapSelect::class,
         'file' => dimonka2\flatform\Form\Inputs\File::class,
         'checkbox' => dimonka2\flatform\Form\Inputs\Checkbox::class,
         'radio' => dimonka2\flatform\Form\Inputs\Radio::class,
@@ -132,6 +134,7 @@ return [
         'label' => dimonka2\flatform\Form\Label::class,
         '_text' => dimonka2\flatform\Form\Element::class,
         '_template' => dimonka2\flatform\Form\Element::class,
+        'option' => dimonka2\flatform\Form\Element::class,
 
         // blade directives
         'include'   => dimonka2\flatform\Form\BladeDirective::class,

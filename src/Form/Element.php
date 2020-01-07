@@ -14,6 +14,7 @@ class Element implements IElement
     public $id;
     public $class;
     public $style;
+    public $onRender = null; // closure for rendering
 
     protected $context;
     protected $type;
@@ -101,6 +102,16 @@ class Element implements IElement
         return $options;
     }
 
+    public function getAttribute($name)
+    {
+        return $this->attributes[$name] ?? null;
+    }
+
+    public function setAttribute($name, $value)
+    {
+        $this->attributes[$name] = $value;
+    }
+
     public function renderElement()
     {
         if(!$this->hidden) {
@@ -118,6 +129,10 @@ class Element implements IElement
     protected function render()
     {
         if($this->hidden) return;
+        if(is_callable($this->onRender)) {
+            $closure = $this->onRender;
+            return $closure($this, $this->context);
+        }
         // special case
         if($this->type == '_text') return $this->text;
         return $this->context->renderElement($this);

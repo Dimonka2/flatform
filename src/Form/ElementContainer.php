@@ -37,6 +37,11 @@ class ElementContainer extends Element implements IContainer
 
     }
 
+    public function push(Element $item)
+    {
+        $this->elements->push($item);
+    }
+
     public function readItems(array $items)
     {
         foreach ($items as $item) {
