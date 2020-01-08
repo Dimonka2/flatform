@@ -14,9 +14,10 @@ class FlatformService
     public static function render(array $element)
     {
         // dd($element);
+        $options = $element['options'] ?? null;
         // backward compatibility with old version
         if(isset($element['elements'])) $element = $element['elements'];
-        return (new Context($element))->render();
+        return (new Context($element))->setOptions($options)->render();
     }
 
     public static function isIncluded($element_name)

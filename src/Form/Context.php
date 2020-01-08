@@ -106,6 +106,12 @@ class Context implements IContext
         }
     }
 
+    public function setOptions($options)
+    {
+        // read possible options from argument
+
+    }
+
     public function getTemplatable()
     {
         return $this->template;
