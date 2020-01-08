@@ -31,7 +31,7 @@ class BootstrapSelect extends Input
     private function processOptions()
     {
         $options = [];
-        if(is_array( $this->list)) {
+        if(is_iterable( $this->list)) {
             foreach($this->list as $key => $option) {
                 if(is_array($option)) {
                     // check if type is data-divider

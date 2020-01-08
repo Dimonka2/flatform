@@ -8,7 +8,8 @@ use dimonka2\flatform\Form\Contracts\IContext;
 class Input extends Element
 {
     public const input_fields = [
-        'name', 'label', 'value', 'help', 'error', 'col', 'readonly', 'disabled'
+        'name', 'label', 'value', 'help',
+        'error', 'col', 'readonly', 'disabled', 'required',
     ];
     public $name;
     public $label;
@@ -17,6 +18,7 @@ class Input extends Element
     public $error;
     public $readonly;
     public $disabled;
+    public $required;
     public $col;
 
     protected function read(array $element)
@@ -38,5 +40,14 @@ class Input extends Element
         $template = parent::getTemplate($tag);
         if(!is_null($template)) return $template;
         return $this->context->getTemplate('input');
+    }
+
+    public function getOptions(array $keys)
+    {
+        $options = parent::getOptions($keys);
+        foreach(['name', 'readonly', 'disabled', 'required', 'value'] as $attr) {
+            if(!is_null($this->{$attr}))  $options[$attr] = $this->{$attr};
+        }
+        return $options;
     }
 }
