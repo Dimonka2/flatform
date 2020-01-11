@@ -1,15 +1,5 @@
-
- @push($context->getCssStack())
-    <link href="{!! asset('summernote/summernote.css') !!}" rel="stylesheet" />
-    <link href="{!! asset('summernote/summernote-bs4.css') !!}" rel="stylesheet" />
-@endpush
-
 @push($context->getJsStack())
     <!-- Summernote -->
-    <script src="{!! asset('summernote/summernote.min.js') !!}"></script>
-    <script src="{!! asset('summernote/summernote-bs4.min.js') !!}"></script>
-
-
     <style>
         h1 div.note-editable {font-size: 14px;}
     </style>
