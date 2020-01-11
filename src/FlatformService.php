@@ -47,7 +47,7 @@ class FlatformService
             return;
         }
         if(is_null($js)) return;
-        $css = $path . $css;
+        $css = $path . $js;
         if( !in_array($js, static::$jsList) ) static::$jsList[] = $js;
     }
     public static function CSS()
