@@ -26,7 +26,7 @@
                 columnDefs: [
                     @foreach ($element->columns as $column)
                         {targets: [ {{$loop->index}} ]
-                        @isset($column['title'])  , title: "{!! $column['title'] !!}" @endisset
+                        @isset($column['title'])  , title: "{!! addslashes($column['title']) !!}" @endisset
                         @isset($column['hide']) , "visible": false @endisset
                         @if(isset($column['sort']) and !$column['sort'] or ($column['system'] ?? false)) , "orderable": false @endisset
                         @if(isset($column['sortDesc']) and $column['sortDesc']) , "orderSequence": ["desc", "asc"] @endisset

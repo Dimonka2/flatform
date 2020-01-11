@@ -10,6 +10,7 @@ class Checkbox extends Input
 {
     public $label;
     public $checked;
+    public $inline;
 
     protected function render()
     {
@@ -19,7 +20,7 @@ class Checkbox extends Input
 
     protected function read(array $element)
     {
-        $this->readSettings($element, ['label', 'checked']);
+        $this->readSettings($element, ['label', 'checked', 'inline']);
         parent::read($element);
     }
 }

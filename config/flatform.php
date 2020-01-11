@@ -80,7 +80,7 @@ return [
 
     'one_templates' =>[
         'input' => ['template' => 'flatform::one.input', '+class' => ' form-control form-control-alt'],
-        'checkbox' => ['template' => 'flatform::one.checkbox', '+class' => 'kt-checkbox'],
+        'checkbox' => ['template' => 'flatform::one.checkbox', '+class' => 'form-check'],
         'dropdown' => ['type' => 'div', 'template' => 'flatform::one.dropdown'],
 
         'tabs' => ['type' => 'div', 'class' => 'js-wizard-simple block',
