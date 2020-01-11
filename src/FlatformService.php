@@ -29,23 +29,25 @@ class FlatformService
         if( !static::isIncluded($element_name) ) static::$includes[] = $element_name;
     }
 
-    public static function addCSS($css)
+    public static function addCSS($css, $path = "")
     {
         if(is_array($css)) {
-            foreach($css as $asset) self::addCSS($asset);
+            foreach($css as $asset) self::addCSS($asset, $path);
             return;
         }
         if(is_null($css)) return;
+        $css = $path . $css;
         if( !in_array($css, static::$cssList) ) static::$cssList[] = $css;
     }
 
-    public static function addJS($js)
+    public static function addJS($js, $path = "")
     {
         if(is_array($js)) {
-            foreach($js as $asset) self::addJS($asset);
+            foreach($js as $asset) self::addJS($asset, $path);
             return;
         }
         if(is_null($js)) return;
+        $css = $path . $css;
         if( !in_array($js, static::$jsList) ) static::$jsList[] = $js;
     }
     public static function CSS()

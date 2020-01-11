@@ -20,6 +20,24 @@ Publish provider:
 
 $ php artisan vendor:publish --provider="dimonka2\flatform\FlatformServiceProvider"
 
+Update config/app.php:
+
+* Add provider 
+```php
+[
+...
+dimonka2\flatform\FlatformServiceProvider::class,
+]
+```
+
+* Add alias
+```php
+[
+...
+'Flatform' => dimonka2\flatform\FlatformFacade::class,
+]
+```
+
 ## Configure
 
 Coming soon

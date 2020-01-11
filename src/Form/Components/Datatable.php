@@ -35,12 +35,15 @@ class Datatable extends ElementContainer
 
     protected function render()
     {
-        $addAssets = !Flatform::isIncluded('datatable');
-        if($addAssets) Flatform::include('datatable');
+        if(!Flatform::isIncluded('datatable')) {
+            Flatform::include('datatable');
+            $path = config('flatform.assets.datatable_path');
+            Flatform::addCSS(config('flatform.assets.datatable_css'), $path);
+            Flatform::addJS(config('flatform.assets.datatable_js'), $path);
+        }
         return $this->context->renderView(
             view(config('flatform.assets.datatable'))
                 ->with('element', $this)
-                ->with('addAssets', $addAssets)
         );
 
     }

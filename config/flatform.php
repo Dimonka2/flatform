@@ -6,7 +6,13 @@ return [
     'assets' =>[
         'select2' => 'flatform::select2',
         'datatable' => 'flatform::datatable',
-        'datatable_lang_path' => 'datatable/',
+        'datatable_path' => 'datatable/',
+        'datatable_css' => 'dataTables.bootstrap4.min.css',
+        'datatable_js' => [
+            'jquery.dataTables.min.js',
+            'dataTables.bootstrap4.min.js',
+        ],
+
         'datepicker' => 'flatform::datepicker',
         'bootstrap-select-css' => null,
         'bootstrap-select-js' => null,

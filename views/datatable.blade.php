@@ -56,14 +56,3 @@
 @endpush
 
 
-@if($addAssets)
-    @push($context->getCssStack())
-        <link href="{!! asset('assets/plugins/datatable/dataTables.bootstrap4.min.css') !!}" rel="stylesheet" type="text/css">
-    @endpush
-
-    @push($context->getJsStack())
-        <script src="{!! asset('assets/plugins/datatable/jquery.dataTables.min.js') !!}"></script>
-        <script src="{!! asset('assets/plugins/datatable/dataTables.bootstrap4.min.js') !!}"></script>
-    @endpush
-@endif
-
