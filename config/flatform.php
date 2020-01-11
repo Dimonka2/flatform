@@ -66,6 +66,7 @@ return [
         'alert' => ['template' => 'flatform::bootstrap.alert', ] ,
         'breadcrumbs' => ['template' => 'flatform::bootstrap.breadcrumbs'],
         'bselect' => ['type' => 'select', '+class' => 'bselect'],
+        'summernote' => ['+class' => 'summernote'],
     ],
 
     'metronic_templates' =>[

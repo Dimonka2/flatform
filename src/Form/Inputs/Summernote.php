@@ -5,6 +5,7 @@ namespace dimonka2\flatform\Form\Inputs;
 use dimonka2\flatform\Form\Input;
 use dimonka2\flatform\Form\Contracts\IContext;
 use Form;
+use Flatform;
 
 class Summernote extends Input
 {
