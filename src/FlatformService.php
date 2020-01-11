@@ -50,13 +50,27 @@ class FlatformService
         $css = $path . $js;
         if( !in_array($js, static::$jsList) ) static::$jsList[] = $js;
     }
-    public static function CSS()
+    public static function CSS($html = true)
     {
+        if($html){
+            $html = "";
+            foreach(static::$cssList as $asset){
+                $html .= '<link href="' . asset($asset) .'" rel="stylesheet" type="text/css">';
+            }
+            return $html;
+        }
         return static::$cssList;
     }
 
-    public static function JS()
+    public static function JS($html = true)
     {
+        if($html){
+            $html = "";
+            foreach(static::$jsList as $asset){
+                $html .= '<script src="' . asset($asset) .'"></script>';
+            }
+            return $html;
+        }
         return static::$jsList;
     }
 
