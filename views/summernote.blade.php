@@ -1,3 +1,4 @@
+{!! $html !!}
 @push($context->getJsStack())
     <!-- Summernote -->
     <style>
