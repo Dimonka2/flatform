@@ -6,7 +6,22 @@ return [
     'assets' =>[
         'select2' => 'flatform::select2',
         'datatable' => 'flatform::datatable',
-        'datatable_lang_path' => 'datatable/',
+        'datatable_path' => 'datatable/',
+        'datatable_css' => 'dataTables.bootstrap4.min.css',
+        'datatable_js' => [
+            'jquery.dataTables.min.js',
+            'dataTables.bootstrap4.min.js',
+        ],
+        'summernote_path' => 'summernote/',
+        'summernote_css' => [
+            'summernote.css',
+            'summernote-bs4.css',
+        ],
+        'summernote_js' => [
+            'summernote.min.js',
+            'summernote-bs4.min.js',
+        ],
+
         'datepicker' => 'flatform::datepicker',
         'bootstrap-select-css' => null,
         'bootstrap-select-js' => null,
@@ -51,6 +66,7 @@ return [
         'alert' => ['template' => 'flatform::bootstrap.alert', ] ,
         'breadcrumbs' => ['template' => 'flatform::bootstrap.breadcrumbs'],
         'bselect' => ['type' => 'select', '+class' => 'bselect'],
+        'summernote' => ['+class' => 'summernote'],
     ],
 
     'metronic_templates' =>[
@@ -74,7 +90,7 @@ return [
 
     'one_templates' =>[
         'input' => ['template' => 'flatform::one.input', '+class' => ' form-control form-control-alt'],
-        'checkbox' => ['template' => 'flatform::one.checkbox', '+class' => 'kt-checkbox'],
+        'checkbox' => ['template' => 'flatform::one.checkbox', '+class' => 'form-check'],
         'dropdown' => ['type' => 'div', 'template' => 'flatform::one.dropdown'],
 
         'tabs' => ['type' => 'div', 'class' => 'js-wizard-simple block',

@@ -15,9 +15,9 @@
             @endisset $('#{{$element->id}}').DataTable({
                 "processing": true,
                 "serverSide": true,
-            @if(config('flatform.assets.datatable_lang_path', '') != '')
+            @if(config('flatform.assets.datatable_path', '') != '')
                 "language": {
-                    "url": "{{ asset(config('flatform.assets.datatable_lang_path'). \App::getLocale() . '.json' ) }}"
+                    "url": "{{ asset(config('flatform.assets.datatable_path'). \App::getLocale() . '.json' ) }}"
                 },
             @endif
                 {!! $element->options ?? '' !!}
@@ -26,9 +26,9 @@
                 columnDefs: [
                     @foreach ($element->columns as $column)
                         {targets: [ {{$loop->index}} ]
-                        @isset($column['title'])  , title: "{{$column['title']}}" @endisset
+                        @isset($column['title'])  , title: "{!! addslashes($column['title']) !!}" @endisset
                         @isset($column['hide']) , "visible": false @endisset
-                        @if(isset($column['sort']) and !$column['sort']) , "orderable": false @endisset
+                        @if(isset($column['sort']) and !$column['sort'] or ($column['system'] ?? false)) , "orderable": false @endisset
                         @if(isset($column['sortDesc']) and $column['sortDesc']) , "orderSequence": ["desc", "asc"] @endisset
                         @isset($column['defs']) {!! $column['defs'] !!} @endisset },
 
@@ -55,15 +55,4 @@
 
 @endpush
 
-
-@if($addAssets)
-    @push($context->getCssStack())
-        <link href="{!! asset('assets/plugins/datatable/dataTables.bootstrap4.min.css') !!}" rel="stylesheet" type="text/css">
-    @endpush
-
-    @push($context->getJsStack())
-        <script src="{!! asset('assets/plugins/datatable/jquery.dataTables.min.js') !!}"></script>
-        <script src="{!! asset('assets/plugins/datatable/dataTables.bootstrap4.min.js') !!}"></script>
-    @endpush
-@endif
 

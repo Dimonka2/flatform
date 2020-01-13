@@ -24,10 +24,10 @@ class Form extends ElementContainer
     public function renderForm($aroundHTML = null)
     {
         $options = $this->getOptions(['method', 'url', 'files', 'route']);
-        if(!is_object($this->model)) {
+        if(is_object($this->model)) {
             $html = LaForm::model($this->model , $options);
         } else  {
-            $html = LaForm::open($this->model , $options);
+            $html = LaForm::open($options);
         }
         $html .= $aroundHTML;
         $html .= $this->renderItems();
