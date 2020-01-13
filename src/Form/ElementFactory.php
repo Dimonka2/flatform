@@ -4,6 +4,7 @@ namespace dimonka2\flatform\Form;
 
 use dimonka2\flatform\Form\Form;
 use dimonka2\flatform\Form\Contracts\IContext;
+use dimonka2\flatform\Form\Contracts\IElement;
 use \ReflectionClass;
 
 class ElementFactory
@@ -17,26 +18,28 @@ class ElementFactory
         $this->binds = config('flatform.bindings');
     }
 
-    protected static function _createElement($class, array $element, $context)
+    protected static function _createElement($class, array $element, $context): IElement
     {
         $reflection = new ReflectionClass($class);
         return $reflection->newInstanceArgs([$element, $context]);
     }
 
+    protected static function transferIndexedElement(&$element1, &$element2, $index, $delimiter)
+    {
+        if(isset($element2[$index])) {
+            $element1[$index] = (isset($element1[$index]) ? $element1[$index] . $delimiter : '') . $element2[$index];
+            unset($element2[$index]);
+        }
+    }
+
     protected static function smartMerge($element1, $element2)
     {
-        if(isset($element2['+style'])) {
-            $element1['+style'] = (isset($element1['+style']) ? $element1['+style'] . ';' : '') . $element2['+style'];
-            unset($element2['+style']);
-        }
-        if(isset($element2['+class'])) {
-            $element1['+class'] = (isset($element1['+class']) ? $element1['+class'] . ' ' : '') . $element2['+class'];
-            unset($element2['+class']);
-        }
+        self::transferIndexedElement($element1, $element2, '+style', ';');
+        self::transferIndexedElement($element1, $element2, '+class', ' ');
         return array_merge($element1, $element2);
     }
 
-    public function createElement(array $element)
+    public function createElement(array $element): IElement
     {
         $def_type = config('flatform.form.default-type', 'div');
 

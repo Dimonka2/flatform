@@ -110,6 +110,7 @@ class Context implements IContext
     {
         // read possible options from argument
 
+        return $this;
     }
 
     public function getTemplatable()
