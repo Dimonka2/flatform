@@ -92,7 +92,8 @@ return [
         'input' => ['template' => 'flatform::one.input', '+class' => ' form-control form-control-alt'],
         'checkbox' => ['template' => 'flatform::one.checkbox', '+class' => 'form-check'],
         'dropdown' => ['type' => 'div', 'template' => 'flatform::one.dropdown'],
-
+        'dd-item-icon' => ['type' => 'i', '+class' => 'mr-2'],
+        
         'tabs' => ['type' => 'div', 'class' => 'js-wizard-simple block',
             'template' => 'flatform::one.tab-navs'],
         'widget' => ['template' => 'flatform::one.widget'],
