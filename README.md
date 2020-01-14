@@ -5,7 +5,7 @@ This is just an idea. Not even an alpha version.
 
 ## Features
 
-- **Separate control rendering from styles.** Write only an interface definition and the styling will be applied based on selected templates.
+- **Separate control rendering from control styling.** Write only an interface definition and the styling will be applied based on selected templates.
 
 - **Possibility to switch styles via config.** It is possible to declare several styles and switch between them. Option to switch styles at runtime is coming soon.
 
@@ -68,3 +68,14 @@ Depending on styles the code above will generate something like:
     </div>
 </div>
 ```
+
+## Included elements, inputs and components
+* **Inputs**: text, password, number, textarea, select, file, date, checkbox, radio, hidden, select2, bootstrap select, summernote
+* **Components**: alert, breadcrumb, button, dropdown, progress, tabs, widget, datatable
+* **Trait for datatable**
+* **HTML tags**: form, text, div, row (div with class "row"), col (div with class 'col-xx')
+* **Blade directives**: stack, include, yield, section
+
+## Documentation
+
+Coming soon
