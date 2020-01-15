@@ -9,6 +9,7 @@ use \ReflectionClass;
 
 class ElementFactory
 {
+    private const tag_template = '/[_-a-zA-Z0-9]+/';
     private $context;
     private $binds = [];
 
@@ -32,54 +33,43 @@ class ElementFactory
         }
     }
 
-    protected static function smartMerge($element1, $element2)
+    protected static function mergeTemplate($element, $template)
     {
-        self::transferIndexedElement($element1, $element2, '+style', ';');
-        self::transferIndexedElement($element1, $element2, '+class', ' ');
-        return array_merge($element1, $element2);
+        if(is_null($template)) return $element;
+        self::transferIndexedElement($element, $template, '+style', ';');
+        self::transferIndexedElement($element, $template, '+class', ' ');
+        self::transferIndexedElement($element, $template, 'template', ';');
+        return array_merge($element, $template);
     }
+
+
 
     public function createElement(array $element): IElement
     {
         $def_type = config('flatform.form.default-type', 'div');
-
-        $type = strtolower($element['type'] ?? '');
-        $template = null;
         if (isset($element['template'])) {
             // template is already given
             $template = $element['template'];
-            if ($template != false) {
-                $template = $this->context->getTemplate($template);
-            }
-        } else {
-            if(in_array($type, config('flatform.form.inputs', [])) ){
-                // apply input template
-                $template = $this->context->getTemplate('input');
-
+            if ($template != false && preg_match(self::tag_template, $template)) {
+                $element = self::mergeTemplate($element, $this->context->getTemplate($template));
             }
         }
-        if(is_array($template)) {
-            $element = array_merge($template, $element);
-            if(isset($template['type'])) $element['type'] = $template['type'];
-        }
 
-        $template = null;
-        $type = $element['type'] ?? $def_type;
+        $type = strtolower($element['type'] ?? $def_type);
+
         // use type as a template
-        if (!isset($element['template']) || $element['template'] != false) {
-            $template = $this->context->getTemplate($type);
-            if(is_array($template)) $element = self::smartMerge($template, $element);
-
+        if ($element['template'] ?? true != false) {
+            $element = self::mergeTemplate($element, $this->context->getTemplate($type));
         }
-        if(is_array($template)) {
-            $element = array_merge($template, $element);
-            if(isset($template['type'])) $element['type'] = $template['type'];
+
+        if( ($element['template'] ?? true != false) && in_array($type, config('flatform.form.inputs', [])) ){
+            // apply input template
+            $element = self::mergeTemplate($element, $this->context->getTemplate('input') );
         }
 
         if (isset($this->binds[$type])) {
             return self::_createElement($this->binds[$type], $element, $this->context);
         }
-
 
         $class = $this->binds[$def_type];
         if (empty($element['type']) ) $element['type'] = $def_type;

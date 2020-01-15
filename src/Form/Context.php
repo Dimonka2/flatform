@@ -87,6 +87,7 @@ class Context implements IContext
 
     public function getTemplate($tag)
     {
+        // logger('getTemplate',  [$tag]);
         foreach (explode(',', $this->cofig_template_path) as $path) {
             $template = config('flatform.' . $path . '.' . $tag, null);
             if(!is_null($template)) return $template;

@@ -117,11 +117,16 @@ class Element implements IElement
         if(!$this->hidden) {
             $html = $this->render();
             $template = $this->template;
-            if(!is_null($template) &&  $template != false) return $this->context->renderView(
-                view($template)
-                ->with('element', $this)
-                ->with('html', $html)
-            );
+            if(!is_null($template) &&  $template != false) {
+                foreach(explode(';', $template) as $template) {
+                    $html = $this->context->renderView(
+                        view($template)
+                        ->with('element', $this)
+                        ->with('html', $html)
+                    );
+                }
+
+            }
             return $html;
         }
     }
