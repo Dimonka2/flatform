@@ -31,7 +31,8 @@ class Context implements IContext
 
     public function getID($name)
     {
-        return $name . '-' . $this->next_id++;
+        preg_match('/[-_A-Za-z0-9]+/', $name, $matches);
+        return $matches[0] . '-' . $this->next_id++;
     }
 
     public function getErrors()

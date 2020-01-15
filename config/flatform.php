@@ -61,6 +61,7 @@ return [
 
     // template definitions
     'bootstrap' => [
+        'date' => ['+class' => 'datepicker'],
         'error-class' => ['+class' => 'is-invalid', ],
         'button' => ['+class' => 'btn'],
         'select2' => ['+class' => 'select2', '+style' => 'width:100%;'],
