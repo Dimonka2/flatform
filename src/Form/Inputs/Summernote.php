@@ -13,9 +13,9 @@ class Summernote extends Input
     {
         if(!Flatform::isIncluded('summernote')) {
             Flatform::include('summernote');
-            $path = config('flatform.assets.summernote_path');
-            Flatform::addCSS(config('flatform.assets.summernote_css'), $path);
-            Flatform::addJS(config('flatform.assets.summernote_js'), $path);
+            $path = config('flatform.assets.summernote.path');
+            Flatform::addCSS(config('flatform.assets.summernote.css'), $path);
+            Flatform::addJS(config('flatform.assets.summernote.js'), $path);
         }
         return Form::textarea($this->name, $this->value,
             $this->getOptions([]));

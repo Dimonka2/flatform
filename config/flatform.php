@@ -4,7 +4,15 @@
 
 return [
     'assets' =>[
-        'select2' => 'flatform::select2',
+        'select2' => [
+            'path' => 'admin/select2/',
+            'view' => 'flatform::select2',
+            'js' => 'js/select2.full.min.js',
+            'css' => [
+                'css/select2.min.css',
+                'css/select2-bootstrap4.css',
+            ]
+        ],
         'datatable' => 'flatform::datatable',
         'datatable_path' => 'datatable/',
         'datatable_css' => 'dataTables.bootstrap4.min.css',
@@ -93,7 +101,7 @@ return [
         'checkbox' => ['template' => 'flatform::one.checkbox', '+class' => 'form-check'],
         'dropdown' => ['type' => 'div', 'template' => 'flatform::one.dropdown'],
         'dd-item-icon' => ['type' => 'i', '+class' => 'mr-2'],
-        
+
         'tabs' => ['type' => 'div', 'class' => 'js-wizard-simple block',
             'template' => 'flatform::one.tab-navs'],
         'widget' => ['template' => 'flatform::one.widget'],

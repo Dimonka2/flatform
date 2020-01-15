@@ -24,8 +24,11 @@ class Select2 extends Input
     {
         if(!Flatform::isIncluded('select2')){
             Flatform::include('select2');
+            $path = config('flatform.assets.select2.path');
+            Flatform::addCSS(config('flatform.assets.select2.css'), $path);
+            Flatform::addJS(config('flatform.assets.select.js'), $path);
             return $this->context->renderView(
-                view(config('flatform.assets.select2'))
+                view(config('flatform.assets.select2.view'))
             );
         }
     }
