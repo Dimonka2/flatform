@@ -29,6 +29,12 @@ class Context implements IContext
         $this->elements->readItems($elements);
     }
 
+    public function add(array $elements = [])
+    {
+        $this->elements->readItems($elements);
+        return $this;
+    }
+
     public function getID($name)
     {
         preg_match('/[-_A-Za-z0-9]+/', $name, $matches);

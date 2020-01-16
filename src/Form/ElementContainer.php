@@ -34,12 +34,13 @@ class ElementContainer extends Element implements IContainer
             $this->addTextElement( $this->text);
         }
         // echo $this->hash() . " Read items: \r\n";
-
+        return $this;
     }
 
     public function push(Element $item)
     {
         $this->elements->push($item);
+        return $this;
     }
 
     public function readItems(array $items)
@@ -48,6 +49,7 @@ class ElementContainer extends Element implements IContainer
             $item = $this->createElement($item);
             $this->elements->push($item);
         }
+        return $this;
     }
 
     protected function addTextElement($text)

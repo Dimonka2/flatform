@@ -11,12 +11,14 @@ class ElementFactory
 {
     private const tag_template = '/[_-a-zA-Z0-9]+/';
     private $context;
+    private $user_binds = [];
     private $binds = [];
 
     public function __construct(IContext $context)
     {
         $this->context = $context;
-        $this->binds = config('flatform.bindings');
+        $this->user_binds = config('flatform.bindings');
+        $this->binds = ElementMapping::bindings;
     }
 
     protected static function _createElement($class, array $element, $context): IElement
@@ -65,6 +67,10 @@ class ElementFactory
         if( ($element['template'] ?? true != false) && in_array($type, config('flatform.form.inputs', [])) ){
             // apply input template
             $element = self::mergeTemplate($element, $this->context->getTemplate('input') );
+        }
+
+        if (isset($this->user_binds[$type])) {
+            return self::_createElement($this->user_binds[$type], $element, $this->context);
         }
 
         if (isset($this->binds[$type])) {

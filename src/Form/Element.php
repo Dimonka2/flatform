@@ -58,11 +58,13 @@ class Element implements IElement
     public function addClass($class)
     {
         $this->class = ($this->class ?? '') . ' ' . $class;
+        return $this;
     }
 
     public function addStyle($style)
     {
         $this->style = ($this->style ?? '') . ' ' . $style;
+        return $this;
     }
 
     protected function read(array $element)
@@ -71,6 +73,7 @@ class Element implements IElement
         if(!is_null($this->hidden)) $this->hidden = !!$this->hidden;
         if(!is_null($this->exclude)) $this->hidden = !!$this->exclude;
         $this->processAttributes($element);
+        return $this;
     }
 
     protected function getTemplate($tag = null)
@@ -110,6 +113,7 @@ class Element implements IElement
     public function setAttribute($name, $value)
     {
         $this->attributes[$name] = $value;
+        return $this;
     }
 
     public function renderElement()
@@ -158,6 +162,7 @@ class Element implements IElement
         if(is_null($this->id)) {
             $this->id = $this->context->getID($this->name ?? 'id');
         }
+        return $this;
     }
 
 }

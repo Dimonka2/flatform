@@ -20,6 +20,11 @@ class FlatformService
         return (new Context($element))->setOptions($options)->render();
     }
 
+    public static function context()
+    {
+        return new Context();
+    }
+
     public static function isIncluded($element_name)
     {
         return in_array($element_name, static::$includes);
