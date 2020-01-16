@@ -11,11 +11,11 @@ class Select2 extends Input
 {
     protected $list;
     protected $ajax_url;
+    protected $tags;
 
     protected function read(array $element)
     {
-        $fields = 'list,ajax-url';
-        $this->readSettings($element, explode(',', $fields));
+        $this->readSettings($element, ['list', 'ajax-url', 'tags']);
         if(is_null($this->list)) $this->list = [];
         parent::read($element);
     }
@@ -37,7 +37,8 @@ class Select2 extends Input
     {
         $html = $this->addAssets();
         $options = $this->getOptions(['placeholder', 'readonly', 'disabled']);
-        if(!is_null($this->ajax_url)) $options['ajax-url'] = $this->ajax_url;
+        if($this->ajax_url) $options['ajax-url'] = $this->ajax_url;
+        if($this->tags) $options['tags'] = $this->tags;
         return $html . Form::select($this->name, $this->list ?? [], $this->value, $options);
     }
 }
