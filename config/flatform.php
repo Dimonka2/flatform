@@ -20,14 +20,17 @@ return [
             'jquery.dataTables.min.js',
             'dataTables.bootstrap4.min.js',
         ],
-        'summernote_path' => 'summernote/',
-        'summernote_css' => [
-            'summernote.css',
-            'summernote-bs4.css',
-        ],
-        'summernote_js' => [
-            'summernote.min.js',
-            'summernote-bs4.min.js',
+        'summernote' => [
+            'view' => 'flatform::summernote',
+            'path' => 'summernote/',
+            'css' => [
+                'summernote.css',
+                'summernote-bs4.css',
+            ],
+            'js' => [
+                'summernote.min.js',
+                'summernote-bs4.min.js',
+            ],
         ],
 
         'datepicker' => 'flatform::datepicker',
