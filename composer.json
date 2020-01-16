@@ -2,7 +2,7 @@
     "name": "dimonka2/flatform",
     "description": "Form helper for Laravel and laravelcollective/html",
     "type": "library",
-    "version": "0.0.2",
+    "homepage": "https://github.com/Dimonka2",
     "license": "MIT",
     "authors": [
         {
@@ -26,7 +26,10 @@
         "laravel": {
             "providers": [
                 "dimonka2\\flatform\\FlatformServiceProvider"
-            ]
+            ],
+            "aliases": {
+                "Flatform": "dimonka2\\flatform\\FlatformFacade"
+            }
         }
     },
     "autoload": {
