@@ -1,4 +1,11 @@
-# flatform
+# Laravel Flatform
+===
+
+[![Packagist](https://img.shields.io/packagist/v/dimonka2/flatform.svg)](https://packagist.org/packages/dimonka2/flatform)
+[![Packagist](https://img.shields.io/packagist/l/dimonka2/flatform.svg)](https://packagist.org/packages/dimonka2/flatform) 
+[![Packagist](https://img.shields.io/packagist/dm/dimonka2/flatform.svg)]()
+
+
 Form helper for Laravel and laravelcollective/html
 
 This is just an idea. Not even an alpha version. 
