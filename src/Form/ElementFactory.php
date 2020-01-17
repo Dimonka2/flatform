@@ -21,9 +21,13 @@ class ElementFactory
         $this->binds = ElementMapping::bindings;
     }
 
-    protected static function _createElement($class, array $element, $context): IElement
+    protected static function _createElement(array $element, $context): IElement
     {
-        $reflection = new ReflectionClass($class);
+        if( ($element['type'] ?? '') == 'widget' &&
+            $element['binding'] == 'dimonka2\flatform\Form\ElementContainer' ) throw new \Exception("Whattaf", 1);
+
+        $reflection = new ReflectionClass($element['binding']);
+        unset($element['binding']);
         return $reflection->newInstanceArgs([$element, $context]);
     }
 
@@ -35,51 +39,68 @@ class ElementFactory
         }
     }
 
-    protected static function mergeTemplate($element, $template)
+    protected function mergeTemplate($element, $template)
     {
         if(is_null($template)) return $element;
         self::transferIndexedElement($element, $template, '+style', ';');
         self::transferIndexedElement($element, $template, '+class', ' ');
         self::transferIndexedElement($element, $template, 'template', ';');
-        return array_merge($element, $template);
+        $type = $element['type'] ?? null;
+        if(empty($element['binding']) && $type) {
+            $binding = $this->getBinding($type);
+            if($binding) {
+                $element['binding'] = $binding;
+            }
+        }
+        $element = array_merge($element, $template);
+        $new_type = $element['type'] ?? null;
+        if($type != $new_type ) $element = $this->mergeTemplate($element, $this->context->getTemplate($new_type));
+        return $element;
     }
 
-
+    protected function getBinding($type)
+    {
+        if(is_null($type)) return null;
+        if (isset($this->user_binds[$type])) return $this->user_binds[$type];
+        if (isset($this->binds[$type])) return $this->binds[$type];
+    }
 
     public function createElement(array $element): IElement
     {
         $def_type = config('flatform.form.default-type', 'div');
+        $binding = null;
         if (isset($element['template'])) {
             // template is already given
             $template = $element['template'];
             if ($template != false && preg_match(self::tag_template, $template)) {
-                $element = self::mergeTemplate($element, $this->context->getTemplate($template));
+                unset($element['template']);
+                $element = $this->mergeTemplate($element, $this->context->getTemplate($template));
             }
         }
 
-        $type = strtolower($element['type'] ?? $def_type);
-
+        $type = strtolower($element['type'] ?? null);
         // use type as a template
-        if ($element['template'] ?? true != false) {
-            $element = self::mergeTemplate($element, $this->context->getTemplate($type));
+        if (($element['template'] ?? true) !== false && $type) {
+            $element = $this->mergeTemplate($element, $this->context->getTemplate($type));
         }
 
         if( ($element['template'] ?? true != false) && in_array($type, config('flatform.form.inputs', [])) ){
             // apply input template
-            $element = self::mergeTemplate($element, $this->context->getTemplate('input') );
+            $element = $this->mergeTemplate($element, $this->context->getTemplate('input') );
         }
+        // take element type again
+        if(!isset($element['binding'])) {
+            $type = strtolower($element['type'] ?? $def_type);
+            $binding = $this->getBinding($type);
+            if($binding) {
+                $element['binding'] = $binding;
+                return self::_createElement($element, $this->context);
+            }
+        } else return self::_createElement($element, $this->context);
 
-        if (isset($this->user_binds[$type])) {
-            return self::_createElement($this->user_binds[$type], $element, $this->context);
-        }
-
-        if (isset($this->binds[$type])) {
-            return self::_createElement($this->binds[$type], $element, $this->context);
-        }
-
-        $class = $this->binds[$def_type];
+        $element['binding'] = $this->binds[$def_type];
         if (empty($element['type']) ) $element['type'] = $def_type;
-        return self::_createElement($class, $element, $this->context);
+        return self::_createElement($element, $this->context);
     }
 
 }

@@ -88,12 +88,12 @@ class Context implements IContext
 
     public function renderElement(IElement $element, $aroundHTML = null)
     {
-        // todo get template from config
         return $this->renderTag($element, $aroundHTML);
     }
 
     public function getTemplate($tag)
     {
+        if(is_null($tag)) return null;
         // logger('getTemplate',  [$tag]);
         foreach (explode(',', $this->cofig_template_path) as $path) {
             $template = config('flatform.' . $path . '.' . $tag, null);
