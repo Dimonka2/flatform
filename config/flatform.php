@@ -55,6 +55,8 @@ return [
         // default column style
         'col' => 'col-6',
 
+        'date_format_js' => 'dd.mm.yy',
+        
         // inputs that require div.col and label
         'inputs' => [
             'text', 'password', 'number', 'textarea', 'summernote',

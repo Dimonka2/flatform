@@ -70,12 +70,10 @@ class Context implements IContext
         return $view->with('context', $this)->render();
     }
 
-    public function renderTag(IElement $element, $text = null)
+    public static function renderArray(array $element, $tag, $text = null)
     {
-        $tag = $element->getTag();
         $html = '<' . $tag;
-        $options = $element->getOptions([]);
-        foreach($options as $key => $value) {
+        foreach($element as $key => $value) {
             if(!is_array($value)) $html .= ' ' . $key . '="' . htmlentities($value) . '"';
         }
         if(is_null($text)) {
@@ -84,6 +82,13 @@ class Context implements IContext
             $html .= '>' . $text . '</' . $tag . '>';
         }
         return $html;
+    }
+
+    public function renderTag(IElement $element, $text = null)
+    {
+        $tag = $element->getTag();
+        $options = $element->getOptions([]);        
+        return self::renderArray($options, $tag, $text);
     }
 
     public function renderElement(IElement $element, $aroundHTML = null)

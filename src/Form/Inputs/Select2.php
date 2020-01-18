@@ -10,13 +10,13 @@ use Flatform;
 class Select2 extends Input
 {
     protected $list;
+    protected $selected;
     protected $ajax_url;
     protected $tags;
 
     protected function read(array $element)
     {
-        $this->readSettings($element, ['list', 'ajax-url', 'tags']);
-        if(is_null($this->list)) $this->list = [];
+        $this->readSettings($element, ['list', 'ajax-url', 'tags', 'selected']);
         parent::read($element);
     }
 
@@ -33,12 +33,32 @@ class Select2 extends Input
         }
     }
 
+    protected function renderOptions()
+    {
+        $html = '';
+        if(!is_null($this->list)) {
+            foreach($this->list as $key => $value){
+                $option = ['value' => $key];
+                if(!is_null($selected) && isset($selected[$key])) $option['selected'] = '';
+                $html .= $this->context->renderArray($option, 'option', $value);
+            }
+        } elseif(!is_null($this->selected)) {
+            foreach($this->selected as $key => $value){
+                $option = ['value' => $key, 'selected' => ''];
+                $html .= $this->context->renderArray($option, 'option', $value);
+            }
+        }
+        return $html;
+    }
+
     protected function render()
     {
         $html = $this->addAssets();
         $options = $this->getOptions(['placeholder', 'readonly', 'disabled']);
         if($this->ajax_url) $options['ajax-url'] = $this->ajax_url;
         if($this->tags) $options['tags'] = $this->tags;
-        return $html . Form::select($this->name, $this->list ?? [], $this->value, $options);
+        return $html . 
+            $this->context->renderArray($options, 'select', $this->renderOptions());
+        //Form::select($this->name, $this->list ?? [], $this->value, $options);
     }
 }

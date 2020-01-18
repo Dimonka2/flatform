@@ -2,7 +2,7 @@
     <script>
         $(document).ready(function () {
             $('.datepicker').datepicker({
-            dateFormat: '{{ config('app.date_format_js') }}'
+            dateFormat: '{{ config('flatform.form.date_format_js') }}'
             });
         });
     </script>
