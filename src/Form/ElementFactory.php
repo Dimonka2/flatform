@@ -69,15 +69,7 @@ class ElementFactory
     {
         $def_type = config('flatform.form.default-type', 'div');
         $binding = null;
-        if (isset($element['template'])) {
-            // template is already given
-            $template = $element['template'];
-            if ($template != false && preg_match(self::tag_template, $template)) {
-                unset($element['template']);
-                $element = $this->mergeTemplate($element, $this->context->getTemplate($template));
-            }
-        }
-
+        
         $type = strtolower($element['type'] ?? null);
         // use type as a template
         if (($element['template'] ?? true) !== false && $type) {

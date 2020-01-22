@@ -14,6 +14,7 @@ class FlatformService
     {
         // dd($element);
         $options = $element['options'] ?? null;
+        unset($element['options']);
         // backward compatibility with old version
         if(isset($element['elements'])) $element = $element['elements'];
         return (new Context($element))->setOptions($options)->render();

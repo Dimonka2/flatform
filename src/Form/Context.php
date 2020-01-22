@@ -19,6 +19,7 @@ class Context implements IContext
     private $factory;           // factory object
     private $cofig_template_path;
     private $errors;
+    private $debug;
 
     public function __construct(array $elements = [])
     {
@@ -72,7 +73,7 @@ class Context implements IContext
 
     public function render()
     {
-        // dd($this->elements);
+        if ($this->debug) dd($this);
         return $this->elements->renderItems($this);
     }
 
@@ -117,7 +118,7 @@ class Context implements IContext
     public function setOptions($options)
     {
         // read possible options from argument
-
+        $this->debug = $options['debug'] ?? false;
         return $this;
     }
 
