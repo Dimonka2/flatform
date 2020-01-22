@@ -13,10 +13,10 @@ use Illuminate\Support\MessageBag;
 
 class Context implements IContext
 {
-    protected $elements = [];
-    protected $next_id = 100;
-    private $factory;
-    private $template = null;
+    protected $elements = [];   // list of elements in context
+    protected $mapping = [];    // id => element mapping
+    protected $next_id = 100;   // id counter in order to avoid repeated ids
+    private $factory;           // factory object
     private $cofig_template_path;
     private $errors;
 
@@ -35,6 +35,17 @@ class Context implements IContext
         return $this;
     }
 
+    public function setMapping($id, IElement $element)
+    {
+        $mapping[$id] = $element;
+        return $this;
+    }
+
+    public function getMapping($id): IElement
+    {
+        return $mapping[$id] ?? null;
+    }
+
     public function getID($name)
     {
         preg_match('/[-_A-Za-z0-9]+/', $name, $matches);
@@ -46,7 +57,7 @@ class Context implements IContext
         return $this->errors;
     }
 
-    public function createElement(array $element)
+    public function createElement(array $element): IElement
     {
         return $this->factory->createElement($element, $this);
     }
@@ -103,28 +114,11 @@ class Context implements IContext
         return null;
     }
 
-    public function setTemplatable(IElement $element = null)
-    {
-        if( isset($element)) {
-            if(is_null($this->template)) {
-                $this->template = $element;
-                return true;
-            }
-        } else {
-            $this->template = null;
-        }
-    }
-
     public function setOptions($options)
     {
         // read possible options from argument
 
         return $this;
-    }
-
-    public function getTemplatable()
-    {
-        return $this->template;
     }
 
     public function getJsStack()

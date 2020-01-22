@@ -1,7 +1,6 @@
 <?php
 namespace dimonka2\flatform;
 
-use laravelcollective\html\Form;
 use dimonka2\flatform\Form\Context;
 class FlatformService
 {

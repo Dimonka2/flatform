@@ -39,6 +39,25 @@ class Element implements IElement
         }
     }
 
+    protected function read(array $element)
+    {
+        $this->readSettings($element, [
+            'text',
+            'style',
+            'class',
+            'id',
+            'type',
+            'hidden',
+            'exclude',
+            'template',
+        ]);
+        if(!is_null($this->hidden)) $this->hidden = !!$this->hidden;
+        if(!is_null($this->exclude)) $this->hidden = !!$this->exclude;
+        $this->processAttributes($element);
+        if(!is_null($this->id)) $this->context->setMapping($this->id, $this);
+        return $this;
+    }
+
     public function processAttributes($element)
     {
 
@@ -65,15 +84,6 @@ class Element implements IElement
     public function addStyle($style)
     {
         $this->style = ($this->style ?? '') . ' ' . $style;
-        return $this;
-    }
-
-    protected function read(array $element)
-    {
-        $this->readSettings($element, explode(',', 'text,style,class,id,type,hidden,exclude,template'));
-        if(!is_null($this->hidden)) $this->hidden = !!$this->hidden;
-        if(!is_null($this->exclude)) $this->hidden = !!$this->exclude;
-        $this->processAttributes($element);
         return $this;
     }
 
@@ -162,6 +172,7 @@ class Element implements IElement
     {
         if(is_null($this->id)) {
             $this->id = $this->context->getID($this->name ?? 'id');
+            $this->context->setMapping($this->id, $this);
         }
         return $this;
     }
@@ -174,7 +185,6 @@ class Element implements IElement
     public function setParent(IElement $item)
     {
         $this->parent = $item;
-
         return $this;
     }
 

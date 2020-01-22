@@ -13,8 +13,7 @@ class Select extends Input
 
     protected function read(array $element)
     {
-        $fields = 'state-list,list';
-        $this->readSettings($element, explode(',', $fields));
+        $this->readSettings($element, ['state-list', 'list']);
         parent::read($element);
         if(is_null($this->list) && !is_null($this->state_list)) {
             // a temporary feature
