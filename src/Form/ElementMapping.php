@@ -21,20 +21,25 @@ class ElementMapping
         'hidden'        => Inputs\Hidden::class,
 
         // components
-        'tabs'          => Components\Tabs::class,
         'widget'        => Components\Widget::class,
         'dropdown'      => Components\Dropdown::class,
         'dd-item'       => Components\DropdownItem::class,
         'datatable'     => Components\Datatable::class,
-        'breadcrumbs'   => Components\Breadcrumbs::class,
         'progress'      => Components\Progress::class,
         'alert'         => Components\Alert::class,
+
+        // Navs
+        'breadcrumbs'   => Navs\Breadcrumbs::class,
+        'tabs'          => Navs\Tabs::class,
+        'menu'          => Navs\Menu::class,
+        'menu-item'     => Navs\MenuItem::class,
 
         // links and buttons
         'a'             => Link::class,
         'submit'        => Components\Button::class,
         'button'        => Components\Button::class,
 
+        // basic elements
         'form'          => Form::class,
         'img'           => Elements\Image::class,
         'col'           => Elements\Column::class,
@@ -48,7 +53,6 @@ class ElementMapping
         'ul'            => ElementContainer::class,
         'li'            => ElementContainer::class,
         '_text'         => Element::class,
-        '_template'     => Element::class,
         'option'        => Element::class,
 
         // blade directives

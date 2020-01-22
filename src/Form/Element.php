@@ -23,6 +23,7 @@ class Element implements IElement
     protected $attributes = [];
     protected $text;
     protected $template;
+    protected $parent;
 
 
     protected function readSettings(array &$element, array $keys)
@@ -165,4 +166,20 @@ class Element implements IElement
         return $this;
     }
 
+    public function getParent(): IElement
+    {
+        return $this->parent;
+    }
+
+    public function setParent(IElement $item)
+    {
+        $this->parent = $item;
+
+        return $this;
+    }
+
+    public function hasParent()
+    {
+        return $this->parent !== null;
+    }
 }

@@ -84,16 +84,12 @@ class Context implements IContext
         return $html;
     }
 
-    public function renderTag(IElement $element, $text = null)
-    {
-        $tag = $element->getTag();
-        $options = $element->getOptions([]);        
-        return self::renderArray($options, $tag, $text);
-    }
 
     public function renderElement(IElement $element, $aroundHTML = null)
     {
-        return $this->renderTag($element, $aroundHTML);
+        $tag = $element->getTag();
+        $options = $element->getOptions([]);
+        return self::renderArray($options, $tag, $aroundHTML);
     }
 
     public function getTemplate($tag)

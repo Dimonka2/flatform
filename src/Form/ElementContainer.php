@@ -4,10 +4,11 @@ namespace dimonka2\flatform\Form;
 
 use dimonka2\flatform\Form\Element;
 use Illuminate\Support\Collection;
+use dimonka2\flatform\Form\Contracts\IElement;
 use dimonka2\flatform\Form\Contracts\IContext;
 use dimonka2\flatform\Form\Contracts\IContainer;
 
-class ElementContainer extends Element implements IContainer
+class ElementContainer extends Element implements IContainer, \ArrayAccess, \Countable, \IteratorAggregate
 {
     protected $elements;
 
@@ -15,11 +16,6 @@ class ElementContainer extends Element implements IContainer
     {
         $this->elements = new Collection;
         parent::__construct($element, $context);
-    }
-
-    public function getElements()
-    {
-        return $this->elements;
     }
 
     protected function read(array $element)
@@ -37,17 +33,11 @@ class ElementContainer extends Element implements IContainer
         return $this;
     }
 
-    public function push(Element $item)
-    {
-        $this->elements->push($item);
-        return $this;
-    }
-
     public function readItems(array $items)
     {
         foreach ($items as $item) {
             $item = $this->createElement($item);
-            $this->elements->push($item);
+            $this[] = $item;
         }
         return $this;
     }
@@ -56,16 +46,11 @@ class ElementContainer extends Element implements IContainer
     {
         $item = $this->createElement(['type' => '_text']);
         $item->text = $text;
-        $this->elements->push($item);
+        $this->elements[] = $item;
         return $item;
     }
 
     // IContainer inteface
-
-    public function items()
-    {
-        return $this->elements;
-    }
 
     protected function render()
     {
@@ -83,4 +68,40 @@ class ElementContainer extends Element implements IContainer
         return $html;
     }
 
+    /**
+     * Implements Countable.
+     */
+    public function count()
+    {
+        return count($this->elements);
+    }
+
+    /**
+     * Implements IteratorAggregate.
+     */
+    public function getIterator()
+    {
+        return new \ArrayIterator($this->elements);
+    }
+
+    public function offsetSet($offset, $item) {
+        if($item instanceof IElement) $item->setParent($this);
+        if (is_null($offset)) {
+            $this->elements[] = $item;
+        } else {
+            $this->elements[$offset] = $item;
+        }
+    }
+
+    public function offsetExists($offset) {
+        return isset($this->elements[$offset]);
+    }
+
+    public function offsetUnset($offset) {
+        unset($this->elements[$offset]);
+    }
+
+    public function offsetGet($offset) {
+        return isset($this->elements[$offset]) ? $this->elements[$offset] : null;
+    }
 }

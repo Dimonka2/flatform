@@ -53,7 +53,7 @@ class BootstrapSelect extends Input
                     return $context->renderElement($item, $item->text);
                 };
 
-                $this->options->push($item);
+                $this->options[] = $item;
 
             }
         }

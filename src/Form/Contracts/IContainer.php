@@ -7,6 +7,5 @@ use dimonka2\flatform\Form\Contracts\IContext;
 interface IContainer
 {
     public function renderItems();
-    public function items();
-
+    public function readItems(array $items);
 }

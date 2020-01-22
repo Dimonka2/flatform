@@ -18,12 +18,12 @@ class Link extends ElementContainer
 
     protected function is_post()
     {
-        return !is_null($this->post);
+        return !!$this->post;
     }
 
     protected function is_link()
     {
-        return !is_null($this->href) && !$this->is_post();
+        return ($this->href !== null) && !$this->is_post();
     }
 
     protected function read(array $element)
@@ -59,11 +59,11 @@ class Link extends ElementContainer
                 if($item == 'post') {
                     $method = $item;
                 } else {
-                    $form->elements->push($this->createElement([
+                    $form->elements[] = $this->createElement([
                         'type' => 'hidden',
                         'name' => $key,
                         'value' => $item,
-                    ]));
+                    ]);
                 }
             }
         } else {
