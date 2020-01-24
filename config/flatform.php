@@ -56,7 +56,7 @@ return [
         'col' => 'col-6',
 
         'date_format_js' => 'dd.mm.yy',
-        
+
         // inputs that require div.col and label
         'inputs' => [
             'text', 'password', 'number', 'textarea', 'summernote',
@@ -114,6 +114,7 @@ return [
         'breadcrumbs' => ['template' => 'flatform::one.breadcrumbs'],
         // templates
         'tab-content' => ['template' => 'flatform::one.tab-content',],
+        'sidebar' => ['type' => 'menu', 'template' => 'flatform::one.sidebar'],
     ],
 
     'aliases' => [

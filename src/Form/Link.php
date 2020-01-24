@@ -97,4 +97,12 @@ class Link extends ElementContainer
     {
        return $this->is_link() ? 'a' : 'button';
     }
+
+    /**
+     * Get the value of href
+     */
+    public function getHref()
+    {
+        return $this->href;
+    }
 }

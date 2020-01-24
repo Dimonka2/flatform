@@ -3,9 +3,6 @@
 namespace dimonka2\flatform\Form\Navs;
 
 use dimonka2\flatform\Form\ElementContainer;
-use dimonka2\flatform\Form\Navs\Menu;
-use dimonka2\flatform\Form\Contracts\IContext;
-use Form;
 
 class Menu extends ElementContainer
 {
@@ -14,15 +11,15 @@ class Menu extends ElementContainer
     {
         // $this->readSettings($element, ['badge', 'active']);
         parent::read($element);
-
+        // debug($this);
     }
 
-
-    public function renderElement()
+    public function addMenuItem($definition): MenuItem
     {
-        if(!$this->hidden) {
-            return $this->renderLink();
-        }
+        if(!isset($definition['type'])) $definition['type'] = 'menu-item';
+        $item = $this->createElement($definition);
+        $this[] = $item;
+        return $item;
     }
 
 }

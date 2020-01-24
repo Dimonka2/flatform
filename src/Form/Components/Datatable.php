@@ -61,7 +61,7 @@ class Datatable extends ElementContainer
     public function addColumn(array $definition)
     {
         if(!isset($definition['type'])) $definition['type'] = 'dt-column';
-        $column = $this->context->createElement($definition);
+        $column = $this->createElement($definition);
         $column->setParent($this);
         $this->colDefinition->push($column);
         return $column;
