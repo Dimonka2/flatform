@@ -16,14 +16,16 @@ class Datatable extends ElementContainer
     public $options;
     public $js_variable;
     public $ajax_data_function;
+    protected $colDefinition;   // collection of DTColumn objects
 
     protected function read(array $element)
     {
+        $columns = self::readSingleSetting($element, 'columns');
+        $this->createColumns($columns);
         $this->readSettings($element, [
             'ajax_url',
             'ajax_dataType',
             'ajax_method',
-            'columns',
             'order',
             'options',
             'js_variable',
@@ -31,6 +33,14 @@ class Datatable extends ElementContainer
         ]);
         parent::read($element);
         $this->requireID();
+    }
+
+    protected function createColumns(array $columns)
+    {
+        $this->colDefinition = collect([]);
+        foreach($columns as $column) {
+            $this->addColumn($column);
+        }
     }
 
     protected function render()
@@ -46,5 +56,22 @@ class Datatable extends ElementContainer
                 ->with('element', $this)
         );
 
+    }
+
+    public function addColumn(array $definition)
+    {
+        if(!isset($definition['type'])) $definition['type'] = 'dt-column';
+        $column = $this->context->createElement($definition);
+        $column->setParent($this);
+        $this->colDefinition->push($column);
+        return $column;
+    }
+
+    /**
+     * Get the value of colDefinition
+     */
+    public function getColDefinition()
+    {
+        return $this->colDefinition;
     }
 }

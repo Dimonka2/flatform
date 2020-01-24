@@ -131,4 +131,12 @@ class Context implements IContext
     {
         return config('flatform.form.css_stack', 'css');
     }
+
+
+    // create specific elements
+
+    public function Datatable()
+    {
+        return createElement(['type' => 'datatable']);
+    }
 }

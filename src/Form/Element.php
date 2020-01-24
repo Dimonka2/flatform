@@ -19,22 +19,35 @@ class Element implements IElement
     protected $context;
     protected $type;
     protected $hidden;
-    protected $exclude; // depricated
     protected $attributes = [];
     protected $text;
     protected $template;
     protected $parent;
 
 
+    protected static function readSingleSetting(array &$element, $key)
+    {
+        if (isset($element[$key])) {
+            $value = $element[$key];
+            unset($element[$key]);
+            return $value;
+        }
+        return null;
+    }
+
     protected function readSettings(array &$element, array $keys)
     {
-        foreach($keys as $key){
-            $key = trim($key);
-            if (isset($element[$key])) {
-                $value = $element[$key];
-                unset($element[$key]);
-                $key = str_replace('-', '_', $key);
-                $this->$key = $value;
+        foreach($keys as $keyKey => $key){
+            // allow to map many possible attributes to one in order to support depricated ones
+            if(is_array($key)) {
+                $keyKey = str_replace('-', '_', trim($keyKey));
+                foreach ($key as $key2) {
+                    $value = self::readSingleSetting($element, trim($key2));
+                    if ($value !== null) $this->$keyKey = $value;
+                }
+            } else {
+                $value = self::readSingleSetting($element, trim($key));
+                if ($value !== null) $this->$key = $value;
             }
         }
     }
@@ -47,12 +60,11 @@ class Element implements IElement
             'class',
             'id',
             'type',
-            'hidden',
-            'exclude',
+            'hidden'=> ['exclude', 'hidden'],
             'template',
         ]);
         if(!is_null($this->hidden)) $this->hidden = !!$this->hidden;
-        if(!is_null($this->exclude)) $this->hidden = !!$this->exclude;
+
         $this->processAttributes($element);
         if(!is_null($this->id)) $this->context->setMapping($this->id, $this);
         return $this;
@@ -163,11 +175,6 @@ class Element implements IElement
         return ($this->type ?? config('flatform.form.default-type', 'div') );
     }
 
-    public function getHidden()
-    {
-        return $this->hidden;
-    }
-
     protected function requireID()
     {
         if(is_null($this->id)) {
@@ -191,5 +198,43 @@ class Element implements IElement
     public function hasParent()
     {
         return $this->parent !== null;
+    }
+
+    /**
+     * Get the value of hidden
+     */
+    public function getHidden()
+    {
+        return $this->hidden;
+    }
+
+    /**
+     * Set the value of hidden
+     *
+     * @return  self
+     */
+    public function setHidden($hidden)
+    {
+        $this->hidden = $hidden;
+        return $this;
+    }
+
+    /**
+     * Get the value of text
+     */
+    public function getText()
+    {
+        return $this->text;
+    }
+
+    /**
+     * Set the value of text
+     *
+     * @return  self
+     */
+    public function setText($text)
+    {
+        $this->text = $text;
+        return $this;
     }
 }

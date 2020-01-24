@@ -24,14 +24,8 @@
                 {!! $element->order ?? '' !!}
 
                 columnDefs: [
-                    @foreach ($element->columns as $column)
-                        {targets: [ {{$loop->index}} ]
-                        @isset($column['title'])  , title: "{!! addslashes($column['title']) !!}" @endisset
-                        @isset($column['hide']) , "visible": false @endisset
-                        @if(isset($column['sort']) and !$column['sort'] or ($column['system'] ?? false)) , "orderable": false @endisset
-                        @if(isset($column['sortDesc']) and $column['sortDesc']) , "orderSequence": ["desc", "asc"] @endisset
-                        @isset($column['defs']) {!! $column['defs'] !!} @endisset },
-
+                    @foreach ($element->getColDefinition() as $column)
+                        {targets: [ {{$loop->index}} ] {!! $column->formatColumnDefs() !!} },
                     @endforeach
                 ],
                 "ajax":{
@@ -44,8 +38,8 @@
                         }
                 },
                 "columns": [
-                        @foreach ($element->columns as $column)
-                            { "data": "{{ (isset($column['as']) ? $column['as'] : $column['name'])}}" },
+                        @foreach ($element->getColDefinition() as $column)
+                            { "data": "{{ $column->as ? $column->as : $column->name }}" },
                         @endforeach
                 ]
 
