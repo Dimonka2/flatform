@@ -1,6 +1,6 @@
 <?php
 
-namespace dimonka2\flatform\Form;
+namespace dimonka2\flatform\Form\Elements;
 
 use dimonka2\flatform\Form\ElementContainer;
 use dimonka2\flatform\Form\Contracts\IContext;
@@ -15,7 +15,7 @@ class Label extends ElementContainer
 
     protected function render()
     {
-        if($this->elements->count() == 0 && $aroundHTML == '') return;
+        if($this->elements->count() == 0) return;
         return parent::render();
     }
 

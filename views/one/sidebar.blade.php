@@ -24,11 +24,7 @@
                             <i class="nav-main-link-icon {{$item->icon}}"></i>
                         @endif
                         <span class="nav-main-link-name">{!!$item->title!!}</span>
-                        @if($item->getBadge())
-                            <span class="badge badge-pill badge-{{$item->getBadgeColor() ?? 'danger'}}">
-                                {!! $item->getBadge() !!}
-                            </span>
-                        @endif
+                        {!! $item->renderBadge() !!}
                     </a>
                 </li>
             @endif

@@ -152,7 +152,6 @@ class Element implements IElement
                         ->with('html', $html)
                     );
                 }
-
             }
             return $html;
         }

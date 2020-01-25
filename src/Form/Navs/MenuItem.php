@@ -8,8 +8,6 @@ use dimonka2\flatform\Form\Contracts\IElement;
 
 class MenuItem extends Link
 {
-    protected $badge;
-    protected $badgeColor;
     protected $menu;
     protected $open;
     public $active;
@@ -27,13 +25,17 @@ class MenuItem extends Link
 
     public function setParent(IElement $item)
     {
-        if($item instanceof Menu) $this->menu = $item;
+        if($item instanceof Menu) {
+            $this->menu = $item;
+            if(!$this->badgeColor) $this->badgeColor = $this->menu->getBadgeColor();
+            if(is_null($this->badgePill)) $this->badgePill = $this->menu->getBadgePill();
+        }
         return parent::setParent($item);
     }
 
     protected function read(array $element)
     {
-        $this->readSettings($element, ['badge', 'active', 'badgeColor']);
+        $this->readSettings($element, ['badge', 'active']);
         parent::read($element);
         if($this->active) {
             if(is_object($this->parent) and ($this->parent instanceof MenuItem)) {
@@ -64,19 +66,4 @@ class MenuItem extends Link
         return $this;
     }
 
-    /**
-     * Get the value of badge_color
-     */
-    public function getBadgeColor()
-    {
-        return $this->badgeColor;
-    }
-
-    /**
-     * Get the value of badge
-     */
-    public function getBadge()
-    {
-        return $this->badge;
-    }
 }

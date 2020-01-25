@@ -6,10 +6,13 @@ use dimonka2\flatform\Form\ElementContainer;
 
 class Menu extends ElementContainer
 {
+    // default menu settings
+    protected $badgeColor;
+    protected $badgePill;
 
     protected function read(array $element)
     {
-        // $this->readSettings($element, ['badge', 'active']);
+        $this->readSettings($element, ['badgeColor', 'badgePill']);
         parent::read($element);
         // debug($this);
     }
@@ -22,4 +25,19 @@ class Menu extends ElementContainer
         return $item;
     }
 
+    /**
+     * Get the value of badgeColor
+     */
+    public function getBadgeColor()
+    {
+        return $this->badgeColor;
+    }
+
+    /**
+     * Get the value of badgePill
+     */
+    public function getBadgePill()
+    {
+        return $this->badgePill;
+    }
 }
