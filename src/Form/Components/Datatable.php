@@ -94,6 +94,6 @@ class Datatable extends ElementContainer
 
     public function format($data, $item, DTolumn $column)
     {
-        return $this->formatFunction($data, $column, $item);
+        return call_user_func_array($this->formatFunction, [$data, $column, $item]);
     }
 }

@@ -153,7 +153,7 @@ trait DatatableAjaxTrait
                     $nestedData[ $field ] = $column->format($value, $item);
                 } else if($table->hasFormatter()) {
                     $nestedData[ $field ] = $table->format($value, $item, $column);
-                }
+                } else  $nestedData[ $field ] = $value;
             }
             $data[] = $nestedData;
         }

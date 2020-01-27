@@ -69,7 +69,7 @@ class DTColumn extends Element
 
     public function format($data, $item)
     {
-        return $this->formatFunction($data, $this, $item);
+        return call_user_func_array($this->formatFunction, [$data, $this, $item]);
     }
 
        /**
