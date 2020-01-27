@@ -140,7 +140,24 @@ trait DatatableAjaxTrait
             debug($query->toSql() );
             debug($items, $table);
         }
-        $data = $this->formatJSON($items, $table->getColDefinition());
+        $data = [];
+        foreach ($items as $item) {
+            $nestedData = [];
+            foreach($table->getColDefinition() as $column) {
+                $value = '';
+                $field = $column->as ? $column->as : $column->name;
+                if (!$column->system) {
+                    $value = $item->{$field};
+                }
+                if($column->hasFormatter()) {
+                    $nestedData[ $field ] = $column->format($value, $item);
+                } else if($table->hasFormatter()) {
+                    $nestedData[ $field ] = $table->format($value, $item, $column);
+                }
+            }
+            $data[] = $nestedData;
+        }
+        // $this->formatJSON($items, $table->getColDefinition());
         $json_data = array(
             "draw"            => intval($request->input('draw')),
             "recordsTotal"    => intval($totalData),

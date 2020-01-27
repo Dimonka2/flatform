@@ -57,7 +57,7 @@ class Select2 extends Input
         $options = $this->getOptions(['placeholder', 'readonly', 'disabled']);
         if($this->ajax_url) $options['ajax-url'] = $this->ajax_url;
         if($this->tags) $options['tags'] = $this->tags;
-        return $html . 
+        return $html .
             $this->context->renderArray($options, 'select', $this->renderOptions());
         //Form::select($this->name, $this->list ?? [], $this->value, $options);
     }

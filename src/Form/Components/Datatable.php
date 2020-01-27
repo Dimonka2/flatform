@@ -18,6 +18,7 @@ class Datatable extends ElementContainer
     public $ajax_data_function;
     protected $colDefinition;   // collection of DTColumn objects
     protected $null_last;
+    protected $formatFunction;
 
     protected function read(array $element)
     {
@@ -32,6 +33,7 @@ class Datatable extends ElementContainer
             'js_variable',
             'ajax_data_function',
             'null_last',
+            'formatFunction',
         ]);
         parent::read($element);
         $this->requireID();
@@ -83,5 +85,15 @@ class Datatable extends ElementContainer
     public function getNullLast()
     {
         return $this->null_last;
+    }
+
+    public function hasFormatter()
+    {
+        return is_callable($this->formatFunction);
+    }
+
+    public function format($data, $item, DTolumn $column)
+    {
+        return $this->formatFunction($data, $column, $item);
     }
 }

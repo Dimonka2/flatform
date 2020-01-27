@@ -46,6 +46,7 @@ class Element implements IElement
                     if ($value !== null) $this->$keyKey = $value;
                 }
             } else {
+                $key = str_replace('-', '_', trim($key));
                 $value = self::readSingleSetting($element, trim($key));
                 if ($value !== null) $this->$key = $value;
             }

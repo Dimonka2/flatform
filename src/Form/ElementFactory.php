@@ -69,17 +69,22 @@ class ElementFactory
     {
         $def_type = config('flatform.form.default-type', 'div');
         $binding = null;
-        
+
         $type = strtolower($element['type'] ?? null);
         // use type as a template
         if (($element['template'] ?? true) !== false && $type) {
             $element = $this->mergeTemplate($element, $this->context->getTemplate($type));
         }
 
-        if( ($element['template'] ?? true != false) && in_array($type, config('flatform.form.inputs', [])) ){
+        if( ($element['template'] ?? true !== false) && in_array($type, config('flatform.form.inputs', [])) ){
             // apply input template
-            $element = $this->mergeTemplate($element, $this->context->getTemplate('input') );
+            if($element['no-input'] ?? false != true) {
+                unset($element['no-input']);
+            } else {
+                $element = $this->mergeTemplate($element, $this->context->getTemplate('input') );
+            }
         }
+
         // take element type again
         if(!isset($element['binding'])) {
             $type = strtolower($element['type'] ?? $def_type);
