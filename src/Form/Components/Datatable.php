@@ -17,11 +17,12 @@ class Datatable extends ElementContainer
     public $js_variable;
     public $ajax_data_function;
     protected $colDefinition;   // collection of DTColumn objects
+    protected $null_last;
 
     protected function read(array $element)
     {
         $columns = self::readSingleSetting($element, 'columns');
-        $this->createColumns($columns);
+        $this->createColumns($columns ?? []);
         $this->readSettings($element, [
             'ajax_url',
             'ajax_dataType',
@@ -30,6 +31,7 @@ class Datatable extends ElementContainer
             'options',
             'js_variable',
             'ajax_data_function',
+            'null_last',
         ]);
         parent::read($element);
         $this->requireID();
@@ -73,5 +75,13 @@ class Datatable extends ElementContainer
     public function getColDefinition()
     {
         return $this->colDefinition;
+    }
+
+    /**
+     * Get the value of null_last
+     */
+    public function getNullLast()
+    {
+        return $this->null_last;
     }
 }

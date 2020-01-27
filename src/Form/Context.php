@@ -137,6 +137,6 @@ class Context implements IContext
 
     public function Datatable()
     {
-        return createElement(['type' => 'datatable']);
+        return $this->createElement(['type' => 'datatable']);
     }
 }

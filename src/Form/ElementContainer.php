@@ -30,8 +30,10 @@ class ElementContainer extends Element implements IContainer, \ArrayAccess, \Cou
     public function readItems(array $items)
     {
         foreach ($items as $item) {
-            $item = $this->createElement($item);
-            $this[] = $item;
+            if(is_array($item)){
+                $item = $this->createElement($item);
+            }
+            if($item instanceof IElement) $this[] = $item;
         }
         return $this;
     }
