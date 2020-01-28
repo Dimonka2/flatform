@@ -58,6 +58,7 @@ class DTColumn extends Element
         }
         if($this->width) $text .=', width: "' . $this->width . '"' . PHP_EOL;
         if($this->defs) $text .= $this->defs . PHP_EOL;
+        if($this->class) $text .= ', class: "'. $this->class . '"' . PHP_EOL;
         return $text;
     }
 
@@ -68,7 +69,7 @@ class DTColumn extends Element
 
     public function format($data, $item)
     {
-        return $this->formatFunction($data, $this, $item);
+        return call_user_func_array($this->formatFunction, [$data, $this, $item]);
     }
 
        /**

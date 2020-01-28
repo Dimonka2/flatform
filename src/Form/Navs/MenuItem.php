@@ -4,12 +4,12 @@ namespace dimonka2\flatform\Form\Navs;
 
 use dimonka2\flatform\Form\Link;
 use dimonka2\flatform\Form\Navs\Menu;
-use dimonka2\flatform\Form\Contracts\IContext;
+use dimonka2\flatform\Form\Contracts\IElement;
 
 class MenuItem extends Link
 {
-    protected $badge;
     protected $menu;
+    protected $open;
     public $active;
 
     public function getMenu()
@@ -25,7 +25,11 @@ class MenuItem extends Link
 
     public function setParent(IElement $item)
     {
-        if($item instanceof Menu) $this->menu = $item;
+        if($item instanceof Menu) {
+            $this->menu = $item;
+            if(!$this->badgeColor) $this->badgeColor = $this->menu->getBadgeColor();
+            if(is_null($this->badgePill)) $this->badgePill = $this->menu->getBadgePill();
+        }
         return parent::setParent($item);
     }
 
@@ -33,11 +37,33 @@ class MenuItem extends Link
     {
         $this->readSettings($element, ['badge', 'active']);
         parent::read($element);
+        if($this->active) {
+            if(is_object($this->parent) and ($this->parent instanceof MenuItem)) {
+                $this->parent->setOpen(true);
+            }
+        }
     }
 
-    public function offsetSet($offset, $item) {
-        if($item instanceof MenuItem) $item->setMenu($this->menu);
-        parent::offsetSet($offset, $item);
+    /**
+     * Get the value of open
+     */
+    public function getOpen()
+    {
+        return $this->open;
+    }
+
+    /**
+     * Set the value of open
+     *
+     * @return  self
+     */
+    public function setOpen($open)
+    {
+        $this->open = $open;
+        if(is_object($this->parent) and ($this->parent instanceof MenuItem)) {
+            $this->parent->setOpen(true);
+        }
+        return $this;
     }
 
 }

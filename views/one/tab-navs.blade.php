@@ -3,7 +3,7 @@
         @if(!$tab->getHidden())
         <li class="nav-item">
             <a class="nav-link @if($loop->first) active @endif" href="#{{ $tab->id }}" data-toggle="tab">
-                {{ $tab->getTitle() }}
+                {!! $tab->getTitle() !!}
             </a>
         </li>
         @endif

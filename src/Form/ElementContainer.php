@@ -10,13 +10,7 @@ use dimonka2\flatform\Form\Contracts\IContainer;
 
 class ElementContainer extends Element implements IContainer, \ArrayAccess, \Countable, \IteratorAggregate
 {
-    protected $elements;
-
-    public function __construct(array $element, IContext $context)
-    {
-        $this->elements = new Collection;
-        parent::__construct($element, $context);
-    }
+    protected $elements = [];
 
     protected function read(array $element)
     {
@@ -36,8 +30,10 @@ class ElementContainer extends Element implements IContainer, \ArrayAccess, \Cou
     public function readItems(array $items)
     {
         foreach ($items as $item) {
-            $item = $this->createElement($item);
-            $this[] = $item;
+            if(is_array($item)){
+                $item = $this->createElement($item);
+            }
+            if($item instanceof IElement) $this[] = $item;
         }
         return $this;
     }

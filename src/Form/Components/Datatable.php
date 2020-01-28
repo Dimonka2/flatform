@@ -37,7 +37,6 @@ class Datatable extends ElementContainer
             'ajax_data_function',
             'null_last',
             'formatFunction',
-
         ]);
         parent::read($element);
         $this->requireID();
@@ -150,4 +149,5 @@ class Datatable extends ElementContainer
     {
         return DatatableAjax::process($request, $this, $query);
     }
+
 }

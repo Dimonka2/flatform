@@ -3,26 +3,41 @@
 namespace dimonka2\flatform\Form\Navs;
 
 use dimonka2\flatform\Form\ElementContainer;
-use dimonka2\flatform\Form\Navs\Menu;
-use dimonka2\flatform\Form\Contracts\IContext;
-use Form;
 
 class Menu extends ElementContainer
 {
+    // default menu settings
+    protected $badgeColor;
+    protected $badgePill;
 
     protected function read(array $element)
     {
-        // $this->readSettings($element, ['badge', 'active']);
+        $this->readSettings($element, ['badgeColor', 'badgePill']);
         parent::read($element);
-
+        // debug($this);
     }
 
-
-    public function renderElement()
+    public function addMenuItem($definition): MenuItem
     {
-        if(!$this->hidden) {
-            return $this->renderLink();
-        }
+        if(!isset($definition['type'])) $definition['type'] = 'menu-item';
+        $item = $this->createElement($definition);
+        $this[] = $item;
+        return $item;
     }
 
+    /**
+     * Get the value of badgeColor
+     */
+    public function getBadgeColor()
+    {
+        return $this->badgeColor;
+    }
+
+    /**
+     * Get the value of badgePill
+     */
+    public function getBadgePill()
+    {
+        return $this->badgePill;
+    }
 }

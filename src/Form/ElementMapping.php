@@ -45,6 +45,8 @@ class ElementMapping
         'img'           => Elements\Image::class,
         'col'           => Elements\Column::class,
         'label'         => Elements\Label::class,
+        'badge'         => Elements\Badge::class,
+
 
         'div'           => ElementContainer::class,
         'span'          => ElementContainer::class,

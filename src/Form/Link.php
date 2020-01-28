@@ -9,6 +9,9 @@ class Link extends ElementContainer
 {
     protected $href;
     protected $post;
+    protected $badge;
+    protected $badgeColor;
+    protected $badgePill;
     public $btn_group;
     public $title;
     public $icon;
@@ -29,7 +32,8 @@ class Link extends ElementContainer
     protected function read(array $element)
     {
         $this->readSettings($element,
-            ['href', 'post', 'title', 'icon', 'form-class', 'group']);
+            ['href', 'post', 'title', 'icon', 'form-class', 'group',
+            'badge', 'badgeColor', 'badgePill', ]);
         parent::read($element);
     }
 
@@ -44,8 +48,23 @@ class Link extends ElementContainer
     public function getTitle()
     {
         return (!is_null($this->icon) ?
-            $this->createElement(['type' => 'i', 'class' => $this->icon])->render() .
-            ' ' : '') . $this->title .  ($this->items_in_title ? $this->renderItems() : '');
+            $this->createElement([
+                'type' => 'i',
+                'class' => $this->icon
+                ])->render() . ' ' : '') .
+            $this->title .
+            $this->renderBadge().
+            ($this->items_in_title ? $this->renderItems() : '');
+    }
+
+    public function renderBadge()
+    {
+        return ($this->badge ? ' '. $this->createElement([
+                'type' => 'badge',
+                'text' => $this->badge,
+                'color' => $this->badgeColor,
+                'pill' => $this->badgePill,
+            ])->renderElement() : '');
     }
 
     protected function renderForm()
@@ -96,5 +115,30 @@ class Link extends ElementContainer
     public function getTag()
     {
        return $this->is_link() ? 'a' : 'button';
+    }
+
+    /**
+     * Get the value of href
+     */
+    public function getHref()
+    {
+        return $this->href;
+    }
+
+
+    /**
+     * Get the value of badge_color
+     */
+    public function getBadgeColor()
+    {
+        return $this->badgeColor;
+    }
+
+    /**
+     * Get the value of badge
+     */
+    public function getBadge()
+    {
+        return $this->badge;
     }
 }
