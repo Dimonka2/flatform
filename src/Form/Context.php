@@ -135,8 +135,9 @@ class Context implements IContext
 
     // create specific elements
 
-    public function Datatable()
+    public function Datatable($defaults = [])
     {
-        return createElement(['type' => 'datatable']);
+        if(!isset($defaults['type'])) $defaults['type'] = 'datatable';
+        return $this->createElement($defaults);
     }
 }

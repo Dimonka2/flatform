@@ -21,7 +21,10 @@
                 },
             @endif
                 {!! $element->options ?? '' !!}
-                {!! $element->order ?? '' !!}
+                @if($element->order)
+                    {!! $element->formatOrder() !!} ],
+                @endif
+
 
                 columnDefs: [
                     @foreach ($element->getColDefinition() as $column)
