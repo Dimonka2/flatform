@@ -22,7 +22,7 @@
             @endif
                 {!! $element->options ?? '' !!}
                 @if($element->order)
-                    {!! $element->formatOrder() !!} ],
+                    {!! $element->formatOrder() !!}
                 @endif
 
 
