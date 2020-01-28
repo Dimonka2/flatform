@@ -68,6 +68,9 @@ class Element implements IElement
 
         $this->processAttributes($element);
         if(!is_null($this->id)) $this->context->setMapping($this->id, $this);
+
+        // add debug logging to any specific element
+        if($this->attributes['debug'] ?? false) debug($this);
         return $this;
     }
 
