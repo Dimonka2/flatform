@@ -31,6 +31,9 @@ class FlatformServiceProvider extends ServiceProvider
             $this->publishes([
                 $this->getConfigFile() => config_path(self::config),
             ], 'config');
+            $this->commands([
+                \dimonka2\flatform\Commnad\TestCommand::class,
+            ]);
         } else {
             Blade::directive(config('flatform.blade_directive', 'form'), function ($form) {
                 return "<?php echo Flatform::render($form); ?>";
