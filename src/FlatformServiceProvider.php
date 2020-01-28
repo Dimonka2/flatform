@@ -32,7 +32,7 @@ class FlatformServiceProvider extends ServiceProvider
                 $this->getConfigFile() => config_path(self::config),
             ], 'config');
             $this->commands([
-                \dimonka2\flatform\Commnad\TestCommand::class,
+                \dimonka2\flatform\Commands\TestCommand::class,
             ]);
         } else {
             Blade::directive(config('flatform.blade_directive', 'form'), function ($form) {
