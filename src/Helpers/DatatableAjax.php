@@ -41,7 +41,7 @@ class DatatableAjax
 
 
         if ($request->has('order.0.column')) {
-            $orderColumn = $fields[$request->input('order.0.column')];
+            $orderColumn = $fields[$request->input('order.0.column') - ($table->details ? 1 : 0)];
             // protect from errors
             if($orderColumn->getSort() !== false && !$orderColumn->getSystem()) {
                 $orderDir = $request->input('order.0.dir');

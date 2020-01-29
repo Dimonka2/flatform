@@ -78,7 +78,7 @@ class ElementFactory
 
         if( ($element['template'] ?? true !== false) && in_array($type, config('flatform.form.inputs', [])) ){
             // apply input template
-            if($element['no-input'] ?? false != true) {
+            if($element['no-input'] ?? false != false) {
                 unset($element['no-input']);
             } else {
                 $element = $this->mergeTemplate($element, $this->context->getTemplate('input') );

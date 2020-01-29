@@ -19,6 +19,10 @@ class Datatable extends ElementContainer
     public $options;
     public $js_variable;
     public $ajax_data_function;
+    public $details;
+    public $ajax_details_url;
+    public $ajax_details_function;
+    public $details_format;
     protected $colDefinition;   // collection of DTColumn objects
     protected $null_last;
     protected $formatFunction;
@@ -37,6 +41,10 @@ class Datatable extends ElementContainer
             'ajax_data_function',
             'null_last',
             'formatFunction',
+            'details',
+            'ajax_details_url',
+            'ajax_details_function',
+            'details_format',
         ]);
         parent::read($element);
         $this->requireID();
@@ -90,7 +98,7 @@ class Datatable extends ElementContainer
     private function _formatOrder($key = null, $column = null)
     {
         if($column) {
-            return '[' . $key . ', "' . ($column->sortDesc ? 'desc' : 'asc'). '"]';
+            return '[' . ($key + ($this->details ? 1 : 0)) . ', "' . ($column->sortDesc ? 'desc' : 'asc'). '"]';
         }
         if(is_array($this->order)) {
             $cnt = count($this->order);
@@ -101,7 +109,7 @@ class Datatable extends ElementContainer
                     return null;
                 case 2:
                     $column = $this->getColumn($this->order[0], $key);
-                    if($column) return '[' . $key . ', "' . $this->order[1] . '"]';
+                    if($column) return '[' . ($key + ($this->details ? 1 : 0)) . ', "' . $this->order[1] . '"]';
                     return null;
                 default:
                     return;
@@ -135,6 +143,17 @@ class Datatable extends ElementContainer
         return $this->null_last;
     }
 
+    /**
+     * Set the value of formatFunction
+     *
+     * @return  self
+     */
+    public function setFormatFunction($formatFunction)
+    {
+        $this->formatFunction = $formatFunction;
+        return $this;
+    }
+
     public function hasFormatter()
     {
         return is_callable($this->formatFunction);
@@ -149,5 +168,7 @@ class Datatable extends ElementContainer
     {
         return DatatableAjax::process($request, $this, $query);
     }
+
+
 
 }
