@@ -154,6 +154,17 @@ class Datatable extends ElementContainer
         return $this;
     }
 
+    /**
+     * Set the value of ajax_url
+     *
+     * @return  self
+     */
+    public function setAjaxUrl($ajax_url)
+    {
+        $this->ajax_url = $ajax_url;
+        return $this;
+    }
+
     public function hasFormatter()
     {
         return is_callable($this->formatFunction);
@@ -168,7 +179,5 @@ class Datatable extends ElementContainer
     {
         return DatatableAjax::process($request, $this, $query);
     }
-
-
 
 }
