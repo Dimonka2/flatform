@@ -5,47 +5,45 @@
 
     <script type="text/javascript">
 
-        @if($element->details)
+        @if($element->hasDetails())
+        @php($details = $element->getDetails())
         function format_{{$element->id}}( rowData ) {
-            @if($element->details_format)
-                {!! $element->details_format !!}
+            @if($details->format_function)
+                {!! $details->format_function !!}
             @endif
-            @if($element->ajax_details_url)
-            var div = $('<div/>')
-                .addClass( 'loading' )
-                .text( 'Loading...' );
+            @if($details->url)
+            var div = $('<div/>').addClass( 'loading' ).text( 'Loading...' );
             $.ajax( {
-                url: '{{ $element->ajax_details_url }}',
-                data: function ( d ) {
-                    d._token = "{{csrf_token()}}";
-                    {{$element->ajax_details_function ?? ''}}
+                url: '{{ $details->url }}',
+                data: {
+                    '_token': "{{csrf_token()}}",
+                    '{{$details->data_id}}' : rowData.{{$details->data_id}},
+                    {{$details->data_definition ?? ''}}
                 },
                 "dataType": "json",
-                "type": "{{ $element->ajax_method ?? 'GET' }}",
+                "method": "{{ $details->getAjaxMethod() }}",
                 success: function ( json ) {
-                    div
-                .html( json.html )
-                .removeClass( 'loading' );
+                    div.html( json.html ).removeClass( 'loading' );
                 }
             } );
             @endif
             return div;
         }
 
-        var detailRows = [];
+        var detailRows_{{Str::camel($element->id)}} = [];
         function bindDetails() {
-            $('#{{$element->id}} tbody tr').on( 'click', 'td.{{$element->details}}', function () {
+            $('#{{$element->id}} tbody tr').on( 'click', 'td.{{trim($details->class)}}', function () {
                 var dt = $('#{{$element->id}}').DataTable();
                 var tr = $(this).closest('tr');
                 var row = dt.row( tr );
-                var idx = $.inArray( tr.attr('id'), detailRows );
+                var idx = $.inArray( tr.attr('id'), detailRows_{{Str::camel($element->id)}} );
 
                 if ( row.child.isShown() ) {
                     tr.removeClass( 'details' );
                     row.child.hide();
 
                     // Remove from the 'open' array
-                    detailRows.splice( idx, 1 );
+                    detailRows_{{Str::camel($element->id)}}.splice( idx, 1 );
                 }
                 else {
                     tr.addClass( 'details' );
@@ -53,7 +51,7 @@
 
                     // Add to the 'open' array
                     if ( idx === -1 ) {
-                        detailRows.push( tr.attr('id') );
+                        detailRows_{{Str::camel($element->id)}}.push( tr.attr('id') );
                     }
                 }
             } );
@@ -84,7 +82,7 @@
 
                 columnDefs: [
                     @foreach ($element->getColDefinition() as $column)
-                        {targets: [ {{$loop->index + ($element->details ? 1 : 0) }} ]
+                        {targets: [ {{$loop->index + (isset($details) ? 1 : 0) }} ]
                             {!! $column->formatColumnDefs() !!} },
                     @endforeach
                 ],
@@ -98,12 +96,14 @@
                         }
                 },
                 "columns": [
-                        @if($element->details)
+                        @if($element->hasDetails())
                         {
-                            className:      '{{$element->details}}',
+                            className:      '{{trim($details->class)}}',
                             orderable:      false,
-                            data:           null,
-                            defaultContent: ''
+                            data:           '',
+                            defaultContent: {!! $details->column_data ?
+                                $details->column_data :
+                                '"<button class=\'btn btn-sm btn-clean btn-icon btn-icon-md p-1\'><i class=\'fa fa-caret-down\'></i></button>"' !!}
                         },
                         @endif
                         @foreach ($element->getColDefinition() as $column)
@@ -113,12 +113,12 @@
 
             });
 
-            @if($element->details)
+            @if($element->hasDetails() )
                 var dt = $('#{{$element->id}}').DataTable();
                 dt.on('draw', function () {
                     bindDetails();
-                    $.each( detailRows, function ( i, id ) {
-                        $('#'+id+' td.details-control').trigger( 'click' );
+                    $.each( detailRows_{{Str::camel($element->id)}}, function ( i, id ) {
+                        $('#'+id+' td.{{trim($details->class)}}').trigger( 'click' );
                     } );
                 });
             @endif
