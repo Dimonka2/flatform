@@ -19,10 +19,7 @@ class Datatable extends ElementContainer
     public $options;
     public $js_variable;
     public $ajax_data_function;
-    public $details;
-    public $ajax_details_url;
-    public $ajax_details_function;
-    public $details_format;
+    protected $details;
     protected $colDefinition;   // collection of DTColumn objects
     protected $null_last;
     protected $formatFunction;
@@ -31,6 +28,10 @@ class Datatable extends ElementContainer
     {
         $columns = self::readSingleSetting($element, 'columns');
         $this->createColumns($columns ?? []);
+
+        $details = self::readSingleSetting($element, 'details');
+        if(is_array($details)) $this->createDetails($details);
+
         $this->readSettings($element, [
             'ajax_url',
             'ajax_dataType',
@@ -41,10 +42,6 @@ class Datatable extends ElementContainer
             'ajax_data_function',
             'null_last',
             'formatFunction',
-            'details',
-            'ajax_details_url',
-            'ajax_details_function',
-            'details_format',
         ]);
         parent::read($element);
         $this->requireID();
@@ -56,6 +53,10 @@ class Datatable extends ElementContainer
         foreach($columns as $column) {
             $this->addColumn($column);
         }
+    }
+    protected function createDetails(array $details)
+    {
+        $this->details = new DatatableDetails($details, $this->context);
     }
 
     protected function render()
@@ -178,6 +179,26 @@ class Datatable extends ElementContainer
     public function processAJAX(Request $request, $query)
     {
         return DatatableAjax::process($request, $this, $query);
+    }
+    /**
+     * Get the value of details
+     */
+    public function getDetails()
+    {
+        return $this->details;
+    }
+
+    public function hasDetails()
+    {
+        return is_object($this->details);
+    }
+
+    /**
+     * Get the value of ajax_method
+     */
+    public function getAjaxMethod()
+    {
+        return $this->ajax_method;
     }
 
 }
