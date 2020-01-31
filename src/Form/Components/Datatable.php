@@ -203,14 +203,4 @@ class Datatable extends ElementContainer
         return $this->ajax_method;
     }
 
-    /**
-     * Set the value of ajax_url
-     *
-     * @return  self
-     */
-    public function setAjaxUrl($ajax_url)
-    {
-        $this->ajax_url = $ajax_url;
-        return $this;
-    }
 }
