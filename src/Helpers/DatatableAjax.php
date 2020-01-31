@@ -41,7 +41,7 @@ class DatatableAjax
 
 
         if ($request->has('order.0.column')) {
-            $orderColumn = $fields[$request->input('order.0.column') - ($table->details ? 1 : 0)];
+            $orderColumn = $fields[$request->input('order.0.column') - ($table->hasDetails() ? 1 : 0)];
             // protect from errors
             if($orderColumn->getSort() !== false && !$orderColumn->getSystem()) {
                 $orderDir = $request->input('order.0.dir');
@@ -90,6 +90,8 @@ class DatatableAjax
                     $nestedData[ $field ] = $table->format($value, $item, $column);
                 } else  $nestedData[ $field ] = $value;
             }
+            if($table->hasDetails()) $nestedData['DT_RowId'] =
+                $table->id . '-' . $nestedData[$table->getDetails()->data_id];
             $data[] = $nestedData;
         }
         // $this->formatJSON($items, $table->getColDefinition());
