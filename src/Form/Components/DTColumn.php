@@ -20,7 +20,7 @@ class DTColumn extends Element
     public $noSelect;       // exclude from select statement of query
     public $width;          // column width option in CSS format, like "20%" or "200px"
     public $contentPadding; // like "mmmm"  https://datatables.net/reference/option/columns.contentPadding
-    public $formatFunction; // a closure to format the cell function($data, DTColumn $column, $item)
+    protected $formatFunction; // a closure to format the cell function($data, DTColumn $column, $item)
 
     protected function read(array $element)
     {
@@ -41,6 +41,7 @@ class DTColumn extends Element
             'hidden' => ['hide'],
         ]);
         parent::read($element);
+        if(!$this->as && strpos($this->name, '.')) $this->as = str_replace('.', '__', $this->name);
     }
 
     public function formatColumnDefs()
@@ -72,12 +73,26 @@ class DTColumn extends Element
         return call_user_func_array($this->formatFunction, [$data, $this, $item]);
     }
 
-       /**
+    public function setFormatFunction($value)
+    {
+        $this->formatFunction = $value;
+        return $this;
+    }
+
+    /**
      * Get the value of name
      */
     public function getName()
     {
         return $this->name;
+    }
+
+     /**
+     * Get the value of name
+     */
+    public function getSafeName()
+    {
+        return $this->as ? $this->as : str_replace('.', '__', $this->name);
     }
 
     /**
@@ -210,11 +225,7 @@ class DTColumn extends Element
         return $this;
     }
 
-    public function setFormatFunction($value)
-    {
-        $this->formatFunction = $value;
-        return $this;
-    }
+
 
     /**
      * Get the value of sortDesc

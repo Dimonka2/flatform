@@ -107,7 +107,7 @@
                         },
                         @endif
                         @foreach ($element->getColDefinition() as $column)
-                            { "data": "{{ $column->as ? $column->as : $column->name }}" },
+                            { "data": "{{ $column->getSafeName() }}" },
                         @endforeach
                 ]
 

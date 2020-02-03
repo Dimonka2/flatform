@@ -149,8 +149,15 @@ class Datatable extends ElementContainer
      *
      * @return  self
      */
-    public function setFormatFunction($formatFunction)
+    public function setFormatFunction($formatFunction, $columnName = null)
     {
+        if($columnName) {
+            $this->getColumn($columnName, $idx);
+            if($idx) {
+                $this->colDefinition[$idx]->setFormatFunction($formatFunction);
+            }
+            return $this;
+        }
         $this->formatFunction = $formatFunction;
         return $this;
     }

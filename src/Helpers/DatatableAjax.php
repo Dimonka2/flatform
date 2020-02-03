@@ -80,10 +80,10 @@ class DatatableAjax
             $nestedData = [];
             foreach($table->getColDefinition() as $column) {
                 $value = '';
-                $field = $column->as ? $column->as : $column->name;
                 if (!$column->system) {
-                    $value = $item->{$field};
+                    $value = $item->{$column->as ? $column->as : $column->name};
                 }
+                $field = $column->getSafeName();
                 if($column->hasFormatter()) {
                     $nestedData[ $field ] = $column->format($value, $item);
                 } else if($table->hasFormatter()) {
