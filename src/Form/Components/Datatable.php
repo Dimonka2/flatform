@@ -187,11 +187,8 @@ class Datatable extends ElementContainer
     {
         return DatatableAjax::process($request, $this, $query);
     }
-<<<<<<< HEAD
-=======
 
 
->>>>>>> 8f16cc6ba5adb0e069731fdf0c5cc1b310507f69
     /**
      * Get the value of details
      */
