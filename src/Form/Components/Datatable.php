@@ -149,8 +149,15 @@ class Datatable extends ElementContainer
      *
      * @return  self
      */
-    public function setFormatFunction($formatFunction)
+    public function setFormatFunction($formatFunction, $columnName = null)
     {
+        if($columnName) {
+            $this->getColumn($columnName, $idx);
+            if($idx) {
+                $this->colDefinition[$idx]->setFormatFunction($formatFunction);
+            }
+            return $this;
+        }
         $this->formatFunction = $formatFunction;
         return $this;
     }
@@ -180,6 +187,11 @@ class Datatable extends ElementContainer
     {
         return DatatableAjax::process($request, $this, $query);
     }
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 8f16cc6ba5adb0e069731fdf0c5cc1b310507f69
     /**
      * Get the value of details
      */

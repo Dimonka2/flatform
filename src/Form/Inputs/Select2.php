@@ -39,7 +39,7 @@ class Select2 extends Input
         if(!is_null($this->list)) {
             foreach($this->list as $key => $value){
                 $option = ['value' => $key];
-                if(!is_null($selected) && isset($selected[$key])) $option['selected'] = '';
+                if(!is_null($this->selected) && isset($this->selected[$key])) $option['selected'] = '';
                 $html .= $this->context->renderArray($option, 'option', $value);
             }
         } elseif(!is_null($this->selected)) {
