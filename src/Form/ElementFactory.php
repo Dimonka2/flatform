@@ -23,9 +23,6 @@ class ElementFactory
 
     protected static function _createElement(array $element, $context): IElement
     {
-        if( ($element['type'] ?? '') == 'widget' &&
-            $element['binding'] == 'dimonka2\flatform\Form\ElementContainer' ) throw new \Exception("Whattaf", 1);
-
         $reflection = new ReflectionClass($element['binding']);
         unset($element['binding']);
         return $reflection->newInstanceArgs([$element, $context]);

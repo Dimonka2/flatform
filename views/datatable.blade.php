@@ -7,12 +7,13 @@
 
         @if($element->hasDetails())
         @php($details = $element->getDetails())
-        function format_{{$element->id}}( rowData ) {
-            @if($details->format_function)
+        function format_{{Str::camel($element->id)}}( rowData ) {
+            @if( $details->format_function )
                 {!! $details->format_function !!}
             @endif
-            @if($details->url)
+
             var div = $('<div/>').addClass( 'loading' ).text( 'Loading...' );
+            @if($details->url)
             $.ajax( {
                 url: '{{ $details->url }}',
                 data: {
@@ -47,7 +48,7 @@
                 }
                 else {
                     tr.addClass( 'details' );
-                    row.child( format_{{$element->id}}( row.data() ) ).show();
+                    row.child( format_{{Str::camel($element->id)}}( row.data() ) ).show();
 
                     // Add to the 'open' array
                     if ( idx === -1 ) {
