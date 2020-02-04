@@ -31,6 +31,13 @@ class Element implements IElement
             $value = $element[$key];
             unset($element[$key]);
             return $value;
+        } else {
+            $key = str_replace('-', '_', trim($key));
+            if (isset($element[$key])) {
+                $value = $element[$key];
+                unset($element[$key]);
+                return $value;
+            }
         }
         return null;
     }
@@ -40,14 +47,14 @@ class Element implements IElement
         foreach($keys as $keyKey => $key){
             // allow to map many possible attributes to one in order to support depricated ones
             if(is_array($key)) {
-                $keyKey = str_replace('-', '_', trim($keyKey));
                 foreach ($key as $key2) {
                     $value = self::readSingleSetting($element, trim($key2));
+                    $keyKey = str_replace('-', '_', trim($keyKey));
                     if ($value !== null) $this->$keyKey = $value;
                 }
             } else {
-                $key = str_replace('-', '_', trim($key));
                 $value = self::readSingleSetting($element, trim($key));
+                $key = str_replace('-', '_', trim($key));
                 if ($value !== null) $this->$key = $value;
             }
         }
