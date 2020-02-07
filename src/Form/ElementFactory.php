@@ -67,6 +67,24 @@ class ElementFactory
         $def_type = config('flatform.form.default-type', 'div');
         $binding = null;
 
+        // new syntax - first element is a type element (no need to write 'type' => ..)
+        // next indexed elements are booleans or items
+        if(empty($element['type']) && isset($element[0])) {
+            $element['type'] = $element[0];
+            unset($element[0]);
+            foreach($element as $key => $value) {
+                // convert to the old syntax
+                if(is_integer($key)) {
+                    unset($element[$key]);
+                    if(is_array($value)) {
+                        $element['items'] = $value;
+                    } else {
+                        $element[$value] = true;
+                    }
+                }
+            }
+        }
+
         $type = strtolower($element['type'] ?? null);
         // use type as a template
         if (($element['template'] ?? true) !== false && $type) {
