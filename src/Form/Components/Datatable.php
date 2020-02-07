@@ -83,7 +83,7 @@ class Datatable extends ElementContainer
         return $column;
     }
 
-    protected function getColumn($index, &$key)
+    public function getColumn($index, &$key)
     {
         if(is_integer($index)) {
             $key = $index;
