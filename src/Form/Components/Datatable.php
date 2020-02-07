@@ -151,7 +151,15 @@ class Datatable extends ElementContainer
      */
     public function setFormatFunction($formatFunction, $columnName = null)
     {
-        if($columnName) {
+        if(is_array($columnName)) {
+            foreach($columnName as $column){
+                $this->getColumn($column, $idx);
+                if($idx) {
+                    $this->colDefinition[$idx]->setFormatFunction($formatFunction);
+                }
+            }
+            return $this;
+        }elseif($columnName) {
             $this->getColumn($columnName, $idx);
             if($idx) {
                 $this->colDefinition[$idx]->setFormatFunction($formatFunction);
