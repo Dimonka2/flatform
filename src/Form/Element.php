@@ -124,6 +124,11 @@ class Element implements IElement
         return $this->context->createElement($element);
     }
 
+    public function ensureType(array $element, $type)
+    {
+        return $this->context::ensureType($element, $type);
+    }
+
     public function __construct(array $element, IContext $context)
     {
         $this->context = $context;

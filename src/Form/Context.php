@@ -73,7 +73,7 @@ class Context implements IContext
 
     public function render()
     {
-        if ($this->debug) dd($this);
+        if ($this->debug) debug($this);
         return $this->elements->renderItems($this);
     }
 
@@ -120,6 +120,14 @@ class Context implements IContext
         // read possible options from argument
         $this->debug = $options['debug'] ?? false;
         return $this;
+    }
+
+    public static function ensureType(array $element, $type)
+    {
+        if(!isset($element['type']) && !isset($element[0])){
+            $element['type'] = $type;
+        }
+        return $element;
     }
 
     public function getJsStack()

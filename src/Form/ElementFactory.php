@@ -72,15 +72,16 @@ class ElementFactory
         if(empty($element['type']) && isset($element[0])) {
             $element['type'] = $element[0];
             unset($element[0]);
-            foreach($element as $key => $value) {
-                // convert to the old syntax
-                if(is_integer($key)) {
-                    unset($element[$key]);
-                    if(is_array($value)) {
-                        $element['items'] = $value;
-                    } else {
-                        $element[$value] = true;
-                    }
+        }
+
+        foreach($element as $key => $value) {
+            // convert to the old syntax
+            if(is_integer($key)) {
+                unset($element[$key]);
+                if(is_array($value)) {
+                    $element['items'] = $value;
+                } else {
+                    $element[$value] = true;
                 }
             }
         }

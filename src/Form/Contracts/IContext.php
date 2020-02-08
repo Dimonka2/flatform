@@ -9,6 +9,8 @@ interface IContext
     public function renderElement(IElement $element, $aroundHTML = null);
     public function renderView($view);
     public static function renderArray(array $element, $tag, $text = null);
+    public function createTemplate($template);
+    public static function ensureType(array $element, $type);
 
     public function createElement(array $element): IElement;
     public function getID($name);
