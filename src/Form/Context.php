@@ -124,7 +124,7 @@ class Context implements IContext
 
     public static function ensureType(array $element, $type)
     {
-        if(!isset($element['type']) && !isset($element[0])){
+        if(!isset($element['type'])){
             $element['type'] = $type;
         }
         return $element;
