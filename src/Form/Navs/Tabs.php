@@ -3,6 +3,7 @@
 namespace dimonka2\flatform\Form\Navs;
 
 use dimonka2\flatform\Form\ElementContainer;
+use dimonka2\flatform\Form\ElementFactory;
 
 class Tabs extends ElementContainer
 {
@@ -13,7 +14,7 @@ class Tabs extends ElementContainer
     {
         foreach ($items as $item) {
             $tab = $this->createTemplate('tab-item');
-            $tab->read($item);
+            $tab->read(ElementFactory::preprocessElement($item));
             $tab->items_in_title = false;
             $tab->requireID();
             $this->elements[] = $tab;

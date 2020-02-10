@@ -62,14 +62,9 @@ class ElementFactory
         if (isset($this->binds[$type])) return $this->binds[$type];
     }
 
-    public function createElement(array $element): IElement
+    public static function preprocessElement(array $element): array
     {
-        $def_type = config('flatform.form.default-type', 'div');
-        $binding = null;
-
-        // new syntax - first element is a type element (no need to write 'type' => ..)
-        // next indexed elements are booleans or items
-        if(empty($element['type']) && isset($element[0])) {
+        if(empty($element['type']) && isset($element[0]) && !is_array($element[0])) {
             $element['type'] = $element[0];
             unset($element[0]);
         }
@@ -85,6 +80,17 @@ class ElementFactory
                 }
             }
         }
+        return $element;
+    }
+
+    public function createElement(array $element): IElement
+    {
+        $def_type = config('flatform.form.default-type', 'div');
+        $binding = null;
+
+        // new syntax - first element is a type element (no need to write 'type' => ..)
+        // next indexed elements are booleans or items
+        $element = self::preprocessElement($element);
 
         $type = strtolower($element['type'] ?? null);
         // use type as a template
