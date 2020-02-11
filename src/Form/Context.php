@@ -25,9 +25,15 @@ class Context implements IContext
     {
         $this->cofig_template_path = config('flatform.form.style');
         $this->factory = new ElementFactory($this);
-        $this->errors = request()->session()->get('errors', new MessageBag);
+        $this->setElements($elements);
+    }
+
+    public function setElements(array $elements)
+    {
         $this->elements = new ElementContainer([], $this);
+        $this->errors = request()->session()->get('errors', new MessageBag);
         $this->elements->readItems($elements);
+        return $this;
     }
 
     public function add(array $elements = [])
