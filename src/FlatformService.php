@@ -21,7 +21,7 @@ class FlatformService
         return self::context($element)->setOptions($options)->render();
     }
 
-    public static function context($elements): Context
+    public static function context($elements = []): Context
     {
         if (!self::$context) {
             self::$context = new Context($elements);
