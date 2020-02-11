@@ -35,6 +35,8 @@ class Link extends ElementContainer
             ['href', 'post', 'title', 'icon', 'form-class', 'group',
             'badge', 'badgeColor', 'badgePill', ]);
         parent::read($element);
+        if(is_array($this->badge)) $this->badge = $this->createElement(
+            ElementFactory::preprocessElement($this->ensureType($this->badge, 'badge')));
     }
 
     public function getOptions(array $keys)
@@ -59,12 +61,18 @@ class Link extends ElementContainer
 
     public function renderBadge()
     {
-        return ($this->badge ? ' '. $this->createElement([
-                'type' => 'badge',
-                'text' => $this->badge,
-                'color' => $this->badgeColor,
-                'pill' => $this->badgePill,
-            ])->renderElement() : '');
+        if($this->badge){
+            if(is_object($this->badge)) {
+                return ' ' . $this->badge->renderElement();
+            } else {
+                return ' '. $this->createElement([
+                    'type' => 'badge',
+                    'text' => $this->badge,
+                    'color' => $this->badgeColor,
+                    'pill' => $this->badgePill,
+                ])->renderElement();
+            }
+        } else return;
     }
 
     protected function renderForm()
