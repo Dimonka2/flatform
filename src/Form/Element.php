@@ -68,7 +68,7 @@ class Element implements IElement
             'class',
             'id',
             'type',
-            'hidden'=> ['exclude', 'hidden'],
+            'hidden'=> ['exclude', 'hidden', 'hide'],
             'template',
         ]);
         if(!is_null($this->hidden)) $this->hidden = !!$this->hidden;
@@ -76,8 +76,6 @@ class Element implements IElement
         $this->processAttributes($element);
         if(!is_null($this->id)) $this->context->setMapping($this->id, $this);
 
-        // add debug logging to any specific element
-        if($this->attributes['debug'] ?? false) debug($this);
         return $this;
     }
 
@@ -133,6 +131,8 @@ class Element implements IElement
     {
         $this->context = $context;
         $this->read($element);
+        // add debug logging to any specific element
+        if($this->attributes['debug'] ?? false) debug($this);
     }
 
     public function getOptions(array $keys)
