@@ -54,9 +54,9 @@ Coming soon
 Following text creates text inputs with labels
 ```php
 @form([
-    ['type' => 'row', 'items' => [
-        ['type' => 'text', 'label' => 'First name', 'name' => 'first_name',],
-        ['type' => 'text', 'label' => 'Last name', 'name' => 'last_name',],
+    ['row', [
+        ['text', 'label' => 'First name', 'name' => 'first_name',],
+        ['text', 'label' => 'Last name', 'name' => 'last_name',],
     ]]                                
 ])
 ```

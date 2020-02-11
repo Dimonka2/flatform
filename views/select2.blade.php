@@ -2,8 +2,10 @@
     <script>
         function select2init(selector) {
             // console.log(selector, url);
-            let url = $(selector).attr('ajax-url');
-            let method = $(selector).attr('method');
+            let el = $(selector);
+            let url = el.attr('ajax-url');
+            let method = el.attr('method');
+            let dataFunction = el.attr('dataFunction');
             if(url) {
                 $(selector).select2({
                     theme: 'bootstrap4',
@@ -13,10 +15,12 @@
                     method: method ? method : 'GET',
                     url: url,
                     data: function (params) {
-                        return {
+                        let data = {
                             q: $.trim(params.term),
                             _token: '{{csrf_token()}}'
                         };
+                        if(dataFunction) data = window[dataFunction](data);
+                        return data;
                     },
                     processResults: function (data) {
                         return {
