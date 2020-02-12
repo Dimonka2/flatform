@@ -28,6 +28,7 @@ class ElementMapping
         'dt-column'     => Components\DTColumn::class,
         'progress'      => Components\Progress::class,
         'alert'         => Components\Alert::class,
+        'dropzone'      => Components\Dropzone::class,
 
         // Navs
         'breadcrumbs'   => Navs\Breadcrumbs::class,

@@ -16,8 +16,6 @@ class Image extends Element
 
     public function getOptions(array $keys)
     {
-        $options = parent::getOptions($keys);
-        if($this->src) $options['src'] = $this->src;
-        return $options;
+        return parent::getOptions(array_merge($keys, ['src']));
     }
 }

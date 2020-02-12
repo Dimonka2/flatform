@@ -13,6 +13,7 @@
             @endif
 
             var div = $('<div/>').addClass( 'loading' ).text( 'Loading...' );
+            var self = this;
             @if($details->url)
             $.ajax( {
                 url: '{{ $details->url }}',
@@ -25,6 +26,9 @@
                 "method": "{{ $details->getAjaxMethod() }}",
                 success: function ( json ) {
                     div.html( json.html ).removeClass( 'loading' );
+                    @if( $details->loaded_function )
+                        {!! $details->loaded_function !!}
+                    @endif
                 }
             } );
             @endif

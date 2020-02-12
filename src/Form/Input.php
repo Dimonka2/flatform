@@ -44,10 +44,6 @@ class Input extends Element
 
     public function getOptions(array $keys)
     {
-        $options = parent::getOptions($keys);
-        foreach(['name', 'readonly', 'disabled', 'required', 'value'] as $attr) {
-            if(!is_null($this->{$attr}))  $options[$attr] = $this->{$attr};
-        }
-        return $options;
+        return parent::getOptions(array_merge($keys, ['name', 'readonly', 'disabled', 'required', 'value']));
     }
 }
