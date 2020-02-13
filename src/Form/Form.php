@@ -4,6 +4,7 @@ namespace dimonka2\flatform\Form;
 
 use dimonka2\flatform\Form\ElementContainer;
 use dimonka2\flatform\Form\Contracts\IContext;
+use dimonka2\flatform\Form\Inputs\Hidden;
 use Form as LaForm;
 
 class Form extends ElementContainer
@@ -36,12 +37,12 @@ class Form extends ElementContainer
         return $html;
     }
 
-    public function addHiddenField($name, $value)
+    public function addHiddenField($name, $value): Hidden
     {
-        $item = $this->createElement(['hidden', 'name' => $name, 'vlaue' => $value]);
+        $item = $this->createElement(['hidden', 'name' => $name, 'value' => $value]);
         $this[] = $item;
 
-        return $this;
+        return $item;
     }
 
     protected function render()

@@ -11,14 +11,23 @@ class Dropzone extends Form
     protected $onError;
     protected $onRemovedfile;
     protected $onInit;
+    protected $fileList;
 
     protected const options = ['onSuccess', 'onError', 'onRemovedfile', 'onInit'];
 
     protected function read(array $element)
     {
         $this->readSettings($element, self::options);
+        $this->readSettings($element, ['fileList']);
         parent::read($element);
         $this->files = true;
+        if($this->fileList) $this->buildFileList();
+    }
+
+    protected function buildFileList()
+    {
+
+        $this->addHiddenField('files', json_encode($this->fileList));
     }
 
     protected function addAssets()

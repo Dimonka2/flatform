@@ -32,7 +32,15 @@
                     }
                 }
             };
-            var newDropzone = new Dropzone(selector, dropzoneOptions);
+            let newDropzone = new Dropzone(selector, dropzoneOptions);
+            let files = el.find('input[name="files"]');
+            if(files) {
+                // show existing files
+                let fileList = JSON.parse(files.val());
+                fileList.forEach(function(file){
+                    newDropzone.options.addedfile.call(newDropzone, file);
+                });
+            }
         }
 
         function initDropzones() {

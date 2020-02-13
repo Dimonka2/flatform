@@ -20,7 +20,7 @@
                 data: {
                     '_token': "{{csrf_token()}}",
                     '{{$details->data_id}}' : rowData.{{$details->data_id}},
-                    {{$details->data_definition ?? ''}}
+                    {!! $details->data_definition ?? ''!!}
                 },
                 "dataType": "json",
                 "method": "{{ $details->getAjaxMethod() }}",
@@ -97,7 +97,7 @@
                         "type": "{{ $element->ajax_method ?? 'GET' }}",
                         "data": function ( d ) {
                             d._token = "{{csrf_token()}}";
-                            {{$element->ajax_data_function ?? ''}}
+                            {!! $element->ajax_data_function ?? '' !!}
                         }
                 },
                 "columns": [
