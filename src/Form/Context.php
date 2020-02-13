@@ -44,13 +44,13 @@ class Context implements IContext
 
     public function setMapping($id, IElement $element)
     {
-        $mapping[$id] = $element;
+        $this->mapping[$id] = $element;
         return $this;
     }
 
     public function getMapping($id): IElement
     {
-        return $mapping[$id] ?? null;
+        return $this->mapping[$id] ?? null;
     }
 
     public function getID($name)
@@ -66,7 +66,9 @@ class Context implements IContext
 
     public function createElement(array $element): IElement
     {
-        return $this->factory->createElement($element, $this);
+        $element = $this->factory->createElement($element, $this);
+        if($element->id) $this->setMapping($element->id, $element);
+        return $element;
     }
 
     public function createTemplate($template)
