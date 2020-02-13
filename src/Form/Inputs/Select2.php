@@ -61,4 +61,24 @@ class Select2 extends Input
             $this->context->renderArray($options, 'select', $this->renderOptions());
         //Form::select($this->name, $this->list ?? [], $this->value, $options);
     }
+
+    /**
+     * Get the value of selected
+     */
+    public function getSelected()
+    {
+        return $this->selected;
+    }
+
+    /**
+     * Set the value of selected
+     *
+     * @return  self
+     */
+    public function setSelected($selected)
+    {
+        $this->selected = $selected;
+
+        return $this;
+    }
 }
