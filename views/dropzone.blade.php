@@ -12,7 +12,6 @@
                 },
                 addRemoveLinks: !!onRemovedfile,
                 init: function () {
-                    if(onInit) window[onInit](this, el);
 
                     if(onSuccess) {
                         this.on("success", function (file, resp) {
@@ -32,6 +31,7 @@
                     }
                 }
             };
+            if(onInit) window[onInit](dropzoneOptions);
             let newDropzone = new Dropzone(selector, dropzoneOptions);
             let files = el.find('input[name="files"]');
             if(files) {
