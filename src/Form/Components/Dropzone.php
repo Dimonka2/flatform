@@ -9,11 +9,12 @@ class Dropzone extends Form
 {
     protected $onSuccess;
     protected $onError;
+    protected $onAddedfile;
     protected $onRemovedfile;
     protected $onInit;
     protected $fileList;
 
-    protected const options = ['onSuccess', 'onError', 'onRemovedfile', 'onInit'];
+    protected const options = ['onSuccess', 'onError', 'onRemovedfile', 'onInit', 'onAddedfile'];
 
     protected function read(array $element)
     {

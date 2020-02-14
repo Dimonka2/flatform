@@ -9,7 +9,7 @@
             </span>
             @endif
             <h3 class="kt-portlet__head-title">
-                {!! $element->title !!}
+                {!! $element->getTitle() !!}
             </h3>
         </div>
         @endif
