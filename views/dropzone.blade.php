@@ -16,12 +16,12 @@
                     if(onInit) window[onInit](this);
                     if(onSuccess) {
                         this.on("success", function (file, resp) {
-                            window[onSuccess](file, resp, selector);
+                            window[onSuccess](file, resp);
                         });
                     }
                     if(onError) {
-                        this.on("error", function (message) {
-                            window[onError](message, selector);
+                        this.on("error", function (file, resp) {
+                            window[onError](file, resp);
                         });
                     }
                     if(onAddedfile) {
@@ -41,7 +41,7 @@
 
             let newDropzone = new Dropzone(selector, dropzoneOptions);
             let files = el.find('input[name="files"]');
-            if(files) {
+            if(files.length > 0) {
                 // show existing files
                 let fileList = JSON.parse(files.val());
                 fileList.forEach(function(file){
