@@ -17,12 +17,15 @@ class Tabs extends ElementContainer
             $tab = $this->createElement($item, 'tab-item');
             $tab->items_in_title = false;
             $tab->requireID();
-
-            if(!$this->activeID && !$tab->getHidden() ){
-                $this->activeID = $tab->id;
-            }
-
             $this->elements[] = $tab;
+
+            if(!$tab->getHidden() ){
+                if (!$this->activeID) {
+                    $this->activeID = $tab->id;
+                } elseif($tab->getAttribute('active')) {
+                    $this->activeID = $tab->id;
+                }
+            }
         }
     }
 
