@@ -14,8 +14,7 @@ class Tabs extends ElementContainer
     public function readItems(array $items)
     {
         foreach ($items as $item) {
-            $tab = $this->createElement(
-                    ElementFactory::preprocessElement($this->ensureType($item, 'tab-item')));
+            $tab = $this->createElement($item, 'tab-item');
             $tab->items_in_title = false;
             $tab->requireID();
 

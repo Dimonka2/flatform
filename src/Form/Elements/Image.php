@@ -3,7 +3,6 @@
 namespace dimonka2\flatform\Form\Elements;
 
 use dimonka2\flatform\Form\Element;
-use dimonka2\flatform\Form\Contracts\IContext;
 
 class Image extends Element
 {
@@ -17,5 +16,25 @@ class Image extends Element
     public function getOptions(array $keys)
     {
         return parent::getOptions(array_merge($keys, ['src']));
+    }
+
+    /**
+     * Get the value of src
+     */
+    public function getSrc()
+    {
+        return $this->src;
+    }
+
+    /**
+     * Set the value of src
+     *
+     * @return  self
+     */
+    public function setSrc($src)
+    {
+        $this->src = $src;
+
+        return $this;
     }
 }

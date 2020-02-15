@@ -35,8 +35,7 @@ class Link extends ElementContainer
             ['href', 'post', 'title', 'icon', 'form-class', 'group',
             'badge', 'badgeColor', 'badgePill', ]);
         parent::read($element);
-        if(is_array($this->badge)) $this->badge = $this->createElement(
-            ElementFactory::preprocessElement($this->ensureType($this->badge, 'badge')));
+        if(is_array($this->badge)) $this->badge = $this->createElement($this->badge, 'badge');
     }
 
     public function getOptions(array $keys)

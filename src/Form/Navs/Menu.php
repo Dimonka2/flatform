@@ -19,8 +19,7 @@ class Menu extends ElementContainer
 
     public function addMenuItem($definition): MenuItem
     {
-        $definition = $this->ensureType($definition, 'menu-item');
-        $item = $this->createElement($definition);
+        $item = $this->createElement($definition, 'menu-item');
         $this[] = $item;
         return $item;
     }
