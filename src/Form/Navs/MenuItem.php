@@ -27,21 +27,24 @@ class MenuItem extends Link
     {
         if($item instanceof Menu) {
             $this->menu = $item;
+        } elseif ($item instanceof MenuItem) {
+            $this->menu = $item->getMenu();
+        }
+        if(is_object($this->menu)) {
             if(!$this->badgeColor) $this->badgeColor = $this->menu->getBadgeColor();
             if(is_null($this->badgePill)) $this->badgePill = $this->menu->getBadgePill();
         }
-        return parent::setParent($item);
+        $res = parent::setParent($item);
+        if($this->active) {
+            $this->setOpen(true);
+        }
+        return $res;
     }
 
     protected function read(array $element)
     {
         $this->readSettings($element, ['badge', 'active']);
         parent::read($element);
-        if($this->active) {
-            if(is_object($this->parent) and ($this->parent instanceof MenuItem)) {
-                $this->parent->setOpen(true);
-            }
-        }
     }
 
     /**
@@ -60,8 +63,8 @@ class MenuItem extends Link
     public function setOpen($open)
     {
         $this->open = $open;
-        if(is_object($this->parent) and ($this->parent instanceof MenuItem)) {
-            $this->parent->setOpen(true);
+        if(is_object($this->parent) && ($this->parent instanceof MenuItem)) {
+            $this->parent->setOpen($open);
         }
         return $this;
     }

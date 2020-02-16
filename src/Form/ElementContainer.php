@@ -14,12 +14,16 @@ class ElementContainer extends Element implements IContainer, \ArrayAccess, \Cou
 
     protected function read(array $element)
     {
+        $this->readSettings($element, ['text']);
+
         if(isset($element['items'])) {
-            $this->readItems($element['items']);
+            $items = $element['items'];
             unset($element['items']);
         }
-        $this->readSettings($element, ['text']);
         parent::read($element);
+
+        $this->readItems($items ?? []);
+
         if(!is_null($this->text)) {
             $this->addTextElement( $this->text);
         }

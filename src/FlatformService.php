@@ -9,6 +9,7 @@ class FlatformService
     private static $cssList = [];
     private static $jsList = [];
     private static $includes = [];
+    private static $context = null;
 
     public static function render(array $element)
     {
@@ -17,12 +18,16 @@ class FlatformService
         unset($element['options']);
         // backward compatibility with old version
         if(isset($element['elements'])) $element = $element['elements'];
-        return (new Context($element))->setOptions($options)->render();
+        return self::context($element)->setOptions($options)->render();
     }
 
-    public static function context()
+    public static function context($elements = []): Context
     {
-        return new Context();
+        if (!self::$context) {
+            self::$context = new Context($elements);
+            return self::$context;
+        }
+        return self::$context->setElements($elements);
     }
 
     public static function isIncluded($element_name)

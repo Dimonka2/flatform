@@ -25,9 +25,15 @@ class Context implements IContext
     {
         $this->cofig_template_path = config('flatform.form.style');
         $this->factory = new ElementFactory($this);
-        $this->errors = request()->session()->get('errors', new MessageBag);
+        $this->setElements($elements);
+    }
+
+    public function setElements(array $elements)
+    {
         $this->elements = new ElementContainer([], $this);
+        $this->errors = request()->session()->get('errors', new MessageBag);
         $this->elements->readItems($elements);
+        return $this;
     }
 
     public function add(array $elements = [])
@@ -73,7 +79,7 @@ class Context implements IContext
 
     public function render()
     {
-        if ($this->debug) dd($this);
+        if ($this->debug) debug($this);
         return $this->elements->renderItems($this);
     }
 
@@ -120,6 +126,14 @@ class Context implements IContext
         // read possible options from argument
         $this->debug = $options['debug'] ?? false;
         return $this;
+    }
+
+    public static function ensureType(array $element, $type)
+    {
+        if(!isset($element['type'])){
+            $element['type'] = $type;
+        }
+        return $element;
     }
 
     public function getJsStack()

@@ -3,26 +3,33 @@
 namespace dimonka2\flatform\Form\Navs;
 
 use dimonka2\flatform\Form\ElementContainer;
+use dimonka2\flatform\Form\ElementFactory;
 
 class Tabs extends ElementContainer
 {
     public $pills = false;
     public $justified = false;
+    public $activeID;
 
     public function readItems(array $items)
     {
         foreach ($items as $item) {
-            $tab = $this->createTemplate('tab-item');
-            $tab->read($item);
+            $tab = $this->createElement(
+                    ElementFactory::preprocessElement($this->ensureType($item, 'tab-item')));
             $tab->items_in_title = false;
             $tab->requireID();
+
+            if(!$this->activeID && !$tab->getHidden() ){
+                $this->activeID = $tab->id;
+            }
+
             $this->elements[] = $tab;
         }
     }
 
     protected function read(array $element)
     {
-        $this->readSettings($element, ['pills', 'justified']);
+        $this->readSettings($element, ['pills', 'justified', 'activeID']);
         parent::read($element);
     }
 

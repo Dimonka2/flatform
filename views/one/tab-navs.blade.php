@@ -2,7 +2,8 @@
     @foreach ($element as $tab)
         @if(!$tab->getHidden())
         <li class="nav-item">
-            <a class="nav-link @if($loop->first) active @endif" href="#{{ $tab->id }}" data-toggle="tab">
+            @php($active = $element->activeID == $tab->id)
+            <a class="nav-link {{$active ? 'active' : '' }}" href="#{{ $tab->id }}" data-toggle="tab" aria-selected="{{$active ? 'true' : 'false'}}">
                 {!! $tab->getTitle() !!}
             </a>
         </li>
