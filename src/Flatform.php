@@ -5,7 +5,7 @@ namespace dimonka2\flatform;
 use Illuminate\Support\Facades\Facade;
 
 
-class FlatformFacade extends Facade
+class Flatform extends Facade
 {
     /**
     * Get the registered name of the component.

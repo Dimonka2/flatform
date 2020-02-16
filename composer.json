@@ -28,7 +28,7 @@
                 "dimonka2\\flatform\\FlatformServiceProvider"
             ],
             "aliases": {
-                "Flatform": "dimonka2\\flatform\\FlatformFacade"
+                "Flatform": "dimonka2\\flatform\\Flatform"
             }
         }
     },
