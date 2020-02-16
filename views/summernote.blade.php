@@ -5,38 +5,42 @@
     </style>
 
     <script>
-        function summernote_this(text, tool_bar)
+        function summernoteInit(selector)
         {
-            if (!tool_bar) {
-                tool_bar = [
-                //[groupname, [button list]]
-                ['tools', ['fullscreen', 'codeview']],
-                ['style', ['bold', 'italic', 'underline', 'strikethrough', 'style']],
-                ['font', ['fontname', 'superscript', 'subscript']],
-                ['fontsize', ['fontsize', 'color'], ],
-                ['more', ['clear', 'table', 'hr', 'link', 'picture']],
-                ['para', ['ul', 'ol', 'paragraph']],
-            ];
-            }
+            let tool_bar = [
+                    //[groupname, [button list]]
+                    ['tools', ['fullscreen', 'codeview']],
+                    ['style', ['bold', 'italic', 'underline', 'strikethrough', 'style']],
+                    ['font', ['fontname', 'superscript', 'subscript']],
+                    ['fontsize', ['fontsize', 'color'], ],
+                    ['more', ['clear', 'table', 'hr', 'link', 'picture']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                ];
 
-            $(text).summernote({
-            @if(\App::getLocale() == 'de')
-            lang: "de-DE",
-            @endif
-            @if(\App::getLocale() == 'ru')
-            lang: "ru-RU",
-            @endif
-            toolbar: tool_bar
-            @isset($settings)
-            {!! $settings !!}
-            @endisset
+            let options = {
+                toolbar: tool_bar,
+                @if(\App::getLocale() == 'de')
+                lang: "de-DE",
+                @endif
+                @if(\App::getLocale() == 'ru')
+                lang: "ru-RU",
+                @endif
+            };
+            let onInit = $(selector).attr('onInit');
+            if(onInit && typeof window[onInit] === 'function') window[onInit](options);
+            $(selector).summernote(options);
+        }
+
+        function initSummernotes() {
+            $('.summernote:not(.summernote-enabled)').each(function(i, obj) {
+                $(obj).addClass('summernote-enabled');
+                summernoteInit(obj);
             });
-
         }
 
         $(document).ready(function()
         {
-            summernote_this('.summernote');
+            initSummernotes();
         });
     </script>
 

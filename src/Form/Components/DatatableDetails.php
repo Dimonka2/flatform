@@ -12,6 +12,7 @@ class DatatableDetails extends Element
     public $url;
     public $data_definition;
     public $format_function;
+    public $loaded_function;
     public $column_data;
     public $data_id;
     protected $ajax_method;
@@ -20,8 +21,9 @@ class DatatableDetails extends Element
     {
         $this->readSettings($element, [
             'url',
-            'data_definition', // 'article_id: rowData.id,'
-            'format_function', // myFormat(rowData);
+            'data_definition',          // 'article_id: rowData.id,'
+            'format_function',          // myFormat(rowData);
+            'loaded_function',          // initSomething(element);
             'ajax_method',
             'column_data',
             'data_id',

@@ -7,8 +7,8 @@ use dimonka2\flatform\Form\Contracts\IContext;
 
 class Widget extends ElementContainer
 {
-    public $title;
     public $icon;
+    protected $title;
     protected $body;
     protected $items; // works like an alternative to body
     protected $footer;
@@ -21,6 +21,7 @@ class Widget extends ElementContainer
 
     public function getTitle()
     {
+        if(is_array($this->title)) return $this->createElement($this->title)->renderElement();
         return $this->title;
     }
 

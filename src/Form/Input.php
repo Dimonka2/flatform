@@ -44,10 +44,26 @@ class Input extends Element
 
     public function getOptions(array $keys)
     {
-        $options = parent::getOptions($keys);
-        foreach(['name', 'readonly', 'disabled', 'required', 'value'] as $attr) {
-            if(!is_null($this->{$attr}))  $options[$attr] = $this->{$attr};
+        return parent::getOptions(array_merge($keys, ['name', 'readonly', 'disabled', 'required', 'value']));
+    }
+
+    public function renderElement()
+    {
+        if(!$this->hidden) {
+            $html = parent::renderElement();
+            if ($this->col === false) return $html;
+            if(is_array($this->col)) {
+                $col = $this->createElement($this->col, 'col');
+            } else {
+                $col = $this->createElement(
+                    ['col', 'col' => $this->col ? $this->col : 6, '+class' => 'form-group', ]);
+            }
+            return $this->context->renderElement($col, $html);
         }
-        return $options;
+    }
+
+    public function isVertical()
+    {
+        return false;
     }
 }

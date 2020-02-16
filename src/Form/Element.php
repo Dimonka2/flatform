@@ -117,14 +117,11 @@ class Element implements IElement
     {
         return $this->context->createTemplate($template);
     }
-    protected function createElement($element)
+    protected function createElement($element, $type = null)
     {
+        if($type) $element = $this->context::ensureType($element, $type);
+        $element = ElementFactory::preprocessElement($element);
         return $this->context->createElement($element);
-    }
-
-    public function ensureType(array $element, $type)
-    {
-        return $this->context::ensureType($element, $type);
     }
 
     public function __construct(array $element, IContext $context)
@@ -251,5 +248,13 @@ class Element implements IElement
     {
         $this->text = $text;
         return $this;
+    }
+
+    /**
+     * Get the value of context
+     */
+    public function getContext()
+    {
+        return $this->context;
     }
 }

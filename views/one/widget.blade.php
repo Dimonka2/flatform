@@ -1,11 +1,11 @@
 <div class="block block-bordered">
-    @if( $element->hasHeader() )			
+    @if( $element->hasHeader() )
     <div class="block-header">
         @if( $element->hasTitle() )
-            <div class="block-title">	
+            <div class="block-title">
                 <h2 class="h3 w-75 text-gray-900 mb-0">
                     {!! $element->icon ?? '' !!}
-                    {!! $element->title ?? '' !!}
+                    {!! $element->getTitle() ?? '' !!}
                 </h2>
             </div>
             @if( $element->hasTools() )

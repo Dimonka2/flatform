@@ -13,18 +13,22 @@
             @endif
 
             var div = $('<div/>').addClass( 'loading' ).text( 'Loading...' );
+            var self = this;
             @if($details->url)
             $.ajax( {
                 url: '{{ $details->url }}',
                 data: {
                     '_token': "{{csrf_token()}}",
                     '{{$details->data_id}}' : rowData.{{$details->data_id}},
-                    {{$details->data_definition ?? ''}}
+                    {!! $details->data_definition ?? ''!!}
                 },
                 "dataType": "json",
                 "method": "{{ $details->getAjaxMethod() }}",
                 success: function ( json ) {
                     div.html( json.html ).removeClass( 'loading' );
+                    @if( $details->loaded_function )
+                        {!! $details->loaded_function !!}
+                    @endif
                 }
             } );
             @endif
@@ -93,7 +97,7 @@
                         "type": "{{ $element->ajax_method ?? 'GET' }}",
                         "data": function ( d ) {
                             d._token = "{{csrf_token()}}";
-                            {{$element->ajax_data_function ?? ''}}
+                            {!! $element->ajax_data_function ?? '' !!}
                         }
                 },
                 "columns": [

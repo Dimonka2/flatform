@@ -14,16 +14,18 @@ class Tabs extends ElementContainer
     public function readItems(array $items)
     {
         foreach ($items as $item) {
-            $tab = $this->createElement(
-                    ElementFactory::preprocessElement($this->ensureType($item, 'tab-item')));
+            $tab = $this->createElement($item, 'tab-item');
             $tab->items_in_title = false;
             $tab->requireID();
-
-            if(!$this->activeID && !$tab->getHidden() ){
-                $this->activeID = $tab->id;
-            }
-
             $this->elements[] = $tab;
+
+            if(!$tab->getHidden() ){
+                if (!$this->activeID) {
+                    $this->activeID = $tab->id;
+                } elseif($tab->getAttribute('active')) {
+                    $this->activeID = $tab->id;
+                }
+            }
         }
     }
 

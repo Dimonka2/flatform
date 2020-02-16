@@ -22,5 +22,6 @@ class Checkbox extends Input
     {
         $this->readSettings($element, ['label', 'checked', 'inline']);
         parent::read($element);
+        $this->col = false;
     }
 }
