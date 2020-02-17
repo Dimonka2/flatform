@@ -4,6 +4,7 @@
 @push($context->getJsStack())
 
     <script type="text/javascript">
+        @php($select = $element->getSelect())
 
         @if($element->hasDetails())
         @php($details = $element->getDetails())
@@ -14,13 +15,12 @@
 
             var div = $('<div/>').addClass( 'loading' ).text( 'Loading...' );
             var self = this;
-            @if($details->url)
+            @if( $details->getHasAjax() )
             $.ajax( {
-                url: '{{ $details->url }}',
+                url: '{{ $details->getUrl() }}',
                 data: {
                     '_token': "{{csrf_token()}}",
-                    '{{$details->data_id}}' : rowData.{{$details->data_id}},
-                    {!! $details->data_definition ?? ''!!}
+                    {!! $details->getDataDefinition() ?? ''!!}
                 },
                 "dataType": "json",
                 "method": "{{ $details->getAjaxMethod() }}",
@@ -29,6 +29,10 @@
                     @if( $details->loaded_function )
                         {!! $details->loaded_function !!}
                     @endif
+                },
+                error: function ( error ) {
+                    // console.log(error);
+                    div.html( error.responseJSON.error ).removeClass( 'loading' ).addClass('bg-danger text-white p-2');
                 }
             } );
             @endif
@@ -74,16 +78,12 @@
             @endisset $('#{{$element->id}}').DataTable({
                 "processing": true,
                 "serverSide": true,
-            @if(config('flatform.assets.datatable_path', '') != '')
+            @if(config('flatform.assets.datatable.lang', '') != '')
                 "language": {
                     "url": "{{ asset(config('flatform.assets.datatable_path'). \App::getLocale() . '.json' ) }}"
                 },
             @endif
-                {!! $element->options ?? '' !!}
-                @if($element->order)
-                    {!! $element->formatOrder() !!}
-                @endif
-
+                {!! $element->getTableOptions() !!}
 
                 columnDefs: [
                     @foreach ($element->getColDefinition() as $column)

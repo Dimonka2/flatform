@@ -2,12 +2,11 @@
 
 namespace dimonka2\flatform\Form\Components;
 
-use dimonka2\flatform\Form\Contracts\IContext;
-use dimonka2\flatform\Form\ElementContainer;
-use dimonka2\flatform\Form\Components\DTColumn;
-use dimonka2\flatform\Helpers\DatatableAjax;
-use Illuminate\Http\Request;
 use Flatform;
+use Illuminate\Http\Request;
+use dimonka2\flatform\Form\ElementContainer;
+use dimonka2\flatform\Helpers\DatatableAjax;
+use dimonka2\flatform\Form\Components\DTColumn;
 
 class Datatable extends ElementContainer
 {
@@ -20,6 +19,7 @@ class Datatable extends ElementContainer
     public $js_variable;
     public $ajax_data_function;
     protected $details;
+    protected $select;
     protected $colDefinition;   // collection of DTColumn objects
     protected $null_last;
     protected $formatFunction;
@@ -31,6 +31,9 @@ class Datatable extends ElementContainer
 
         $details = self::readSingleSetting($element, 'details');
         if(is_array($details)) $this->createDetails($details);
+
+        $select = self::readSingleSetting($element, 'select');
+        if(is_array($select)) $this->createSelect($select);
 
         $this->readSettings($element, [
             'ajax_url',
@@ -54,10 +57,18 @@ class Datatable extends ElementContainer
             $this->addColumn($column);
         }
     }
+    protected function createSelect(array $select)
+    {
+        $this->select = $this->createElement($select, 'dt-select');
+        $this->details->setParent($this);
+    }
+
     protected function createDetails(array $details)
     {
-        $this->details = new DatatableDetails($details, $this->context);
+        $this->details = $this->createElement($details, 'dt-details');
+        $this->details->setParent($this);
     }
+
 
     protected function render()
     {
@@ -86,9 +97,9 @@ class Datatable extends ElementContainer
     {
         if(is_integer($index)) {
             $key = $index;
-            return $this->colDefinition[$column];
+            return $this->colDefinition[$index];
         }
-        $key = $this->colDefinition->search(function  ($item, $key) use($index) {
+        $key = $this->colDefinition->search(function ($item) use($index) {
             return $item->name == $index;
         });
         if($key !== false) return $this->colDefinition[$key];
@@ -125,6 +136,14 @@ class Datatable extends ElementContainer
     {
         if(is_string($this->order) && strpos($this->order, ',') > 0) return $this->order;
         return 'order: [' . $this->_formatOrder() . '], ' . PHP_EOL;
+    }
+
+    public function getTableOptions()
+    {
+        $options = $this->options;
+        if($this->order)  $options .= $this->formatOrder();
+        if($this->hasSelect()) $options .= "\r\n select: true,";
+        return $options;
     }
 
     /**
@@ -217,4 +236,16 @@ class Datatable extends ElementContainer
         return $this->ajax_method;
     }
 
+    /**
+     * Get the value of select
+     */
+    public function getSelect()
+    {
+        return $this->select;
+    }
+
+    public function hasSelect()
+    {
+        return is_object($this->select);
+    }
 }
