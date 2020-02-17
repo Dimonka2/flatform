@@ -26,6 +26,7 @@ class ElementMapping
         'dd-item'       => Components\DropdownItem::class,
         'datatable'     => Components\Datatable::class,
         'dt-details'    => Components\DatatableDetails::class,
+        'dt-select'     => Components\DatatableSelect::class,
         'dt-column'     => Components\DTColumn::class,
         'progress'      => Components\Progress::class,
         'alert'         => Components\Alert::class,

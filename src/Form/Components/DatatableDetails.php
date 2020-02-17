@@ -2,13 +2,13 @@
 
 namespace dimonka2\flatform\Form\Components;
 
-use dimonka2\flatform\Form\Contracts\IContext;
-use dimonka2\flatform\Form\Element;
 use Illuminate\Http\Request;
+use dimonka2\flatform\Form\Element;
+use dimonka2\flatform\Form\Contracts\IElement;
 
 class DatatableDetails extends Element
 {
-    public const detail_ajax_parameter = "details";
+    public const ajax_parameter = "dt_details";
     public const default_class = "dt-details";
     public const default_data_id = "id";
     public $data_definition;
@@ -43,7 +43,7 @@ class DatatableDetails extends Element
     {
         $definition = '';
         if ($this->data_id) $definition .= $this->data_id . ' : rowData.' . $this->data_id . ",\r\n";
-        if($this->has_ajax && !$this->url) $definition .= self::detail_ajax_parameter . ": '',\r\n";
+        if($this->has_ajax && !$this->url) $definition .= self::ajax_parameter . ": '',\r\n";
         $definition .= $this->data_definition;
         return $definition;
     }
@@ -53,7 +53,7 @@ class DatatableDetails extends Element
      */
     public function getAjaxMethod()
     {
-        return $this->ajax_method ? $this->ajax_method : $this->parent->getAjaxMethod();
+        return $this->ajax_method ? $this->ajax_method : $this->table->getAjaxMethod();
     }
 
     /**
@@ -79,15 +79,14 @@ class DatatableDetails extends Element
         return call_user_func_array($this->formatFunction, [$request, $this->table]);
     }
 
-    /**
-     * Set the value of table
-     *
-     * @return  self
-     */
-    public function setTable(Datatable $table)
+
+    public function setParent(IElement $item)
     {
-        $this->table = $table;
-        return $this;
+        if($item instanceof Datatable) {
+            $this->table = $item;
+        }
+        $res = parent::setParent($item);
+        return $res;
     }
 
     /**
@@ -103,6 +102,6 @@ class DatatableDetails extends Element
      */
     public function getHasAjax()
     {
-        return $this->url || $this->has_ajax;
+        return ($this->has_ajax != false) && ($this->url ||  $this->table->ajax_url);
     }
 }

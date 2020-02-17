@@ -28,13 +28,13 @@ class DatatableAjax
             $details = $table->getDetails();
             if($details->hasFormatter()) return $details->format($request);
         }
-        return response()->json(['error' => 'No details formatter!'], 400)->send();
+        return response()->json(['error' => 'Table has no details formatter!'], 400);
     }
 
     public static function process(Request $request, Datatable $table, $query)
     {
         // built in details!!
-        if($request->has(DatatableDetails::detail_ajax_parameter)) {
+        if($request->has(DatatableDetails::ajax_parameter)) {
             return self::processDetails($request, $table);
         }
 
@@ -117,7 +117,7 @@ class DatatableAjax
             "data"            => $data
             ];
 
-        return response()->json($json_data)->send();
+        return response()->json($json_data);
 
     }
 

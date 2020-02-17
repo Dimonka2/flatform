@@ -4,6 +4,7 @@
 @push($context->getJsStack())
 
     <script type="text/javascript">
+        @php($select = $element->getSelect())
 
         @if($element->hasDetails())
         @php($details = $element->getDetails())
@@ -28,6 +29,10 @@
                     @if( $details->loaded_function )
                         {!! $details->loaded_function !!}
                     @endif
+                },
+                error: function ( error ) {
+                    // console.log(error);
+                    div.html( error.responseJSON.error ).removeClass( 'loading' ).addClass('bg-danger text-white p-2');
                 }
             } );
             @endif
@@ -78,11 +83,7 @@
                     "url": "{{ asset(config('flatform.assets.datatable_path'). \App::getLocale() . '.json' ) }}"
                 },
             @endif
-                {!! $element->options ?? '' !!}
-                @if($element->order)
-                    {!! $element->formatOrder() !!}
-                @endif
-
+                {!! $element->getTableOptions() !!}
 
                 columnDefs: [
                     @foreach ($element->getColDefinition() as $column)
