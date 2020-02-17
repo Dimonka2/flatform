@@ -25,6 +25,7 @@ class ElementMapping
         'dropdown'      => Components\Dropdown::class,
         'dd-item'       => Components\DropdownItem::class,
         'datatable'     => Components\Datatable::class,
+        'dt-details'    => Components\DatatableDetails::class,
         'dt-column'     => Components\DTColumn::class,
         'progress'      => Components\Progress::class,
         'alert'         => Components\Alert::class,
@@ -47,7 +48,7 @@ class ElementMapping
         'col'           => Elements\Column::class,
         'label'         => Elements\Label::class,
         'badge'         => Elements\Badge::class,
-
+        'table'         => Elements\Table::class,
 
         'div'           => ElementContainer::class,
         'span'          => ElementContainer::class,

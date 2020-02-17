@@ -14,13 +14,12 @@
 
             var div = $('<div/>').addClass( 'loading' ).text( 'Loading...' );
             var self = this;
-            @if($details->url)
+            @if( $details->getHasAjax() )
             $.ajax( {
-                url: '{{ $details->url }}',
+                url: '{{ $details->getUrl() }}',
                 data: {
                     '_token': "{{csrf_token()}}",
-                    '{{$details->data_id}}' : rowData.{{$details->data_id}},
-                    {!! $details->data_definition ?? ''!!}
+                    {!! $details->getDataDefinition() ?? ''!!}
                 },
                 "dataType": "json",
                 "method": "{{ $details->getAjaxMethod() }}",
@@ -74,7 +73,7 @@
             @endisset $('#{{$element->id}}').DataTable({
                 "processing": true,
                 "serverSide": true,
-            @if(config('flatform.assets.datatable_path', '') != '')
+            @if(config('flatform.assets.datatable.lang', '') != '')
                 "language": {
                     "url": "{{ asset(config('flatform.assets.datatable_path'). \App::getLocale() . '.json' ) }}"
                 },

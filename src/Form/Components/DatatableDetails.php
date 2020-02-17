@@ -4,18 +4,23 @@ namespace dimonka2\flatform\Form\Components;
 
 use dimonka2\flatform\Form\Contracts\IContext;
 use dimonka2\flatform\Form\Element;
+use Illuminate\Http\Request;
 
 class DatatableDetails extends Element
 {
+    public const detail_ajax_parameter = "details";
     public const default_class = "dt-details";
     public const default_data_id = "id";
-    public $url;
     public $data_definition;
     public $format_function;
     public $loaded_function;
     public $column_data;
     public $data_id;
+    protected $has_ajax;
+    protected $url;
     protected $ajax_method;
+    protected $formatFunction;
+    protected $table;
 
     protected function read(array $element)
     {
@@ -27,10 +32,20 @@ class DatatableDetails extends Element
             'ajax_method',
             'column_data',
             'data_id',
+            'has-ajax',
         ]);
         parent::read($element);
         if(!$this->class ) $this->class = self::default_class;
         if(!$this->data_id ) $this->data_id = self::default_data_id;
+    }
+
+    public function getDataDefinition()
+    {
+        $definition = '';
+        if ($this->data_id) $definition .= $this->data_id . ' : rowData.' . $this->data_id . ",\r\n";
+        if($this->has_ajax && !$this->url) $definition .= self::detail_ajax_parameter . ": '',\r\n";
+        $definition .= $this->data_definition;
+        return $definition;
     }
 
     /**
@@ -39,5 +54,55 @@ class DatatableDetails extends Element
     public function getAjaxMethod()
     {
         return $this->ajax_method ? $this->ajax_method : $this->parent->getAjaxMethod();
+    }
+
+    /**
+     * Set the value of formatFunction
+     *
+     * @return  self
+     */
+
+    public function setFormatFunction($formatFunction)
+    {
+        $this->formatFunction = $formatFunction;
+
+        return $this;
+    }
+
+    public function hasFormatter()
+    {
+        return is_callable($this->formatFunction);
+    }
+
+    public function format(Request $request)
+    {
+        return call_user_func_array($this->formatFunction, [$request, $this->table]);
+    }
+
+    /**
+     * Set the value of table
+     *
+     * @return  self
+     */
+    public function setTable(Datatable $table)
+    {
+        $this->table = $table;
+        return $this;
+    }
+
+    /**
+     * Get the value of url
+     */
+    public function getUrl()
+    {
+        return $this->url ? $this->url : $this->table->ajax_url ;
+    }
+
+    /**
+     * Get the value of has_ajax
+     */
+    public function getHasAjax()
+    {
+        return $this->url || $this->has_ajax;
     }
 }

@@ -2,12 +2,13 @@
 
 namespace dimonka2\flatform\Form\Components;
 
-use dimonka2\flatform\Form\Contracts\IContext;
-use dimonka2\flatform\Form\ElementContainer;
-use dimonka2\flatform\Form\Components\DTColumn;
-use dimonka2\flatform\Helpers\DatatableAjax;
-use Illuminate\Http\Request;
 use Flatform;
+use Illuminate\Http\Request;
+use dimonka2\flatform\Form\ElementFactory;
+use dimonka2\flatform\Form\ElementContainer;
+use dimonka2\flatform\Helpers\DatatableAjax;
+use dimonka2\flatform\Form\Contracts\IContext;
+use dimonka2\flatform\Form\Components\DTColumn;
 
 class Datatable extends ElementContainer
 {
@@ -56,7 +57,8 @@ class Datatable extends ElementContainer
     }
     protected function createDetails(array $details)
     {
-        $this->details = new DatatableDetails($details, $this->context);
+        $this->details = $this->createElement($details, 'dt-details');
+        $this->details->setTable($this);
     }
 
     protected function render()

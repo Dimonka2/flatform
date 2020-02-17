@@ -4,6 +4,7 @@ namespace dimonka2\flatform\Helpers;
 use Illuminate\Http\Request;
 use dimonka2\flatform\Form\Components\Datatable;
 use DB;
+use dimonka2\flatform\Form\Components\DatatableDetails;
 
 class DatatableAjax
 {
@@ -21,8 +22,22 @@ class DatatableAjax
         return $query;
     }
 
+    public static function processDetails(Request $request, Datatable $table)
+    {
+        if($table->hasDetails() ) {
+            $details = $table->getDetails();
+            if($details->hasFormatter()) return $details->format($request);
+        }
+        return response()->json(['error' => 'No details formatter!'], 400)->send();
+    }
+
     public static function process(Request $request, Datatable $table, $query)
     {
+        // built in details!!
+        if($request->has(DatatableDetails::detail_ajax_parameter)) {
+            return self::processDetails($request, $table);
+        }
+
         $totalData = $query->count();
         $totalFiltered = $totalData;
         $tablesearch = strtolower( $request->input('search.value'));
@@ -95,14 +110,14 @@ class DatatableAjax
             $data[] = $nestedData;
         }
         // $this->formatJSON($items, $table->getColDefinition());
-        $json_data = array(
+        $json_data = [
             "draw"            => intval($request->input('draw')),
             "recordsTotal"    => intval($totalData),
             "recordsFiltered" => intval($totalFiltered),
             "data"            => $data
-            );
+            ];
 
-        echo json_encode($json_data);
+        return response()->json($json_data)->send();
 
     }
 
