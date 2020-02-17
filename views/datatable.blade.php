@@ -78,7 +78,7 @@
             @endisset $('#{{$element->id}}').DataTable({
                 "processing": true,
                 "serverSide": true,
-            @if(config('flatform.assets.datatable.lang', '') != '')
+            @if(config('flatform.assets.datatable_lang', '') != '')
                 "language": {
                     "url": "{{ asset(config('flatform.assets.datatable_path'). \App::getLocale() . '.json' ) }}"
                 },

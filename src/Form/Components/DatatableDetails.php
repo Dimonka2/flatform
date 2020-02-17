@@ -29,6 +29,7 @@ class DatatableDetails extends Element
             'data_definition',          // 'article_id: rowData.id,'
             'format_function',          // myFormat(rowData);
             'loaded_function',          // initSomething(element);
+            'formatFunction',
             'ajax_method',
             'column_data',
             'data_id',
@@ -43,7 +44,7 @@ class DatatableDetails extends Element
     {
         $definition = '';
         if ($this->data_id) $definition .= $this->data_id . ' : rowData.' . $this->data_id . ",\r\n";
-        if($this->has_ajax && !$this->url) $definition .= self::ajax_parameter . ": '',\r\n";
+        if($this->getHasAjax()) $definition .= self::ajax_parameter . ": '',\r\n";
         $definition .= $this->data_definition;
         return $definition;
     }
@@ -102,6 +103,6 @@ class DatatableDetails extends Element
      */
     public function getHasAjax()
     {
-        return ($this->has_ajax != false) && ($this->url ||  $this->table->ajax_url);
+        return ($this->has_ajax !== false) && ($this->url ||  $this->table->ajax_url);
     }
 }
