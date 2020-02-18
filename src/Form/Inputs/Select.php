@@ -10,10 +10,11 @@ class Select extends Input
 {
     protected $state_list;
     protected $list;
+    protected $selected;
 
     protected function read(array $element)
     {
-        $this->readSettings($element, ['state-list', 'list']);
+        $this->readSettings($element, ['state-list', 'list', 'selected']);
         parent::read($element);
         if(is_null($this->list) && !is_null($this->state_list)) {
             // a temporary feature
@@ -27,5 +28,25 @@ class Select extends Input
     {
         return Form::select($this->name, $this->list ?? [], $this->value,
             $this->getOptions(['placeholder', 'readonly', 'disabled']));
+    }
+
+        /**
+     * Get the value of selected
+     */
+    public function getSelected()
+    {
+        return $this->selected;
+    }
+
+    /**
+     * Set the value of selected
+     *
+     * @return  self
+     */
+    public function setSelected($selected)
+    {
+        $this->selected = $selected;
+
+        return $this;
     }
 }

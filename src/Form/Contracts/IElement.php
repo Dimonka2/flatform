@@ -13,6 +13,7 @@ interface IElement
     public function getParent(): IElement;
     public function hasParent();
     public function getAttribute($name);
+    public function setAttribute($name, $value);
     public function addClass($class);
     public function addStyle($style);
 }
