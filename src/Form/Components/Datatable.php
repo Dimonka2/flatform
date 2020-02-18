@@ -100,7 +100,7 @@ class Datatable extends ElementContainer
             return $this->colDefinition[$index];
         }
         $key = $this->colDefinition->search(function ($item) use($index) {
-            return $item->name == $index;
+            return ($item->name == $index) or ($item->as == $index);
         });
         if($key !== false) return $this->colDefinition[$key];
         return;
@@ -169,7 +169,7 @@ class Datatable extends ElementContainer
      */
     public function setFormatFunction($formatFunction, $columnName = null)
     {
-        if(is_array($columnName)) {
+        if(is_iterable($columnName)) {
             foreach($columnName as $column){
                 $this->getColumn($column, $idx);
                 if($idx) {
@@ -178,10 +178,8 @@ class Datatable extends ElementContainer
             }
             return $this;
         }elseif($columnName) {
-            $this->getColumn($columnName, $idx);
-            if($idx) {
-                $this->colDefinition[$idx]->setFormatFunction($formatFunction);
-            }
+            $column = $this->getColumn($columnName, $idx);
+            if($column) $column->setFormatFunction($formatFunction);
             return $this;
         }
         $this->formatFunction = $formatFunction;
