@@ -44,7 +44,7 @@ class ElementMapping
         'button'        => Components\Button::class,
 
         // basic elements
-        'form'          => Form::class,
+        'form'          => Elements\Form::class,
         'img'           => Elements\Image::class,
         'col'           => Elements\Column::class,
         'label'         => Elements\Label::class,

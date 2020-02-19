@@ -20,6 +20,7 @@ class Context implements IContext
     private $cofig_template_path;
     private $errors;
     private $debug;
+    private $form;              // parent form during reading
 
     public function __construct(array $elements = [])
     {
@@ -156,4 +157,16 @@ class Context implements IContext
         if(!isset($defaults['type'])) $defaults['type'] = 'datatable';
         return $this->createElement($defaults);
     }
+
+    public function getForm()
+    {
+        return $this->form;
+    }
+
+    public function setForm($form)
+    {
+        $this->form = $form;
+        return $this;
+    }
+
 }

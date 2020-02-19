@@ -4,6 +4,7 @@ namespace dimonka2\flatform\Form;
 
 use dimonka2\flatform\Form\Contracts\IContext;
 use dimonka2\flatform\Form\Contracts\IElement;
+use Illuminate\Support\Fluent;
 
 class Element implements IElement
 {
@@ -19,7 +20,7 @@ class Element implements IElement
     protected $context;
     protected $type;
     protected $hidden;
-    protected $attributes = [];
+    protected $attributes;
     protected $text;
     protected $template;
     protected $parent;
@@ -126,10 +127,11 @@ class Element implements IElement
 
     public function __construct(array $element, IContext $context)
     {
+        $this->attributes = new Fluent();
         $this->context = $context;
         $this->read($element);
         // add debug logging to any specific element
-        if($this->attributes['debug'] ?? false) debug($this);
+        if($this->attributes['debug']) debug($this);
     }
 
     public function getOptions(array $keys)
@@ -138,12 +140,12 @@ class Element implements IElement
         foreach(array_merge($keys, self::element_attributes) as $key){
             if(isset($this->$key) && !is_null($this->$key)) $options[$key] = $this->$key;
         }
-        return $options;
+        return $options->toArray();
     }
 
     public function getAttribute($name)
     {
-        return $this->attributes[$name] ?? null;
+        return $this->attributes[$name];
     }
 
     public function setAttribute($name, $value)

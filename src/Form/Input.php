@@ -3,7 +3,6 @@
 namespace dimonka2\flatform\Form;
 
 use dimonka2\flatform\Form\Element;
-use dimonka2\flatform\Form\Contracts\IContext;
 
 class Input extends Element
 {
@@ -20,18 +19,32 @@ class Input extends Element
     public $disabled;
     public $required;
     public $col;
+    protected $form;
 
     protected function read(array $element)
     {
+        $this->form = $this->context->getForm();
         $this->readSettings($element, self::input_fields);
         parent::read($element);
         $this->requireID();
-        if(!is_null($this->name) && $this->context->getErrors()->has($this->name)) {
+        if($this->name && $this->context->getErrors()->has($this->name)) {
             // add error
             $this->error = \implode('<br/>', $this->context->getErrors()->get($this->name));
             //dd($this->error);
             $template = $this->getTemplate('error-class');
             if(!is_null($template)) $this->processAttributes($template);
+        }
+
+    }
+
+    protected function getModelValue()
+    {
+        if($this->name && is_null($this->value) && $this->form) {
+            // try to get value from the form
+            if($this->form->hasModel()){
+                $model = $this->form->getModel();
+                return $model->{$this->name};
+            }
         }
     }
 

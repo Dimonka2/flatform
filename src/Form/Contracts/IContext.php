@@ -16,7 +16,11 @@ interface IContext
     public function getID($name);
     public function getTemplate($tag);
     public function setOptions($options);
+    public function getErrors();
 
     public function setMapping($id, IElement $element);
     public function getMapping($id): IElement;
+
+    public function getForm();
+    public function setForm($form);
 }

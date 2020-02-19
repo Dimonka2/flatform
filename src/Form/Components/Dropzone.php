@@ -2,7 +2,7 @@
 
 namespace dimonka2\flatform\Form\Components;
 
-use dimonka2\flatform\Form\Form;
+use dimonka2\flatform\Form\Elements\Form;
 use Flatform;
 
 class Dropzone extends Form

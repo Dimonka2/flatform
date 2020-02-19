@@ -1,13 +1,13 @@
 <?php
 
-namespace dimonka2\flatform\Form;
+namespace dimonka2\flatform\Form\Elements;
 
+use dimonka2\flatform\Form\Contracts\IForm;
 use dimonka2\flatform\Form\ElementContainer;
-use dimonka2\flatform\Form\Contracts\IContext;
 use dimonka2\flatform\Form\Inputs\Hidden;
 use Form as LaForm;
 
-class Form extends ElementContainer
+class Form extends ElementContainer implements IForm
 {
     protected const form_fields = ['method', 'model', 'url', 'files', 'route'];
     protected $method;
@@ -19,7 +19,14 @@ class Form extends ElementContainer
     protected function read(array $element)
     {
         $this->readSettings($element, self::form_fields);
+        $this->context->setForm($this);
         parent::read($element);
+        $this->context->setForm(null);
+    }
+
+    public function getModelValue($name)
+    {
+
     }
 
     public function renderForm($aroundHTML = null)
@@ -129,4 +136,16 @@ class Form extends ElementContainer
 
         return $this;
     }
+
+    // IForm interface
+    public function hasModel()
+    {
+        return is_object($this->model);
+    }
+
+    public function getModel()
+    {
+        return $this->model;
+    }
+
 }
