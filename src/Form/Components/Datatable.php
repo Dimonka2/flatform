@@ -13,14 +13,13 @@ class Datatable extends ElementContainer
     public $ajax_url;
     public $ajax_dataType;  // json
     public $ajax_method;    // POST
-    public $columns;
     public $order;
     public $options;
     public $js_variable;
     public $ajax_data_function;
     protected $details;
     protected $select;
-    protected $colDefinition;   // collection of DTColumn objects
+    protected $columns;   // collection of DTColumn objects
     protected $null_last;
     protected $formatFunction;
 
@@ -52,7 +51,7 @@ class Datatable extends ElementContainer
 
     protected function createColumns(array $columns)
     {
-        $this->colDefinition = collect([]);
+        $this->columns = collect([]);
         foreach($columns as $column) {
             $this->addColumn($column);
         }
@@ -89,7 +88,7 @@ class Datatable extends ElementContainer
     {
         $column = $this->createElement($definition, 'dt-column');
         $column->setParent($this);
-        $this->colDefinition->push($column);
+        $this->columns->push($column);
         return $column;
     }
 
@@ -97,12 +96,12 @@ class Datatable extends ElementContainer
     {
         if(is_integer($index)) {
             $key = $index;
-            return $this->colDefinition[$index];
+            return $this->columns[$index];
         }
-        $key = $this->colDefinition->search(function ($item) use($index) {
+        $key = $this->columns->search(function ($item) use($index) {
             return ($item->name == $index) or ($item->as == $index);
         });
-        if($key !== false) return $this->colDefinition[$key];
+        if($key !== false) return $this->columns[$key];
         return;
     }
 
@@ -147,11 +146,11 @@ class Datatable extends ElementContainer
     }
 
     /**
-     * Get the value of colDefinition
+     * Get the value of Columns
      */
-    public function getColDefinition()
+    public function getColumns()
     {
-        return $this->colDefinition;
+        return $this->columns;
     }
 
     /**
@@ -173,7 +172,7 @@ class Datatable extends ElementContainer
             foreach($columnName as $column){
                 $this->getColumn($column, $idx);
                 if($idx) {
-                    $this->colDefinition[$idx]->setFormatFunction($formatFunction);
+                    $this->columns[$idx]->setFormatFunction($formatFunction);
                 }
             }
             return $this;
