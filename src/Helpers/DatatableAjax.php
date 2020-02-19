@@ -2,9 +2,8 @@
 
 namespace dimonka2\flatform\Helpers;
 use Illuminate\Http\Request;
-use dimonka2\flatform\Form\Components\Datatable;
-use DB;
-use dimonka2\flatform\Form\Components\DatatableDetails;
+use dimonka2\flatform\Form\Components\Datatable\Datatable;
+use dimonka2\flatform\Form\Components\Datatable\DatatableDetails;
 
 class DatatableAjax
 {

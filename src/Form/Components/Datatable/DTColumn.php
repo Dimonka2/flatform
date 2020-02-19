@@ -1,10 +1,8 @@
 <?php
 
-namespace dimonka2\flatform\Form\Components;
+namespace dimonka2\flatform\Form\Components\Datatable;
 
-use dimonka2\flatform\Form\Contracts\IContext;
 use dimonka2\flatform\Form\Element;
-use Flatform;
 
 class DTColumn extends Element
 {

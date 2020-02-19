@@ -3,9 +3,7 @@
 namespace dimonka2\flatform\Form;
 
 use dimonka2\flatform\Form\Element;
-use Illuminate\Support\Collection;
 use dimonka2\flatform\Form\Contracts\IElement;
-use dimonka2\flatform\Form\Contracts\IContext;
 use dimonka2\flatform\Form\Contracts\IContainer;
 
 class ElementContainer extends Element implements IContainer, \ArrayAccess, \Countable, \IteratorAggregate
@@ -42,12 +40,20 @@ class ElementContainer extends Element implements IContainer, \ArrayAccess, \Cou
         return $this;
     }
 
-    protected function addTextElement($text)
+    public function addTextElement($text)
     {
-        $item = $this->createElement(['type' => '_text']);
-        $item->text = $text;
+        $item = $this->createElement(['text' => $text], '_text');
         $this->elements[] = $item;
         return $item;
+    }
+
+    // add some form elements
+    public function addText($name)
+    {
+        $item = $this->createElement(['name' => $name], 'text');
+        $this->elements[] = $item;
+        return $item;
+
     }
 
     // IContainer inteface

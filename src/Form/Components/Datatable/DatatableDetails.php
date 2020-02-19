@@ -1,6 +1,6 @@
 <?php
 
-namespace dimonka2\flatform\Form\Components;
+namespace dimonka2\flatform\Form\Components\Datatable;
 
 use Illuminate\Http\Request;
 use dimonka2\flatform\Form\Element;
@@ -11,24 +11,24 @@ class DatatableDetails extends Element
     public const ajax_parameter = "dt_details";
     public const default_class = "dt-details";
     public const default_data_id = "id";
-    public $data_definition;
-    public $format_function;
-    public $loaded_function;
+    public $data_definition;    // 'article_id: rowData.id,'
+    public $format_function;    // JS function myFormat(rowData);
+    public $loaded_function;    // JS function initSomething(element);
     public $column_data;
     public $data_id;
     protected $has_ajax;
     protected $url;
     protected $ajax_method;
-    protected $formatFunction;
+    protected $formatFunction;  // PHP format function
     protected $table;
 
     protected function read(array $element)
     {
         $this->readSettings($element, [
             'url',
-            'data_definition',          // 'article_id: rowData.id,'
-            'format_function',          // myFormat(rowData);
-            'loaded_function',          // initSomething(element);
+            'data_definition',
+            'format_function',
+            'loaded_function',
             'formatFunction',
             'ajax_method',
             'column_data',
