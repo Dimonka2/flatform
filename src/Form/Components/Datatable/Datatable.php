@@ -1,26 +1,25 @@
 <?php
 
-namespace dimonka2\flatform\Form\Components;
+namespace dimonka2\flatform\Form\Components\Datatable;
 
-use Flatform;
+use \dimonka2\flatform\Flatform;
 use Illuminate\Http\Request;
 use dimonka2\flatform\Form\ElementContainer;
 use dimonka2\flatform\Helpers\DatatableAjax;
-use dimonka2\flatform\Form\Components\DTColumn;
+use dimonka2\flatform\Form\Components\Datatable\DTColumn;
 
 class Datatable extends ElementContainer
 {
     public $ajax_url;
     public $ajax_dataType;  // json
-    public $ajax_method;    // POST
-    public $columns;
+    public $ajax_method = 'post';    // POST
     public $order;
     public $options;
     public $js_variable;
     public $ajax_data_function;
     protected $details;
     protected $select;
-    protected $colDefinition;   // collection of DTColumn objects
+    protected $columns;   // collection of DTColumn objects
     protected $null_last;
     protected $formatFunction;
 
@@ -52,7 +51,7 @@ class Datatable extends ElementContainer
 
     protected function createColumns(array $columns)
     {
-        $this->colDefinition = collect([]);
+        $this->columns = new Columns($this);
         foreach($columns as $column) {
             $this->addColumn($column);
         }
@@ -88,22 +87,13 @@ class Datatable extends ElementContainer
     public function addColumn(array $definition)
     {
         $column = $this->createElement($definition, 'dt-column');
-        $column->setParent($this);
-        $this->colDefinition->push($column);
+        $this->columns[] = $column;
         return $column;
     }
 
-    public function getColumn($index, &$key)
+    public function getColumn($index): ?DTColumn
     {
-        if(is_integer($index)) {
-            $key = $index;
-            return $this->colDefinition[$index];
-        }
-        $key = $this->colDefinition->search(function ($item) use($index) {
-            return ($item->name == $index) or ($item->as == $index);
-        });
-        if($key !== false) return $this->colDefinition[$key];
-        return;
+        return $this->columns->getColumn($index);
     }
 
     private function _formatOrder($key = null, $column = null)
@@ -115,18 +105,18 @@ class Datatable extends ElementContainer
             $cnt = count($this->order);
             switch ($cnt) {
                 case 1:
-                    $column = $this->getColumn($this->order[0], $key);
+                    $column = $this->columns->getColumnEx($this->order[0], $key);
                     if($column) return $this->_formatOrder($key, $column);
                     return null;
                 case 2:
-                    $column = $this->getColumn($this->order[0], $key);
+                    $column = $this->columns->getColumnEx($this->order[0], $key);
                     if($column) return '[' . ($key + ($this->details ? 1 : 0)) . ', "' . $this->order[1] . '"]';
                     return null;
                 default:
                     return;
             }
         } else {
-            $column = $this->getColumn($this->order, $key);
+            $column = $this->columns->getColumnEx($this->order, $key);
             if($column) return $this->_formatOrder($key, $column);
             return;
         }
@@ -147,11 +137,11 @@ class Datatable extends ElementContainer
     }
 
     /**
-     * Get the value of colDefinition
+     * Get the value of Columns
      */
-    public function getColDefinition()
+    public function getColumns()
     {
-        return $this->colDefinition;
+        return $this->columns;
     }
 
     /**
@@ -169,20 +159,11 @@ class Datatable extends ElementContainer
      */
     public function setFormatFunction($formatFunction, $columnName = null)
     {
-        if(is_iterable($columnName)) {
-            foreach($columnName as $column){
-                $this->getColumn($column, $idx);
-                if($idx) {
-                    $this->colDefinition[$idx]->setFormatFunction($formatFunction);
-                }
-            }
-            return $this;
-        }elseif($columnName) {
-            $column = $this->getColumn($columnName, $idx);
-            if($column) $column->setFormatFunction($formatFunction);
-            return $this;
+        if($columnName) {
+            $this->columns->setFormatFunction($formatFunction, $columnName);
+        } else {
+            $this->formatFunction = $formatFunction;
         }
-        $this->formatFunction = $formatFunction;
         return $this;
     }
 

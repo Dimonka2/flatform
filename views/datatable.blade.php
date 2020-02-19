@@ -86,7 +86,7 @@
                 {!! $element->getTableOptions() !!}
 
                 columnDefs: [
-                    @foreach ($element->getColDefinition() as $column)
+                    @foreach ($element->getColumns() as $column)
                         {targets: [ {{$loop->index + (isset($details) ? 1 : 0) }} ]
                             {!! $column->formatColumnDefs() !!} },
                     @endforeach
@@ -111,7 +111,7 @@
                                 '"<button class=\'btn btn-sm btn-clean btn-icon btn-icon-md p-1\'><i class=\'fa fa-caret-down\'></i></button>"' !!}
                         },
                         @endif
-                        @foreach ($element->getColDefinition() as $column)
+                        @foreach ($element->getColumns() as $column)
                             { "data": "{{ $column->getSafeName() }}" },
                         @endforeach
                 ]

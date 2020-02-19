@@ -2,9 +2,8 @@
 
 namespace dimonka2\flatform\Helpers;
 use Illuminate\Http\Request;
-use dimonka2\flatform\Form\Components\Datatable;
-use DB;
-use dimonka2\flatform\Form\Components\DatatableDetails;
+use dimonka2\flatform\Form\Components\Datatable\Datatable;
+use dimonka2\flatform\Form\Components\Datatable\DatatableDetails;
 
 class DatatableAjax
 {
@@ -12,7 +11,7 @@ class DatatableAjax
     {
         $tablesearch = '%' . $term . '%';
         $query = $query->where(function($q) use ($tablesearch, $table) {
-            foreach($table->getColDefinition() as $field) {
+            foreach($table->getColumns() as $field) {
                 if ($field->search) {
                     $q = $q->orWhere( $field->name, 'like', $tablesearch );
                 }
@@ -52,7 +51,7 @@ class DatatableAjax
         }
         $start = $request->input('start');
         $query = $query->limit($limit)->offset($start);
-        $fields = $table->getColDefinition();
+        $fields = $table->getColumns();
 
 
         if ($request->has('order.0.column')) {
@@ -77,7 +76,7 @@ class DatatableAjax
         }
         // add select
         $fields = [];
-        foreach($table->getColDefinition() as $field) {
+        foreach($table->getColumns() as $field) {
             if (!$field->noSelect && !$field->system) {
                 $fieldName = $field->name . ($field->as ? ' as ' . $field->as : '' );
                 $fields[] = $fieldName;
@@ -93,7 +92,7 @@ class DatatableAjax
         $data = [];
         foreach ($items as $item) {
             $nestedData = [];
-            foreach($table->getColDefinition() as $column) {
+            foreach($table->getColumns() as $column) {
                 $value = '';
                 if (!$column->system) {
                     $value = $item->{$column->as ? $column->as : $column->name};
@@ -109,7 +108,7 @@ class DatatableAjax
                 $table->id . '-' . $nestedData[$table->getDetails()->data_id];
             $data[] = $nestedData;
         }
-        // $this->formatJSON($items, $table->getColDefinition());
+        // $this->formatJSON($items, $table->getColumns());
         $json_data = [
             "draw"            => intval($request->input('draw')),
             "recordsTotal"    => intval($totalData),

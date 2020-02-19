@@ -2,7 +2,7 @@
 
 namespace dimonka2\flatform\Traits;
 use Illuminate\Http\Request;
-use dimonka2\flatform\Form\Components\Datatable;
+use dimonka2\flatform\Form\Components\Datatable\Datatable;
 use DB;
 
 trait DatatableAjaxTrait
@@ -113,7 +113,7 @@ trait DatatableAjaxTrait
         }
         $start = $request->input('start');
         $query = $query->limit($limit)->offset($start);
-        $fields = $table->getColDefinition();
+        $fields = $table->getColumns();
 
 
         if ($request->has('order.0.column')) {
@@ -127,7 +127,7 @@ trait DatatableAjaxTrait
         }
         // add select
         $fields = [];
-        foreach($table->getColDefinition() as $field) {
+        foreach($table->getColumns() as $field) {
             if (!$field->noSelect && !$field->system) {
                 $fieldName = $field->name . ($field->as ? ' as ' . $field->as : '' );
                 $fields[] = $fieldName;
@@ -143,7 +143,7 @@ trait DatatableAjaxTrait
         $data = [];
         foreach ($items as $item) {
             $nestedData = [];
-            foreach($table->getColDefinition() as $column) {
+            foreach($table->getColumns() as $column) {
                 $value = '';
                 $field = $column->as ? $column->as : $column->name;
                 if (!$column->system) {
@@ -157,7 +157,7 @@ trait DatatableAjaxTrait
             }
             $data[] = $nestedData;
         }
-        // $this->formatJSON($items, $table->getColDefinition());
+        // $this->formatJSON($items, $table->getColumns());
         $json_data = array(
             "draw"            => intval($request->input('draw')),
             "recordsTotal"    => intval($totalData),
