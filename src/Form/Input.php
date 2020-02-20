@@ -3,7 +3,7 @@
 namespace dimonka2\flatform\Form;
 
 use dimonka2\flatform\Form\Element;
-use Form as LaForm;
+use Form;
 
 
 class Input extends Element
@@ -28,7 +28,6 @@ class Input extends Element
         $this->form = $this->context->getForm();
         $this->readSettings($element, self::input_fields);
         parent::read($element);
-        $this->requireID();
         if($this->name && $this->context->getErrors()->has($this->name)) {
             // add error
             $this->error = \implode('<br/>', $this->context->getErrors()->get($this->name));
@@ -47,17 +46,27 @@ class Input extends Element
             if($this->form) {
                 return $this->form->getModelValue($this->name);
             } else {
-                return LaForm::getValueAttribute($this->name);
+                return Form::getValueAttribute($this->name);
             }
         }
+    }
+
+    protected function hasValue()
+    {
+        return true;
+    }
+
+    protected function addAssets()
+    {
+        // placeholder for inherited assets
     }
 
     protected function render()
     {
         $options = $this->getOptions([]);
         $options['type'] = $this->getTag();
-        $options['value'] = $this->needValue();
-        return $this->context->renderArray($options, 'input');
+        if($this->hasValue()) $options['value'] = $this->needValue();
+        return $this->context->renderArray($options, 'input') . $this->addAssets();
     }
 
 

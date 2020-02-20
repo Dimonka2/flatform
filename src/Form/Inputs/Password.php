@@ -8,9 +8,8 @@ use Form;
 
 class Password extends Input
 {
-    protected function render()
+    protected function hasValue()
     {
-        return Form::password($this->name, 
-            $this->getOptions([]));
+        return false;
     }
 }

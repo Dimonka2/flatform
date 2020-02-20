@@ -2,14 +2,9 @@
 
 namespace dimonka2\flatform\Form\Inputs;
 
-use dimonka2\flatform\Form\Input;
-use dimonka2\flatform\Form\Contracts\IContext;
-use Form;
 use Flatform;
 
-
-
-class Summernote extends Input
+class Summernote extends Textarea
 {
     protected function addAssets()
     {
@@ -22,11 +17,5 @@ class Summernote extends Input
                 view(config('flatform.assets.summernote.view')));
         }
     }
-    
-    protected function render()
-    {
-        $html = $this->addAssets();
-        return Form::textarea($this->name, $this->value,
-            $this->getOptions([])) . $html;
-    }
+
 }

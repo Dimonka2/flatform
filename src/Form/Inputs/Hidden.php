@@ -2,23 +2,13 @@
 
 namespace dimonka2\flatform\Form\Inputs;
 
-use dimonka2\flatform\Form\Element;
-use dimonka2\flatform\Form\Contracts\IContext;
-use Form;
+use dimonka2\flatform\Form\Input;
 
-class Hidden extends Element
+class Hidden extends Input
 {
-    public $value;
-    public $name;
-
     protected function read(array $element)
     {
-        $this->readSettings($element, ['name', 'value']);
         parent::read($element);
-    }
-
-    protected function render()
-    {
-        return Form::hidden($this->name, $this->value);
+        $this->col = false;
     }
 }

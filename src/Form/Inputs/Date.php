@@ -4,8 +4,7 @@ namespace dimonka2\flatform\Form\Inputs;
 
 use dimonka2\flatform\Form\Input;
 
-use Form;
-use Flatform;
+use dimonka2\flatform\Flatform;
 
 class Date extends Input
 {
@@ -22,11 +21,8 @@ class Date extends Input
         }
     }
 
-    protected function render()
+    public function getTag()
     {
-        // add assets
-        $html = $this->addAssets();
-        return Form::text($this->name, $this->value,
-            $this->getOptions([])) . $html;
+        return 'text';
     }
 }
