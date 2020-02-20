@@ -3,11 +3,13 @@
 namespace dimonka2\flatform\Form;
 
 use dimonka2\flatform\Form\Element;
+use Form as LaForm;
+
 
 class Input extends Element
 {
     public const input_fields = [
-        'name', 'label', 'value', 'help',
+        'name', 'label', 'value', 'help', 'placeholder',
         'error', 'col', 'readonly', 'disabled', 'required',
     ];
     public $name;
@@ -37,16 +39,27 @@ class Input extends Element
 
     }
 
-    protected function getModelValue()
+    protected function needValue()
     {
-        if($this->name && is_null($this->value) && $this->form) {
+        if($this->value) return $this->value;
+        if($this->name) {
             // try to get value from the form
-            if($this->form->hasModel()){
-                $model = $this->form->getModel();
-                return $model->{$this->name};
+            if($this->form) {
+                return $this->form->getModelValue($this->name);
+            } else {
+                return LaForm::getValueAttribute($this->name);
             }
         }
     }
+
+    protected function render()
+    {
+        $options = $this->getOptions([]);
+        $options['type'] = $this->getTag();
+        $options['value'] = $this->needValue();
+        return $this->context->renderArray($options, 'input');
+    }
+
 
     protected function getTemplate($tag = null)
     {
@@ -57,7 +70,7 @@ class Input extends Element
 
     public function getOptions(array $keys)
     {
-        return parent::getOptions(array_merge($keys, ['name', 'readonly', 'disabled', 'required', 'value']));
+        return parent::getOptions(array_merge($keys, ['name', 'readonly', 'disabled', 'required', 'value', 'placeholder']));
     }
 
     public function renderElement()

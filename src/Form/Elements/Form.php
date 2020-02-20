@@ -18,15 +18,20 @@ class Form extends ElementContainer implements IForm
 
     protected function read(array $element)
     {
-        $this->readSettings($element, self::form_fields);
         $this->context->setForm($this);
+
+        $this->readSettings($element, self::form_fields);
         parent::read($element);
         $this->context->setForm(null);
     }
 
     public function getModelValue($name)
     {
-
+        if($this->hasModel()){
+            return data_get($this->model, $name);
+        } else {
+            return LaForm::getValueAttribute($name);
+        }
     }
 
     public function renderForm($aroundHTML = null)

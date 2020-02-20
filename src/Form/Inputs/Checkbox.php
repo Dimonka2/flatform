@@ -3,8 +3,6 @@
 namespace dimonka2\flatform\Form\Inputs;
 
 use dimonka2\flatform\Form\Input;
-use dimonka2\flatform\Form\Contracts\IContext;
-use Form;
 
 class Checkbox extends Input
 {
@@ -12,16 +10,19 @@ class Checkbox extends Input
     public $checked;
     public $inline;
 
-    protected function render()
-    {
-        return Form::checkbox($this->name, $this->value, $this->checked,
-            $this->getOptions([]));
-    }
 
     protected function read(array $element)
     {
         $this->readSettings($element, ['label', 'checked', 'inline']);
         parent::read($element);
         $this->col = false;
+    }
+
+    public function getOptions(array $keys)
+    {
+        $options = parent::getOptions($keys);
+        if($this->checked || $this->needValue()) $options['checked'] = '';
+
+        return $options;
     }
 }

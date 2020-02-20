@@ -7,7 +7,6 @@ use \ReflectionClass;
 use dimonka2\flatform\Form\ElementFactory;
 use dimonka2\flatform\Form\ElementContainer;
 use dimonka2\flatform\Form\Contracts\IElement;
-use dimonka2\flatform\Form\Contracts\IContainer;
 use dimonka2\flatform\Form\Contracts\IContext;
 use Illuminate\Support\MessageBag;
 
@@ -165,6 +164,7 @@ class Context implements IContext
 
     public function setForm($form)
     {
+
         $this->form = $form;
         return $this;
     }
