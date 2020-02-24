@@ -16,7 +16,6 @@ class DTColumn extends Element
     public $defs;           // all oparameters - should be depricated in the future
     public $system;         // not a database field (no sorting)
     public $noSelect;       // exclude from select statement of query
-    public $width;          // column width option in CSS format, like "20%" or "200px"
     public $contentPadding; // like "mmmm"  https://datatables.net/reference/option/columns.contentPadding
     protected $formatFunction; // a closure to format the cell function($data, DTColumn $column, $item)
 
@@ -30,7 +29,6 @@ class DTColumn extends Element
             'defs',
             'system',
             'noSelect',
-            'width',
             'sort',
             'formatFunction',
             'orderSequence',
@@ -42,23 +40,20 @@ class DTColumn extends Element
         if(!$this->as && strpos($this->name, '.')) $this->as = str_replace('.', '__', $this->name);
     }
 
-    public function formatColumnDefs()
+    public function getColumnDefs(): array
     {
-        $text = '';
-        if($this->title !== null) $text .= ', title: "' . addslashes($this->title) . '"' . PHP_EOL;
-        if($this->hidden) $text .= ', visible: false' . PHP_EOL;
+        $defs = $this->getOptions(['title', 'class']);
+        $defs['data'] = $this->getSafeName();
+
+        if($this->title !== null) $defs['title'] = $this->title;
+        if($this->hidden) $defs['visible'] = false;
         if($this->system or $this->sort === false) {
-            $text .= ', orderable: false' . PHP_EOL;
+            $defs['orderable'] = false;
         } else{
-            if($this->sortDesc) $text .= ', orderSequence: ["desc", "asc"]' . PHP_EOL;
-            if($this->orderSequence) $text .= ', orderSequence: ' .
-                (is_array($this->orderSequence) ?
-                '["' . implode('","', $this->orderSequence) . '"]' : '"' . $this->orderSequence . '"') . PHP_EOL;
+            if($this->sortDesc) $defs['orderSequence'] =  ["desc", "asc"];
+            if($this->orderSequence) $defs['orderSequence'] =  $this->orderSequence;
         }
-        if($this->width) $text .=', width: "' . $this->width . '"' . PHP_EOL;
-        if($this->defs) $text .= $this->defs . PHP_EOL;
-        if($this->class) $text .= ', class: "'. $this->class . '"' . PHP_EOL;
-        return $text;
+        return $defs;
     }
 
     public function hasFormatter()

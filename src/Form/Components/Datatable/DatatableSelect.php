@@ -41,4 +41,25 @@ class DatatableSelect extends Element
         return ($this->has_ajax != false) && ($this->url ||  $this->table->ajax_url);
     }
 
+    public function hasSelectFunction()
+    {
+        return is_callable($this->selectFunction);
+    }
+
+    public function select(Request $request)
+    {
+        return call_user_func_array($this->selectFunction, [$request, $this->table]);
+    }
+
+    /**
+     * Set the value of selectFunction
+     *
+     * @return  self
+     */
+    public function setSelectFunction($selectFunction)
+    {
+        $this->selectFunction = $selectFunction;
+
+        return $this;
+    }
 }

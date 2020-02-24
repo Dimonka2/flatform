@@ -10,6 +10,7 @@ class Textarea extends Input
     {
         $options = $this->getOptions([]);
         $text = $this->needValue();
+        if(is_null($text)) $text = '';
         return $this->context->renderArray($options, 'textarea', $text) . $this->addAssets();
     }
 }

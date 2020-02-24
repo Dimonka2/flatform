@@ -133,6 +133,35 @@ class Datatable extends ElementContainer
         $options = $this->options;
         if($this->order)  $options .= $this->formatOrder();
         if($this->hasSelect()) $options .= "\r\n select: true,";
+
+        $columns = [];
+        if($this->hasSelect()){
+            $select = $this->select;
+            $columns[] = [
+                'className' => trim($select->class),
+                'orderable' =>      false,
+                'data' => '',
+                'defaultContent' => $select->column_data ?
+                    $select->column_data :
+                    "<button class='btn btn-sm btn-clean btn-icon btn-icon-md p-1'><i class='fa fa-caret-down'></i></button>",
+            ];
+        }
+        if($this->hasDetails()) {
+            $details = $this->details;
+            $columns[] = [
+                'className' => trim($details->class),
+                'orderable' =>      false,
+                'data' => '',
+                'defaultContent' => $details->column_data ?
+                    $details->column_data :
+                    "<button class='btn btn-sm btn-clean btn-icon btn-icon-md p-1'><i class='fa fa-caret-down'></i></button>",
+            ];
+        }
+        foreach($this->columns as $column) {
+            $columns[] = $column->getColumnDefs();
+        }
+
+        $options .= "\r\n columns: " . json_encode($columns) . ',';
         return $options;
     }
 
@@ -167,6 +196,7 @@ class Datatable extends ElementContainer
         return $this;
     }
 
+
     /**
      * Set the value of ajax_url
      *
@@ -190,6 +220,18 @@ class Datatable extends ElementContainer
 
     public function processAJAX(Request $request, $query)
     {
+        // built in details!!
+        if($this->hasDetails() && $request->has(DatatableDetails::ajax_parameter)) {
+            $details = $this->getDetails();
+            if($details->hasFormatter()) return $details->format($request);
+            return response()->json(['error' => 'Table has no details formatter!'], 400);
+        }
+        if($this->hasSelect() && $request->has(DatatableSelect::ajax_parameter)) {
+            $select = $this->getSelect();
+            if($select->hasSelectFunction()) return $select->select($request);
+            return response()->json(['error' => 'Table has no "select function"!'], 400);
+        }
+
         return DatatableAjax::process($request, $this, $query);
     }
 

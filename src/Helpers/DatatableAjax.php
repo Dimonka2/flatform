@@ -21,22 +21,8 @@ class DatatableAjax
         return $query;
     }
 
-    public static function processDetails(Request $request, Datatable $table)
-    {
-        if($table->hasDetails() ) {
-            $details = $table->getDetails();
-            if($details->hasFormatter()) return $details->format($request);
-        }
-        return response()->json(['error' => 'Table has no details formatter!'], 400);
-    }
-
     public static function process(Request $request, Datatable $table, $query)
     {
-        // built in details!!
-        if($request->has(DatatableDetails::ajax_parameter)) {
-            return self::processDetails($request, $table);
-        }
-
         $totalData = $query->count();
         $totalFiltered = $totalData;
         $tablesearch = strtolower( $request->input('search.value'));
@@ -85,7 +71,7 @@ class DatatableAjax
         }
         $query = $query->addSelect($fields);
         $items = $query->get();
-        if (\App::environment('local')) {
+        if ($table->getAttribute('debug') && \App::environment('local')) {
             debug($query->toSql() );
             debug($items, $table);
         }

@@ -38,12 +38,17 @@
             }
         }
 
-        $(document).ready(function () {
+        function initSelect2()
+        {
             // add select2 initialization per element
             $('.select2:not(.select2-enabled)').each(function(i, obj) {
                 $(obj).addClass('select2-enabled');
                 select2init(obj);
             });
+        }
+
+        $(document).ready(function () {
+            initSelect2();
         })
     </script>
 

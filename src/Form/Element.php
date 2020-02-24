@@ -266,4 +266,9 @@ class Element implements IElement
     {
         return $this->context;
     }
+
+    public function getMapping($id): IElement
+    {
+        return $this->context->getMapping($id);
+    }
 }

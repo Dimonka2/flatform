@@ -136,7 +136,7 @@ trait DatatableAjaxTrait
         }
         $query = $query->addSelect($fields);
         $items = $query->get();
-        if (\App::environment('local')) {
+        if ($table->getDebug() && \App::environment('local')) {
             debug($query->toSql() );
             debug($items, $table);
         }
