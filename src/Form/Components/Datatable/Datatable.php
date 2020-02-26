@@ -142,8 +142,8 @@ class Datatable extends ElementContainer
         $options['processing'] = true;
         $options['serverSide'] = true;
         $options['responsive'] = true;
-        if(config('flatform.assets.datatable_lang')) $options["url"] =
-            asset(config('flatform.assets.datatable_path') . \App::getLocale() . '.json' );
+        if(config('flatform.assets.datatable_lang')) $options["language"] = ['url' =>
+            asset(config('flatform.assets.datatable_path') . \App::getLocale() . '.json' )];
 
         if($this->order)  $options['order'] = $this->formatOrder();
         if($this->hasSelect()) $options['select'] = [

@@ -41,7 +41,6 @@
         var detailRows_{{Str::camel($element->id)}} = [];
         function bindDetails(dt) {
             $('#{{$element->id}} tbody tr').on( 'click', 'td.{{trim($details->class)}}', function () {
-                var dt = {{$jsdt}};
                 var tr = $(this).closest('tr');
                 var row = dt.row( tr );
                 var idx = $.inArray( tr.attr('id'), detailRows_{{Str::camel($element->id)}} );

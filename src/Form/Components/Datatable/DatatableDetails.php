@@ -31,7 +31,6 @@ class DatatableDetails extends Element
             'formatFunction',
             'ajax_method',
             'column_data',
-            'data_id',
             'has-ajax',
         ]);
         parent::read($element);
@@ -41,7 +40,7 @@ class DatatableDetails extends Element
     public function getDataDefinition()
     {
         $definition = '';
-        if ($this->data_id) $definition .= $this->data_id . ' : rowData.' . $this->data_id . ",\r\n";
+        if ($this->table->data_id) $definition .= $this->table->data_id . ' : rowData.' . $this->table->data_id . ",\r\n";
         if($this->getHasAjax()) $definition .= self::ajax_parameter . ": '',\r\n";
         $definition .= $this->data_definition;
         return $definition;
