@@ -9,11 +9,9 @@ use dimonka2\flatform\Form\Contracts\IElement;
 class DatatableSelect extends Element
 {
     public const ajax_parameter = "dt_select";
-    public const default_data_id = "id";
     public const default_class = "dt-select";
     public const column_data = '<input type="checkbox" class="dt-select mt-1" />';
     protected $url;
-    protected $data_id;
     protected $has_ajax;
     protected $selectFunction;
     protected $table;
@@ -23,13 +21,11 @@ class DatatableSelect extends Element
     {
         $this->readSettings($element, [
             'url',
-            'data_id',
             'has-ajax',
             'column-data',
             'selectFunction',
         ]);
         parent::read($element);
-        if(!$this->data_id ) $this->data_id = self::default_data_id;
         if(!$this->class ) $this->class = self::default_class;
     }
 

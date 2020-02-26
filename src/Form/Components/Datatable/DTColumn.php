@@ -34,7 +34,6 @@ class DTColumn extends Element
             'orderSequence',
             'sortDesc',
             'contentPadding',
-            'hidden' => ['hide'],
         ]);
         parent::read($element);
         if(!$this->as && strpos($this->name, '.')) $this->as = str_replace('.', '__', $this->name);

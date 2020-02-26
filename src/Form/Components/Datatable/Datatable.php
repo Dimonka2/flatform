@@ -289,4 +289,9 @@ class Datatable extends ElementContainer
     {
         return is_object($this->select);
     }
+
+    public function  getDataId()
+    {
+        return $this->data_id ? $this->data_id : self::default_data_id;
+    }
 }

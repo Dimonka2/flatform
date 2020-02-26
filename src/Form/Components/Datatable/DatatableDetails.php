@@ -40,7 +40,8 @@ class DatatableDetails extends Element
     public function getDataDefinition()
     {
         $definition = '';
-        if ($this->table->data_id) $definition .= $this->table->data_id . ' : rowData.' . $this->table->data_id . ",\r\n";
+        $data_id = $this->table->getDataId();
+        $definition .= $data_id . ' : rowData.' . $data_id . ",\r\n";
         if($this->getHasAjax()) $definition .= self::ajax_parameter . ": '',\r\n";
         $definition .= $this->data_definition;
         return $definition;
