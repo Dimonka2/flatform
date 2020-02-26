@@ -2,10 +2,9 @@
 </table>
 
 @push($context->getJsStack())
-
+    @php($jsdt = $element->js_variable ? $element->js_variable : 'dt_' . Str::camel($element->id) )
     <script type="text/javascript">
-        @php($select = $element->getSelect())
-
+        var {{$jsdt}};
         @if($element->hasDetails())
         @php($details = $element->getDetails())
         function format_{{Str::camel($element->id)}}( rowData ) {
@@ -40,9 +39,9 @@
         }
 
         var detailRows_{{Str::camel($element->id)}} = [];
-        function bindDetails() {
+        function bindDetails(dt) {
             $('#{{$element->id}} tbody tr').on( 'click', 'td.{{trim($details->class)}}', function () {
-                var dt = $('#{{$element->id}}').DataTable();
+                var dt = {{$jsdt}};
                 var tr = $(this).closest('tr');
                 var row = dt.row( tr );
                 var idx = $.inArray( tr.attr('id'), detailRows_{{Str::camel($element->id)}} );
@@ -73,37 +72,53 @@
         @endisset
 
         $(document).ready(function () {
-            @isset($element->js_variable)
-                {{$element->js_variable}} =
-            @endisset $('#{{$element->id}}').DataTable({
-                "processing": true,
-                "serverSide": true,
-            @if(config('flatform.assets.datatable_lang', '') != '')
-                "language": {
-                    "url": "{{ asset(config('flatform.assets.datatable_path'). \App::getLocale() . '.json' ) }}"
-                },
-            @endif
-                {!! $element->getTableOptions() !!}
-
-                "ajax":{
-                        "url": "{{ $element->ajax_url }}",
-                        "dataType": "{{ $element->ajax_dataType ?? 'json' }}",
-                        "type": "{{ $element->ajax_method ?? 'GET' }}",
-                        "data": function ( d ) {
-                            d._token = "{{csrf_token()}}";
-                            {!! $element->ajax_data_function ?? '' !!}
-                        }
+            let options = {!! $element->getTableOptions() !!};
+            options.ajax.data = function ( d ) {
+                d._token = "{{csrf_token()}}";
+                {{ $this->ajax_data_function ?? ''}}
+            }
+            @if($element->hasSelect())
+                @php($select = $element->getSelect())
+                options.columns[0].render = function (e, t, a, n) {
+                    let cb = {!! $select->getCheckbox() !!};
+                    cb = cb.replace(/_placeholder/g, '{{$jsdt}}' + a.DT_RowId, );
+                    // console.log(a);
+                    return cb;
                 }
+                options.headerCallback = function (e, t, a, n, s) {
+                    e.getElementsByTagName('th') [0].innerHTML = {!! $select->getCheckbox(true) !!};
+                }
+            @endif
 
-            });
+            var {{$jsdt}} = $('#{{$element->id}}').DataTable(options);
+            @if($element->hasSelect())
+                {{$jsdt}}.on('change', 'label.group-select input', function () {
+                    var t = $(this).closest('table').find('td:first-child .{{$select->class}} input'),
+                    a = $(this).is(':checked');
+                    $(t).each(function () {
+                        a ? ($(this).prop('checked', !0), {{$jsdt}}.rows($(this).closest('tr')).select())  : ($(this).prop('checked', !1), {{$jsdt}}.rows($(this).closest('tr')).deselect())
+                    });
+                });
+                {{$jsdt}}.on( 'select', function ( e, dt, type, indexes ) {
+                    if ( type === 'row' ) {
+                        $.each(indexes, function (i, ii) {
+                            let row = {{$jsdt}}.row( ii).node();
+                            $(row).find('td:first-child input').prop('checked', !0);
+                        });
 
-            @if($element->hasDetails() )
-                var dt = $('#{{$element->id}}').DataTable();
+                    }
+                } );
+            @endif
+            @if($element->hasDetails() || $element->hasSelect() )
+                var dt = {{$jsdt}};
                 dt.on('draw', function () {
-                    bindDetails();
-                    $.each( detailRows_{{Str::camel($element->id)}}, function ( i, id ) {
-                        $('#'+id+' td.{{trim($details->class)}}').trigger( 'click' );
-                    } );
+                    @if($element->hasDetails())
+                        bindDetails({{$jsdt}});
+                        $.each( detailRows_{{Str::camel($element->id)}}, function ( i, id ) {
+                            $('#'+id+' td.{{trim($details->class)}}').trigger( 'click' );
+                        } );
+                    @endif
+
                 });
             @endif
 

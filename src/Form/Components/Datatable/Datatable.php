@@ -10,6 +10,7 @@ use dimonka2\flatform\Form\Components\Datatable\DTColumn;
 
 class Datatable extends ElementContainer
 {
+    public const default_data_id = "id";
     public $ajax_url;
     public $ajax_dataType;  // json
     public $ajax_method = 'post';    // POST
@@ -17,6 +18,7 @@ class Datatable extends ElementContainer
     public $options;
     public $js_variable;
     public $ajax_data_function;
+    public $data_id;
     protected $details;
     protected $select;
     protected $columns;   // collection of DTColumn objects
@@ -59,7 +61,7 @@ class Datatable extends ElementContainer
     protected function createSelect(array $select)
     {
         $this->select = $this->createElement($select, 'dt-select');
-        $this->details->setParent($this);
+        $this->select->setParent($this);
     }
 
     protected function createDetails(array $details)
@@ -96,10 +98,16 @@ class Datatable extends ElementContainer
         return $this->columns->getColumn($index);
     }
 
+    public function columnOffset(): int
+    {
+        $offset = ($this->hasDetails() ? 1 : 0) + ($this->hasSelect() ? 1 : 0);
+        return $offset;
+    }
+
     private function _formatOrder($key = null, $column = null)
     {
         if($column) {
-            return '[' . ($key + ($this->details ? 1 : 0)) . ', "' . ($column->sortDesc ? 'desc' : 'asc'). '"]';
+            return [ $key + $this->columnOffset() , $column->sortDesc ? 'desc' : 'asc' ];
         }
         if(is_array($this->order)) {
             $cnt = count($this->order);
@@ -110,7 +118,7 @@ class Datatable extends ElementContainer
                     return null;
                 case 2:
                     $column = $this->columns->getColumnEx($this->order[0], $key);
-                    if($column) return '[' . ($key + ($this->details ? 1 : 0)) . ', "' . $this->order[1] . '"]';
+                    if($column) return [ $key + $this->columnOffset()  , $this->order[1] ];
                     return null;
                 default:
                     return;
@@ -125,14 +133,29 @@ class Datatable extends ElementContainer
     public function formatOrder()
     {
         if(is_string($this->order) && strpos($this->order, ',') > 0) return $this->order;
-        return 'order: [' . $this->_formatOrder() . '], ' . PHP_EOL;
+        return $this->_formatOrder();
     }
 
     public function getTableOptions()
     {
-        $options = $this->options;
-        if($this->order)  $options .= $this->formatOrder();
-        if($this->hasSelect()) $options .= "\r\n select: true,";
+        $options = is_array($this->options) ? $this->options : [];
+        $options['processing'] = true;
+        $options['serverSide'] = true;
+        $options['responsive'] = true;
+        if(config('flatform.assets.datatable_lang')) $options["url"] =
+            asset(config('flatform.assets.datatable_path') . \App::getLocale() . '.json' );
+
+        if($this->order)  $options['order'] = $this->formatOrder();
+        if($this->hasSelect()) $options['select'] = [
+                'style' => 'multi',
+                'selector' =>  'td:first-child input',
+            ];
+
+        $options['ajax'] = [
+            "url" => $this->ajax_url ,
+            "dataType" =>  $this->ajax_dataType ?? 'json',
+            "type" => $this->ajax_method ?? 'GET',
+        ];
 
         $columns = [];
         if($this->hasSelect()){
@@ -141,9 +164,8 @@ class Datatable extends ElementContainer
                 'className' => trim($select->class),
                 'orderable' =>      false,
                 'data' => '',
-                'defaultContent' => $select->column_data ?
-                    $select->column_data :
-                    "<button class='btn btn-sm btn-clean btn-icon btn-icon-md p-1'><i class='fa fa-caret-down'></i></button>",
+                'checkboxes' => [ 'selectRow' => true ],
+                'defaultContent' => '', // $select->column_data ?  $select->column_data :  DatatableSelect::column_data,
             ];
         }
         if($this->hasDetails()) {
@@ -152,17 +174,15 @@ class Datatable extends ElementContainer
                 'className' => trim($details->class),
                 'orderable' =>      false,
                 'data' => '',
-                'defaultContent' => $details->column_data ?
-                    $details->column_data :
-                    "<button class='btn btn-sm btn-clean btn-icon btn-icon-md p-1'><i class='fa fa-caret-down'></i></button>",
+                'defaultContent' => $details->column_data ? $details->column_data : DatatableDetails::column_data,
             ];
         }
         foreach($this->columns as $column) {
             $columns[] = $column->getColumnDefs();
         }
 
-        $options .= "\r\n columns: " . json_encode($columns) . ',';
-        return $options;
+        $options ['columns'] = $columns;
+        return json_encode($options, JSON_PRETTY_PRINT);
     }
 
     /**

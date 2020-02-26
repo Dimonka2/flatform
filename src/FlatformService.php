@@ -13,19 +13,15 @@ class FlatformService
 
     public static function render(array $element)
     {
-        // dd($element);
-        $options = $element['options'] ?? null;
-        unset($element['options']);
         // backward compatibility with old version
         if(isset($element['elements'])) $element = $element['elements'];
-        return self::context($element)->setOptions($options)->render();
+        return self::context($element)->render();
     }
 
     public static function context($elements = []): Context
     {
         if (!self::$context) {
-            self::$context = new Context($elements);
-            return self::$context;
+            self::$context = new Context([]);
         }
         return self::$context->setElements($elements);
     }

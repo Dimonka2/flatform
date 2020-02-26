@@ -10,12 +10,11 @@ class DatatableDetails extends Element
 {
     public const ajax_parameter = "dt_details";
     public const default_class = "dt-details";
-    public const default_data_id = "id";
+    public const column_data = '<button class="btn btn-sm btn-clean btn-icon btn-icon-md dt-details"><i class="fa fa-caret-down"></i></button>';
     public $data_definition;    // 'article_id: rowData.id,'
     public $format_function;    // JS function myFormat(rowData);
     public $loaded_function;    // JS function initSomething(element);
     public $column_data;
-    public $data_id;
     protected $has_ajax;
     protected $url;
     protected $ajax_method;
@@ -37,7 +36,6 @@ class DatatableDetails extends Element
         ]);
         parent::read($element);
         if(!$this->class ) $this->class = self::default_class;
-        if(!$this->data_id ) $this->data_id = self::default_data_id;
     }
 
     public function getDataDefinition()
