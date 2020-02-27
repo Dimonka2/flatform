@@ -5,6 +5,7 @@ namespace dimonka2\flatform\Form;
 class ElementMapping
 {
     public const bindings = [
+
         // inputs
         'text'          => Inputs\Text::class,
         'password'      => Inputs\Password::class,

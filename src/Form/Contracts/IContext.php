@@ -19,8 +19,11 @@ interface IContext
     public function getErrors();
 
     public function setMapping($id, IElement $element);
-    public function getMapping($id): IElement;
+    public function getMapping($id): ?IElement;
 
-    public function getForm();
-    public function setForm($form);
+    public function getForm(): ?IForm;
+    public function setForm(?IForm $form);
+
+    public function getDataProvider(): ?IDataProvider;
+    public function setDataProvider(?IDataProvider $provider);
 }

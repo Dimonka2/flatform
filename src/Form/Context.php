@@ -4,11 +4,13 @@ namespace dimonka2\flatform\Form;
 
 use \ReflectionClass;
 
-use dimonka2\flatform\Form\ElementFactory;
-use dimonka2\flatform\Form\ElementContainer;
-use dimonka2\flatform\Form\Contracts\IElement;
-use dimonka2\flatform\Form\Contracts\IContext;
 use Illuminate\Support\MessageBag;
+use dimonka2\flatform\Form\ElementFactory;
+use dimonka2\flatform\Form\Contracts\IForm;
+use dimonka2\flatform\Form\ElementContainer;
+use dimonka2\flatform\Form\Contracts\IContext;
+use dimonka2\flatform\Form\Contracts\IElement;
+use dimonka2\flatform\Form\Contracts\IDataProvider;
 
 class Context implements IContext
 {
@@ -20,6 +22,7 @@ class Context implements IContext
     private $errors;
     private $debug;
     private $form;              // parent form during reading
+    private $dataProvider;      // helps to register data elements for data providers
 
     public function __construct(array $elements = [])
     {
@@ -48,7 +51,7 @@ class Context implements IContext
         return $this;
     }
 
-    public function getMapping($id): IElement
+    public function getMapping($id): ?IElement
     {
         return $this->mapping[$id] ?? null;
     }
@@ -157,16 +160,27 @@ class Context implements IContext
         return $this->createElement($defaults);
     }
 
-    public function getForm()
+    public function getForm(): ?IForm
     {
         return $this->form;
     }
 
-    public function setForm($form)
+    public function setForm(?IForm $form)
     {
-
         $this->form = $form;
         return $this;
     }
+
+    public function getDataProvider(): ?IDataProvider
+    {
+        return $this->dataProvider;
+    }
+
+    public function setDataProvider(?IDataProvider $provider)
+    {
+        $this->dataProvider = $provider;
+        return $this;
+    }
+
 
 }
