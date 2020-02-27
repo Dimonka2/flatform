@@ -262,7 +262,7 @@ class Element implements IElement
     /**
      * Get the value of context
      */
-    public function getContext()
+    public function getContext(): IContext
     {
         return $this->context;
     }

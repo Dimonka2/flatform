@@ -14,4 +14,5 @@ interface IElement
     public function setAttribute($name, $value);
     public function addClass($class);
     public function addStyle($style);
+    public function getContext(): IContext;
 }

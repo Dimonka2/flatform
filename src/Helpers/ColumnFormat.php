@@ -2,6 +2,7 @@
 
 namespace dimonka2\flatform\Helpers;
 
+use dimonka2\flatform\Form\Contracts\IDataProvider;
 use dimonka2\flatform\Form\Contracts\IElement;
 
 // string format could be:
@@ -26,8 +27,35 @@ use dimonka2\flatform\Form\Contracts\IElement;
 
 class ColumnFormat
 {
-    public static function make($format): ?IElement
+    private const splitByDelimiter = '/\s*\/\s*(?![^(]*\))/';
+
+    private static function makeFromString($format, ?IDataProvider $provider): ?IElement
     {
+        $items = preg_split(self::splitByDelimiter, $format);
+        if(count($items) > 1) {
+
+        }
+        return null;
+    }
+
+    public static function make($format, ?IDataProvider $provider): ?IElement
+    {
+        if(is_string($format) || is_array($format)){
+            $context = $provider->getContext();
+            $context->setDataProvider($provider);
+            if(is_string($format)){
+                $element = self::makeFromString($format, $provider)->setParent($provider);
+            } else {
+                $element = $context->createElement($format);
+            }
+            $element->setParent($provider);
+            $context->setDataProvider(null);
+            return $element;
+        }
+        if(is_object($format)){
+            $element->setParent($provider);
+        }
+
         return null;
     }
 }
