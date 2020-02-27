@@ -82,8 +82,13 @@ class Context implements IContext
         return $this->createElement($template);
     }
 
-    public function render()
+    public function render($elements = null)
     {
+        if(is_array($elements)){
+            $this->setElements($elements);
+        } elseif(is_object($elements)){
+            return $elements->renderElement();
+        }
         if ($this->debug) debug($this);
         return $this->elements->renderItems($this);
     }

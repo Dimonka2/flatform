@@ -11,19 +11,19 @@ class FlatformService
     private static $includes = [];
     private static $context = null;
 
-    public static function render(array $element)
+    public static function render($element)
     {
         // backward compatibility with old version
         if(isset($element['elements'])) $element = $element['elements'];
-        return self::context($element)->render();
+        return self::context()->render($element);
     }
 
-    public static function context($elements = []): Context
+    public static function context(): Context
     {
         if (!self::$context) {
-            self::$context = new Context([]);
+            self::$context = new Context();
         }
-        return self::$context->setElements($elements);
+        return self::$context;
     }
 
     public static function isIncluded($element_name)

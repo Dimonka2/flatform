@@ -65,7 +65,7 @@ class DTColumn extends Element implements IDataProvider
 
     protected function createFormatter($format)
     {
-        $this->format = ColumnFormat::make($format);
+        $this->format = ColumnFormat::make($format, $this);
     }
 
     public function registerDataElement(IData $element)
