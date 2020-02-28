@@ -19,7 +19,7 @@ class BootstrapSelect extends Select
         $this->processOptions();
     }
 
-    public function __construct(array $element, IContext $context)
+    public function __construct(array $element = [], ?IContext $context = null)
     {
         $this->options = new ElementContainer([], $context);
         parent::__construct($element, $context);

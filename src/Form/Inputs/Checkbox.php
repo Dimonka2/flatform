@@ -27,8 +27,9 @@ class Checkbox extends Input
     public function getOptions(array $keys)
     {
         $options = parent::getOptions(['value']);
-        if($this->checked || $this->needValue()) $options['checked'] = '';
-
+        $checked = $this->checked;
+        if(is_null($checked) && $this->name) $checked = $this->needValue();
+        if($checked) $options['checked'] = '';
         return $options;
     }
 }

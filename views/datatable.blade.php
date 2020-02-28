@@ -74,7 +74,7 @@
             let options = {!! $element->getTableOptions() !!};
             options.ajax.data = function ( d ) {
                 d._token = "{{csrf_token()}}";
-                {{ $this->ajax_data_function ?? ''}}
+                {!! $element->ajax_data_function ?? '' !!}
             }
             @if($element->hasSelect())
                 @php($select = $element->getSelect())

@@ -2,6 +2,7 @@
 
 namespace dimonka2\flatform\Form;
 
+use dimonka2\flatform\FlatformService;
 use dimonka2\flatform\Form\Contracts\IContext;
 use dimonka2\flatform\Form\Contracts\IElement;
 use Illuminate\Support\Fluent;
@@ -132,10 +133,10 @@ class Element implements IElement
         return $this->context->createElement($element);
     }
 
-    public function __construct(array $element, IContext $context)
+    public function __construct(array $element = [], ?IContext $context = null)
     {
         $this->attributes = new Fluent();
-        $this->context = $context;
+        $this->context = $context ?? FlatformService::context();
         $this->read($element);
         // add debug logging to any specific element
         if($this->attributes['debug']) debug($this);

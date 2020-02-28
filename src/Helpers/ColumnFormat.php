@@ -2,8 +2,10 @@
 
 namespace dimonka2\flatform\Helpers;
 
+use dimonka2\flatform\Form\Contracts\IContainer;
 use dimonka2\flatform\Form\Contracts\IDataProvider;
 use dimonka2\flatform\Form\Contracts\IElement;
+use dimonka2\flatform\Form\ElementContainer;
 
 // string format could be:
     // * "Text"
@@ -29,13 +31,12 @@ class ColumnFormat
 {
     private const splitByDelimiter = '/\s*\/\s*(?![^(]*\))/';
 
-    private static function makeFromString($format, ?IDataProvider $provider): ?IElement
+    private static function makeFromString($format, ?IDataProvider $provider, ?IContainer $container = null): ?IElement
     {
+        if(!$container) $conatiner = new ElementContainer([], $provider->getContext());
         $items = preg_split(self::splitByDelimiter, $format);
-        if(count($items) > 1) {
-
-        }
-        return null;
+        dump($items);
+        return $conatiner;
     }
 
     public static function make($format, ?IDataProvider $provider): ?IElement
