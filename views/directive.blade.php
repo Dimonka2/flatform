@@ -3,7 +3,7 @@
         @stack($element->name)
         @break
     @case('include')
-        @include($element->name, $element->with)
+        @include($element->name, $element->with ?? [])
         @break
     @case('yield')
         @yield($element->name)
