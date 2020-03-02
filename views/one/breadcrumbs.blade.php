@@ -1,20 +1,20 @@
 <nav class="flex-sm-00-auto ml-sm-3" aria-label="breadcrumb">
     <ol class="breadcrumb breadcrumb-alt">
-        @foreach($element->items as $breadcrub)
-        <li class="breadcrumb-item{{isset($breadcrub['active']) ? ' active"  aria-current="page' : ''}}">
-            <a class="link-fx" href="{{$breadcrub['url']}}"{!! 
-                isset($breadcrub['target']) ? ' target="'. $breadcrub['target'] . '"' : ''  !!}>
-                {!! isset($breadcrub['icon']) ? '<i class="' . $breadcrub['icon'] . '"></i>' : '' !!}
-                {!! $breadcrub['title'] !!}
+        @foreach($element->items as $breadcrumb)
+        <li class="breadcrumb-item{{isset($breadcrumb['active']) ? ' active"  aria-current="page' : ''}}">
+            <a class="link-fx" href="{{$breadcrumb['url']}}"{!!
+                isset($breadcrumb['target']) ? ' target="'. $breadcrumb['target'] . '"' : ''  !!}>
+                {!! isset($breadcrumb['icon']) ? '<i class="' . $breadcrumb['icon'] . '"></i>' : '' !!}
+                {!! $breadcrumb['title'] !!}
             </a>
         </li>
         @endforeach
-        @foreach($element->nav_right ?? [] as $breadcrub)
-        <li class="{{$loop->first ? 'ml-auto ' : ''}}breadcrumb-item{{isset($breadcrub['active']) ? ' active"  aria-current="page' : ''}}">
-            <a class="link-fx" href="{{$breadcrub['url']}}"{!! 
-                isset($breadcrub['target']) ? ' target="'. $breadcrub['target'] . '"' : ''  !!}>
-                {!! isset($breadcrub['icon']) ? '<i class="' . $breadcrub['icon'] . '"></i>' : '' !!}
-                {!! $breadcrub['title'] !!}
+        @foreach($element->nav_right ?? [] as $breadcrumb)
+        <li class="{{$loop->first ? 'ml-auto ' : ''}}breadcrumb-item{{isset($breadcrumb['active']) ? ' active"  aria-current="page' : ''}}">
+            <a class="link-fx" href="{{$breadcrumb['url']}}"{!!
+                isset($breadcrumb['target']) ? ' target="'. $breadcrumb['target'] . '"' : ''  !!}>
+                {!! isset($breadcrumb['icon']) ? '<i class="' . $breadcrumb['icon'] . '"></i>' : '' !!}
+                {!! $breadcrumb['title'] !!}
             </a>
         </li>
         @endforeach
