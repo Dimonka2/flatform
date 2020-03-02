@@ -3,13 +3,14 @@
 namespace dimonka2\flatform\Form\Navs;
 
 use dimonka2\flatform\Form\ElementContainer;
-use dimonka2\flatform\Form\ElementFactory;
 
 class Tabs extends ElementContainer
 {
     public $pills = false;
     public $justified = false;
     public $activeID;
+    public $contentStack;
+    public $navsStack;
 
     public function readItems(array $items)
     {
@@ -31,7 +32,7 @@ class Tabs extends ElementContainer
 
     protected function read(array $element)
     {
-        $this->readSettings($element, ['pills', 'justified', 'activeID']);
+        $this->readSettings($element, ['pills', 'justified', 'activeID', 'contentStack', 'navsStack']);
         parent::read($element);
     }
 
@@ -44,14 +45,14 @@ class Tabs extends ElementContainer
         if($template != "") $html .= $this->context->renderView(
             view($template)
             ->with('element', $this)
-            ->with('html', $html)
+            ->with('html', $html), $this->navsStack
         );
 
         $template = $this->context->getTemplate('tab-content');
         if(is_array($template) && isset($template['template'])){
             $html .= $this->context->renderView(view($template['template'])
                 ->with('element', $this)
-                ->with('html', $html)
+                ->with('html', $html), $this->contentStack
             );
         }
         return $this->context->renderElement($this, $html);

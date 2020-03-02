@@ -28,7 +28,7 @@ class BladeDirective extends Element
             return $this->context->renderView(
                 view('flatform::extends')
                 ->with('element', $this)
-            );    
+            );
         }
         // debug(print_r($this, true));
         return $this->context->renderView(

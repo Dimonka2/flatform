@@ -13,6 +13,7 @@ class Widget extends ElementContainer
     protected $items; // works like an alternative to body
     protected $footer;
     protected $tools;
+    public $body_class;
 
     public function hasTitle()
     {
@@ -100,7 +101,7 @@ class Widget extends ElementContainer
 
     protected function read(array $element)
     {
-        $this->readSettings($element, ['title', 'icon', 'body', 'footer', 'tools', 'items']);
+        $this->readSettings($element, ['title', 'icon', 'body', 'footer', 'tools', 'items', 'body_class']);
         parent::read($element);
         $this->createSections();
 

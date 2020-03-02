@@ -21,7 +21,7 @@
     </div>
     @endif
     @if ($element->hasBody())
-    <div class="kt-portlet__body">
+    <div class="kt-portlet__body {{$element->body_class ?? ''}}">
         {!! $element->renderBody() !!}
     </div>
     @endif

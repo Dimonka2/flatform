@@ -15,4 +15,12 @@
             @endisset
         @endsection
         @break
+    @case('push')
+        @push($element->name)
+            @isset($element->items)
+                {!! $element->items->renderItems() !!}
+            @endisset
+            {!! $element->getText() !!}
+        @endpush
+        @break
 @endswitch

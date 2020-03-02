@@ -3,23 +3,25 @@
 namespace dimonka2\flatform\Form\Components;
 
 use dimonka2\flatform\Form\Link;
-use dimonka2\flatform\Form\Contracts\IContext;
-use Form;
 
 class Button extends Link
 {
     protected $color;
+    protected $size;
+    protected $toggle;
 
     protected function read(array $element)
     {
-        $this->readSettings($element, ['color']);
+        $this->readSettings($element, ['color', 'size', 'toggle']);
         parent::read($element);
     }
 
     public function getOptions(array $keys)
     {
         $options = parent::getOptions($keys);
-        $options['class'] = ($options['class'] ?? 'btn') .  ' btn-' . ($this->color ?? 'primary');
+        $options['class'] = ($options['class'] ?? 'btn') .  ' btn-' . ($this->color ?? 'primary') .
+            ($this->size ? ' btn-' . $this->size : '').
+            ($this->toggle ? ' dropdown-toggle': '');
         if($this->type == 'submit') $options['type'] = 'submit';
         return $options;
     }

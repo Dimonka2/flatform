@@ -17,7 +17,7 @@
     </div>
     @endif
     @if ($element->hasBody())
-    <div class="block-content {{ !$element->hasFooter() ? 'block-content-full' : '' }}">
+    <div class="block-content {{ !$element->hasFooter() ? 'block-content-full' : '' }} {{$element->body_class ?? ''}}">
         {!! $element->renderBody() !!}
     </div>
     @endif

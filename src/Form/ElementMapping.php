@@ -65,6 +65,7 @@ class ElementMapping
         // blade directives
         'include'       => BladeDirective::class,
         'stack'         => BladeDirective::class,
+        'push'          => BladeDirective::class,
         'yield'         => BladeDirective::class,
         'extends'       => BladeDirective::class,
         'section'       => BladeDirective::class,

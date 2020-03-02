@@ -17,6 +17,7 @@ class Context implements IContext
     protected $elements = [];   // list of elements in context
     protected $mapping = [];    // id => element mapping
     protected $next_id = 100;   // id counter in order to avoid repeated ids
+    protected static $renderCount; // this is an indicator that there is an ongoing rendering if it is not 0 or null
     private $factory;           // factory object
     private $cofig_template_path;
     private $errors;
@@ -34,6 +35,7 @@ class Context implements IContext
     public function setElements(array $elements)
     {
         $this->elements = new ElementContainer([], $this);
+        $this->elements->setContainer(true);
         $this->errors = request()->session()->get('errors', new MessageBag);
         $this->elements->readItems($elements);
         return $this;
@@ -90,12 +92,29 @@ class Context implements IContext
             return $elements->renderElement();
         }
         if ($this->debug) debug($this);
-        return $this->elements->renderItems($this);
+        if(!self::$renderCount) return $this->_internalRender();
+        self::$renderCount++;
+        try {
+            $html = $this->renderView(view('flatform::context'));
+            self::$renderCount--;
+        } catch (\Throwable $th) {
+            self::$renderCount--;
+            throw $th;
+        }
+        return $html;
     }
 
-    public function renderView($view)
+    public function _internalRender()
     {
-        return $view->with('context', $this)->render();
+        return $this->elements->renderItems();
+    }
+
+    public function renderView($view, ?string $toStack = null)
+    {
+        $html = $view->with('context', $this)->render();
+        if(!$toStack) return $html;
+        $push = $this->createElement(['push', 'name' => $toStack, 'text' => $html]);
+        return $push->renderElement();
     }
 
     public static function renderArray(array $element, $tag, $text = null)
@@ -134,7 +153,7 @@ class Context implements IContext
     public function setOptions($options)
     {
         // read possible options from argument
-        $this->debug = $options['debug'] ?? false;
+        $this->debug = $options['debug'] ?? false || !!array_search('debug', $options);
         return $this;
     }
 

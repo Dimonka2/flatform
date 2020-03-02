@@ -2,11 +2,8 @@
 
 namespace dimonka2\flatform\Form\Components;
 
-use dimonka2\flatform\Form\Link;
-
-class Dropdown extends Link
+class Dropdown extends Button
 {
-    public $toggle;
     public $shadow;
     public $direction;
     public $group_class;
@@ -14,13 +11,21 @@ class Dropdown extends Link
     protected function read(array $element)
     {
         $this->items_in_title = false;
-        $this->readSettings($element, ['toggle', 'shadow', 'direction', 'group_class']);
+        $this->readSettings($element, ['shadow', 'direction', 'group_class']);
         parent::read($element);
     }
 
-    protected function render()
+    public function renderButton()
     {
-        return $this->renderItems();
+        return $this->render();
+    }
+
+    public function getOptions(array $keys)
+    {
+        $options = parent::getOptions($keys);
+        $options['data-toggle'] = "dropdown";
+        $options['aria-expanded'] = "false";
+        return $options;
     }
 
 }
