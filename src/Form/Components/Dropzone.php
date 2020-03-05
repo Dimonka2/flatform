@@ -2,11 +2,12 @@
 
 namespace dimonka2\flatform\Form\Components;
 
+use dimonka2\flatform\FlatformService;
 use dimonka2\flatform\Form\Elements\Form;
-use Flatform;
 
 class Dropzone extends Form
 {
+    protected const assets = 'dropzone';
     protected $onSuccess;
     protected $onError;
     protected $onAddedfile;
@@ -29,23 +30,6 @@ class Dropzone extends Form
     {
 
         $this->addHiddenField('files', json_encode($this->fileList));
-    }
-
-    protected function addAssets()
-    {
-        if(!Flatform::isIncluded('dropzone')){
-            Flatform::include('dropzone');
-            if(config('flatform.assets.dropzone', false)) {
-                $path = config('flatform.assets.dropzone.path');
-                Flatform::addCSS(config('flatform.assets.dropzone.css'), $path);
-                Flatform::addJS(config('flatform.assets.dropzone.js'), $path);
-                return $this->context->renderView(
-                    view(config('flatform.assets.dropzone.view'))
-                );
-            } else {
-                return 'Dropzone component is not configured!';
-            }
-        }
     }
 
     protected function render()

@@ -2,9 +2,8 @@
 
 namespace dimonka2\flatform\Form;
 
-use \ReflectionClass;
-
 use Illuminate\Support\MessageBag;
+use dimonka2\flatform\FlatformService;
 use dimonka2\flatform\Form\ElementFactory;
 use dimonka2\flatform\Form\Contracts\IForm;
 use dimonka2\flatform\Form\ElementContainer;
@@ -27,7 +26,7 @@ class Context implements IContext
 
     public function __construct(array $elements = [])
     {
-        $this->cofig_template_path = config('flatform.form.style');
+        $this->cofig_template_path = FlatformService::config('flatform.form.style');
         $this->factory = new ElementFactory($this);
         $this->setElements($elements);
     }
@@ -144,7 +143,7 @@ class Context implements IContext
         if(is_null($tag)) return null;
         // logger('getTemplate',  [$tag]);
         foreach (explode(',', $this->cofig_template_path) as $path) {
-            $template = config('flatform.' . $path . '.' . $tag, null);
+            $template = FlatformService::config('flatform.' . $path . '.' . $tag, null);
             if(!is_null($template)) return $template;
         }
         return null;
@@ -167,12 +166,12 @@ class Context implements IContext
 
     public function getJsStack()
     {
-        return config('flatform.form.js_stack', 'js');
+        return FlatformService::config('flatform.form.js_stack', 'js');
     }
 
     public function getCssStack()
     {
-        return config('flatform.form.css_stack', 'css');
+        return FlatformService::config('flatform.form.css_stack', 'css');
     }
 
 

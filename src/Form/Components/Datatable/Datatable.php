@@ -2,14 +2,16 @@
 
 namespace dimonka2\flatform\Form\Components\Datatable;
 
-use \dimonka2\flatform\Flatform;
 use Illuminate\Http\Request;
+use dimonka2\flatform\FlatformService;
 use dimonka2\flatform\Form\ElementContainer;
 use dimonka2\flatform\Helpers\DatatableAjax;
 use dimonka2\flatform\Form\Components\Datatable\DTColumn;
 
 class Datatable extends ElementContainer
 {
+    use ColumnsTrait;
+
     public const default_data_id = "id";
     public $ajax_url;
     public $ajax_dataType;  // json
@@ -21,7 +23,7 @@ class Datatable extends ElementContainer
     public $data_id;
     protected $details;
     protected $select;
-    protected $columns;   // collection of DTColumn objects
+
     protected $null_last;
     protected $formatFunction;
 
@@ -51,13 +53,6 @@ class Datatable extends ElementContainer
         $this->requireID();
     }
 
-    protected function createColumns(array $columns)
-    {
-        $this->columns = new Columns($this);
-        foreach($columns as $column) {
-            $this->addColumn($column);
-        }
-    }
     protected function createSelect(array $select)
     {
         $this->select = $this->createElement($select, 'dt-select');
@@ -73,30 +68,19 @@ class Datatable extends ElementContainer
 
     protected function render()
     {
-        if(!Flatform::isIncluded('datatable')) {
-            Flatform::include('datatable');
-            $path = config('flatform.assets.datatable_path');
-            Flatform::addCSS(config('flatform.assets.datatable_css'), $path);
-            Flatform::addJS(config('flatform.assets.datatable_js'), $path);
+        if(!FlatformService::isIncluded('datatable')) {
+            FlatformService::include('datatable');
+            $path = FlatformService::config('flatform.assets.datatable_path');
+            FlatformService::addCSS(FlatformService::config('flatform.assets.datatable_css'), $path);
+            FlatformService::addJS(FlatformService::config('flatform.assets.datatable_js'), $path);
         }
         return $this->context->renderView(
-            view(config('flatform.assets.datatable'))
+            view(FlatformService::config('flatform.assets.datatable'))
                 ->with('element', $this)
         );
 
     }
 
-    public function addColumn(array $definition)
-    {
-        $column = $this->createElement($definition, 'dt-column');
-        $this->columns[] = $column;
-        return $column;
-    }
-
-    public function getColumn($index): ?DTColumn
-    {
-        return $this->columns->getColumn($index);
-    }
 
     public function columnOffset(): int
     {
@@ -142,8 +126,8 @@ class Datatable extends ElementContainer
         $options['processing'] = true;
         $options['serverSide'] = true;
         $options['responsive'] = true;
-        if(config('flatform.assets.datatable_lang')) $options["language"] = ['url' =>
-            asset(config('flatform.assets.datatable_path') . \App::getLocale() . '.json' )];
+        if(FlatformService::config('flatform.assets.datatable_lang')) $options["language"] = ['url' =>
+            asset(FlatformService::config('flatform.assets.datatable_path') . \App::getLocale() . '.json' )];
 
         if($this->order)  $options['order'] = $this->formatOrder();
         if($this->hasSelect()) $options['select'] = [
@@ -185,13 +169,6 @@ class Datatable extends ElementContainer
         return json_encode($options, JSON_PRETTY_PRINT);
     }
 
-    /**
-     * Get the value of Columns
-     */
-    public function getColumns()
-    {
-        return $this->columns;
-    }
 
     /**
      * Get the value of null_last

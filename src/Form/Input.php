@@ -2,8 +2,9 @@
 
 namespace dimonka2\flatform\Form;
 
-use dimonka2\flatform\Form\Element;
 use Form;
+use dimonka2\flatform\Flatform;
+use dimonka2\flatform\Form\Element;
 
 
 class Input extends Element
@@ -54,11 +55,6 @@ class Input extends Element
     protected function hasValue()
     {
         return true;
-    }
-
-    protected function addAssets()
-    {
-        // placeholder for inherited assets
     }
 
     protected function render()

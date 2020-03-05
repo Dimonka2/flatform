@@ -18,7 +18,7 @@ class FlatformServiceProvider extends ServiceProvider
     private const config = 'flatform.php';
     public function register()
     {
-        AliasLoader::getInstance(config('flatform.aliases', []));
+        AliasLoader::getInstance(FlatformService::config('flatform.aliases', []));
     }
 
     /**
@@ -36,11 +36,11 @@ class FlatformServiceProvider extends ServiceProvider
                 \dimonka2\flatform\Commands\TestCommand::class,
             ]);
         } else {
-            Blade::directive(config('flatform.blade_directive', 'form'), function ($form) {
+            Blade::directive(FlatformService::config('flatform.blade_directive', 'form'), function ($form) {
                 return "<?php echo Flatform::render($form); ?>";
             });
             $this->loadViewsFrom(
-                config('flatform.views_directory', __DIR__.'/../views'), 'flatform');
+                FlatformService::config('flatform.views_directory', __DIR__.'/../views'), 'flatform');
 
 
             // https://freek.dev/1182-searching-models-using-a-where-like-query-in-laravel

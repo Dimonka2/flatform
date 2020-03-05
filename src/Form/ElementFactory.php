@@ -2,13 +2,13 @@
 
 namespace dimonka2\flatform\Form;
 
+use \ReflectionClass;
+use dimonka2\flatform\FlatformService;
 use dimonka2\flatform\Form\Contracts\IContext;
 use dimonka2\flatform\Form\Contracts\IElement;
-use \ReflectionClass;
 
 class ElementFactory
 {
-    private const tag_template = '/[_-a-zA-Z0-9]+/';
     private $context;
     private $user_binds = [];
     private $binds = [];
@@ -16,7 +16,7 @@ class ElementFactory
     public function __construct(IContext $context)
     {
         $this->context = $context;
-        $this->user_binds = config('flatform.bindings');
+        $this->user_binds = FlatformService::config('flatform.bindings');
         $this->binds = ElementMapping::bindings;
     }
 
@@ -63,7 +63,7 @@ class ElementFactory
 
     public static function preprocessElement(array $element): array
     {
-        if(empty($element['type']) && isset($element[0]) && !is_array($element[0])) {
+        if(!isset($element['type']) && isset($element[0]) && !is_array($element[0])) {
             $element['type'] = $element[0];
             unset($element[0]);
         }
@@ -84,7 +84,7 @@ class ElementFactory
 
     public function createElement(array $element): IElement
     {
-        $def_type = config('flatform.form.default-type', 'div');
+        $def_type = FlatformService::config('flatform.form.default-type', 'div');
         $binding = null;
 
         // new syntax - first element is a type element (no need to write 'type' => ..)
@@ -97,7 +97,7 @@ class ElementFactory
             $element = $this->mergeTemplate($element, $this->context->getTemplate($type));
         }
 
-        if( ($element['template'] ?? true !== false) && in_array($type, config('flatform.form.inputs', [])) ){
+        if( ($element['template'] ?? true !== false) && in_array($type, FlatformService::config('flatform.form.inputs', [])) ){
             // apply input template
             if($element['no-input'] ?? false != false) {
                 unset($element['no-input']);

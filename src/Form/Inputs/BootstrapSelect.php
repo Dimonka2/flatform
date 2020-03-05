@@ -4,10 +4,11 @@ namespace dimonka2\flatform\Form\Inputs;
 
 use dimonka2\flatform\Form\ElementContainer;
 use dimonka2\flatform\Form\Contracts\IContext;
-use dimonka2\flatform\Flatform;
 
 class BootstrapSelect extends Select
 {
+    protected const assets = 'bselect';
+
     public $color;
     protected $options;
     protected $ajax_url;
@@ -53,19 +54,6 @@ class BootstrapSelect extends Select
                 $this->options[] = $item;
 
             }
-        }
-    }
-
-    protected function addAssets()
-    {
-        if(!Flatform::isIncluded('bselect')){
-            Flatform::include('bselect');
-            Flatform::include('bselect');
-            Flatform::addCSS(config('flatform.assets.bootstrap-select-css'));
-            Flatform::addJS(config('flatform.assets.bootstrap-select-js'));
-            return $this->context->renderView(
-                view(config('flatform.assets.bootstrap-select'))
-            );
         }
     }
 

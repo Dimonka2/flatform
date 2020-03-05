@@ -4,11 +4,11 @@
 
 return [
     'assets' =>[
-        'select2' => [
-            'path' => 'admin/select2/',
-            'view' => 'flatform::select2',
-            'js' => 'js/select2.full.min.js',
-            'css' => [
+        'select2'   => [
+            'path'  => 'admin/select2/',
+            'view'  => 'flatform::select2',
+            'js'    => 'js/select2.full.min.js',
+            'css'   => [
                 'css/select2.min.css',
                 'css/select2-bootstrap4.css',
             ]
@@ -75,12 +75,19 @@ return [
         'dd-item' => ['class' => 'dropdown-item', 'type' => 'a', ],
         'dd-item-icon' => ['type' => 'i',],
         'dd-item-title' => ['type' => 'span',],
+        'dd-divider' => ['type' => 'div', 'class' => 'dropdown-divider', ],
         'link-form' => ['type' => 'form', 'class' => '', 'template' => false,],
         'progress' => ['template' => 'flatform::bootstrap.progress-bar', ],
         'alert' => ['template' => 'flatform::bootstrap.alert', ] ,
         'breadcrumbs' => ['template' => 'flatform::bootstrap.breadcrumbs'],
         'bselect' => ['type' => 'select', '+class' => 'bselect'],
+        'table-dropdown' => ['type' => 'dropdown', 'icon' => 'fas fa-ellipsis-v',
+            'size' => 'sm', 'color' => 'clean btn-icon btn-icon-md', 'shadow' => true],
+        'badge' => ['template' => 'flatform::bootstrap.badge'],
+        'dropzone' => ['+class' => 'dropzone'],
         'summernote' => ['+class' => 'summernote'],
+        'modal' => ['template' => 'flatform::bootstrap.modal', ],
+        'modal-close-button' => ['type' => 'button', 'data-dismiss' => "modal", ],
     ],
 
     'metronic_templates' =>[

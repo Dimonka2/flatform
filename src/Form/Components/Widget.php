@@ -3,7 +3,6 @@
 namespace dimonka2\flatform\Form\Components;
 
 use dimonka2\flatform\Form\ElementContainer;
-use dimonka2\flatform\Form\Contracts\IContext;
 
 class Widget extends ElementContainer
 {
@@ -22,8 +21,7 @@ class Widget extends ElementContainer
 
     public function getTitle()
     {
-        if(is_array($this->title)) return $this->createElement($this->title)->renderElement();
-        return $this->title;
+        return $this->renderItem($this->title);
     }
 
     public function getIcon()
@@ -75,13 +73,6 @@ class Widget extends ElementContainer
     {
 
         return "";
-    }
-
-    protected function createContainer($items)
-    {
-        $div = $this->createElement([]);
-        $div->readItems($items);
-        return $div;
     }
 
     protected function createSections()

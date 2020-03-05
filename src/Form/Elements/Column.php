@@ -2,6 +2,7 @@
 
 namespace dimonka2\flatform\Form\Elements;
 
+use dimonka2\flatform\FlatformService;
 use dimonka2\flatform\Form\ElementContainer;
 use dimonka2\flatform\Form\Contracts\IContext;
 
@@ -26,7 +27,7 @@ class Column extends ElementContainer
         if($this->xs    ) $this->addClass('col-xs-' . $this->xs);
 
         if (!$this->col && !$this->md && !$this->lg  && !$this->xl && !$this->xs) {
-             $this->addClass(config('flatform.form.col', 'col-6'));
+             $this->addClass(FlatformService::config('flatform.form.col', 'col-6'));
         }
     }
 

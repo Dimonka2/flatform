@@ -3,12 +3,10 @@
 namespace dimonka2\flatform\Form\Inputs;
 
 use dimonka2\flatform\Form\Input;
-use dimonka2\flatform\Form\Contracts\IContext;
-use Form;
-use Flatform;
 
 class Select2 extends Input
 {
+    protected const assets = 'select2';
     protected $list;
     protected $selected;
     protected $ajax_url;
@@ -20,18 +18,6 @@ class Select2 extends Input
         parent::read($element);
     }
 
-    protected function addAssets()
-    {
-        if(!Flatform::isIncluded('select2')){
-            Flatform::include('select2');
-            $path = config('flatform.assets.select2.path');
-            Flatform::addCSS(config('flatform.assets.select2.css'), $path);
-            Flatform::addJS(config('flatform.assets.select2.js'), $path);
-            return $this->context->renderView(
-                view(config('flatform.assets.select2.view'))
-            );
-        }
-    }
 
     protected function renderOptions()
     {

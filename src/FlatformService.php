@@ -26,6 +26,11 @@ class FlatformService
         return self::$context;
     }
 
+    public static function config($path, $default = null)
+    {
+        return config($path, $default);
+    }
+
     public static function isIncluded($element_name)
     {
         return in_array($element_name, static::$includes);
@@ -79,6 +84,20 @@ class FlatformService
             return $html;
         }
         return static::$jsList;
+    }
+
+    public static function addAssets($assetName)
+    {
+        if(!self::isIncluded($assetName)){
+            self::include($assetName);
+            $pathPrefix = 'flatform.assets.'. $assetName;
+            $path = config($pathPrefix . '.path');
+            self::addCSS(config($pathPrefix . '.css'), $path);
+            self::addJS(config($pathPrefix . '.js'), $path);
+            return $this->context->renderView(
+                view(config($pathPrefix . '.view'))
+            );
+        }
     }
 
 }

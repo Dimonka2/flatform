@@ -2,16 +2,14 @@
 
 namespace dimonka2\flatform\Form;
 
-use dimonka2\flatform\FlatformService;
+use Illuminate\Support\Fluent;
+use dimonka2\flatform\Flatform;
 use dimonka2\flatform\Form\Contracts\IContext;
 use dimonka2\flatform\Form\Contracts\IElement;
-use Illuminate\Support\Fluent;
 
 class Element implements IElement
 {
-    protected const element_attributes = [
-        'id', 'class', 'style'
-    ];
+    protected const assets = false;
 
     public $id;
     public $class;
@@ -136,7 +134,7 @@ class Element implements IElement
     public function __construct(array $element = [], ?IContext $context = null)
     {
         $this->attributes = new Fluent();
-        $this->context = $context ?? FlatformService::context();
+        $this->context = $context ?? Flatform::context();
         $this->read($element);
         // add debug logging to any specific element
         if($this->attributes['debug']) debug($this);
@@ -145,7 +143,7 @@ class Element implements IElement
     public function getOptions(array $keys)
     {
         $options = $this->attributes;
-        foreach(array_merge($keys, self::element_attributes) as $key){
+        foreach(array_merge($keys, ['id', 'class', 'style']) as $key){
             if(isset($this->$key) && !is_null($this->$key)) $options[$key] = $this->$key;
         }
         return $options->toArray();
@@ -194,7 +192,7 @@ class Element implements IElement
 
     public function getTag()
     {
-        return ($this->type ?? config('flatform.form.default-type', 'div') );
+        return ($this->type ?? Flatform::config('flatform.form.default-type', 'div') );
     }
 
     protected function requireID()
@@ -204,6 +202,11 @@ class Element implements IElement
             $this->context->setMapping($this->id, $this);
         }
         return $this;
+    }
+
+    protected function addAssets()
+    {
+        if( self::assets ?? false ) return Flatform::addAssets(self::assets);
     }
 
     public function getParent(): IElement

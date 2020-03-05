@@ -23,6 +23,7 @@ class ElementMapping
 
         // components
         'widget'        => Components\Widget::class,
+        'modal'        => Components\Modal::class,
         'dropdown'      => Components\Dropdown::class,
         'dd-item'       => Components\DropdownItem::class,
         'datatable'     => Components\Datatable\Datatable::class,

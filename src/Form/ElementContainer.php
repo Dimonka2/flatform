@@ -57,9 +57,16 @@ class ElementContainer extends Element implements IContainer, \ArrayAccess, \Cou
 
     }
 
+    protected function renderItem($item)
+    {
+        if(is_array($item)) return $this->createContainer($item)->renderElement();
+        if(is_object($item)) return $item->renderElement();
+        return $item;
+    }
+
     // IContainer inteface
 
-    protected function render()
+     protected function render()
     {
         $html = $this->renderItems();
         if($this->container) return $html;
@@ -74,6 +81,13 @@ class ElementContainer extends Element implements IContainer, \ArrayAccess, \Cou
              $html .= $element->renderElement( null);
         }
         return $html;
+    }
+
+    protected function createContainer($items): ElementContainer
+    {
+        $div = new ElementContainer([], $this->context);
+        $div->readItems($items);
+        return $div;
     }
 
     /**
