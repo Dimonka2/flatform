@@ -3,7 +3,6 @@
 namespace dimonka2\flatform\Form;
 
 use dimonka2\flatform\Form\ElementContainer;
-use dimonka2\flatform\Form\Contracts\IContext;
 
 class Link extends ElementContainer
 {
@@ -12,6 +11,7 @@ class Link extends ElementContainer
     protected $badge;
     protected $badgeColor;
     protected $badgePill;
+    protected $confirm; // show a modal dialog to confirm the action
     public $btn_group;
     public $title;
     public $icon;
@@ -32,7 +32,7 @@ class Link extends ElementContainer
     protected function read(array $element)
     {
         $this->readSettings($element,
-            ['href', 'post', 'title', 'icon', 'form-class', 'group',
+            ['href', 'post', 'title', 'icon', 'form-class', 'group', 'confirm',
             'badge', 'badgeColor', 'badgePill', ]);
         parent::read($element);
         if(is_array($this->badge)) $this->badge = $this->createElement($this->badge, 'badge');
@@ -49,10 +49,7 @@ class Link extends ElementContainer
     public function getTitle()
     {
         return (!is_null($this->icon) ?
-            $this->createElement([
-                'type' => 'i',
-                'class' => $this->icon
-                ])->render() . ' ' : '') .
+            $this->createElement(['class' => $this->icon], 'i')->render() . ' ' : '') .
             $this->title .
             $this->renderBadge().
             ($this->items_in_title ? $this->renderItems() : '');

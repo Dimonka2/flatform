@@ -20,7 +20,8 @@
     "minimum-stability": "dev",
     "require": {
         "php": "^7.0",
-        "laravelcollective/html": "^6"
+        "laravelcollective/html": "^6",
+        "illuminate/support": "^6"
     },
     "extra": {
         "laravel": {
