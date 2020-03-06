@@ -3,7 +3,7 @@
 namespace dimonka2\flatform\Http\Controllers;
 
 use Illuminate\Routing\Controller;
-use App\Http\Requests\ActionRequest;
+use dimonka2\flatform\Http\Requests\ActionRequest;
 
 
 class ActionController extends Controller

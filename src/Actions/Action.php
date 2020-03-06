@@ -1,7 +1,7 @@
 <?php
 namespace dimonka2\flatform\Actions;
 
-use App\Http\Requests\ActionRequest;
+use dimonka2\flatform\Http\Requests\ActionRequest;
 
 abstract class Action
 {
@@ -10,7 +10,27 @@ abstract class Action
 
     abstract public function execute(ActionRequest $request);
 
-    public function __construct(?array $params)
+    public function autorize()
+    {
+        return true;
+    }
+
+    protected function response($message, $result = 'OK')
+    {
+        return response()->json(['result' => $result, 'message' => $message]);
+    }
+
+    protected function ok($message)
+    {
+        return $this->response($message);
+    }
+
+    protected function error($message)
+    {
+        return $this->response($message, 'error');
+    }
+
+    public function __construct(?array $params = [])
     {
         $this->params = $params;
     }

@@ -81,7 +81,7 @@ class FlatformService
             foreach(static::$jsList as $asset){
                 $html .= '<script src="' . asset($asset) .'"></script>';
             }
-            return $html;
+            return $html . self::context()->renderView(view('flatform::actions-js'));
         }
         return static::$jsList;
     }

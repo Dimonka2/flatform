@@ -128,6 +128,11 @@ return [
         'Form'  => Collective\Html\FormFacade::class,
         'HTML'  => Collective\Html\HtmlFacade::class,
     ],
+    // add application specific actions here
+    'actions_middleware' => null,
+    'actions' => [
+
+    ],
     // add more flatform elements here
     'bindings' => [],
 ];

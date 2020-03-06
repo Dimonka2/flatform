@@ -2,11 +2,12 @@
 
 namespace dimonka2\flatform;
 
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\Facades\Blade;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Route;
 use dimonka2\flatform\FlatformService;
+use Illuminate\Foundation\AliasLoader;
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Database\Eloquent\Builder;
 
 class FlatformServiceProvider extends ServiceProvider
 {
@@ -42,29 +43,11 @@ class FlatformServiceProvider extends ServiceProvider
             $this->loadViewsFrom(
                 FlatformService::config('flatform.views_directory', __DIR__.'/../views'), 'flatform');
 
-
-            // https://freek.dev/1182-searching-models-using-a-where-like-query-in-laravel
-            Builder::macro('whereLike', function ($attributes, string $searchTerm) {
-                $this->where(function (Builder $query) use ($attributes, $searchTerm) {
-                    foreach (array_wrap($attributes) as $attribute) {
-                        $query->when(
-                            str_contains($attribute, '.'),
-                            function (Builder $query) use ($attribute, $searchTerm) {
-                                [$relationName, $relationAttribute] = explode('.', $attribute);
-
-                                $query->orWhereHas($relationName, function (Builder $query) use ($relationAttribute, $searchTerm) {
-                                    $query->where($relationAttribute, 'LIKE', "%{$searchTerm}%");
-                                });
-                            },
-                            function (Builder $query) use ($attribute, $searchTerm) {
-                                $query->orWhere($attribute, 'LIKE', "%{$searchTerm}%");
-                            }
-                        );
-                    }
-                });
-
-                return $this;
+            Route::group($this->routeConfig(), function () {
+                $this->loadRoutesFrom(__DIR__.'/routes.php');
             });
+
+            $this->registerMarcos();
 
         }
         $this->app->bind('flatform', FlatformService::class);
@@ -73,5 +56,41 @@ class FlatformServiceProvider extends ServiceProvider
     protected function getConfigFile(): string
     {
         return __DIR__ . '/../config/' . self::config;
+    }
+
+    protected function routeConfig()
+    {
+        return [
+            'namespace' => 'dimonka2\flatform\Http\Controllers',
+            'as' => 'flatform.',
+            'middleware' => FlatformService::config('flatform.actions_middleware'),
+            'prefix' => 'flatform',
+        ];
+    }
+
+    protected function registerMarcos()
+    {
+        // https://freek.dev/1182-searching-models-using-a-where-like-query-in-laravel
+        Builder::macro('whereLike', function ($attributes, string $searchTerm) {
+            $this->where(function (Builder $query) use ($attributes, $searchTerm) {
+                foreach (array_wrap($attributes) as $attribute) {
+                    $query->when(
+                        str_contains($attribute, '.'),
+                        function (Builder $query) use ($attribute, $searchTerm) {
+                            [$relationName, $relationAttribute] = explode('.', $attribute);
+
+                            $query->orWhereHas($relationName, function (Builder $query) use ($relationAttribute, $searchTerm) {
+                                $query->where($relationAttribute, 'LIKE', "%{$searchTerm}%");
+                            });
+                        },
+                        function (Builder $query) use ($attribute, $searchTerm) {
+                            $query->orWhere($attribute, 'LIKE', "%{$searchTerm}%");
+                        }
+                    );
+                }
+            });
+
+            return $this;
+        });
     }
 }

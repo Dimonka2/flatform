@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Requests;
+namespace dimonka2\flatform\Http\Requests;
 
-use App\Actions\Action;
 use dimonka2\flatform\Flatform;
+use dimonka2\flatform\Actions\Action;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ActionRequest extends FormRequest
@@ -14,7 +14,7 @@ class ActionRequest extends FormRequest
     {
         if(!$this->action) {
             if(!$this->has('name')) return null;
-            $class = Flatform::config("actions.commands." . $this->name);
+            $class = Flatform::config("flatform.actions." . $this->name);
             if(!class_exists($class)) return null;
             $this->action = Action::make($class);
         }
@@ -28,7 +28,8 @@ class ActionRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        $action = $this->action();
+        return $action ? $action->autorize() : false;
     }
 
     /**
