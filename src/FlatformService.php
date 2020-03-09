@@ -33,12 +33,12 @@ class FlatformService
 
     public static function isIncluded($element_name)
     {
-        return in_array($element_name, static::$includes);
+        return static::$includes[$element_name] ?? false;
     }
 
     public static function include($element_name)
     {
-        if( !static::isIncluded($element_name) ) static::$includes[] = $element_name;
+        static::$includes[$element_name] = true;
     }
 
     public static function addCSS($css, $path = "")
@@ -94,7 +94,7 @@ class FlatformService
             $path = config($pathPrefix . '.path');
             self::addCSS(config($pathPrefix . '.css'), $path);
             self::addJS(config($pathPrefix . '.js'), $path);
-            return $this->context->renderView(
+            return self::context()->renderView(
                 view(config($pathPrefix . '.view'))
             );
         }

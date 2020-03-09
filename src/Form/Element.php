@@ -206,7 +206,7 @@ class Element implements IElement
 
     protected function addAssets()
     {
-        if( self::assets ?? false ) return Flatform::addAssets(self::assets);
+        if( static::assets ?? false ) return Flatform::addAssets(static::assets);
     }
 
     public function getParent(): IElement
