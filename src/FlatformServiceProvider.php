@@ -63,7 +63,7 @@ class FlatformServiceProvider extends ServiceProvider
         return [
             'namespace' => 'dimonka2\flatform\Http\Controllers',
             'as' => 'flatform.',
-            'middleware' => FlatformService::config('flatform.actions_middleware'),
+            'middleware' => FlatformService::config('flatform.actions.middleware'),
             'prefix' => 'flatform',
         ];
     }

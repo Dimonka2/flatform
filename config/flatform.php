@@ -129,9 +129,16 @@ return [
         'HTML'  => Collective\Html\HtmlFacade::class,
     ],
     // add application specific actions here
-    'actions_middleware' => null,
     'actions' => [
-
+        // action controller middleware
+        'middleware' => null,
+        // class (invoke) or callable with parameters: actionName, request
+        // resolver may return:
+        // * class name
+        // * array [class name, [params] ]
+        'resolver' => null,
+        // javascript run actions variable
+        'js-function' => 'ffactions',
     ],
     // add more flatform elements here
     'bindings' => [],

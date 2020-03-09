@@ -1,8 +1,23 @@
 <script>
     class FlatformActions{
-        processOutput(msg){
-            console.log(msg);
-            alert('wow' + msg);
+        processOutput(response){
+            console.log(response);
+            // alert(response.message);
+            if(response.result == 'error') alert(response.message);
+
+            if(response.redirect) {
+                switch (response.redirect) {
+                    case 'reload':
+                        location.reload();
+                        break;
+                    case 'back':
+                        window.history.back();
+                        break;
+                    default:
+                        window.location.href = response.redirect;
+                        break;
+                }
+            }
         }
 
         processError(html, status){
@@ -16,13 +31,14 @@
             };
             params._token = "{{ csrf_token() }}";
             params.name = actionName;
+            params.dataType = 'JSON';
             let self = this;
             $.ajax({
                 type: 'POST',
                 url: '@route("flatform.action")',
                 data: params,
-                success: function(msg){
-                    self.processOutput(msg);
+                success: function(response){
+                    self.processOutput(response);
                 },
                 error: function(html, status) {
                     self.processError(html, status);
@@ -30,5 +46,5 @@
             });
         }
     }
-    var ffactions = new FlatformActions();
+    var {{config('flatform.actions.js-function', 'ffactions')}} = new FlatformActions();
 </script>

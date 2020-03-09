@@ -2,6 +2,7 @@
 
 namespace dimonka2\flatform\Form;
 
+use dimonka2\flatform\Actions\Action;
 use dimonka2\flatform\Form\ElementContainer;
 
 class Link extends ElementContainer
@@ -12,6 +13,7 @@ class Link extends ElementContainer
     protected $badgeColor;
     protected $badgePill;
     protected $confirm; // show a modal dialog to confirm the action
+    protected $action;  // link to action
     public $btn_group;
     public $title;
     public $icon;
@@ -33,7 +35,7 @@ class Link extends ElementContainer
     {
         $this->readSettings($element,
             ['href', 'post', 'title', 'icon', 'form-class', 'group', 'confirm',
-            'badge', 'badgeColor', 'badgePill', ]);
+            'badge', 'badgeColor', 'badgePill', 'action']);
         parent::read($element);
         if(is_array($this->badge)) $this->badge = $this->createElement($this->badge, 'badge');
     }
@@ -41,8 +43,12 @@ class Link extends ElementContainer
     public function getOptions(array $keys)
     {
         $options = parent::getOptions($keys);
-        if($this->is_link()) $options['href'] = $this->href;
-        if($this->is_post()) $options['type'] = 'submit';
+        if($this->action) {
+            $options['onclick'] = Action::formatClick($this->action);
+        } else {
+            if($this->is_link()) $options['href'] = $this->href;
+            if($this->is_post()) $options['type'] = 'submit';
+        }
         return $options;
     }
 
