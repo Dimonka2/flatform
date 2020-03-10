@@ -3,17 +3,9 @@
 namespace dimonka2\flatform\Form\Components;
 
 use dimonka2\flatform\Form\Link;
-use dimonka2\flatform\Form\Contracts\IContext;
-use Form;
 
 class DropdownItem extends Link
 {
-
-    protected function read(array $element)
-    {
-        $this->readSettings($element, ['icon']);
-        parent::read($element);
-    }
 
     public function getTitle()
     {
@@ -32,7 +24,11 @@ class DropdownItem extends Link
                 $html .= $template->renderElement();
             }
         }
-        return $html;
+        if(!is_null($this->badge)) {
+            $html .= $this->renderBadge();
+        }
+
+            return $html;
     }
 
     protected function renderLink()

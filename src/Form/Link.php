@@ -67,12 +67,10 @@ class Link extends ElementContainer
             if(is_object($this->badge)) {
                 return ' ' . $this->badge->renderElement();
             } else {
-                return ' '. $this->createElement([
-                    'type' => 'badge',
-                    'text' => $this->badge,
-                    'color' => $this->badgeColor,
-                    'pill' => $this->badgePill,
-                ])->renderElement();
+                $badge = ['text' => $this->badge];
+                if($this->badgeColor) $badge['color'] = $this->badgeColor;
+                if($this->badgePill) $badge['pill'] = $this->badgeColor;
+                return ' '. $this->createElement($badge, 'badge')->renderElement();
             }
         } else return;
     }
@@ -89,10 +87,9 @@ class Link extends ElementContainer
                     $method = $item;
                 } else {
                     $form->elements[] = $this->createElement([
-                        'type' => 'hidden',
                         'name' => $key,
                         'value' => $item,
-                    ]);
+                    ], 'hidden');
                 }
             }
         } else {
