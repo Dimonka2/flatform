@@ -27,6 +27,7 @@ class ActionRequest extends FormRequest
             $class = $this->getActionClass();
             if(!class_exists($class)) return null;
             $this->action = Action::make($class);
+            $this->action->init($this);
         }
         return $this->action;
     }
@@ -39,7 +40,7 @@ class ActionRequest extends FormRequest
     public function authorize()
     {
         $action = $this->action();
-        return $action ? $action->autorize($this) : false;
+        return $action ? $action->autorize() : false;
     }
 
     /**

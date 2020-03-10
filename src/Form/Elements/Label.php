@@ -15,7 +15,7 @@ class Label extends ElementContainer
 
     protected function render()
     {
-        if($this->elements->count() == 0) return;
+        if(count($this->elements) == 0) return;
         return parent::render();
     }
 

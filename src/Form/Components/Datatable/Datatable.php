@@ -18,6 +18,7 @@ class Datatable extends ElementContainer
     public $ajax_method = 'post';    // POST
     public $order;
     public $options;
+    public $option_function;
     public $js_variable;
     public $ajax_data_function;
     public $data_id;
@@ -46,6 +47,7 @@ class Datatable extends ElementContainer
             'options',
             'js_variable',
             'ajax_data_function',
+            'option_function',
             'null_last',
             'formatFunction',
         ]);

@@ -4,17 +4,22 @@ namespace dimonka2\flatform\Actions;
 use dimonka2\flatform\Flatform;
 use dimonka2\flatform\Http\Requests\ActionRequest;
 
-class Action
+class Action implements Contract
 {
     public const name = '';
     protected $params;
 
-    public function execute(ActionRequest $request)
+    public function execute()
     {
 
     }
 
-    public function autorize(ActionRequest $request)
+    public function init(ActionRequest $request)
+    {
+
+    }
+
+    public function autorize()
     {
         return false;
     }

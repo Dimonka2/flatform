@@ -12,6 +12,6 @@ class ActionController extends Controller
     {
         $action = $request->action();
         if(!$action) return abort(404);
-        return $action->execute($request);
+        return $action->execute();
     }
 }

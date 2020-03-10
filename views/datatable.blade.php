@@ -72,6 +72,7 @@
 
         $(document).ready(function () {
             let options = {!! $element->getTableOptions() !!};
+            {!! $element->option_function ?? '' !!}
             options.ajax.data = function ( d ) {
                 d._token = "{{csrf_token()}}";
                 {!! $element->ajax_data_function ?? '' !!}
