@@ -7,10 +7,10 @@
 
             if(response.redirect) {
                 switch (response.redirect) {
-                    case 'reload':
+                    case "{{\dimonka2\flatform\Actions\Action::reload}}":
                         location.reload();
                         break;
-                    case 'back':
+                    case "{{\dimonka2\flatform\Actions\Action::back}}":
                         window.history.back();
                         break;
                     default:

@@ -7,6 +7,8 @@ use dimonka2\flatform\Http\Requests\ActionRequest;
 class Action implements Contract
 {
     public const name = '';
+    public const reload = 'reload';
+    public const back   = 'back';
     protected $params;
 
     public function execute()
