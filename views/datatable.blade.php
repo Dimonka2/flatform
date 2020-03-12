@@ -85,7 +85,7 @@
                     @if($element->hasDetails())
                         bindDetails({{$jsdt}});
                         $.each( detailRows_{{Str::camel($element->id)}}, function ( i, id ) {
-                            $('#'+id+' td.{{trim($details->class)}}').trigger( 'click' );
+                            $('#'+id+' td.{{trim($element->getDetails()->class)}}').trigger( 'click' );
                         } );
                     @endif
 
