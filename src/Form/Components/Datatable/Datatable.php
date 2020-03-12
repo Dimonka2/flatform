@@ -11,6 +11,7 @@ use dimonka2\flatform\Form\Components\Datatable\DTColumn;
 class Datatable extends ElementContainer
 {
     use ColumnsTrait;
+    use FiltersTrait;
 
     public const default_data_id = "id";
     public $ajax_url;
@@ -24,6 +25,7 @@ class Datatable extends ElementContainer
     public $data_id;
     protected $details;
     protected $select;
+    protected $filters;
 
     protected $null_last;
     protected $formatFunction;
@@ -128,6 +130,7 @@ class Datatable extends ElementContainer
         $options['processing'] = true;
         $options['serverSide'] = true;
         $options['responsive'] = true;
+        // $options['lengthChange'] = false;
         if(FlatformService::config('flatform.assets.datatable_lang')) $options["language"] = ['url' =>
             asset(FlatformService::config('flatform.assets.datatable_path') . \App::getLocale() . '.json' )];
 
@@ -246,6 +249,11 @@ class Datatable extends ElementContainer
     public function hasDetails()
     {
         return is_object($this->details);
+    }
+
+    public function hasFilter()
+    {
+        return is_object($this->filters) && ($this->filters->count() > 0);
     }
 
     /**

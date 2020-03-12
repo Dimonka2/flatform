@@ -3,7 +3,6 @@
 namespace dimonka2\flatform\Form\Components\Datatable;
 
 use dimonka2\flatform\Form\Contracts\IElement;
-use dimonka2\flatform\Form\Components\Datatable\DTColumn;
 
 class Columns implements \ArrayAccess, \Countable, \IteratorAggregate
 {

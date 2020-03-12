@@ -2,9 +2,8 @@
 
 namespace dimonka2\flatform\Form;
 
-use Form;
-use dimonka2\flatform\Flatform;
 use dimonka2\flatform\Form\Element;
+use Form;
 
 
 class Input extends Element

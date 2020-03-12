@@ -52,11 +52,20 @@ class Link extends ElementContainer
         return $options;
     }
 
+    protected function renderTitle()
+    {
+        if($this->title){
+            if(is_object($this->title) || is_array($this->title)) {
+                return $this->renderItem($this->title);
+            } else return $this->title;
+        } else return;
+    }
+
     public function getTitle()
     {
         return (!is_null($this->icon) ?
             $this->createElement(['class' => $this->icon], 'i')->render() . ' ' : '') .
-            $this->title .
+            $this->renderTitle() .
             $this->renderBadge().
             ($this->items_in_title ? $this->renderItems() : '');
     }
