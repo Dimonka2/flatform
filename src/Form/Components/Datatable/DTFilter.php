@@ -20,6 +20,7 @@ class DTFilter extends Element
         $this->readSettings($element, [
             'name', 'title', 'filter', 'disabled', 'list', 'filterFunction'
         ]);
+        return parent::read($element);
     }
 
     public function form()

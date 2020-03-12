@@ -25,7 +25,7 @@ class DatatableFilters extends Element implements \ArrayAccess, \Countable, \Ite
                 ['dropdown', 'toggle', 'group', 'color' => 'outline-secondary', 'size' => 'sm', 'shadow',
                     'title' => [ ['span', [
                         ['include', 'name' => 'flatform::icons.filter',
-                            'with' => ['width' => '1.5em', 'height' => '1.5em']]]
+                            'with' => ['width' => '1.4em', 'height' => '1.4em']]]
                     ]],
                     'drop_form' => [
                         ['div', 'style' => 'min-width:320px;', 'class' => 'p-3', [
