@@ -7,31 +7,39 @@
     <script type="text/javascript">
         var {{$jsdt}} = false;
 
+        @if( $element->hasFilter() )
+        var filterClass = "{{\dimonka2\flatform\Form\Components\Datatable\DTFilter::filterClass}}";
         function addFilter(table){
-            let row = $(table).parent().parent().parent().find('.row:eq(0)');
-            let col = row.children().last();
-            col.addClass('text-right');
-            col.children().last().addClass('d-inline');
-            let filter = {!! json_encode(Flatform::render([
-                    ['div', 'class' => 'd-inline ml-2 mr-2 btn-group', [
-                        ['dropdown', 'group', 'color' => 'outline-secondary', 'size' => 'sm', 'shadow',
-                            'title' => [['include', 'name' => 'flatform::icons.filter',
-                                'with' => ['width' => '1.5rem', 'height' => '1.5rem']]],
-                            [
-                                ['dd-divider'],
-                        ]]
+            if(!table.hasClass(filterClass+'_enabled')) {
+                table.addClass(filterClass+'_enabled');
+                let row = $(table).parent().parent().parent().find('.row:eq(0)');
+                let col = row.children().last();
+                col.addClass('text-right');
+                col.children().last().addClass('d-inline');
+                let filter = {!! $element->filterDropdown() !!};
+                col.append(filter);
+                if (typeof initBSPickers !== "undefined") initBSPickers();
+                if (typeof initSelect2 !== "undefined") initSelect2();
 
-                    ]]
-                ] )) !!};
-            col.append(filter);
+                col.find('.' + filterClass + ':not(label)').change(function(){
+                    {{$jsdt}}.ajax.reload();
+                });
+            }
             // $(table).parent().parent().parent().find('.row .col-md-6:eq(1)').append('test');
         }
+        @endif
 
         $(document).ready(function () {
             let options = {!! $element->getTableOptions() !!};
             {!! $element->option_function ?? '' !!}
             options.ajax.data = function ( d ) {
                 d._token = "{{csrf_token()}}";
+                @if( $element->hasFilter() )
+                    let form = $('#{{$element->id}}_filter-form');
+                    let data = $(form).serializeArray().filter(function(val) {return val.name != '_token'});
+                    data = JSON.stringify( data);
+                    d.filter = data;
+                @endif
                 {!! $element->ajax_data_function ?? '' !!}
             }
             @if($element->hasSelect())
@@ -47,7 +55,7 @@
                 }
             @endif
 
-            var {{$jsdt}} = $('#{{$element->id}}').DataTable(options);
+            {{$jsdt}} = $('#{{$element->id}}').DataTable(options);
             // {{-- Add filter component --}}
             @if( $element->hasFilter() )
                 addFilter($('#{{$element->id}}'));

@@ -30,6 +30,7 @@ class ElementMapping
         'dt-details'    => Components\Datatable\DatatableDetails::class,
         'dt-select'     => Components\Datatable\DatatableSelect::class,
         'dt-column'     => Components\Datatable\DTColumn::class,
+        'dt-filter'     => Components\Datatable\DTFilter::class,
         'progress'      => Components\Progress::class,
         'alert'         => Components\Alert::class,
         'dropzone'      => Components\Dropzone::class,

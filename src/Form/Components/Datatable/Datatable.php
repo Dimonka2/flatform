@@ -35,6 +35,9 @@ class Datatable extends ElementContainer
         $columns = self::readSingleSetting($element, 'columns');
         $this->createColumns($columns ?? []);
 
+        $filters = self::readSingleSetting($element, 'filters');
+        $this->createFilters($filters ?? []);
+
         $details = self::readSingleSetting($element, 'details');
         if(is_array($details)) $this->createDetails($details);
 
@@ -233,10 +236,14 @@ class Datatable extends ElementContainer
             if($select->hasSelectFunction()) return $select->select($request);
             return response()->json(['error' => 'Table has no "select function"!'], 400);
         }
-
+        if($request->has('filter')) $query = $this->filters->process($request->filter, $query);
         return DatatableAjax::process($request, $this, $query);
     }
 
+    public function filterDropdown()
+    {
+        return $this->filters->getDropdown();
+    }
 
     /**
      * Get the value of details
@@ -253,7 +260,7 @@ class Datatable extends ElementContainer
 
     public function hasFilter()
     {
-        return is_object($this->filters) && ($this->filters->count() > 0);
+        return is_object($this->filters) && $this->filters->isEnabled();
     }
 
     /**

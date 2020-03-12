@@ -59,7 +59,7 @@ class ElementContainer extends Element implements IContainer, \ArrayAccess, \Cou
 
     protected function renderItem($item)
     {
-        if(is_array($item)) return $this->createContainer($item)->renderElement();
+        if(is_array($item)) return $this->createContainer($item)->renderItems();
         if(is_object($item)) return $item->renderElement();
         return $item;
     }

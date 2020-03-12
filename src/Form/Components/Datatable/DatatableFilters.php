@@ -2,14 +2,63 @@
 
 namespace dimonka2\flatform\Form\Components\Datatable;
 
+use dimonka2\flatform\Flatform;
 use dimonka2\flatform\Form\Element;
 use dimonka2\flatform\Form\Contracts\IElement;
 
 class DatatableFilters extends Element implements \ArrayAccess, \Countable, \IteratorAggregate
 {
-
     protected $items;
     protected $table;
+
+    public function getDropdown()
+    {
+        $filters = [];
+        foreach ($this->items as $filter) {
+            if($filter->isEnabled()) {
+                $filters[] = $filter->form();
+            }
+        }
+
+        return json_encode(Flatform::render([
+            ['div', 'class' => 'd-inline ml-2 mr-2 btn-group', [
+                ['dropdown', 'toggle', 'group', 'color' => 'outline-secondary', 'size' => 'sm', 'shadow',
+                    'title' => [ ['span', [
+                        ['include', 'name' => 'flatform::icons.filter',
+                            'with' => ['width' => '1.5em', 'height' => '1.5em']]]
+                    ]],
+                    'drop_form' => [
+                        ['div', 'style' => 'min-width:320px;', 'class' => 'p-3', [
+                            ['form', 'id' => $this->table->id . '_filter-form', [
+                                ['div', $filters ],
+                            ]]
+                        ]],
+                    ]
+                ]
+
+            ]]
+        ] ));
+    }
+
+    public function process($filterData, $query)
+    {
+        $filterData = collect(json_decode($filterData));
+        foreach ($this->items as $filter) {
+            if($filter->isEnabled()) {
+                $data = $filterData->where('name', $filter->getName())->first();
+                $filter->apply($query, $data);
+            }
+        }
+
+        return $query;
+    }
+
+    public function isEnabled()
+    {
+        foreach ($this->items as $filter) {
+            if($filter->isEnabled()) return true;
+        }
+    }
 
     public function __construct(Datatable $table)
     {
