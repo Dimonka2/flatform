@@ -9,10 +9,12 @@
 
         @if( $element->hasFilter() )
         var filterClass = "{{\dimonka2\flatform\Form\Components\Datatable\DTFilter::filterClass}}";
-        function addFilter(table){
-            if(!table.hasClass(filterClass+'_enabled')) {
-                table.addClass(filterClass+'_enabled');
-                let row = $(table).parent().parent().parent().find('.row:eq(0)');
+        function addFilter(){
+            if(!$('#{{$element->id}}').hasClass(filterClass+'_enabled')) {
+                $('#{{$element->id}}').addClass(filterClass+'_enabled');
+                // console.log($('.table-responsive').html());
+                let row = $('#{{$element->id}}').parent().parent().parent().find('.row:eq(0)');
+                console.log(row);
                 let col = row.children().last();
                 col.addClass('text-right');
                 col.children().last().addClass('d-inline');
@@ -55,11 +57,14 @@
                 }
             @endif
 
+            @if( $element->hasFilter() )
+                options.initComplete = function(settings, json) {
+                    addFilter();
+                }
+            @endif
+
             {{$jsdt}} = $('#{{$element->id}}').DataTable(options);
             // {{-- Add filter component --}}
-            @if( $element->hasFilter() )
-                addFilter($('#{{$element->id}}'));
-            @endif
 
             @if($element->hasSelect())
                 {{$jsdt}}.on('change', 'label.group-select input', function () {
