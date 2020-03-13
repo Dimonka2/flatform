@@ -14,4 +14,11 @@ class ActionController extends Controller
         if(!$action) return abort(404);
         return $action->execute();
     }
+
+    public function getForm(ActionRequest $request)
+    {
+        $action = $request->action();
+        if(!$action) return abort(404);
+        return $action->form();
+    }
 }

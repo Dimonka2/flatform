@@ -33,6 +33,13 @@ class DTFilter extends Element
                         '+class' => self::filterClass]);
                 if($this->default) $checkbox['value'] = $this->default;
                 return ['col', 'col' => 12, [$checkbox]];
+            case 'select':
+                $select = array_merge($this->getOptions([]),
+                    ['select', 'label' => $this->title, 'name' => $this->name,
+                        'col' => 12, 'list' => $this->list,
+                        '+class' => self::filterClass]);
+                if($this->default) $select['value'] = $this->default;
+                return $select;
         }
     }
 

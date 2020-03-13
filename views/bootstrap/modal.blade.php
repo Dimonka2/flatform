@@ -1,5 +1,5 @@
 <div class="modal fade" id="{{$element->id}}" tabindex="-1" role="dialog" aria-labelledby="{{$element->id}}-label" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog{{$element->getSize() ? ' modal-'. $element->getSize() : ''}}" role="document">
         <div class="modal-content">
             <div class="modal-header">
             @if($element->hasTitle())

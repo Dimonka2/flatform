@@ -9,4 +9,5 @@ interface Contract
     public function init(ActionRequest $request);
     public function autorize();
     public static function formatClick($action);
+    public function form();
 }

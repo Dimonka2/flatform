@@ -2,14 +2,23 @@
 namespace dimonka2\flatform\Actions;
 
 use dimonka2\flatform\Flatform;
+use dimonka2\flatform\Form\Contracts\IElement;
 use dimonka2\flatform\Http\Requests\ActionRequest;
 
 class Action implements Contract
 {
+    public const modalID = 'flatform-action';
     public const name = '';
     public const reload = 'reload';
     public const back   = 'back';
+    public const noform = 'noform';
+    protected const confirmText = 'Run action';
+    protected const cancelText = 'Cancel';
+    protected const confirmColor = 'danger';
+    protected const cancelColor = 'secondary';
     protected $params;
+    protected $redirect;
+    protected $form;
 
     public function execute()
     {
@@ -26,21 +35,76 @@ class Action implements Contract
         return false;
     }
 
-    protected function response($message, $result = 'ok', $redirect = null)
+    public function form()
+    {
+        $form = $this->getForm();
+        if(!$form) return $this->ok('', self::noform);
+        // render complete form
+        $form = Flatform::context()->createElement(['form', 'url' => route('flatform.action'), 'id' => self::modalID . '_form', [
+            ['hidden', 'name' => 'name', 'value' => static::name],
+            ['modal', $form, 'id' => self::modalID,
+                'title' => $this->getTitle(),
+                'footer' => [
+                ['button', 'color' => $this->getConfirmColor(), 'title' => $this->getConfirmText(),
+                    '+class' => 'confirm'],
+                ['button', 'color' => $this->getCancelColor(), 'title' => $this->getCancelText(),
+                    'data-dismiss' => "modal" ],
+            ]]
+        ]]);
+        $form = $this->addFormOptions($form);
+        $this->form = Flatform::render([$form]);
+        return $this->ok('Confirm', '');
+    }
+
+    protected function getTitle()
+    {
+        return static::name;
+    }
+
+    protected function getConfirmText()
+    {
+        return static::confirmText;
+    }
+
+    protected function getConfirmColor()
+    {
+        return static::confirmColor;
+    }
+
+    protected function getCancelText()
+    {
+        return static::cancelText;
+    }
+
+    protected function getCancelColor()
+    {
+        return static::cancelColor;
+    }
+
+    protected function addFormOptions(IElement $form)
+    {
+        return $form;
+    }
+
+
+    protected function response($message, $result = 'ok')
     {
         $response = ['result' => $result, 'message' => $message];
-        if($redirect) $response['redirect'] = $redirect;
+        if($this->form) $response['form'] = $this->form;
+        if($this->redirect) $response['redirect'] = $this->redirect;
         return response()->json($response);
     }
 
     protected function ok($message, $redirect = null)
     {
-        return $this->response($message, 'ok', $redirect);
+        $this->redirect = $redirect;
+        return $this->response($message, 'ok');
     }
 
     protected function error($message, $redirect = null)
     {
-        return $this->response($message, 'error', $redirect);
+        $this->redirect = $redirect;
+        return $this->response($message, 'error');
     }
 
     public function __construct(?array $params = [])
@@ -108,5 +172,45 @@ class Action implements Contract
     public function getParams()
     {
         return $this->params;
+    }
+
+    /**
+     * Set the value of form
+     *
+     * @return  self
+     */
+    public function setForm($form)
+    {
+        $this->form = $form;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of redirect
+     */
+    public function getRedirect()
+    {
+        return $this->redirect;
+    }
+
+    /**
+     * Set the value of redirect
+     *
+     * @return  self
+     */
+    public function setRedirect($redirect)
+    {
+        $this->redirect = $redirect;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of form
+     */
+    public function getForm()
+    {
+        return $this->form;
     }
 }

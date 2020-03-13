@@ -7,12 +7,12 @@ abstract class MenuAction extends Action implements MenuContract
 {
     public function getTitle()
     {
-        return $this::title ?? '';
+        return defined('static::title') ? $this::title : null;
     }
 
     public function getIcon()
     {
-        return $this::icon ?? '';
+        return defined('static::icon') ? $this::icon : null;
     }
 
     public function getName()

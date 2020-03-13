@@ -14,7 +14,7 @@
                 $('#{{$element->id}}').addClass(filterClass+'_enabled');
                 // console.log($('.table-responsive').html());
                 let row = $('#{{$element->id}}').parent().parent().parent().find('.row:eq(0)');
-                console.log(row);
+                // console.log(row);
                 let col = row.children().last();
                 col.addClass('text-right');
                 col.children().last().addClass('d-inline');
