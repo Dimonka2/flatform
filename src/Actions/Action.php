@@ -10,7 +10,6 @@ class Action implements Contract
     public const modalID = 'flatform-action';
     public const name = '';
     public const reload = 'reload';
-    public const back   = 'back';
     public const noform = 'noform';
     protected const confirmText = 'Run action';
     protected const cancelText = 'Cancel';

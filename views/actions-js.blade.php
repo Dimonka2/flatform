@@ -12,9 +12,6 @@
                     case "{{$actions::reload}}":
                         location.reload();
                         break;
-                    case "{{$actions::back}}":
-                        window.history.back();
-                        break;
                     default:
                         window.location.href = response.redirect;
                         break;
@@ -42,6 +39,7 @@
         processError(html, status){
             console.log(html.responseText);
             console.log(status);
+            alert('Action was not run!');
         }
 
         showModal(actionName, response) {
