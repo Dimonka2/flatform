@@ -15,7 +15,7 @@ interface IContext
     public function createElement(array $element): IElement;
     public function getID($name);
     public function getTemplate($tag);
-    public function setOptions($options);
+    public function setOptions(array $options);
     public function getErrors();
 
     public function setMapping($id, IElement $element);

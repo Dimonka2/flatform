@@ -14,6 +14,11 @@ class FlatformService
     public static function render($element)
     {
         // backward compatibility with old version
+        if(isset($element['options'])) {
+            $options = $element['options'];
+            unset($element['options']);
+            self::context()->setOptions($options);
+        }
         if(isset($element['elements'])) $element = $element['elements'];
         return self::context()->render($element);
     }

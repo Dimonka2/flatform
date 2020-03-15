@@ -11,6 +11,7 @@ class Link extends ElementContainer
     protected $post;
     protected $badge;
     protected $badgeColor;
+    protected $badgeClass;
     protected $badgePill;
     protected $confirm; // show a modal dialog to confirm the action
     protected $action;  // link to action
@@ -35,9 +36,12 @@ class Link extends ElementContainer
     {
         $this->readSettings($element,
             ['href', 'post', 'title', 'icon', 'form-class', 'group', 'confirm',
-            'badge', 'badgeColor', 'badgePill', 'action']);
+            'badge', 'badgeColor', 'badgeClass', 'badgePill', 'action']);
         parent::read($element);
-        if(is_array($this->badge)) $this->badge = $this->createElement($this->badge, 'badge');
+        if(is_array($this->badge)) {
+            $this->badge = $this->createElement($this->badge, 'badge');
+            if($this->badgeClass) $this->badge->addClass($this->badgeClass);
+        }
     }
 
     public function getOptions(array $keys)
@@ -78,6 +82,7 @@ class Link extends ElementContainer
             } else {
                 $badge = ['text' => $this->badge];
                 if($this->badgeColor) $badge['color'] = $this->badgeColor;
+                if($this->badgeClass) $badge['+class'] = $this->badgeClass;
                 if($this->badgePill) $badge['pill'] = $this->badgeColor;
                 return ' '. $this->createElement($badge, 'badge')->renderElement();
             }

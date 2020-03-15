@@ -14,7 +14,7 @@ class Element implements IElement
     public $id;
     public $class;
     public $style;
-    public $onRender = null; // closure for rendering
+    protected $onRender = null; // closure for rendering
 
     protected $context;
     protected $type;
@@ -69,6 +69,8 @@ class Element implements IElement
 
     protected function read(array $element)
     {
+        $onLoaded = $this->readSingleSetting($element, 'onLoaded');
+
         $this->readSettings($element, [
             'text',
             'style',
@@ -81,8 +83,8 @@ class Element implements IElement
         if(!is_null($this->hidden)) $this->hidden = !!$this->hidden;
 
         $this->processAttributes($element);
+        if(is_callable($onLoaded)) call_user_func_array($onLoaded, [$this, $element]);
         if(!is_null($this->id)) $this->context->setMapping($this->id, $this);
-
         return $this;
     }
 
@@ -274,5 +276,25 @@ class Element implements IElement
     public function getMapping($id): IElement
     {
         return $this->context->getMapping($id);
+    }
+
+    /**
+     * Get the value of onRender
+     */
+    public function getOnRender(): ?callable
+    {
+        return $this->onRender;
+    }
+
+    /**
+     * Set the value of onRender
+     *
+     * @return  self
+     */
+    public function setOnRender(?callable $onRender)
+    {
+        $this->onRender = $onRender;
+
+        return $this;
     }
 }

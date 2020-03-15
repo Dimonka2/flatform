@@ -1,5 +1,7 @@
 <?php
 
+use dimonka2\flatform\Form\Contracts\IElement;
+
 // use dimonka2\flatform\State;
 
 return [
@@ -83,7 +85,11 @@ return [
         'bselect' => ['type' => 'select', '+class' => 'bselect'],
         'table-dropdown' => ['type' => 'dropdown', 'icon' => 'fas fa-ellipsis-v',
             'size' => 'sm', 'color' => 'clean btn-icon btn-icon-md', 'shadow' => true],
-        'badge' => ['template' => 'flatform::bootstrap.badge'],
+        'badge' => ['type' => 'span', 'class' => 'badge',
+            'onLoaded' => function(IElement $element, array $def){
+                if($element->getColor()) $element->addClass('badge-' . $element->getColor());
+                if($element->getPill()) $element->addClass('badge-pill');
+            }],
         'dropzone' => ['+class' => 'dropzone'],
         'summernote' => ['+class' => 'summernote'],
         'modal' => ['template' => 'flatform::bootstrap.modal', ],

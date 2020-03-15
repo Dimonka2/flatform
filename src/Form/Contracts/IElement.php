@@ -15,4 +15,7 @@ interface IElement
     public function addClass($class);
     public function addStyle($style);
     public function getContext(): IContext;
+
+    public function setOnRender(?callable $onRender);
+    public function getOnRender(): ?callable;
 }

@@ -47,9 +47,9 @@ class BootstrapSelect extends Select
                 }
                 if(!is_null($this->selected) && isset($this->selected[$item->getAttribute('value')])) $item->setAttribute('selected','');
                 // render closure
-                $item->onRender = function($item, $context) {
+                $item->setOnRender(function($item, $context) {
                     return $context->renderElement($item, $item->text);
-                };
+                });
 
                 $this->options[] = $item;
 

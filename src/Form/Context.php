@@ -18,7 +18,7 @@ class Context implements IContext
     protected $next_id = 100;   // id counter in order to avoid repeated ids
     protected static $renderCount; // this is an indicator that there is an ongoing rendering if it is not 0 or null
     private $factory;           // factory object
-    private $cofig_template_path;
+    private $style_priority;
     private $errors;
     private $debug;
     private $form;              // parent form during reading
@@ -26,7 +26,7 @@ class Context implements IContext
 
     public function __construct(array $elements = [])
     {
-        $this->cofig_template_path = FlatformService::config('flatform.form.style');
+        $this->style_priority = FlatformService::config('flatform.form.style');
         $this->factory = new ElementFactory($this);
         $this->setElements($elements);
     }
@@ -142,16 +142,17 @@ class Context implements IContext
     {
         if(is_null($tag)) return null;
         // logger('getTemplate',  [$tag]);
-        foreach (explode(',', $this->cofig_template_path) as $path) {
+        foreach (explode(',', $this->style_priority) as $path) {
             $template = FlatformService::config('flatform.' . $path . '.' . $tag, null);
             if(!is_null($template)) return $template;
         }
         return null;
     }
 
-    public function setOptions($options)
+    public function setOptions(array $options)
     {
         // read possible options from argument
+        if(isset($options['style'])) $this->style_priority = $options['style'];
         $this->debug = $options['debug'] ?? false || !!array_search('debug', $options);
         return $this;
     }
