@@ -23,6 +23,7 @@ class Element implements IElement
     protected $text;
     protected $template;
     protected $parent;
+    protected $tooltip;
 
     protected static function safeKey($key)
     {
@@ -78,6 +79,7 @@ class Element implements IElement
             'class',
             'id',
             'type',
+            'tooltip',
             'hidden'=> ['exclude', 'hidden', 'hide'],
             'template',
         ]);
@@ -148,6 +150,16 @@ class Element implements IElement
         $options = $this->attributes;
         foreach(array_merge($keys, ['id', 'class', 'style']) as $key){
             if(isset($this->$key) && !is_null($this->$key)) $options[$key] = $this->$key;
+        }
+        // add tooltip
+        if($this->tooltip) {
+            if(is_array($this->tooltip)) {
+
+            } else {
+                $options['title'] = $this->tooltip;
+                $options['data-toggle'] = "tooltip";
+                $options['data-placement'] = "top";
+            }
         }
         return $options->toArray();
     }
