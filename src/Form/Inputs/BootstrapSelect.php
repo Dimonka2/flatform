@@ -62,7 +62,7 @@ class BootstrapSelect extends Select
         return $this->options->renderItems();
     }
 
-    protected function render()
+    public function render()
     {
         // logger('rendering', [$this]);
         $html = $this->addAssets();

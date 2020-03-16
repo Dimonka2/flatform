@@ -32,7 +32,7 @@ class Dropzone extends Form
         $this->addHiddenField('files', json_encode($this->fileList));
     }
 
-    protected function render()
+    public function render()
     {
         $html = $this->addAssets();
 

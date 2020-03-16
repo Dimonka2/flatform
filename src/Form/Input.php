@@ -40,7 +40,7 @@ class Input extends Element
 
     protected function needValue()
     {
-        if($this->value) return $this->value;
+        if($this->hasValue() && $this->value) return $this->value;
         if($this->name) {
             // try to get value from the form
             if($this->form) {
@@ -56,7 +56,7 @@ class Input extends Element
         return true;
     }
 
-    protected function render()
+    public function render()
     {
         $options = $this->getOptions([]);
         $options['type'] = $this->getTag();

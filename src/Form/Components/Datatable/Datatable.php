@@ -73,7 +73,7 @@ class Datatable extends ElementContainer
     }
 
 
-    protected function render()
+    public function render()
     {
         if(!FlatformService::isIncluded('datatable')) {
             FlatformService::include('datatable');

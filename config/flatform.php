@@ -1,5 +1,6 @@
 <?php
 
+use dimonka2\flatform\Form\Contracts\IContext;
 use dimonka2\flatform\Form\Contracts\IElement;
 
 // use dimonka2\flatform\State;
@@ -102,8 +103,7 @@ return [
         'dropdown' => ['type' => 'div', 'template' => 'flatform::metronic.dropdown'],
         'tabs' => ['type' => 'div', 'template' => 'flatform::metronic.tab-navs'],
         'widget' => ['template' => 'flatform::metronic.widget'],
-        // templates
-        'dd-item' => ['class' => 'dropdown-item kt-nav__link', 'template' => 'flatform::metronic.dd-item', ],
+        'dd-item' => ['+class' => 'dropdown-item kt-nav__link', 'template' => 'flatform::metronic.dd-item',],
         'dd-item-icon' => ['type' => 'i', 'class' => 'kt-nav__link-icon',],
         'dd-item-title' => ['type' => 'span', 'class' => 'kt-nav__link-text',],
         'form' => ['+class' => 'kt-form',],
@@ -112,6 +112,14 @@ return [
         'checkbox-list' => ['type' => 'div', 'class' => 'kt-checkbox-list mt-5', ],
 
         'breadcrumbs' => ['template' => 'flatform::metronic.breadcrumbs'],
+        'badge' => ['type' => 'span', 'class' => 'kt-badge',
+            'onLoaded' => function(IElement $element, array $def){
+                if($element->getColor()) $element->addClass('kt-badge--' . $element->getColor());
+                if($element->getSize()) $element->addClass('kt-badge--' . $element->getSize());
+                if($element->getPill()) $element->addClass('kt-badge--pill');
+                if($element->getPill()) $element->addClass('kt-badge--inline');
+            }
+        ],
 
     ],
 

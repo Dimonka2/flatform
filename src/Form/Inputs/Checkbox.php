@@ -8,8 +8,6 @@ class Checkbox extends Input
 {
     public $label;
     public $checked;
-    public $inline;
-    public $single;
 
     protected function hasValue()
     {
@@ -18,7 +16,7 @@ class Checkbox extends Input
 
     protected function read(array $element)
     {
-        $this->readSettings($element, ['label', 'checked', 'inline', 'single']);
+        $this->readSettings($element, ['label', 'checked']);
         parent::read($element);
         $this->requireID();
         $this->col = false;

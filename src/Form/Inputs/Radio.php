@@ -3,14 +3,33 @@
 namespace dimonka2\flatform\Form\Inputs;
 
 use dimonka2\flatform\Form\Input;
-use dimonka2\flatform\Form\Contracts\IContext;
-use Form;
 
 class Radio extends Input
 {
-    protected function render()
+    public $label;
+    public $checked;
+
+    protected function hasValue()
     {
-        return Form::radio($this->name, $this->name, $this->value,
-            $this->getOptions([]));
+        return false;
+    }
+
+    protected function read(array $element)
+    {
+        $this->readSettings($element, ['label', 'checked']);
+        parent::read($element);
+        $this->requireID();
+        $this->col = false;
+    }
+
+    public function getOptions(array $keys)
+    {
+        $options = parent::getOptions(['value', 'checked']);
+        if(is_null($this->checked) && $this->name && !is_null($this->value)) {
+            debug($this->needValue(), $this->value);
+            $checked = $this->needValue() == $this->value;
+            if($checked) $options['checked'] = '';
+        }
+        return $options;
     }
 }

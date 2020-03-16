@@ -37,7 +37,7 @@ class Select2 extends Input
         return $html;
     }
 
-    protected function render()
+    public function render()
     {
         $html = $this->addAssets();
         $options = $this->getOptions(['placeholder', 'readonly', 'disabled']);

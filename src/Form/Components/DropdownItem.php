@@ -43,15 +43,5 @@ class DropdownItem extends Link
         return $html;
     }
 
-    public function renderElement()
-    {
-        if(!$this->hidden) {
-            if($this->is_post()) {
-                return $this->renderForm();
-            } else  {
-                return $this->renderLink();
-            }
-        }
-    }
 
 }

@@ -24,7 +24,7 @@ class Select extends Input
         }
     }
 
-    protected function render()
+    public function render()
     {
         return Form::select($this->name, $this->list ?? [], $this->value,
             $this->getOptions(['placeholder', 'readonly', 'disabled']));

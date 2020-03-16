@@ -18,7 +18,7 @@ class Alert extends ElementContainer
 
     public function getTitle()
     {
-        return (is_object($this->title)) ? $this->title->renderElement() : $this->title;
+        return $this->renderItem($this->title);
     }
 
     public function hasText()
@@ -28,24 +28,16 @@ class Alert extends ElementContainer
 
     public function getText()
     {
-        return (is_object($this->text)) ? $this->text->renderElement() : $this->text;
+        return $this->renderItem($this->text);
     }
 
     protected function read(array $element)
     {
         $this->readSettings($element, ['icon', 'close', 'title', 'color']);
         parent::read($element);
-
-        if(is_array($this->title)) {
-            $this->title = $this->createContainer($this->title);
-        }
-
-        if(is_array($this->text)) {
-            $this->text = $this->createContainer($this->text);
-        }
     }
 
-    protected function render()
+    public function render()
     {
         return $this->renderItems();
     }

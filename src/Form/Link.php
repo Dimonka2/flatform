@@ -124,7 +124,7 @@ class Link extends ElementContainer
         return $this->context->renderElement($this, $this->getTitle());
     }
 
-    protected function render()
+    public function render()
     {
         if($this->is_post()) {
             return $this->renderForm();

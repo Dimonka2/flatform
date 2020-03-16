@@ -70,6 +70,7 @@ class Element implements IElement
     protected function read(array $element)
     {
         $onLoaded = $this->readSingleSetting($element, 'onLoaded');
+        $this->onRender = $this->readSingleSetting($element, 'onRender');
 
         $this->readSettings($element, [
             'text',
@@ -165,6 +166,10 @@ class Element implements IElement
     public function renderElement()
     {
         if(!$this->hidden) {
+            if(is_callable($this->onRender)) {
+                $closure = $this->onRender;
+                return $closure($this, $this->context);
+            }
             $html = $this->render();
             $template = $this->template;
             if(!is_null($template) &&  $template != false) {
@@ -180,13 +185,8 @@ class Element implements IElement
         }
     }
 
-    protected function render()
+    public function render()
     {
-        if($this->hidden) return;
-        if(is_callable($this->onRender)) {
-            $closure = $this->onRender;
-            return $closure($this, $this->context);
-        }
         // special case
         if($this->type == '_text') return $this->text;
         return $this->context->renderElement($this);

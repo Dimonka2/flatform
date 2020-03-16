@@ -13,7 +13,7 @@ class Label extends ElementContainer
         parent::read($element);
     }
 
-    protected function render()
+    public function render()
     {
         if(count($this->elements) == 0) return;
         return parent::render();

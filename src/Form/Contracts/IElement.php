@@ -5,6 +5,7 @@ namespace dimonka2\flatform\Form\Contracts;
 interface IElement
 {
     public function renderElement();
+    public function render();
     public function getOptions(array $keys);
     public function getTag();
     public function setParent(IElement $item);

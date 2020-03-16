@@ -66,7 +66,7 @@ class ElementContainer extends Element implements IContainer, \ArrayAccess, \Cou
 
     // IContainer inteface
 
-     protected function render()
+     public function render()
     {
         $html = $this->renderItems();
         if($this->container) return $html;

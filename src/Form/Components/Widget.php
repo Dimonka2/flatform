@@ -69,7 +69,7 @@ class Widget extends ElementContainer
         return !is_null($this->footer);
     }
 
-    protected function render()
+    public function render()
     {
 
         return "";

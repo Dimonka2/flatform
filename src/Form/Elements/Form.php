@@ -57,7 +57,7 @@ class Form extends ElementContainer implements IForm
         return $item;
     }
 
-    protected function render()
+    public function render()
     {
         return $this->renderForm();
     }

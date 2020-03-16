@@ -6,7 +6,7 @@ use dimonka2\flatform\Form\Input;
 
 class Textarea extends Input
 {
-    protected function render()
+    public function render()
     {
         $options = $this->getOptions([]);
         $text = $this->needValue();

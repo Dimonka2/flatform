@@ -22,7 +22,7 @@ class BladeDirective extends Element
         parent::read($element);
     }
 
-    protected function render()
+    public function render()
     {
         if($this->type == 'extends') {
             return $this->context->renderView(
