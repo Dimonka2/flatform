@@ -2,6 +2,7 @@
 
 namespace dimonka2\flatform\Form;
 
+use dimonka2\flatform\Flatform;
 use Illuminate\Support\MessageBag;
 use dimonka2\flatform\FlatformService;
 use dimonka2\flatform\Form\ElementFactory;
@@ -151,8 +152,17 @@ class Context implements IContext
 
     public function setOptions(array $options)
     {
+        debug($options);
         // read possible options from argument
         if(isset($options['style'])) $this->style_priority = $options['style'];
+        if(isset($options['assets'])) {
+            $assets = $options['assets'];
+            if(is_iterable($assets)) {
+                foreach ($assets as $asset) {
+                    Flatform::addAssets($asset);
+                }
+            } else Flatform::addAssets($assets);
+        }
         $this->debug = $options['debug'] ?? false || !!array_search('debug', $options);
         return $this;
     }

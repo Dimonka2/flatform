@@ -45,7 +45,11 @@
         showModal(actionName, response) {
             let modalID = "#{{$actions::modalID}}";
             $('#action-container').html(response.form);
+
             $(modalID).modal();
+            if (typeof initBSPickers !== "undefined") initBSPickers();
+            if (typeof initSelect2 !== "undefined") initSelect2();
+
             let self = this;
             $(modalID + ' .confirm').click(function(e){
                 e.preventDefault();
