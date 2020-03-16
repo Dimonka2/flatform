@@ -70,6 +70,8 @@ return [
     // template definitions
     'bootstrap' => [
         'date' => ['+class' => 'datepicker'],
+        'input' => ['template' => 'flatform::bootstrap.input', '+class' => 'form-control'],
+        'dropdown' => ['type' => 'div', 'template' => 'flatform::bootstrap.dropdown'],
         'error-class' => ['+class' => 'is-invalid', ],
         'button' => ['+class' => 'btn'],
         'select2' => ['+class' => 'select2', '+style' => 'width:100%;'],

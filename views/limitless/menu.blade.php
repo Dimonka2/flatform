@@ -12,7 +12,7 @@
                 <li class="nav-item nav-item-submenu">
                     <a href="#" class="nav-link">
                         @if($item->icon)
-                        <i class="{{$item->icon}}"></i>
+                            <i class="icon {{$item->icon}}"></i>
                         @endif
                         <span>{!!$item->title!!}</span>
                         @if($item->getBadge())
