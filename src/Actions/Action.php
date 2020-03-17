@@ -4,6 +4,7 @@ namespace dimonka2\flatform\Actions;
 use dimonka2\flatform\Flatform;
 use dimonka2\flatform\Form\Contracts\IElement;
 use dimonka2\flatform\Http\Requests\ActionRequest;
+use Illuminate\Support\Fluent;
 
 class Action implements Contract
 {
@@ -26,7 +27,7 @@ class Action implements Contract
 
     public function init(ActionRequest $request)
     {
-
+        $this->params = new Fluent($request->all());
     }
 
     public function autorize()

@@ -1,14 +1,16 @@
 <div class="kt-portlet kt-portlet--responsive-mobile {{$element->class ?? ''}}">
     @if( $element->hasHeader() )
-    <div class="kt-portlet__head">
+    <div class="kt-portlet__head{{
+        $element->getAttribute('head-no-border') ? ' kt-portlet__head--noborder' : ''}}">
         @if( $element->hasTitle() )
         <div class="kt-portlet__head-label">
             @if( $element->hasIcon() )
             <span class="kt-portlet__head-icon">
-                {!! $element->icon !!}
+                {!! $element->getIcon() !!}
             </span>
             @endif
-            <h3 class="kt-portlet__head-title">
+            <h3 class="kt-portlet__head-title{{
+                $element->getAttribute('title-class') ? ' ' . $element->getAttribute('title-class') : ''}}">
                 {!! $element->getTitle() !!}
             </h3>
         </div>

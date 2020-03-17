@@ -26,7 +26,7 @@ class Widget extends ElementContainer
 
     public function getIcon()
     {
-        return $this->icon;
+        return $this->renderItem($this->icon);
     }
 
     public function renderTools()

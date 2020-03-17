@@ -152,7 +152,7 @@ class Context implements IContext
 
     public function setOptions(array $options)
     {
-        debug($options);
+        // debug($options);
         // read possible options from argument
         if(isset($options['style'])) $this->style_priority = $options['style'];
         if(isset($options['assets'])) {
