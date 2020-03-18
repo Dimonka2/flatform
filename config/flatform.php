@@ -74,6 +74,7 @@ return [
         'dropdown' => ['type' => 'div', 'template' => 'flatform::bootstrap.dropdown'],
         'error-class' => ['+class' => 'is-invalid', ],
         'button' => ['+class' => 'btn'],
+        'checkbox' => ['template' => 'flatform::bootstrap.checkbox',],
         'select2' => ['+class' => 'select2', '+style' => 'width:100%;'],
         'row' => ['type' => 'div', 'class' => 'row',],
         'tab-item' => ['type' => 'a',],
