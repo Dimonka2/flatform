@@ -28,7 +28,7 @@
     </div>
     @endif
     @if ($element->hasFooter())
-    <div class="kt-portlet__foot">
+    <div class="kt-portlet__foot {{$element->getAttribute('foot_class')}}">
         {!! $element->renderFooter() !!}
     </div>
     @endif
