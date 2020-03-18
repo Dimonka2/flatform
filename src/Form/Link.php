@@ -13,7 +13,6 @@ class Link extends ElementContainer
     protected $badgeColor;
     protected $badgeClass;
     protected $badgePill;
-    protected $confirm; // show a modal dialog to confirm the action
     protected $action;  // link to action
     public $btn_group;
     public $title;
@@ -35,7 +34,7 @@ class Link extends ElementContainer
     protected function read(array $element)
     {
         $this->readSettings($element,
-            ['href', 'post', 'title', 'icon', 'form-class', 'group', 'confirm',
+            ['href', 'post', 'title', 'icon', 'form-class', 'group',
             'badge', 'badgeColor', 'badgeClass', 'badgePill', 'action']);
         parent::read($element);
         if(is_array($this->badge)) {
@@ -135,6 +134,7 @@ class Link extends ElementContainer
 
     public function getTag()
     {
+       if($this->type == 'a')  return 'a';
        return $this->is_link() ? 'a' : 'button';
     }
 
