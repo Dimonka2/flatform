@@ -39,17 +39,22 @@ class Action implements Contract
     {
         $form = $this->getForm();
         if(!$form) return $this->ok('', self::noform);
+
+        $modal = ['modal', $form, 'id' => self::modalID,
+            'title' => $this->getTitle(),
+            'footer' => [
+            ['button', 'color' => $this->getConfirmColor(), 'title' => $this->getConfirmText(),
+                '+class' => 'confirm'],
+            ['button', 'color' => $this->getCancelColor(), 'title' => $this->getCancelText(),
+                'data-dismiss' => "modal" ],
+        ]];
+        $size = $this->getFormSize();
+        if($size) $modal['size'] = $size;
+
         // render complete form
         $form = Flatform::context()->createElement(['form', 'url' => route('flatform.action'), 'id' => self::modalID . '_form', [
             ['hidden', 'name' => 'name', 'value' => static::name],
-            ['modal', $form, 'id' => self::modalID,
-                'title' => $this->getTitle(),
-                'footer' => [
-                ['button', 'color' => $this->getConfirmColor(), 'title' => $this->getConfirmText(),
-                    '+class' => 'confirm'],
-                ['button', 'color' => $this->getCancelColor(), 'title' => $this->getCancelText(),
-                    'data-dismiss' => "modal" ],
-            ]]
+            $modal,
         ]]);
         $form = $this->addFormOptions($form);
         $this->form = Flatform::render([$form]);
@@ -79,6 +84,11 @@ class Action implements Contract
     protected function getCancelColor()
     {
         return static::cancelColor;
+    }
+
+    protected function getFormSize()
+    {
+        return null;
     }
 
     protected function addFormOptions(IElement $form)

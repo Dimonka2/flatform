@@ -13,9 +13,9 @@
             if(!$('#{{$element->id}}').hasClass(filterClass+'_enabled')) {
                 $('#{{$element->id}}').addClass(filterClass+'_enabled');
                 // console.log($('.table-responsive').html());
-                let row = $('#{{$element->id}}').parent().parent().parent().find('.row:eq(0)');
+                let inputfilter = $('#{{$element->id}}_filter');
                 // console.log(row);
-                let col = row.children().last();
+                let col = inputfilter.parent();
                 col.addClass('text-right');
                 col.children().last().addClass('d-inline');
                 let filter = {!! $element->filterDropdown() !!};
