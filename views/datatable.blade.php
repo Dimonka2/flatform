@@ -15,8 +15,8 @@
                 // console.log($('.table-responsive').html());
                 let inputfilter = $('#{{$element->id}}_filter');
                 // console.log(row);
-                let col = inputfilter.parent();
-                col.addClass('text-right');
+                let col = inputfilter;
+                // col.addClass('text-right');
                 col.children().last().addClass('d-inline');
                 let filter = {!! $element->filterDropdown() !!};
                 col.append(filter);

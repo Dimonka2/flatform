@@ -32,7 +32,7 @@ class DTFilter extends Element
                     ['checkbox', 'label' => $this->title, 'name' => $this->name,
                         '+class' => self::filterClass]);
                 if($this->default) $checkbox['value'] = $this->default;
-                return ['col', 'col' => 12, [$checkbox]];
+                return ['div', 'class' => 'w100', [$checkbox]];
             case 'select':
                 $select = array_merge($this->getOptions([]),
                     ['select', 'label' => $this->title, 'name' => $this->name,

@@ -9,7 +9,8 @@
         @foreach ($element as $item)
         @if (!$item->getHidden() )
             @if (count($item) > 0)
-                <li class="nav-item nav-item-submenu">
+                <li class="nav-item nav-item-submenu{{$item->getOpen() ?
+                    ' nav-item-expanded nav-item-open':''}}">
                     <a href="#" class="nav-link">
                         @if($item->icon)
                             <i class="icon {{$item->icon}}"></i>
@@ -27,7 +28,7 @@
             @else
                 @if($item->getHref())
                 <li class="nav-item">
-                    <a href="{{$item->getHref()}}" class="nav-link">
+                    <a href="{{$item->getHref()}}" class="nav-link{{$item->active ? ' active':''}}">
                         @if($item->icon)
                         <i class="{{$item->icon}}"></i>
                         @endif

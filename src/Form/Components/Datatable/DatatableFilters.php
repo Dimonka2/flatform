@@ -23,10 +23,7 @@ class DatatableFilters extends Element implements \ArrayAccess, \Countable, \Ite
         return json_encode(Flatform::render([
             ['div', 'class' => 'd-inline ml-2 mr-2 btn-group', [
                 ['dropdown', 'toggle', 'group', 'color' => 'outline-secondary', 'size' => 'sm', 'shadow',
-                    'title' => [ ['span', [
-                        ['include', 'name' => 'flatform::icons.filter',
-                            'with' => ['width' => '1.4em', 'height' => '1.4em']]]
-                    ]],
+                    'icon' => 'fa fa-filter',
                     'drop_form' => [
                         ['div', 'style' => 'min-width:320px;', 'class' => 'p-3', [
                             ['form', 'id' => $this->table->id . '_filter-form', [
