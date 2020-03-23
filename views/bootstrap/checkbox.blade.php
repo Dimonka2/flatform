@@ -3,5 +3,5 @@
 @endphp
 <div class="form-check{{$inline ? ' form-check-inline' : ''}}">
     {!! $html !!}
-    <label class="form-check-label" for="{{$element->id}}">{!! $element->label !!}</label>
+    <label class="form-check-label ml-2" for="{{$element->id}}">{!! $element->label !!}</label>
 </div>

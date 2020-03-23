@@ -78,7 +78,7 @@ return [
         'select2' => ['+class' => 'select2', '+style' => 'width:100%;'],
         'row' => ['type' => 'div', 'class' => 'row',],
         'tab-item' => ['type' => 'a',],
-        'dd-item' => ['class' => 'dropdown-item', 'type' => 'a', ],
+        'dd-item' => ['class' => 'dropdown-item', 'type' => 'link', ],
         'dd-item-icon' => ['type' => 'i',],
         'dd-item-title' => ['type' => 'span',],
         'dd-divider' => ['type' => 'div', 'class' => 'dropdown-divider', ],

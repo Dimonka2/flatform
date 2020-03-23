@@ -43,6 +43,7 @@ class ElementMapping
 
         // links and buttons
         'a'             => Link::class,
+        'link'          => Link::class,
         'submit'        => Components\Button::class,
         'button'        => Components\Button::class,
 
