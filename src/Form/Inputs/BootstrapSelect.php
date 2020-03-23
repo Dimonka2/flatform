@@ -17,6 +17,10 @@ class BootstrapSelect extends Select
     {
         $this->readSettings($element, ['color', 'ajax-url']);
         parent::read($element);
+        if(is_null($this->selected)) {
+            $value = $this->needValue();
+            if($value) $this->selected[$value] = true;
+        }
         $this->processOptions();
     }
 

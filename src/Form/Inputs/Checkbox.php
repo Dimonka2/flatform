@@ -28,6 +28,7 @@ class Checkbox extends Input
         $checked = $this->checked;
         if(is_null($checked) && $this->name) $checked = $this->needValue();
         if($checked) $options['checked'] = '';
+        $options['value'] = 1;
         return $options;
     }
 }
