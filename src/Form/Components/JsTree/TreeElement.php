@@ -71,7 +71,7 @@ class TreeElement
     public function toArray()
     {
         $item = [];
-        $item['text'] = $this->text;
+        $item['text'] =  $this->tree->renderText($this->text);
         if($this->id) $item['id'] = $this->id;
         if($this->icon) $item['icon'] = $this->icon;
         if($this->opened) $item['state']['open'] = true;

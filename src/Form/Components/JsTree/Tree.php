@@ -3,10 +3,10 @@
 namespace dimonka2\flatform\Form\Components\JsTree;
 
 use dimonka2\flatform\Flatform;
-use dimonka2\flatform\Form\Element;
 use dimonka2\flatform\Form\Contracts\IContext;
+use dimonka2\flatform\Form\ElementContainer;
 
-class Tree extends Element
+class Tree extends ElementContainer
 {
     protected const assets = 'jstree';
     protected $root;
@@ -61,5 +61,10 @@ class Tree extends Element
         if($this->plugins) $tree['plugins'] = $this->plugins;
         if($this->root->count()) $tree['core']['data'] = $this->root->getChildrenArray();
         return $tree;
+    }
+
+    public function renderText($text)
+    {
+        return $this->renderItem($text);
     }
 }
