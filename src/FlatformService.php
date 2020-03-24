@@ -96,12 +96,11 @@ class FlatformService
         if(!self::isIncluded($assetName)){
             self::include($assetName);
             $pathPrefix = 'flatform.assets.'. $assetName;
-            $path = config($pathPrefix . '.path');
-            self::addCSS(config($pathPrefix . '.css'), $path);
-            self::addJS(config($pathPrefix . '.js'), $path);
-            return self::context()->renderView(
-                view(config($pathPrefix . '.view'))
-            );
+            $path = self::config($pathPrefix . '.path');
+            self::addCSS(self::config($pathPrefix . '.css'), $path);
+            self::addJS(self::config($pathPrefix . '.js'), $path);
+            $view = self::config($pathPrefix . '.view');
+            return $view ? self::context()->renderView(view($view)) : '';
         }
     }
 

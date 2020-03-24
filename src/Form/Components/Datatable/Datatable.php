@@ -3,13 +3,14 @@
 namespace dimonka2\flatform\Form\Components\Datatable;
 
 use Illuminate\Http\Request;
-use dimonka2\flatform\FlatformService;
+use dimonka2\flatform\Flatform;
 use dimonka2\flatform\Form\ElementContainer;
 use dimonka2\flatform\Helpers\DatatableAjax;
 use dimonka2\flatform\Form\Components\Datatable\DTColumn;
 
 class Datatable extends ElementContainer
 {
+    protected const assets = 'datatable';
     use ColumnsTrait;
     use FiltersTrait;
 
@@ -75,16 +76,10 @@ class Datatable extends ElementContainer
 
     public function render()
     {
-        if(!FlatformService::isIncluded('datatable')) {
-            FlatformService::include('datatable');
-            $path = FlatformService::config('flatform.assets.datatable_path');
-            FlatformService::addCSS(FlatformService::config('flatform.assets.datatable_css'), $path);
-            FlatformService::addJS(FlatformService::config('flatform.assets.datatable_js'), $path);
-        }
         return $this->context->renderView(
-            view(FlatformService::config('flatform.assets.datatable'))
+            view(Flatform::config('flatform.assets.datatable.render', 'flatform::datatable'))
                 ->with('element', $this)
-        );
+        ) . $this->addAssets();
 
     }
 
@@ -134,8 +129,8 @@ class Datatable extends ElementContainer
         $options['serverSide'] = true;
         $options['responsive'] = true;
         // $options['lengthChange'] = false;
-        if(FlatformService::config('flatform.assets.datatable_lang')) $options["language"] = ['url' =>
-            asset(FlatformService::config('flatform.assets.datatable_path') . \App::getLocale() . '.json' )];
+        if(Flatform::config('flatform.assets.datatable.lang')) $options["language"] = ['url' =>
+            asset(Flatform::config('flatform.assets.datatable.path') . \App::getLocale() . '.json' )];
 
         if($this->order)  $options['order'] = $this->formatOrder();
         if($this->hasSelect()) $options['select'] = [

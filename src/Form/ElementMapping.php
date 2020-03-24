@@ -34,7 +34,7 @@ class ElementMapping
         'progress'      => Components\Progress::class,
         'alert'         => Components\Alert::class,
         'dropzone'      => Components\Dropzone::class,
-
+        'jstree'        => Components\JsTree\Tree::class,
         // Navs
         'breadcrumbs'   => Navs\Breadcrumbs::class,
         'tabs'          => Navs\Tabs::class,

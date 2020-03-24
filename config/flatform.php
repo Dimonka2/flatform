@@ -1,6 +1,5 @@
 <?php
 
-use dimonka2\flatform\Form\Contracts\IContext;
 use dimonka2\flatform\Form\Contracts\IElement;
 
 // use dimonka2\flatform\State;
@@ -16,12 +15,14 @@ return [
                 'css/select2-bootstrap4.css',
             ]
         ],
-        'datatable' => 'flatform::datatable',
-        'datatable_path' => 'datatable/',
-        'datatable_css' => 'dataTables.bootstrap4.min.css',
-        'datatable_js' => [
-            'jquery.dataTables.min.js',
-            'dataTables.bootstrap4.min.js',
+        'datatable' => [
+            'render' => 'flatform::datatable',
+            'path' => 'datatable/',
+            'css' => 'dataTables.bootstrap4.min.css',
+            'js' => [
+                'jquery.dataTables.min.js',
+                'dataTables.bootstrap4.min.js',
+            ],
         ],
         'summernote' => [
             'view' => 'flatform::summernote',
