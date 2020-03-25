@@ -1,14 +1,15 @@
 <?php
 namespace dimonka2\flatform\Actions;
 
-use dimonka2\flatform\Flatform;
-use dimonka2\flatform\Form\Contracts\IElement;
-use dimonka2\flatform\Http\Requests\ActionRequest;
 use Illuminate\Support\Fluent;
+use dimonka2\flatform\Flatform;
+use dimonka2\flatform\Form\Contracts\IForm;
+use dimonka2\flatform\Http\Requests\ActionRequest;
 
 class Action implements Contract
 {
     public const modalID = 'flatform-action';
+    public const formID = 'flatform-action-form';
     public const name = '';
     public const reload = 'reload';
     public const noform = 'noform';
@@ -52,7 +53,7 @@ class Action implements Contract
         if($size) $modal['size'] = $size;
 
         // render complete form
-        $form = Flatform::context()->createElement(['form', 'url' => route('flatform.action'), 'id' => self::modalID . '_form', [
+        $form = Flatform::context()->createElement(['form', 'url' => route('flatform.action'), 'id' => self::formID, [
             ['hidden', 'name' => 'name', 'value' => static::name],
             $modal,
         ]]);
@@ -91,7 +92,7 @@ class Action implements Contract
         return null;
     }
 
-    protected function addFormOptions(IElement $form)
+    protected function addFormOptions(IForm $form)
     {
         return $form;
     }

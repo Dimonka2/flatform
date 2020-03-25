@@ -153,4 +153,16 @@ class Form extends ElementContainer implements IForm
         return $this->model;
     }
 
+
+    /**
+     * Set the value of model
+     *
+     * @return  self
+     */
+    public function setModel($model)
+    {
+        $this->model = $model;
+
+        return $this;
+    }
 }

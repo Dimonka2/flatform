@@ -44,6 +44,7 @@
 
         showModal(actionName, response) {
             let modalID = "#{{$actions::modalID}}";
+            let formID = "#{{$actions::formID}}";
             $('#action-container').html(response.form);
 
             $(modalID).modal();
@@ -54,7 +55,7 @@
             $(modalID + ' .confirm').click(function(e){
                 e.preventDefault();
                 // collect form inputs
-                let data = $(modalID + '_form').serializeArray();
+                let data = $(formID).serializeArray();
                 let params = {};
                 data.forEach(element => {
                     params[element.name] = element.value;

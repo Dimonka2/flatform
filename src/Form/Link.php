@@ -69,6 +69,7 @@ class Link extends ElementContainer
         return (!is_null($this->icon) ?
             $this->createElement(['class' => $this->icon], 'i')->render() . ' ' : '') .
             $this->renderTitle() .
+            $this->text .
             $this->renderBadge().
             ($this->items_in_title ? $this->renderItems() : '');
     }
