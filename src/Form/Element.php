@@ -24,7 +24,8 @@ class Element implements IElement
     protected $text;
     protected $template;
     protected $parent;
-    protected $tooltip;
+    protected $tooltip; // hints via "title" attribute
+    protected $_data;   // data field in datatable
 
     use SettingReaderTrait;
 
@@ -40,6 +41,7 @@ class Element implements IElement
             'id',
             'type',
             'tooltip',
+            '_data',
             'hidden'=> ['exclude', 'hidden', 'hide'],
             'template',
         ]);
@@ -141,9 +143,51 @@ class Element implements IElement
         return $this;
     }
 
+    protected function processFunction($function, $value)
+    {
+        switch ($function[1]) {
+            case 'time':
+                return $value->diffForHumans();
+            case 'date':
+                return $value->format($function[2] ?? 'd.m.Y');
+            case 'route':
+                return route($function[2], $value);
+
+        }
+    }
+
+    protected function processData()
+    {
+        if(!is_array($this->_data)) return;
+        $provider = $this->context->getDataProvider();
+        if($provider){
+            // data query format:
+            // field_name => attribute name or function($element, $data)
+            foreach ($this->_data as $field => $attribute) {
+                $value = $provider->getData($field);
+                if(is_callable($attribute)){
+                    $attribute($this, $value);
+                } else{
+                    $function = explode(':', $attribute);
+                    if(count($function) > 1) {
+                        $attribute = $function[0];
+                        $value = $this->processFunction($function, $value);
+                    }
+                    if(property_exists($this, $attribute)) {
+                        $this->{$attribute} = $value;
+                    } else {
+                        $this->setAttribute($attribute, $value);
+                    }
+                }
+            }
+        }
+    }
+
     public function renderElement()
     {
         if(!$this->hidden) {
+            // process data source
+            if($this->_data) $this->processData();
             if(is_callable($this->onRender)) {
                 $closure = $this->onRender;
                 return $closure($this, $this->context);

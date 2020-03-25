@@ -23,9 +23,6 @@ class ElementContainer extends Element implements IContainer, \ArrayAccess, \Cou
 
         $this->readItems($items ?? []);
 
-        if(!is_null($this->text)) {
-            $this->addTextElement( $this->text);
-        }
         // echo $this->hash() . " Read items: \r\n";
         return $this;
     }
@@ -68,7 +65,7 @@ class ElementContainer extends Element implements IContainer, \ArrayAccess, \Cou
 
      public function render()
     {
-        $html = $this->renderItems();
+        $html = $this->text . $this->renderItems();
         if($this->container) return $html;
         return $this->context->renderElement($this, $html);
     }

@@ -2,10 +2,9 @@
 
 namespace dimonka2\flatform\Form\Components\Datatable;
 
-use dimonka2\flatform\Form\Contracts\IData;
-use dimonka2\flatform\Form\Contracts\IDataProvider;
 use dimonka2\flatform\Form\Element;
-use dimonka2\flatform\Helpers\ColumnFormat;
+use dimonka2\flatform\Form\ElementContainer;
+use dimonka2\flatform\Form\Contracts\IDataProvider;
 
 class DTColumn extends Element implements IDataProvider
 {
@@ -22,13 +21,16 @@ class DTColumn extends Element implements IDataProvider
     public $contentPadding; // like "mmmm"  https://datatables.net/reference/option/columns.contentPadding
     protected $formatFunction; // a closure to format the cell function($data, DTColumn $column, $item)
     protected $format;      // formatting description in flatform format, with special item "value"
-    protected $dataElements = [];
+
+    private $item; // temporary item value for implementing IDataProvider
 
     protected function read(array $element)
     {
-        $this->context->setDataProvider($this);
         $format = $this->readSingleSetting($element, 'format');
-        if($format) $this->createFormatter($format);
+        if($format) {
+                $this->format = new ElementContainer([], $this->context);
+                $this->format->readItems($format);
+        }
         $this->readSettings($element, [
             'name',
             'as',
@@ -45,7 +47,6 @@ class DTColumn extends Element implements IDataProvider
         ]);
         parent::read($element);
         if(!$this->as && strpos($this->name, '.')) $this->as = str_replace('.', '__', $this->name);
-        $this->context->setDataProvider(null);
     }
 
     public function getColumnDefs(): array
@@ -63,29 +64,27 @@ class DTColumn extends Element implements IDataProvider
         return $defs;
     }
 
-    protected function createFormatter($format)
-    {
-        $this->format = ColumnFormat::make($format, $this);
-    }
-
-    public function registerDataElement(IData $element)
-    {
-        $this->dataElements[] = $element;
-    }
-
     public function hasFormatter()
     {
         return is_callable($this->formatFunction) || $this->format;
     }
 
+    public function getData($name)
+    {
+        if(!$this->item) return;
+        if(is_integer($name)) $name = $this->getSafeName();
+        if($name == '_item') return $this->item;
+        return $this->item->{$name} ?? null;
+    }
+
     public function format($data, $item)
     {
         $html = '';
-        if($this->format){
-            foreach ($this->dataElements as $data) {
-                $data->setData($data, $item);
-            }
+        if($this->format) {
+            $this->item = $item;
+            $this->context->setDataProvider($this);
             $html .= $this->format->renderElement();
+            $this->context->setDataProvider(null);
         }
         if (is_callable($this->formatFunction)) $html .= call_user_func_array($this->formatFunction, [$data, $this, $item]);
         return $html; ;

@@ -40,13 +40,16 @@ class Input extends Element
 
     protected function needValue()
     {
-        if($this->hasValue() && $this->value) return $this->value;
-        if($this->name) {
-            // try to get value from the form
-            if($this->form) {
-                return $this->form->getModelValue($this->name);
-            } else {
-                return Form::getValueAttribute($this->name);
+        if($this->hasValue() ) {
+            if($this->value) return $this->value;
+
+            if($this->name) {
+                // try to get value from the form
+                if($this->form) {
+                    return $this->form->getModelValue($this->name);
+                } else {
+                    return Form::getValueAttribute($this->name);
+                }
             }
         }
     }

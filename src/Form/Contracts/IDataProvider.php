@@ -2,7 +2,7 @@
 
 namespace dimonka2\flatform\Form\Contracts;
 
-interface IDataProvider extends IElement
+interface IDataProvider
 {
-    public function registerDataElement(IData $element);
+    public function getData($name);
 }
