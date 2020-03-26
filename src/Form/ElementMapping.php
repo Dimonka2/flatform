@@ -62,6 +62,12 @@ class ElementMapping
         'u'             => ElementContainer::class,
         'ul'            => ElementContainer::class,
         'li'            => ElementContainer::class,
+        'h1'            => ElementContainer::class,
+        'h2'            => ElementContainer::class,
+        'h3'            => ElementContainer::class,
+        'h4'            => ElementContainer::class,
+        'h5'            => ElementContainer::class,
+        'h6'            => ElementContainer::class,
         '_text'         => Element::class,
         'option'        => Element::class,
 
