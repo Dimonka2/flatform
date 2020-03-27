@@ -28,8 +28,12 @@ class DTColumn extends Element implements IDataProvider
     {
         $format = $this->readSingleSetting($element, 'format');
         if($format) {
+            if(is_callable($format)) {
+                $this->format = $format;
+            } else {
                 $this->format = new ElementContainer([], $this->context);
                 $this->format->readItems($format);
+            }
         }
         $this->readSettings($element, [
             'name',
@@ -81,10 +85,15 @@ class DTColumn extends Element implements IDataProvider
     {
         $html = '';
         if($this->format) {
-            $this->item = $item;
-            $this->context->setDataProvider($this);
-            $html .= $this->format->renderElement();
-            $this->context->setDataProvider(null);
+            if (is_callable($this->format)) {
+                $html .= call_user_func_array($this->format,
+                    [$data, $this, $item]);
+            } else {
+                $this->item = $item;
+                $this->context->setDataProvider($this);
+                $html .= $this->format->renderElement();
+                $this->context->setDataProvider(null);
+            }
         }
         if (is_callable($this->formatFunction)) $html .= call_user_func_array($this->formatFunction, [$data, $this, $item]);
         return $html; ;
