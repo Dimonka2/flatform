@@ -72,11 +72,11 @@ class ElementMapping
         'option'        => Element::class,
 
         // blade directives
-        'include'       => BladeDirective::class,
-        'stack'         => BladeDirective::class,
-        'push'          => BladeDirective::class,
-        'yield'         => BladeDirective::class,
-        'extends'       => BladeDirective::class,
-        'section'       => BladeDirective::class,
+        'include'       => Elements\BladeDirective::class,
+        'stack'         => Elements\BladeDirective::class,
+        'push'          => Elements\BladeDirective::class,
+        'yield'         => Elements\BladeDirective::class,
+        'extends'       => Elements\BladeDirective::class,
+        'section'       => Elements\BladeDirective::class,
     ];
 }

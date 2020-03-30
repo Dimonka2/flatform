@@ -158,6 +158,15 @@ return [
         // javascript run actions variable
         'js-function' => 'ffactions',
     ],
+    'selects' => [
+        // select controller middleware
+        'middleware' => null,
+        // class (invoke) or callable with parameters: selectName, request
+        // resolver has to return:
+        // * class object that implements IAJAXSelect
+        'resolver' => null,
+    ],
+
     // add more flatform elements here
     'bindings' => [],
 ];
