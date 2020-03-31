@@ -54,13 +54,6 @@ class ElementContainer extends Element implements IContainer, \ArrayAccess, \Cou
 
     }
 
-    protected function renderItem($item)
-    {
-        if(is_array($item)) return $this->createContainer($item)->renderItems();
-        if(is_object($item)) return $item->renderElement();
-        return $item;
-    }
-
     // IContainer inteface
 
      public function render()
@@ -80,12 +73,6 @@ class ElementContainer extends Element implements IContainer, \ArrayAccess, \Cou
         return $html;
     }
 
-    protected function createContainer($items): ElementContainer
-    {
-        $div = new ElementContainer([], $this->context);
-        $div->readItems($items);
-        return $div;
-    }
 
     /**
      * Implements Countable.

@@ -74,7 +74,7 @@ class TreeElement
         $item['text'] =  $this->tree->renderText($this->text);
         if($this->id) $item['id'] = $this->id;
         if($this->icon) $item['icon'] = $this->icon;
-        if($this->opened) $item['state']['open'] = true;
+        if(!is_null($this->opened)) $item['state']['open'] = $this->opened;
         if($this->disabled) $item['state']['disabled'] = true;
         if($this->url) $item['data']['url'] = $this->url;
         if(count($this->items) > 0) {

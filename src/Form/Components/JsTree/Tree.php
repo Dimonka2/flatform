@@ -4,19 +4,23 @@ namespace dimonka2\flatform\Form\Components\JsTree;
 
 use dimonka2\flatform\Flatform;
 use dimonka2\flatform\Form\Contracts\IContext;
-use dimonka2\flatform\Form\ElementContainer;
+use dimonka2\flatform\Form\Element;
 
-class Tree extends ElementContainer
+class Tree extends Element
 {
     protected const assets = 'jstree';
     protected $root;
     protected $responsive;
     protected $plugins;
     protected $mapping = [];
+    protected $ajax;
 
     protected function read(array $element)
     {
         $this->readSettings($element, ['responsive', 'plugins']);
+        $ajax = $this->readSingleSetting($element, 'ajax');
+        if($ajax) $this->ajax = new Ajax($ajax);
+
         if(isset($element['items'])) {
             $this->root->readItems($element['items']);
             unset($element['items']);
@@ -60,11 +64,20 @@ class Tree extends ElementContainer
         if(!is_null($this->responsive)) $tree['core']['themes']['responsive'] = $this->responsive;
         if($this->plugins) $tree['plugins'] = $this->plugins;
         if($this->root->count()) $tree['core']['data'] = $this->root->getChildrenArray();
+        if($this->ajax) $tree['ajax'] = $this->ajax->toArray();
         return $tree;
     }
 
     public function renderText($text)
     {
         return $this->renderItem($text);
+    }
+
+    /**
+     * Get the value of ajax
+     */
+    public function getAjax()
+    {
+        return $this->ajax;
     }
 }
