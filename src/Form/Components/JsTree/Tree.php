@@ -64,7 +64,7 @@ class Tree extends Element
         if(!is_null($this->responsive)) $tree['core']['themes']['responsive'] = $this->responsive;
         if($this->plugins) $tree['plugins'] = $this->plugins;
         if($this->root->count()) $tree['core']['data'] = $this->root->getChildrenArray();
-        if($this->ajax) $tree['ajax'] = $this->ajax->toArray();
+        if($this->ajax) $tree['core']['data'] = $this->ajax->toArray();
         return $tree;
     }
 
