@@ -7,14 +7,13 @@ use dimonka2\flatform\Form\ElementContainer;
 
 class Link extends ElementContainer
 {
-    protected $href;
+    protected $href; // url (string) or toute (array)
     protected $post;
     protected $badge;
     protected $badgeColor;
     protected $badgeClass;
     protected $badgePill;
     protected $action;  // link to action
-    public $btn_group;
     public $title;
     public $icon;
     public $form_class;
@@ -29,6 +28,19 @@ class Link extends ElementContainer
     protected function is_link()
     {
         return ($this->href !== null) && !$this->is_post();
+    }
+
+    public function getUrl()
+    {
+        if(is_string($this->href)) return $this->href;
+        if (is_array($this->href)) {
+            $len = count($this->href);
+            switch ($len) {
+                case 1: return route($this->href[0]);
+                case 2: return route($this->href[0], $this->href[1]);
+                case 3: return route($this->href[0], $this->href[1], $this->href[2]);
+            }
+        }
     }
 
     protected function read(array $element)
@@ -49,7 +61,7 @@ class Link extends ElementContainer
         if($this->action) {
             $options['onclick'] = Action::formatClick($this->action);
         } else {
-            if($this->is_link()) $options['href'] = $this->href;
+            if($this->is_link()) $options['href'] = $this->getUrl();
             if($this->is_post()) $options['type'] = 'submit';
         }
         return $options;
@@ -147,7 +159,6 @@ class Link extends ElementContainer
         return $this->href;
     }
 
-
     /**
      * Get the value of badge_color
      */
@@ -162,5 +173,17 @@ class Link extends ElementContainer
     public function getBadge()
     {
         return $this->badge;
+    }
+
+    /**
+     * Set the value of href
+     *
+     * @return  self
+     */
+    public function setHref($href)
+    {
+        $this->href = $href;
+
+        return $this;
     }
 }

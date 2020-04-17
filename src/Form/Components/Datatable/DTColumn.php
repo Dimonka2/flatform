@@ -86,17 +86,17 @@ class DTColumn extends Element implements IDataProvider
         $html = '';
         if($this->format) {
             if (is_callable($this->format)) {
-                $html .= call_user_func_array($this->format,
+                $html = call_user_func_array($this->format,
                     [$data, $this, $item]);
             } else {
                 $this->item = $item;
                 $this->context->setDataProvider($this);
-                $html .= $this->format->renderElement();
+                $html = $this->format->renderElement();
                 $this->context->setDataProvider(null);
             }
         }
         if (is_callable($this->formatFunction)) $html .= call_user_func_array($this->formatFunction, [$data, $this, $item]);
-        return $html; ;
+        return $html;
     }
 
     public function setFormatFunction($value)

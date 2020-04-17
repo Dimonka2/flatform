@@ -31,7 +31,7 @@ class MenuItem extends Link
             $this->menu = $item->getMenu();
         }
         if(is_object($this->menu)) {
-            if(!$this->badgeColor) $this->badgeColor = $this->menu->getBadgeColor();
+            if(is_null($this->badgeColor)) $this->badgeColor = $this->menu->getBadgeColor();
             if(is_null($this->badgePill)) $this->badgePill = $this->menu->getBadgePill();
         }
         $res = parent::setParent($item);
