@@ -12,8 +12,9 @@ class Tabs extends ElementContainer
     public $contentStack;
     public $navsStack;
 
-    public function readItems(array $items)
+    public function readItems(array $items, $reset = false)
     {
+        if($reset) $this->elements = [];
         foreach ($items as $item) {
             $tab = $this->createElement($item, 'tab-item');
             $tab->items_in_title = false;

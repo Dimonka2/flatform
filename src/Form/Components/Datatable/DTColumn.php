@@ -81,6 +81,8 @@ class DTColumn extends Element implements IDataProvider
         return $this->item->{$name} ?? null;
     }
 
+
+    // 'format' => [['_data' => ['text:time'] ]] ],
     public function format($data, $item)
     {
         $html = '';
