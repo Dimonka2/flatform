@@ -2,7 +2,11 @@
 
 <script>
     class FlatformActions{
-        processOutput(response){
+        reloadFunction = function(params) {
+            location.reload();
+        }
+
+        processOutput = function(response, params){
             console.log(response);
             // alert(response.message);
             if(response.result == 'error') alert(response.message);
@@ -10,7 +14,7 @@
             if(response.redirect) {
                 switch (response.redirect) {
                     case "{{$actions::reload}}":
-                        location.reload();
+                        this.reloadFunction(params);
                         break;
                     default:
                         window.location.href = response.redirect;
@@ -27,7 +31,7 @@
                 url: '@route("flatform.action")',
                 data: params,
                 success: function(response){
-                    self.processOutput(response);
+                    self.processOutput(response, params);
                 },
                 error: function(html, status) {
                     self.processError(html, status);
