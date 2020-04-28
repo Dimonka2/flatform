@@ -10,5 +10,5 @@ class Column
     protected $search;         // enables search
     protected $sort;           // disable sort by this column
     protected $system;         // virtual field without sort and search
-
+    protected $class;          // field class
 }
