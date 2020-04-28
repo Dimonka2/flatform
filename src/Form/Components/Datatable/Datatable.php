@@ -26,7 +26,6 @@ class Datatable extends ElementContainer
     public $data_id;
     protected $details;
     protected $select;
-    protected $filters;
 
     protected $null_last;
     protected $formatFunction;
