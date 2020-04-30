@@ -4,6 +4,7 @@ namespace dimonka2\flatform\Form\Inputs;
 
 use dimonka2\flatform\Form\ElementContainer;
 use dimonka2\flatform\Form\Contracts\IContext;
+use dimonka2\flatform\Form\Contracts\IElement;
 
 class BootstrapSelect extends Select
 {
@@ -51,8 +52,8 @@ class BootstrapSelect extends Select
                 }
                 if(!is_null($this->selected) && isset($this->selected[$item->getAttribute('value')])) $item->setAttribute('selected','');
                 // render closure
-                $item->setOnRender(function($item, $context) {
-                    return $context->renderElement($item, $item->text);
+                $item->setOnRender(function(IElement $item) {
+                    return $item->getContext()->renderElement($item, $item->text);
                 });
 
                 $this->options[] = $item;

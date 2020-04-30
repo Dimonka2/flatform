@@ -7,16 +7,55 @@ class Table extends ElementContainer
 {
     use ColumnsTrait;
     use RowsTrait;
+
     protected $order;
     protected $start;
     protected $length;
     protected $query;
+    protected $search;
+    protected $select;
 
     protected $count;
 
     // use FiltersTrait;
 
     public function render()
+    {
+        /* 1. render surrounding:
+                Search,
+                pagination,
+                length choice,
+                filters,
+                actions
+            2. render table:
+                Header columns with sorting and check all,
+                body rows with checks and details
+        */
+        $output = [
+            ['row', [
+                ['col', ], // search
+                ['col', ], // filter/actions
+            ]],
+            ['div', [
+                ['table', [
+                    ['thead', 'onReander' => function($item){$this->renderHead();},],
+                    ['tbody', 'onReander' => function($item){$this->renderBody();},],
+                ]]
+            ]],
+            ['row', [
+                ['col', ], // page length
+                ['col', ], // paginator
+            ]],
+        ];
+
+    }
+
+    protected function renderHead()
+    {
+
+    }
+
+    protected function renderBody()
     {
 
     }
@@ -43,6 +82,7 @@ class Table extends ElementContainer
             'start',
             'length',
             'query',
+            'search',
         ]);
 
         parent::read($element);

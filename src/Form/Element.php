@@ -10,6 +10,8 @@ use dimonka2\flatform\Traits\SettingReaderTrait;
 
 class Element implements IElement
 {
+    use SettingReaderTrait;
+
     protected const assets = false;
 
     public $id;
@@ -17,17 +19,16 @@ class Element implements IElement
     public $style;
     protected $onRender = null; // closure for rendering
 
-    protected $context;
-    protected $type;
+    protected $context; // rendering context
+    protected $type;    // element tag and/or flatform template
     protected $hidden;
     protected $attributes;
-    protected $text;
-    protected $template;
-    protected $parent;
+    protected $text;     // simple text inside this element
+    protected $template; // blade template
+    protected $parent;  // parent element
     protected $tooltip; // hints via "title" attribute
     protected $_data;   // data field in datatable
 
-    use SettingReaderTrait;
 
     protected function read(array $element)
     {
@@ -203,8 +204,7 @@ class Element implements IElement
             // process data source
             if($this->_data) $this->processData();
             if(is_callable($this->onRender)) {
-                $closure = $this->onRender;
-                return $closure($this, $this->context);
+                return ($this->onRender)($this);
             }
             $html = $this->render();
             $template = $this->template;
