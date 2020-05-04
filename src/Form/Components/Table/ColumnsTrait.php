@@ -16,7 +16,8 @@ trait ColumnsTrait
 
     public function addColumn(array $definition)
     {
-        $column = $this->createElement($definition, 't-column');
+        $column = new Column($this);
+        $column->read($definition);
         $this->columns[] = $column;
         return $column;
     }

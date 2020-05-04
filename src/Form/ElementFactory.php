@@ -61,11 +61,13 @@ class ElementFactory
         if (isset($this->binds[$type])) return $this->binds[$type];
     }
 
-    public static function preprocessElement(array $element): array
+    public static function preprocessElement(array $element, $includeType = true): array
     {
-        if(!isset($element['type']) && isset($element[0]) && !is_array($element[0])) {
-            $element['type'] = $element[0];
-            unset($element[0]);
+        if($includeType) {
+            if(!isset($element['type']) && isset($element[0]) && !is_array($element[0])) {
+                $element['type'] = $element[0];
+                unset($element[0]);
+            }
         }
 
         foreach($element as $key => $value) {

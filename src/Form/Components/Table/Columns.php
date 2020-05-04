@@ -2,6 +2,8 @@
 
 namespace dimonka2\flatform\Form\Components\Table;
 
+use dimonka2\flatform\Form\Contracts\IContext;
+
 class Columns implements \ArrayAccess, \Countable, \IteratorAggregate
 {
     use ItemsTrait;
@@ -11,6 +13,19 @@ class Columns implements \ArrayAccess, \Countable, \IteratorAggregate
     {
         $this->table = $table;
         $this->items = collect();
+    }
+
+    public function render(IContext $context)
+    {
+        $out = "";
+        foreach($this->items as $item) {
+            if(!$item->hide){
+                $def = [];
+                if($item->class) $def['class'] = $item->class;
+                $out .= $context->renderArray($def, 'th', $item->title);
+            }
+        }
+        return $out;
     }
 
     public function getColumnIndex($name)

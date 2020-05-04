@@ -92,6 +92,7 @@ class Element implements IElement
     {
         return $this->context->createTemplate($template);
     }
+
     protected function createElement($element, $type = null)
     {
         if($type) $element = $this->context::ensureType($element, $type);
@@ -99,7 +100,7 @@ class Element implements IElement
         return $this->context->createElement($element);
     }
 
-    protected function renderItem($item)
+    public function renderItem($item)
     {
         if(is_array($item)) return $this->createContainer($item)->renderItems();
         if(is_object($item)) return $item->renderElement();

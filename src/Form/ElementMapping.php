@@ -78,5 +78,6 @@ class ElementMapping
         'yield'         => Elements\BladeDirective::class,
         'extends'       => Elements\BladeDirective::class,
         'section'       => Elements\BladeDirective::class,
+        'xtable'        => Components\Table\Table::class,
     ];
 }
