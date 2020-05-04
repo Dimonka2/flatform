@@ -11,16 +11,16 @@ class Column implements IDataProvider
 {
     use SettingReaderTrait;
 
-    protected $name;           // field name, mapped as "data"
-    protected $title;          // column title
-    protected $search;         // enables search
-    protected $sort;           // disable sort by this column
-    protected $system;         // virtual field without sort and search
-    protected $class;          // field class
-    protected $hide;
-    protected $noSelect;
-    protected $as;
-    protected $format;
+    protected $name;            // field name, mapped as "data"
+    protected $title;           // column title
+    protected $search;          // enables search
+    protected $sort;            // disable sort by this column
+    protected $system;          // virtual field without sort and search
+    protected $class;           // field class
+    protected $hide;            // this column is not displayed
+    protected $noSelect;        // special case for some columns there is no need to add a select, like "count"
+    protected $as;              // all nested columns will get an automatic "as" synonym
+    protected $format;          // column format
 
     private $table;
     private $row; // for idataprovider getdata
