@@ -3,17 +3,21 @@
     {{$element->justified ? 'nav-justified' : ''}}" role="tablist">
     @foreach ($element as $tab)
         @if(!$tab->getHidden())
-        @php($active = $element->activeID == $tab->id)
+        @php
+            $active = $element->activeID == $tab->id;
+        @endphp
         <li class="nav-item">
-            @if ($tab->getHref())
-                <a class="nav-link {{$active ? 'active' : '' }}" href="{{ $tab->getHref() }}">
-                    {!! $tab->getTitle() !!}
-                </a>
-            @else
-                <a class="nav-link {{$active ? 'active' : '' }}" href="#{{ $tab->id }}" data-toggle="tab" aria-selected="{{$active ? 'true' : 'false'}}">
-                    {!! $tab->getTitle() !!}
-                </a>
-            @endif
+            @php
+                $tab->addClass('nav-link');
+                if($active) $tab->addClass('active');
+                if(!$tab->getHref()) {
+                    $tab->setAttribute('data-toggle', 'tab')
+                        ->setAttribute('aria-selected', $active ? 'true' : 'false')
+                        ->setAttribute('href', '#' . $tab->id);
+                }
+                echo $tab->renderElement();
+            @endphp
+
         </li>
         @endif
     @endforeach
