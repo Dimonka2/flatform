@@ -15,19 +15,13 @@ class Dropdown extends Button
         $this->items_in_title = false;
         $this->readSettings($element, ['shadow', 'direction', 'group_class', 'drop_form', 'dropdown_class']);
         parent::read($element);
+        $this->attributes['data-toggle'] = "dropdown";
+        $this->attributes['aria-expanded'] = "false";
     }
 
     public function renderButton()
     {
         return $this->render();
-    }
-
-    public function getOptions(array $keys)
-    {
-        $options = parent::getOptions($keys);
-        $options['data-toggle'] = "dropdown";
-        $options['aria-expanded'] = "false";
-        return $options;
     }
 
     public function hasForm()

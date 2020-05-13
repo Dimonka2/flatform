@@ -13,6 +13,7 @@ class Element implements IElement
     use SettingReaderTrait;
 
     protected const assets = false;
+    protected $defaultOptions;
 
     public $id;
     public $class;
@@ -123,10 +124,15 @@ class Element implements IElement
         if($this->attributes['debug']) debug($this);
     }
 
+    protected function getDefaultOptions(): array
+    {
+        return $this->defaultOptions ?? ['id', 'class', 'style'];
+    }
+
     public function getOptions(array $keys)
     {
         $options = $this->attributes;
-        foreach(array_merge($keys, ['id', 'class', 'style']) as $key){
+        foreach(array_merge($keys, $this->getDefaultOptions()) as $key){
             if(isset($this->$key) && !is_null($this->$key)) $options[$key] = $this->$key;
         }
         // add tooltip
@@ -331,6 +337,18 @@ class Element implements IElement
     public function setOnRender(?callable $onRender)
     {
         $this->onRender = $onRender;
+
+        return $this;
+    }
+
+    /**
+     * Set the value of defaultOptions
+     *
+     * @return  self
+     */
+    public function setDefaultOptions($defaultOptions)
+    {
+        $this->defaultOptions = $defaultOptions;
 
         return $this;
     }
