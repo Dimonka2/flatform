@@ -16,7 +16,7 @@ interface IContext
     public function getID($name);
     public function getTemplate($tag);
     public function setOptions(array $options);
-    public function getErrors();
+    public function getError($name);
 
     public function setMapping($id, IElement $element);
     public function getMapping($id): ?IElement;

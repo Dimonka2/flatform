@@ -20,23 +20,23 @@ class Context implements IContext
     protected static $renderCount; // this is an indicator that there is an ongoing rendering if it is not 0 or null
     private $factory;           // factory object
     private $style_priority;
-    private $errors;
     private $debug;
     private $form;              // parent form during reading
     private $dataProvider;      // helps to register data elements for data providers
+    protected $errors;
 
     public function __construct(array $elements = [])
     {
         $this->style_priority = FlatformService::config('flatform.form.style');
         $this->factory = new ElementFactory($this);
         $this->setElements($elements);
+        $this->errors = session('errors') ? session('errors')->getBags()['default'] ?? new MessageBag : null;
     }
 
     public function setElements(array $elements)
     {
         $this->elements = new ElementContainer([], $this);
         $this->elements->setContainer(true);
-        $this->errors = request()->session()->get('errors', new MessageBag);
         $this->elements->readItems($elements);
         return $this;
     }
@@ -62,11 +62,6 @@ class Context implements IContext
     {
         preg_match('/[-_A-Za-z0-9]+/', $name, $matches);
         return $matches[0] . '-' . $this->next_id++;
-    }
-
-    public function getErrors()
-    {
-        return $this->errors;
     }
 
     public function createElement(array $element): IElement
@@ -119,9 +114,10 @@ class Context implements IContext
 
     public static function renderArray(array $element, $tag, $text = null)
     {
+        //debug(print_r($element, true));
         $html = '<' . $tag;
         foreach($element as $key => $value) {
-            if(!is_array($value)) $html .= ' ' . $key . '="' . htmlentities($value) . '"';
+            if(is_string($value)) $html .= ' ' . $key . '="' . htmlentities($value) . '"';
         }
         if(is_null($text)) {
             $html .= ' />';
@@ -216,5 +212,31 @@ class Context implements IContext
         return $this;
     }
 
+    public function getError($name)
+    {
+        if(!$name) return null;
+        if(!$this->errors) return null;
 
+        return $this->errors->get($name);
+    }
+
+    /**
+     * Set the value of errors
+     *
+     * @return  self
+     */
+    public function setErrors($errors)
+    {
+        $this->errors = $errors;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of errors
+     */
+    public function getErrors()
+    {
+        return $this->errors;
+    }
 }

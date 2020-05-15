@@ -74,7 +74,7 @@ class Element implements IElement
 
     public function addClass($class)
     {
-        $this->class = ($this->class ?? '') . ' ' . $class;
+        $this->class .= ' ' . $class;
         return $this;
     }
 

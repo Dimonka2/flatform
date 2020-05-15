@@ -14,6 +14,7 @@ class Select extends Input
 
     protected function read(array $element)
     {
+        // debug($element);
         $this->readSettings($element, ['state-list', 'list', 'selected']);
         parent::read($element);
         if(is_null($this->list) && !is_null($this->state_list)) {
@@ -26,7 +27,9 @@ class Select extends Input
 
     public function render()
     {
-        return Form::select($this->name, $this->list ?? [], $this->value,
+        $items = $this->list;
+        if($items instanceof \Closure) $items = $items($this);
+        return Form::select($this->name, $items ?? [], $this->value,
             $this->getOptions(['placeholder', 'readonly', 'disabled']));
     }
 
