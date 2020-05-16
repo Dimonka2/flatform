@@ -139,6 +139,16 @@ class Context implements IContext
         return self::renderArray($options, $tag, $aroundHTML);
     }
 
+    public function renderItem($item)
+    {
+        if(is_array($item)) {
+            $div = new ElementContainer([], $this);
+            return $div->readItems($item)->renderItems();
+        }
+        if(is_object($item)) return $item->renderElement();
+        return $item;
+    }
+
     public function getTemplate($tag)
     {
         if(is_null($tag)) return null;

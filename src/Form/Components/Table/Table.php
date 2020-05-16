@@ -9,12 +9,13 @@ class Table extends ElementContainer
     use ColumnsTrait;
     use RowsTrait;
 
-    protected $order;
-    protected $start;
+    protected $order;   // generic format ['column.name' => 'asc'], but could be just 'column.name'
+    protected $page;
     protected $length = 10;
     protected $query;
     protected $search;
     protected $select;
+    protected $formatters = []; // this is a lookup list for column formatters
 
     protected $count;
     protected $filtered_count;
@@ -55,8 +56,10 @@ class Table extends ElementContainer
                         ]
                     ],
                 ]],
-                ['col', 'text' => $this->formatPosition()], // page length
-                ['col', 'text' => $this->models->links()], // paginator
+                ['col', 'md' => 4, '+class' => 'p-3', 'text' => $this->formatPosition()], // page length
+                ['col', 'md' => 8, [
+                    ['div', '+class' => 'float-md-right mt-2', 'text' => $this->models->links()], // paginator
+                ]],
             ]],
         ];
 
@@ -75,15 +78,25 @@ class Table extends ElementContainer
 
     protected function formatPosition()
     {
-        $start = $this->start ?? 0;
+        $page = $this->page ?? 0;
         $count = count($this->rows);
         $total = ' (' . $this->count . ')';
         if($count == 0) return $total;
-        return ($start + 1) . '-' . ($start + $count)  . $total;
+        $start = (($page - 1) * $this->length + 1);
+        return  $start . '-' . ($start + $count - 1)  . $total;
     }
 
     protected function read(array $element)
     {
+        $this->readSettings($element, [
+            'order',
+            'page',
+            'length',
+            'query',
+            'search',
+            'formatters',
+        ]);
+
         $columns = self::readSingleSetting($element, 'columns');
         $this->createColumns($columns ?? []);
 
@@ -99,16 +112,45 @@ class Table extends ElementContainer
 //        $select = self::readSingleSetting($element, 'select');
 //        if(is_array($select)) $this->createSelect($select);
 
-        $this->readSettings($element, [
-            'order',
-            'start',
-            'length',
-            'query',
-            'search',
-        ]);
+
+        if($this->order) $this->preprocessOrder();
 
         parent::read($element);
         $this->requireID();
+    }
+
+    private function preprocessOrder()
+    {
+        $order = [];
+        $orders = $this->order;
+        if(is_string($orders)) $orders = [$orders];
+        if(is_array($orders)){
+            foreach ($orders as $key => $value) {
+                if(is_integer($key)) {
+                    $column = $value;
+                    $direction = null;
+                } else {
+                    $column = $key;
+                    $direction = $value;
+                }
+
+                $index = $this->columns->getColumnIndex($column);
+                if($index !== false) {
+                    $column = $this->columns[$index];
+                    $sort = $column->sort;
+                    if($sort ?? true) $order[$column->name] = $direction ?
+                            strtoupper($direction) :
+                            (strtoupper($sort) == 'DESC' ? 'DESC': 'ASC');
+                }
+            }
+        }
+
+        $this->order = $order;
+    }
+
+    public function getColumnFormatter($name)
+    {
+        return $this->formatters[$name] ?? null;
     }
 
     public function hasFormatter()
@@ -116,4 +158,24 @@ class Table extends ElementContainer
         return 0;
     }
 
+
+    /**
+     * Get the value of order
+     */
+    public function getOrder()
+    {
+        return $this->order;
+    }
+
+    /**
+     * Set the value of order
+     *
+     * @return  self
+     */
+    public function setOrder($order)
+    {
+        $this->order = $order;
+
+        return $this;
+    }
 }

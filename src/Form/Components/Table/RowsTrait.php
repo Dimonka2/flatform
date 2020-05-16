@@ -55,8 +55,16 @@ trait RowsTrait
                 $fields[] =  $field->name . ($field->as ? ' as ' . $field->as : '' );
             }
         }
+
+        if($this->order){
+            foreach($this->order as $column => $direction) {
+                $query = $query->orderBy($column, $direction);
+            }
+        }
+
         $query = $query->addSelect($fields);
-        $items = $query->paginate($this->length);
+        $items = $query->paginate($this->length, ['*'], 'p-' . $this->id, $this->page);
+        $this->page = $items->currentPage();
         $this->models = $items;
         if ($this->getAttribute('debug') && \App::environment('local')) {
             debug($query->toSql() );
@@ -69,12 +77,7 @@ trait RowsTrait
                 if (!$column->system) {
                     $value = $item->{$column->as ? $column->as : $column->name};
                 }
-                $field = $column->getSafeName();
-                if($column->hasFormat()) {
-                    $nestedData[ $column->name ] = $column->format($value, $item);
-                } else if($this->hasFormatter()) {
-                    $nestedData[ $column->name ] = $this->format($value, $item, $column);
-                } else  $nestedData[ $column->name ] = $value;
+                $nestedData[ $column->name ] = $value;
             }
             $this->addRow($nestedData);
         }

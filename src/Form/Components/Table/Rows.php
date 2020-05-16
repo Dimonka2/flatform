@@ -18,11 +18,16 @@ class Rows implements \ArrayAccess, \Countable, \IteratorAggregate
     {
         $out = '';
         foreach($this->items as $item){
-            $cols = [];
-            foreach ($this->table->getColumns() as $col) {
-                $cols[] = ['td', 'text' => $item[$col->name]];
+            $columns = [];
+            foreach ($this->table->getColumns() as $column) {
+                $val = $item[$column->name];
+                if($column->hasFormat()) {
+                    $val = $column->doFormat($val, $item);
+                    // debug($val);
+                }
+                $columns[] = ['td', 'text' => $val];
             }
-            $def = ['tr', $cols];
+            $def = ['tr', $columns];
             $out .= $this->table->renderItem([$def]);
         }
         return $out;

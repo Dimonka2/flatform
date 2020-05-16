@@ -17,12 +17,36 @@ class Columns implements \ArrayAccess, \Countable, \IteratorAggregate
 
     public function render(IContext $context)
     {
+        $order = $this->table->getOrder();
+
         $out = "";
         foreach($this->items as $item) {
             if(!$item->hide){
-                $def = [];
+                $def = ['th'];
                 if($item->class) $def['class'] = $item->class;
-                $out .= $context->renderArray($def, 'th', $item->title);
+                if ($item->sort) {
+                    switch ($order[$item->name] ?? null) {
+                        case 'ASC':
+                            $sortingClass = 'fa fa-sort-amount-up';
+                            break;
+                        case 'DESC':
+                            $sortingClass = 'fa fa-sort-amount-down';
+                            break;
+
+                        default:
+                            $sortingClass = 'fa fa-sort';
+                            break;
+                    }
+                    $def['items'] = [
+                        ['a', 'href' => '#', [
+                            ['_text', 'text' => $item->title . '&nbsp;'],
+                            ['i', 'class' => $sortingClass],
+                        ]],
+                    ];
+                } else {
+                    $def['title'] = $item->title;
+                }
+                $out .= $context->renderItem([$def]);
             }
         }
         return $out;
@@ -61,12 +85,12 @@ class Columns implements \ArrayAccess, \Countable, \IteratorAggregate
         if(is_iterable($columnName)) {
             foreach($columnName as $column){
                 $column = $this->getColumn($column);
-                if($column) $column->setFormatFunction($formatFunction);
+                if($column) $column->setFormat($formatFunction);
             }
             return $this;
         }elseif($columnName) {
             $column = $this->getColumn($columnName);
-            if($column) $column->setFormatFunction($formatFunction);
+            if($column) $column->setFormat($formatFunction);
             return $this;
         }
     }

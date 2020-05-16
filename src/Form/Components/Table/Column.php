@@ -6,6 +6,7 @@ use dimonka2\flatform\Form\ElementFactory;
 use dimonka2\flatform\Form\ElementContainer;
 use dimonka2\flatform\Traits\SettingReaderTrait;
 use dimonka2\flatform\Form\Contracts\IDataProvider;
+use dimonka2\flatform\Form\Contracts\IElement;
 
 class Column implements IDataProvider
 {
@@ -20,7 +21,7 @@ class Column implements IDataProvider
     protected $hide;            // this column is not displayed
     protected $noSelect;        // special case for some columns there is no need to add a select, like "count"
     protected $as;              // all nested columns will get an automatic "as" synonym
-    protected $format;          // column format
+    protected $format;          // column format: callable, container, template name or IColumnFormat
 
     private $table;
     private $row; // for idataprovider getdata
@@ -29,7 +30,9 @@ class Column implements IDataProvider
     {
         $format = $this->readSingleSetting($definition, 'format');
         if($format) {
-            if(is_callable($format)) {
+            if(is_string($format)){
+                $this->format = $this->table->getColumnFormatter($format);
+            }elseif(is_callable($format)) {
                 $this->format = $format;
             } else {
                 $this->format = new ElementContainer([], $this->table->getContext());
@@ -63,19 +66,25 @@ class Column implements IDataProvider
         return !!$this->format;
     }
 
-    public function format($value, $row)
+    public function doFormat($value, $row)
     {
         $html = '';
-        if($this->format) {
-            if (is_callable($this->format)) {
-                $html = call_user_func_array($this->format,
-                    [$value, $this, $row]);
-            } else {
-                $this->row = $row;
-                $context = $this->table->getContext();
-                $context->setDataProvider($this);
-                $html = $this->format->renderElement();
-                $context->setDataProvider(null);
+        $format = $this->format;
+        if($format) {
+            if(is_object($format)) {
+                if($format instanceof IElement) {
+                    $this->row = $row;
+                    $context = $this->table->getContext();
+                    $context->setDataProvider($this);
+                    $html = $this->format->renderElement();
+                    $context->setDataProvider(null);
+                } elseif ($format instanceof IColumnFormat){
+                    // use only invoke function of the object
+                    $html = $format($value, $this, $row);
+                }
+            }elseif (is_callable($format)) {
+                $html = call_user_func_array($format, [$value, $this, $row]);
+
             }
         }
         return $html;
@@ -87,5 +96,17 @@ class Column implements IDataProvider
         if(is_integer($name)) $name = $this->getSafeName();
         if($name == '_item') return $this->row;
         return $this->row->{$name} ?? null;
+    }
+
+    /**
+     * Set the value of format
+     *
+     * @return  self
+     */
+    public function setFormat($format)
+    {
+        $this->format = $format;
+
+        return $this;
     }
 }
