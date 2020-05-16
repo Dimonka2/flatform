@@ -16,6 +16,7 @@ class Dropzone extends Form
     protected $fileList;
 
     protected const options = ['onSuccess', 'onError', 'onRemovedfile', 'onInit', 'onAddedfile'];
+    protected $defaultOptions = ['id', 'class', 'style'] + self::options;
 
     protected function read(array $element)
     {
@@ -37,11 +38,6 @@ class Dropzone extends Form
         $html = $this->addAssets();
 
         return $html . parent::render();
-    }
-
-    public function getOptions(array $keys)
-    {
-        return parent::getOptions(array_merge($keys, self::options));
     }
 
 }

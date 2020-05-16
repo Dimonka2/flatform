@@ -7,15 +7,12 @@ use dimonka2\flatform\Form\Element;
 class Image extends Element
 {
     protected $src;
+    protected $defaultOptions = ['id', 'class', 'style', 'src'];
+
     protected function read(array $element)
     {
         $this->readSettings($element, ['src']);
         parent::read($element);
-    }
-
-    public function getOptions(array $keys)
-    {
-        return parent::getOptions(array_merge($keys, ['src']));
     }
 
     /**

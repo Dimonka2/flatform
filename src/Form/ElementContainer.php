@@ -21,7 +21,13 @@ class ElementContainer extends Element implements IContainer, \ArrayAccess, \Cou
         }
         parent::read($element);
 
-        $this->readItems($items ?? []);
+        // do not read items if hidden
+        if(!$this->hidden && isset($items)) {
+            // allow callable be an item list
+            if($items instanceof \Closure) $items = $items($this);
+            $this->readItems($items);
+        }
+
 
         // echo $this->hash() . " Read items: \r\n";
         return $this;

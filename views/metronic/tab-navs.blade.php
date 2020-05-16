@@ -13,7 +13,10 @@
                 if(!$tab->getHref()) {
                     $tab->setAttribute('data-toggle', 'tab')
                         ->setAttribute('aria-selected', $active ? 'true' : 'false')
-                        ->setAttribute('href', '#' . $tab->id);
+                        ->setAttribute('role', 'tab')
+                        ->setAttribute('aria-controls', $tab->id)
+                        ->setAttribute('href', '#' . $tab->id)
+                        ->setDefaultOptions(['class', 'style']); // this is needed to exclude rendering of ID attribute
                 }
                 echo $tab->renderElement();
             @endphp

@@ -12,6 +12,7 @@ class Input extends Element
         'name', 'label', 'value', 'help', 'placeholder',
         'error', 'col', 'readonly', 'disabled', 'required',
     ];
+    protected $defaultOptions = ['id', 'class', 'style', 'name', 'readonly', 'disabled', 'required', 'value', 'placeholder'];
     public $name;
     public $label;
     public $value;
@@ -27,14 +28,18 @@ class Input extends Element
     {
         $this->form = $this->context->getForm();
         $this->readSettings($element, self::input_fields);
-        parent::read($element);
-        if($this->name && $this->context->getErrors()->has($this->name)) {
+        if($this->name) {
+            $errors = $this->context->getError($this->name);
+
             // add error
-            $this->error = \implode('<br/>', $this->context->getErrors()->get($this->name));
-            //dd($this->error);
-            $template = $this->getTemplate('error-class');
-            if(!is_null($template)) $this->processAttributes($template);
+            if(is_array($errors) && count($errors) > 0) {
+                $this->error = implode('<br/>', $errors);
+                $template = $this->getTemplate('error-class');
+                if(!is_null($template)) $this->processAttributes($template);
+                // debug($this->error);
+            }
         }
+        parent::read($element);
 
     }
 
@@ -73,11 +78,6 @@ class Input extends Element
         $template = parent::getTemplate($tag);
         if(!is_null($template)) return $template;
         return $this->context->getTemplate('input');
-    }
-
-    public function getOptions(array $keys)
-    {
-        return parent::getOptions(array_merge($keys, ['name', 'readonly', 'disabled', 'required', 'value', 'placeholder']));
     }
 
     public function renderElement()

@@ -22,7 +22,6 @@ class BootstrapSelect extends Select
             $value = $this->needValue();
             if($value) $this->selected[$value] = true;
         }
-        $this->processOptions();
     }
 
     public function __construct(array $element = [], ?IContext $context = null)
@@ -33,7 +32,7 @@ class BootstrapSelect extends Select
 
     private function processOptions()
     {
-        $options = [];
+        $this->options = [];
         if(is_iterable( $this->list)) {
             foreach($this->list as $key => $option) {
                 if(is_array($option)) {
@@ -69,6 +68,8 @@ class BootstrapSelect extends Select
 
     public function render()
     {
+        // lazy processing of options
+        if(!is_array($this->options)) $this->processOptions();
         // logger('rendering', [$this]);
         $html = $this->addAssets();
         return $this->context->renderElement($this, $this->renderList()) . $html;

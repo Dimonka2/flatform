@@ -46,8 +46,7 @@ class Tabs extends ElementContainer
         if($template != "") $html .= $this->context->renderView(
             view($template)
             ->with('element', $this)
-            ->with('html', $html), $this->navsStack
-        );
+            ->with('html', $html), $this->navsStack);
 
         $template = $this->context->getTemplate('tab-content');
         if(is_array($template) && isset($template['template'])){
