@@ -12,7 +12,7 @@ class Input extends Element
         'name', 'label', 'value', 'help', 'placeholder',
         'error', 'col', 'readonly', 'disabled', 'required',
     ];
-    protected $defaultOptions = ['id', 'class', 'style', 'name', 'readonly', 'disabled', 'required', 'value', 'placeholder'];
+
     public $name;
     public $label;
     public $value;

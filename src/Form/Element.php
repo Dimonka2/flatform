@@ -33,7 +33,7 @@ class Element implements IElement
 
     protected function read(array $element)
     {
-        $onLoaded = $this->readSingleSetting($element, 'onLoaded');
+
         $this->onRender = $this->readSingleSetting($element, 'onRender');
 
         $this->readSettings($element, [
@@ -50,8 +50,6 @@ class Element implements IElement
         if(!is_null($this->hidden)) $this->hidden = !!$this->hidden;
 
         $this->processAttributes($element);
-        if(is_callable($onLoaded)) call_user_func_array($onLoaded, [$this, $element]);
-        if(!is_null($this->id)) $this->context->setMapping($this->id, $this);
         return $this;
     }
 
@@ -119,7 +117,10 @@ class Element implements IElement
     {
         $this->attributes = new Fluent();
         $this->context = $context ?? Flatform::context();
+        $onLoaded = $this->readSingleSetting($element, 'onLoaded');
         $this->read($element);
+        if(is_callable($onLoaded)) call_user_func_array($onLoaded, [$this, $element]);
+        if(!is_null($this->id)) $this->context->setMapping($this->id, $this);
         // add debug logging to any specific element
         if($this->attributes['debug']) debug($this);
     }
@@ -135,6 +136,7 @@ class Element implements IElement
         foreach(array_merge($keys, $this->getDefaultOptions()) as $key){
             if(isset($this->$key) && !is_null($this->$key)) $options[$key] = $this->$key;
         }
+
         // add tooltip
         if($this->tooltip) {
             if(is_array($this->tooltip)) {

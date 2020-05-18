@@ -14,7 +14,6 @@ use dimonka2\flatform\Form\Contracts\IDataProvider;
 
 class Context implements IContext
 {
-    protected $elements = [];   // list of elements in context
     protected $mapping = [];    // id => element mapping
     protected $next_id = 100;   // id counter in order to avoid repeated ids
     protected static $renderCount; // this is an indicator that there is an ongoing rendering if it is not 0 or null
@@ -25,26 +24,11 @@ class Context implements IContext
     private $dataProvider;      // helps to register data elements for data providers
     protected $errors;
 
-    public function __construct(array $elements = [])
+    public function __construct()
     {
         $this->style_priority = FlatformService::config('flatform.form.style');
         $this->factory = new ElementFactory($this);
-        $this->setElements($elements);
         $this->errors = session('errors') ? session('errors')->getBags()['default'] ?? new MessageBag : null;
-    }
-
-    public function setElements(array $elements)
-    {
-        $this->elements = new ElementContainer([], $this);
-        $this->elements->setContainer(true);
-        $this->elements->readItems($elements);
-        return $this;
-    }
-
-    public function add(array $elements = [])
-    {
-        $this->elements->readItems($elements);
-        return $this;
     }
 
     public function setMapping($id, IElement $element)
@@ -81,16 +65,18 @@ class Context implements IContext
 
     public function render($elements = null)
     {
-        if(is_array($elements)){
-            $this->setElements($elements);
-        } elseif(is_object($elements)){
+        if ($this->debug) {
+            debug($this);
+            debug($elements);
+        }
+        if(is_object($elements)){
             return $elements->renderElement();
         }
-        if ($this->debug) debug($this);
-        if(!self::$renderCount) return $this->_internalRender();
+
+        if(!self::$renderCount) return $this->_internalRender($elements);
         self::$renderCount++;
         try {
-            $html = $this->renderView(view('flatform::context'));
+            $html = $this->renderView(view('flatform::context')->with('elements', $elements));
             self::$renderCount--;
         } catch (\Throwable $th) {
             self::$renderCount--;
@@ -99,9 +85,9 @@ class Context implements IContext
         return $html;
     }
 
-    public function _internalRender()
+    public function _internalRender($elements)
     {
-        return $this->elements->renderItems();
+        return $this->renderItem($elements);
     }
 
     public function renderView($view, ?string $toStack = null)
@@ -117,7 +103,7 @@ class Context implements IContext
         //debug(print_r($element, true));
         $html = '<' . $tag;
         foreach($element as $key => $value) {
-            if(is_string($value)) $html .= ' ' . $key . '="' . htmlentities($value) . '"';
+            if(is_scalar($value)) $html .= ' ' . $key . '="' . htmlentities($value) . '"';
         }
         if(is_null($text)) {
             $html .= ' />';

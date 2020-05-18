@@ -64,6 +64,7 @@ class Link extends ElementContainer
             if($this->is_link()) $options['href'] = $this->getUrl();
             if($this->is_post()) $options['type'] = 'submit';
         }
+
         return $options;
     }
 

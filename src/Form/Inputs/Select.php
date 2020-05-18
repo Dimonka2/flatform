@@ -11,11 +11,12 @@ class Select extends Input
     protected $state_list;
     protected $list;
     protected $selected;
+    protected $multiple;
 
     protected function read(array $element)
     {
         // debug($element);
-        $this->readSettings($element, ['state-list', 'list', 'selected']);
+        $this->readSettings($element, ['state-list', 'list', 'selected', 'multiple']);
         parent::read($element);
         if(is_null($this->list) && !is_null($this->state_list)) {
             // a temporary feature
@@ -23,6 +24,36 @@ class Select extends Input
                 $this->list = \App\Helpers\StateHelper::selectStateList($this->state_list);
             }
         }
+    }
+
+    protected function renderSingleOption($key, $option, $selected)
+    {
+        $text = $option;
+        $option = ['value' => $key];
+        if ($selected) $option['selected'] = '';
+        return $this->context->renderArray($option, 'option', $option);
+    }
+
+    protected function isSelected($key, $selected)
+    {
+        if(!$selected) return false;
+        if(is_array($selected)) return !! ($selected[$key] ?? false);
+        return $key == $selected;
+    }
+
+    protected function renderOptions($list)
+    {
+        if($this->selected) {
+            $selected = $this->selected;
+        } else {
+            $selected = $this->value ? $this->value : $this->needValue();
+        }
+        $html = '';
+        foreach ($list as $key => $option) {
+            $html .= $this->renderSingleOption($key, $option, $this->isSelected($key, $selected));
+        }
+
+        return $html;
     }
 
     public function render()
