@@ -10,10 +10,11 @@ class Modal extends ElementContainer
     protected $footer;
     protected $size;
     protected $postion;
+    protected $show;
 
     protected function read(array $element)
     {
-        $this->readSettings($element, ['title', 'footer', 'position', 'size']);
+        $this->readSettings($element, ['title', 'footer', 'position', 'size', 'show']);
         parent::read($element);
     }
 
@@ -103,6 +104,26 @@ class Modal extends ElementContainer
     public function setPostion($postion)
     {
         $this->postion = $postion;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of show
+     */
+    public function getShow()
+    {
+        return $this->show;
+    }
+
+    /**
+     * Set the value of show
+     *
+     * @return  self
+     */
+    public function setShow($show)
+    {
+        $this->show = $show;
 
         return $this;
     }
