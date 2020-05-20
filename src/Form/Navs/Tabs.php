@@ -2,6 +2,7 @@
 
 namespace dimonka2\flatform\Form\Navs;
 
+use dimonka2\flatform\Form\Contracts\IElement;
 use dimonka2\flatform\Form\ElementContainer;
 
 class Tabs extends ElementContainer
@@ -56,6 +57,13 @@ class Tabs extends ElementContainer
             );
         }
         return $this->context->renderElement($this, $html);
+    }
+
+    public function isTab(IElement $tab)
+    {
+        if($tab->getHidden()) return false;
+        $isTab = $tab->getAttribute('tab');
+        return $isTab === null || $isTab;
     }
 
 }

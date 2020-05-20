@@ -26,12 +26,11 @@ class Select extends Input
         }
     }
 
-    protected function renderSingleOption($key, $option, $selected)
+    protected function renderSingleOption($key, $text, $selected)
     {
-        $text = $option;
         $option = ['value' => $key];
-        if ($selected) $option['selected'] = '';
-        return $this->context->renderArray($option, 'option', $option);
+        if ($this->isSelected($key, $selected)) $option['selected'] = '';
+        return $this->context->renderArray($option, 'option', $text);
     }
 
     protected function isSelected($key, $selected)
@@ -60,8 +59,8 @@ class Select extends Input
     {
         $items = $this->list;
         if($items instanceof \Closure) $items = $items($this);
-        return Form::select($this->name, $items ?? [], $this->value,
-            $this->getOptions(['placeholder', 'readonly', 'disabled']));
+        $options = $this->getOptions(['multiple']);
+        return $this->context->renderArray($options, 'select', $this->renderOptions($items));
     }
 
         /**
