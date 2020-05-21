@@ -8,6 +8,7 @@ use dimonka2\flatform\Form\Components\Table\IColumnFormat;
 class Check extends BaseFormatter implements IColumnFormat
 {
     use SettingReaderTrait;
+    protected $class = 'text-center';
     protected $checked = 'fa fa-check text-success';
     protected $unchecked = 'fa fa-times text-danger';
 

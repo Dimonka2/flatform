@@ -29,11 +29,13 @@ class Column implements IDataProvider
 
     public function read(array $definition)
     {
+        $format = $this->readSingleSetting($definition, '_format');
+        if($format) {
+            $this->format = $this->table->getColumnFormatter($format);
+        }
         $format = $this->readSingleSetting($definition, 'format');
         if($format) {
-            if(is_string($format)){
-                $this->format = $this->table->getColumnFormatter($format);
-            }elseif(is_callable($format)) {
+            if(is_callable($format) || is_object($format)) {
                 $this->format = $format;
             } else {
                 $this->format = new ElementContainer([], $this->table->getContext());

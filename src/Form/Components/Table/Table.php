@@ -2,6 +2,7 @@
 namespace dimonka2\flatform\Form\Components\Table;
 
 use dimonka2\flatform\FlatformService;
+use dimonka2\flatform\Form\Components\Table\Formatter\ElementMapping;
 use dimonka2\flatform\Form\ElementContainer;
 
 class Table extends ElementContainer
@@ -150,7 +151,8 @@ class Table extends ElementContainer
 
     public function getColumnFormatter($name)
     {
-        return $this->formatters[$name] ?? null;
+        if(is_string($name) && ($this->formatters[$name] ?? false)) return $this->formatters[$name];
+        return ElementMapping::map($name) ;
     }
 
     public function hasFormatter()
