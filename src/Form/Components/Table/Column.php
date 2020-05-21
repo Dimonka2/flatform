@@ -22,6 +22,7 @@ class Column implements IDataProvider
     protected $noSelect;        // special case for some columns there is no need to add a select, like "count"
     protected $as;              // all nested columns will get an automatic "as" synonym
     protected $format;          // column format: callable, container, template name or IColumnFormat
+    protected $width;           // column width
 
     private $table;
     private $row; // for idataprovider getdata
@@ -42,7 +43,7 @@ class Column implements IDataProvider
 
         $definition = ElementFactory::preprocessElement($definition, false);
         $this->readSettings($definition, [
-            'name', 'title', 'search', 'sort', 'system', 'class', 'hide',
+            'name', 'title', 'search', 'sort', 'system', 'class', 'hide', 'width',
         ]);
     }
 

@@ -25,7 +25,9 @@ class Rows implements \ArrayAccess, \Countable, \IteratorAggregate
                     $val = $column->doFormat($val, $item);
                     // debug($val);
                 }
-                $columns[] = ['td', 'text' => $val];
+                $td = ['td', 'text' => $val];
+                if($column->class) $td['class'] = $column->class;
+                $columns[] = $td;
             }
             $def = ['tr', $columns];
             $out .= $this->table->renderItem([$def]);

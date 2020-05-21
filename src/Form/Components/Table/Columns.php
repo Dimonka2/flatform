@@ -22,25 +22,29 @@ class Columns implements \ArrayAccess, \Countable, \IteratorAggregate
         $out = "";
         foreach($this->items as $item) {
             if(!$item->hide){
-                $def = ['th'];
-                if($item->class) $def['class'] = $item->class;
+                $def = ['td'];
+                $def['class'] = 'text-nowrap text-truncate ';
+                if($item->width) $def['style'] = 'width: ' . $item->width . ';';
                 if ($item->sort) {
                     switch ($order[$item->name] ?? null) {
                         case 'ASC':
-                            $sortingClass = 'fa fa-sort-amount-up';
+                            $sortingClass = 'fa fa-sort-up text-danger';
                             break;
                         case 'DESC':
-                            $sortingClass = 'fa fa-sort-amount-down';
+                            $sortingClass = 'fa fa-sort-down text-danger';
                             break;
 
                         default:
-                            $sortingClass = 'fa fa-sort';
+                            $sortingClass = 'fa fa-sort text-slate-300';
                             break;
                     }
                     $def['items'] = [
-                        ['a', 'href' => '#', [
-                            ['_text', 'text' => $item->title . '&nbsp;'],
-                            ['i', 'class' => $sortingClass],
+                        ['a', 'href' => '#', 'class' => 'd-block',[
+                            ['div', 'class' => 'float-right d-block ml-2', 'style' => '', [
+                                ['i', 'class' => 'text-nowrap ' . $sortingClass],
+                            ]],
+                            ['div', 'class' => 'text-slate-600 d-inline-block mr-3 '  . $item->class,
+                            'text' => $item->title],
                         ]],
                     ];
                 } else {
