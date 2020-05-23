@@ -21,7 +21,7 @@ class Columns implements \ArrayAccess, \Countable, \IteratorAggregate
 
         $out = "";
         foreach($this->items as $item) {
-            if(!$item->hide){
+            if($item->visible()){
                 $def = ['td'];
                 $def['class'] = 'text-nowrap text-truncate ';
                 if($item->width) $def['style'] = 'width: ' . $item->width . ';';
@@ -44,11 +44,11 @@ class Columns implements \ArrayAccess, \Countable, \IteratorAggregate
                                 ['i', 'class' => 'text-nowrap ' . $sortingClass],
                             ]],
                             ['div', 'class' => 'text-slate-600 d-inline-block mr-3 '  . $item->class,
-                            'text' => $item->title],
+                            'text' => $this->table->renderItem($item->title)],
                         ]],
                     ];
                 } else {
-                    $def['title'] = $item->title;
+                    $def['text'] = $this->table->renderItem($item->title);
                 }
                 $out .= $context->renderItem([$def]);
             }

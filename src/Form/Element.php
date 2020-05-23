@@ -182,14 +182,15 @@ class Element implements IElement
 
     protected function processData()
     {
-        if(!is_array($this->_data)) return;
         $provider = $this->context->getDataProvider();
         if($provider){
+            $data = $this->_data;
+            if(!is_array($data)) $data = [$data];
             // data query format:
             // field_name => attribute name or function($element, $data)
-            foreach ($this->_data as $field => $attribute) {
+            foreach ($data as $field => $attribute) {
                 $value = $provider->getData($field);
-                if(is_callable($attribute)){
+                if($attribute instanceof \Closure){
                     $attribute($this, $value);
                 } else{
                     $function = explode(':', $attribute);

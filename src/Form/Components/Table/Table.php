@@ -59,7 +59,7 @@ class Table extends ElementContainer
                 ]],
                 ['col', 'md' => 4, '+class' => 'p-3', 'text' => $this->formatPosition()], // page length
                 ['col', 'md' => 8, [
-                    ['div', '+class' => 'float-md-right mt-2', 'text' => $this->models->links()], // paginator
+                    ['div', '+class' => 'float-md-right mt-2', 'text' => $this->models ? $this->models->links() : ''], // paginator
                 ]],
             ]],
         ];
@@ -81,7 +81,7 @@ class Table extends ElementContainer
     {
         $page = $this->page ?? 0;
         $count = count($this->rows);
-        $total = ' (' . $this->count . ')';
+        $total = $this->count ? ' (' . $this->count . ')' : '';
         if($count == 0) return $total;
         $start = (($page - 1) * $this->length + 1);
         return  $start . '-' . ($start + $count - 1)  . $total;
