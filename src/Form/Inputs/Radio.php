@@ -26,7 +26,6 @@ class Radio extends Input
     {
         $options = parent::getOptions(['value', 'checked']);
         if(is_null($this->checked) && $this->name && !is_null($this->value)) {
-            debug($this->needValue(), $this->value);
             $checked = $this->needValue() == $this->value;
             if($checked) $options['checked'] = '';
         }

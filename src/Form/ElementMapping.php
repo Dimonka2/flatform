@@ -35,6 +35,8 @@ class ElementMapping
         'alert'         => Components\Alert::class,
         'dropzone'      => Components\Dropzone::class,
         'jstree'        => Components\JsTree\Tree::class,
+        'xtable'        => Components\Table\Table::class,
+
         // Navs
         'breadcrumbs'   => Navs\Breadcrumbs::class,
         'tabs'          => Navs\Tabs::class,
@@ -78,6 +80,6 @@ class ElementMapping
         'yield'         => Elements\BladeDirective::class,
         'extends'       => Elements\BladeDirective::class,
         'section'       => Elements\BladeDirective::class,
-        'xtable'        => Components\Table\Table::class,
+        'livewire'      => Elements\BladeDirective::class,
     ];
 }

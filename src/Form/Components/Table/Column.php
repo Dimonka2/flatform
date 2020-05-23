@@ -75,7 +75,9 @@ class Column implements IDataProvider
         $format = $this->format;
         if($format) {
             if(is_object($format)) {
-                if($format instanceof IElement) {
+                if($format instanceof \Closure) {
+                    $html = $format($value, $this, $row);
+                }elseif($format instanceof IElement) {
                     $this->row = $row;
                     $context = $this->table->getContext();
                     $context->setDataProvider($this);
@@ -111,5 +113,10 @@ class Column implements IDataProvider
         $this->format = $format;
 
         return $this;
+    }
+
+    public function visible()
+    {
+        return !$this->hide;
     }
 }

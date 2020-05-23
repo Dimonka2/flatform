@@ -20,14 +20,16 @@ class Rows implements \ArrayAccess, \Countable, \IteratorAggregate
         foreach($this->items as $item){
             $columns = [];
             foreach ($this->table->getColumns() as $column) {
-                $val = $item[$column->name];
-                if($column->hasFormat()) {
-                    $val = $column->doFormat($val, $item);
-                    // debug($val);
+                if($column->visible()) {
+                    $val = $item[$column->name];
+                    if($column->hasFormat()) {
+                        $val = $column->doFormat($val, $item);
+                        // debug($val);
+                    }
+                    $td = ['td', 'text' => $val];
+                    if($column->class) $td['class'] = $column->class;
+                    $columns[] = $td;
                 }
-                $td = ['td', 'text' => $val];
-                if($column->class) $td['class'] = $column->class;
-                $columns[] = $td;
             }
             $def = ['tr', $columns];
             $out .= $this->table->renderItem([$def]);

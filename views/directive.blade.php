@@ -23,4 +23,7 @@
             {!! $element->getText() !!}
         @endpush
         @break
+    @case('livewire')
+        @livewire($element->name, $element->with ?? [], $element->id)
+        @break;
 @endswitch
