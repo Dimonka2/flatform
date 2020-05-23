@@ -36,6 +36,14 @@ trait RowsTrait
         return $this->rows;
     }
 
+    protected function addOrderLinks()
+    {
+        if($this->order) {
+            $order = str_replace('=', ',', http_build_query($this->order, null, '|'));
+            $this->models->appends([$this->id . '-o' => $order]);
+        }
+    }
+
     protected function buildRows()
     {
         $query = $this->query;
@@ -63,9 +71,11 @@ trait RowsTrait
         }
 
         $query = $query->addSelect($fields);
-        $items = $query->paginate($this->length, ['*'], 'p-' . $this->id, $this->page);
+        $items = $query->paginate($this->length, ['*'], $this->id . '-p', $this->page);
+
         $this->page = $items->currentPage();
         $this->models = $items;
+        $this->addOrderLinks();
         if ($this->getAttribute('debug') && \App::environment('local')) {
             debug($query->toSql() );
             debug($items);
