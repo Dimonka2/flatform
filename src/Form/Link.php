@@ -7,7 +7,7 @@ use dimonka2\flatform\Form\ElementContainer;
 
 class Link extends ElementContainer
 {
-    protected $href; // url (string) or toute (array)
+    protected $href; // url (string) or route (array)
     protected $post;
     protected $badge;
     protected $badgeColor;

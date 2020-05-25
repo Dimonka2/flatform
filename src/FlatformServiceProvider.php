@@ -36,6 +36,9 @@ class FlatformServiceProvider extends ServiceProvider
             $this->commands([
                 \dimonka2\flatform\Commands\TestCommand::class,
             ]);
+            $this->publishes([
+                __DIR__.'/../lang' => resource_path('lang/vendor/flatform'),
+            ]);
         } else {
             Blade::directive(FlatformService::config('flatform.blade_directive', 'form'), function ($form) {
                 return "<?php echo Flatform::render($form); ?>";
@@ -51,6 +54,7 @@ class FlatformServiceProvider extends ServiceProvider
 
         }
         $this->app->bind('flatform', FlatformService::class);
+        $this->loadTranslationsFrom(__DIR__.'/../lang/', 'flatform');
     }
 
     protected function getConfigFile(): string
