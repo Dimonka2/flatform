@@ -22,11 +22,15 @@ class Rows implements \ArrayAccess, \Countable, \IteratorAggregate
             foreach ($this->table->getColumns() as $column) {
                 if($column->visible()) {
                     $val = $item[$column->name];
-                    if($column->hasFormat()) {
-                        $val = $column->doFormat($val, $item);
-                        // debug($val);
+                    if(is_array($val)) {
+                        $td = ['td', 'items' => $val];
+                    } else {
+                        if($column->hasFormat()) {
+                            $val = $column->doFormat($val, $item);
+                            // debug($val);
+                        }
+                        $td = ['td', 'text' => $val];
                     }
-                    $td = ['td', 'text' => $val];
                     if($column->class) $td['class'] = $column->class;
                     $columns[] = $td;
                 }

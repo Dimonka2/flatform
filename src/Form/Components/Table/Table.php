@@ -17,6 +17,7 @@ class Table extends ElementContainer
     protected $search;
     protected $select;
     protected $formatters = []; // this is a lookup list for column formatters
+    protected $info;  // make it false to exclude info column
 
     protected $count;
     protected $filtered_count;
@@ -57,7 +58,9 @@ class Table extends ElementContainer
                         ]
                     ],
                 ]],
-                ['col', 'md' => 4, '+class' => 'p-3', 'text' => $this->formatPosition()], // page length
+                ['col', 'md' => 4, '+class' => 'p-3',
+                    'hide' => !is_null($this->info) && !$this->info,
+                    'text' => $this->formatPosition()], // page length
                 ['col', 'md' => 8, [
                     ['div', '+class' => 'float-md-right mt-2', 'text' => $this->models ? $this->models->links() : ''], // paginator
                 ]],
@@ -96,6 +99,7 @@ class Table extends ElementContainer
             'query',
             'search',
             'formatters',
+            'info',
         ]);
 
         $columns = self::readSingleSetting($element, 'columns');
