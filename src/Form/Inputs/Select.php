@@ -48,7 +48,7 @@ class Select extends Input
             $selected = $this->value ? $this->value : $this->needValue();
         }
         $html = '';
-        if($this->placeholder) $html .= $this->renderSingleOption("", $this->placeholder, $this->isSelected("", $selected));
+        if($this->placeholder ?? false) $html .= $this->renderSingleOption("", $this->placeholder, $this->isSelected("", $selected));
         if(is_iterable($list)) {
             foreach ($list as $key => $option) {
                 $html .= $this->renderSingleOption($key, $option, $this->isSelected($key, $selected));
