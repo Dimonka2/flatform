@@ -12,6 +12,7 @@ abstract class BaseFormatter implements IColumnFormat
     protected $column;
     protected $row;
     protected $class;
+    protected $tag = 'div';
 
     protected function read(array $definition)
     {
@@ -37,13 +38,13 @@ abstract class BaseFormatter implements IColumnFormat
 
     protected function render($value)
     {
-        $form = [['div',
+        $form = [[$this->tag,
             'class' => $this->getValueClass($value),
             'text' => $this->transformValue($value)]];
         return FlatformService::render($form);
     }
 
-    public function __invoke($value, Column $column, $row)
+    public function __invoke($value, $column, $row)
     {
         $this->column = $column;
         $this->row = $row;

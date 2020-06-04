@@ -5,6 +5,7 @@ namespace dimonka2\flatform\Form\Components\Datatable;
 use dimonka2\flatform\Form\Element;
 use dimonka2\flatform\Form\ElementContainer;
 use dimonka2\flatform\Form\Contracts\IDataProvider;
+use dimonka2\flatform\Form\Components\Table\Formatter\ElementMapping;
 
 class DTColumn extends Element implements IDataProvider
 {
@@ -26,6 +27,10 @@ class DTColumn extends Element implements IDataProvider
 
     protected function read(array $element)
     {
+        $format = $this->readSingleSetting($element, '_format');
+        if($format) {
+            $this->format = ElementMapping::map($format);
+        }
         $format = $this->readSingleSetting($element, 'format');
         if($format) {
             if(is_callable($format)) {

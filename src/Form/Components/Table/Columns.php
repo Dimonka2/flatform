@@ -22,7 +22,7 @@ class Columns implements \ArrayAccess, \Countable, \IteratorAggregate
         $out = "";
         foreach($this->items as $item) {
             if($item->visible()){
-                $def = ['td'];
+                $def = ['th'];
                 $def['class'] = 'text-nowrap text-truncate ';
                 if($item->width) $def['style'] = 'width: ' . $item->width . ';';
                 if ($item->sort) {
