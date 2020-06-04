@@ -23,11 +23,9 @@ class Input extends Element
     public $disabled;
     public $required;
     public $col;
-    protected $form;
 
     protected function read(array $element)
     {
-        $this->form = $this->context->getForm();
         $this->readSettings($element, self::input_fields);
         if($this->name) {
             $errors = $this->context->getError($this->name);
@@ -48,14 +46,14 @@ class Input extends Element
     {
         if($this->hasValue() ) {
             if($this->value) return $this->value;
-
-            if($this->name) {
-                // try to get value from the form
-                if($this->form) {
-                    return $this->form->getModelValue($this->name);
-                } else {
-                    return Form::getValueAttribute($this->name);
-                }
+        }
+        if($this->name) {
+            // try to get value from the form
+            $form = $this->context->getForm();
+            if($form) {
+                return $form->getModelValue($this->name);
+            } else {
+                return Form::getValueAttribute($this->name);
             }
         }
     }

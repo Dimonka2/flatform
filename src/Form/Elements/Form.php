@@ -43,7 +43,9 @@ class Form extends ElementContainer implements IForm
             $html = LaForm::open($options);
         }
         $html .= $aroundHTML;
+        $this->context->setForm($this);
         $html .= $this->renderItems();
+        $this->context->setForm(null);
         $html .= LaForm::close();
 
         return $html;
