@@ -50,7 +50,7 @@ class FlatformServiceProvider extends ServiceProvider
                 $this->loadRoutesFrom(__DIR__.'/routes.php');
             });
             if(FlatformService::config('flatform.livewire.active')) {
-                \Livewire\Livewire::component('flatform.table', \dimonka2\flatform\Livewire\Table::class);
+                \Livewire\Livewire::component('flatform.table', \dimonka2\flatform\Livewire\TableComponent::class);
             }
             $this->registerMarcos();
 

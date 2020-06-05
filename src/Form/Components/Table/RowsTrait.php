@@ -44,15 +44,30 @@ trait RowsTrait
         }
     }
 
+    protected function addSearch($query, $term)
+    {
+        $tablesearch = '%' . $term . '%';
+        $query = $query->where(function($q) use ($tablesearch) {
+            foreach($this->columns as $column) {
+                if ($column->search) {
+                    $q = $q->orWhere( $column->name, 'like', $tablesearch );
+                }
+            }
+        });
+
+        return $query;
+    }
+
     public function buildRows()
     {
         $query = $this->query;
+        if(!$query) return;
         $this->count = $query->count();
         $this->filtered_count = $this->count;
-        // if ( $this->search) {
-        //     $query = self::addSearch($query, $tablesearch, $table);
-        //     $this->filtered_count = $query->count();
-        // }
+        if ( $this->search) {
+            $query = $this->addSearch($query, $this->search);
+            $this->filtered_count = $query->count();
+        }
 
         // $query = $query->limit($this->length)->offset($this->start ?? 0);
 
@@ -84,7 +99,7 @@ trait RowsTrait
             $nestedData = [];
             foreach($this->columns as $column) {
                 $value = '';
-                if (!$column->system) {
+                if (!$column->system ) {
                     $value = $item->{$column->as ? $column->as : $column->name};
                 }
                 $nestedData[ $column->name ] = $value;

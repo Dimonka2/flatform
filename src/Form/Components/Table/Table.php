@@ -10,13 +10,16 @@ class Table extends ElementContainer
     use ColumnsTrait;
     use RowsTrait;
     use OrderTrait;
+    use FiltersTrait;
 
     protected $page;
     protected $length = 10;
+    protected $lengthOptions = [10, 20, 30, 50, 100];
     protected $query;
     protected $search;
     protected $select;
     protected $formatters = []; // this is a lookup list for column formatters
+    protected $formatFunction;  // this is a table element format function
     protected $info;  // make it false to exclude info column
 
     protected $count;
@@ -96,9 +99,11 @@ class Table extends ElementContainer
             'order',
             'page',
             'length',
+            'lengthOptions',
             'query',
             'search',
             'formatters',
+            'formatFunction',
             'info',
         ]);
 
@@ -108,8 +113,9 @@ class Table extends ElementContainer
         $rows = self::readSingleSetting($element, 'rows');
         $this->createRows($rows ?? []);
 
-        //        $filters = self::readSingleSetting($element, 'filters');
-//        $this->createFilters($filters ?? []);
+
+        $filters = self::readSingleSetting($element, 'filters');
+        $this->createFilters($filters ?? []);
 
 //        $details = self::readSingleSetting($element, 'details');
 //        if(is_array($details)) $this->createDetails($details);
@@ -131,9 +137,9 @@ class Table extends ElementContainer
         return ElementMapping::map($name) ;
     }
 
-    public function hasFormatter()
+    public function hasFormat()
     {
-        return 0;
+        return !!$this->formatFunction;
     }
 
 
@@ -180,5 +186,102 @@ class Table extends ElementContainer
     public function getLinks()
     {
         return $this->models ? $this->models->links() : null;
+    }
+
+    /**
+     * Get the value of filter
+     */
+    public function getFilter()
+    {
+        return $this->filters;
+    }
+
+    /**
+     * Set the value of filter
+     *
+     * @return  self
+     */
+    public function setFilter($filter)
+    {
+        $this->filter = $filter;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of formatFunction
+     */
+    public function getFormatFunction()
+    {
+        return $this->formatFunction;
+    }
+
+    /**
+     * Set the value of formatFunction
+     *
+     * @return  self
+     */
+    public function setFormatFunction($formatFunction)
+    {
+        $this->formatFunction = $formatFunction;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of models
+     */
+    public function getModels()
+    {
+        return $this->models;
+    }
+
+    /**
+     * Get the value of search
+     */
+    public function getSearch()
+    {
+        return $this->search;
+    }
+
+    /**
+     * Set the value of search
+     *
+     * @return  self
+     */
+    public function setSearch($search)
+    {
+        $this->search = $search;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of lengthOptions
+     */
+    public function getLengthOptions()
+    {
+        return $this->lengthOptions;
+    }
+
+    /**
+     * Set the value of lengthOptions
+     *
+     * @return  self
+     */
+    public function setLengthOptions($lengthOptions)
+    {
+        $this->lengthOptions = $lengthOptions;
+
+        return $this;
+    }
+
+
+    /**
+     * Get the value of count
+     */
+    public function getCount()
+    {
+        return $this->count;
     }
 }

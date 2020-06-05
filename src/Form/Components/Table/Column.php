@@ -46,7 +46,7 @@ class Column implements IDataProvider
         $definition = ElementFactory::preprocessElement($definition, false);
 
         $this->readSettings($definition, [
-            'name', 'title', 'search', 'sort', 'system', 'class', 'hide', 'width',
+            'name', 'title', 'search', 'sort', 'system', 'class', 'hide', 'width', 'noSelect',
         ]);
         if($this->sort === null) $this->sort = !$this->system;
     }
