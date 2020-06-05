@@ -9,8 +9,8 @@ class Table extends ElementContainer
 {
     use ColumnsTrait;
     use RowsTrait;
+    use OrderTrait;
 
-    protected $order;   // generic format ['column.name' => 'asc'], but could be just 'column.name'
     protected $page;
     protected $length = 10;
     protected $query;
@@ -62,7 +62,7 @@ class Table extends ElementContainer
                     'hide' => !is_null($this->info) && !$this->info,
                     'text' => $this->formatPosition()], // page length
                 ['col', 'md' => 8, [
-                    ['div', '+class' => 'float-md-right mt-2', 'text' => $this->models ? $this->models->links() : ''], // paginator
+                    ['div', '+class' => 'float-md-right mt-2', 'text' => $this->getLinks()], // paginator
                 ]],
             ]],
         ];
@@ -124,34 +124,6 @@ class Table extends ElementContainer
         $this->requireID();
     }
 
-    private function preprocessOrder()
-    {
-        $order = [];
-        $orders = $this->order;
-        if(is_string($orders)) $orders = [$orders];
-        if(is_array($orders)){
-            foreach ($orders as $key => $value) {
-                if(is_integer($key)) {
-                    $column = $value;
-                    $direction = null;
-                } else {
-                    $column = $key;
-                    $direction = $value;
-                }
-
-                $index = $this->columns->getColumnIndex($column);
-                if($index !== false) {
-                    $column = $this->columns[$index];
-                    $sort = $column->sort;
-                    if($sort ?? true) $order[$column->name] = $direction ?
-                            strtoupper($direction) :
-                            (strtoupper($sort) == 'DESC' ? 'DESC': 'ASC');
-                }
-            }
-        }
-
-        $this->order = $order;
-    }
 
     public function getColumnFormatter($name)
     {
@@ -181,7 +153,32 @@ class Table extends ElementContainer
     public function setOrder($order)
     {
         $this->order = $order;
+        $this->preprocessOrder();
+        return $this;
+    }
+
+    /**
+     * Get the value of length
+     */
+    public function getLength()
+    {
+        return $this->length;
+    }
+
+    /**
+     * Set the value of length
+     *
+     * @return  self
+     */
+    public function setLength($length)
+    {
+        $this->length = $length;
 
         return $this;
+    }
+
+    public function getLinks()
+    {
+        return $this->models ? $this->models->links() : null;
     }
 }

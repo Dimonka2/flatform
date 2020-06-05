@@ -5,6 +5,10 @@ use dimonka2\flatform\Form\Contracts\IElement;
 // use dimonka2\flatform\State;
 
 return [
+    'livewire' => [
+        'active' => false,
+        'table_view' => 'flatform::livewire.table',
+    ],
     'assets' =>[
         'select2'   => [
             'path'  => 'admin/select2/',

@@ -2,6 +2,7 @@
 
 namespace dimonka2\flatform\Form\Components\Table;
 
+use Closure;
 use dimonka2\flatform\Form\Contracts\IContext;
 
 class Columns implements \ArrayAccess, \Countable, \IteratorAggregate
@@ -15,41 +16,15 @@ class Columns implements \ArrayAccess, \Countable, \IteratorAggregate
         $this->items = collect();
     }
 
-    public function render(IContext $context)
+    public function render(IContext $context, ?Closure $columnFormat = null)
     {
         $order = $this->table->getOrder();
 
         $out = "";
         foreach($this->items as $item) {
             if($item->visible()){
-                $def = ['th'];
-                $def['class'] = 'text-nowrap text-truncate ';
-                if($item->width) $def['style'] = 'width: ' . $item->width . ';';
-                if ($item->sort) {
-                    switch ($order[$item->name] ?? null) {
-                        case 'ASC':
-                            $sortingClass = 'fa fa-sort-up text-danger';
-                            break;
-                        case 'DESC':
-                            $sortingClass = 'fa fa-sort-down text-danger';
-                            break;
-
-                        default:
-                            $sortingClass = 'fa fa-sort text-slate-300';
-                            break;
-                    }
-                    $def['items'] = [
-                        ['a', 'href' => '#', 'class' => 'd-block',[
-                            ['div', 'class' => 'float-right d-block ml-2', 'style' => '', [
-                                ['i', 'class' => 'text-nowrap ' . $sortingClass],
-                            ]],
-                            ['div', 'class' => 'text-slate-600 d-inline-block mr-3 '  . $item->class,
-                            'text' => $this->table->renderItem($item->title)],
-                        ]],
-                    ];
-                } else {
-                    $def['text'] = $this->table->renderItem($item->title);
-                }
+                $def = $item->renderDefinition($order);
+                if($columnFormat instanceof Closure) $def = $columnFormat($def, $item);
                 $out .= $context->renderItem([$def]);
             }
         }

@@ -1,4 +1,4 @@
-@if(isset($element->label) )
+@if($element->label !== false )
     <label for="{{$element->id}}">{!! $element->label !!}</label>
 @endif
 {!! $html !!}

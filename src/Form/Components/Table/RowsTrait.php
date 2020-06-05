@@ -44,7 +44,7 @@ trait RowsTrait
         }
     }
 
-    protected function buildRows()
+    public function buildRows()
     {
         $query = $this->query;
         $this->count = $query->count();

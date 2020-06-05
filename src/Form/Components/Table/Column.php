@@ -15,7 +15,7 @@ class Column implements IDataProvider
     protected $name;            // field name, mapped as "data"
     protected $title;           // column title
     protected $search;          // enables search
-    protected $sort;            // disable sort by this column
+    protected $sort;            // disable sort by this column or make it "DESC"
     protected $system;          // virtual field without sort and search
     protected $class;           // field class
     protected $hide;            // this column is not displayed
@@ -44,9 +44,44 @@ class Column implements IDataProvider
         }
 
         $definition = ElementFactory::preprocessElement($definition, false);
+
         $this->readSettings($definition, [
             'name', 'title', 'search', 'sort', 'system', 'class', 'hide', 'width',
         ]);
+        if($this->sort === null) $this->sort = !$this->system;
+    }
+
+    public function renderDefinition($order)
+    {
+        $def = ['th'];
+        $def['class'] = 'text-nowrap text-truncate ';
+        if($this->width) $def['style'] = 'width: ' . $this->width . ';';
+        if ($this->sort) {
+            switch ($order[$this->name] ?? null) {
+                case 'ASC':
+                    $sortingClass = 'fa fa-sort-up text-danger';
+                    break;
+                case 'DESC':
+                    $sortingClass = 'fa fa-sort-down text-danger';
+                    break;
+
+                default:
+                    $sortingClass = 'fa fa-sort text-slate-300';
+                    break;
+            }
+            $def['items'] = [
+                ['a', 'href' => '#', 'class' => 'd-block',[
+                    ['div', 'class' => 'float-right d-block ml-2', 'style' => '', [
+                        ['i', 'class' => 'text-nowrap ' . $sortingClass],
+                    ]],
+                    ['div', 'class' => 'text-slate-600 d-inline-block mr-3 '  . $this->class,
+                    'text' => $this->table->renderItem($this->title)],
+                ]],
+            ];
+        } else {
+            $def['text'] = $this->table->renderItem($this->title);
+        }
+        return $def;
     }
 
     public function __get($property)
