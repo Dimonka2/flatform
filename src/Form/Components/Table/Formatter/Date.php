@@ -8,17 +8,19 @@ class Date extends BaseFormatter implements IColumnFormat
 {
     use SettingReaderTrait;
     protected $format;
+    protected $emptyString;
 
     protected function read(array $definition)
     {
         $this->readSettings($definition, [
-            'format',
+            'format', 'emptyString',
         ]);
         parent::read($definition);
     }
 
     protected function transformValue($value)
     {
+        if(!$value) return $this->emptyString;
         $value = \Carbon\Carbon::parse($value);
         $value = $this->format ? $value->format($this->format) : $value->diffForHumans();
         return $value;
