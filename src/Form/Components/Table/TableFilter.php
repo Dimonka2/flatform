@@ -2,6 +2,7 @@
 
 namespace dimonka2\flatform\Form\Components\Table;
 
+use Closure;
 use dimonka2\flatform\Flatform;
 use dimonka2\flatform\Form\Element;
 
@@ -13,13 +14,14 @@ class TableFilter extends Element
     protected $title;          // filter title or label
     protected $type;           // filter type: checkbox, select, text
     protected $disabled;       // disables filter
+    protected $value;          // current value
     protected $list;           // item list for select
     protected $filterFunction; // filter callback
 
     public function read(array $definition)
     {
         $this->readSettings($definition, [
-            'name', 'title', 'type', 'disabled', 'list', 'filterFunction'
+            'name', 'title', 'type', 'disabled', 'value', 'list', 'filterFunction'
         ]);
         return parent::read($definition);
     }
@@ -30,9 +32,8 @@ class TableFilter extends Element
             case 'checkbox':
                 $checkbox = array_merge($this->getOptions([]),
                     ['checkbox', 'label' => $this->title, 'wire:model' => 'filtered.' . $this->name, ]);
-                if($this->default) $checkbox['value'] = $this->default;
                 return Flatform::render([
-                    ['div', 'class' => 'w100', [$checkbox]]
+                    ['div', 'class' => 'col-md-12', [$checkbox]]
                 ]);
             case 'select':
                 $select = array_merge(
@@ -44,6 +45,14 @@ class TableFilter extends Element
                 // if($this->default) $select['value'] = $this->default;
                 return Flatform::render([ $select ]);
         }
+    }
+
+    public function apply($query, $value)
+    {
+        $function = $this->filterFunction;
+        if($function instanceof Closure) return $function($query, $value);
+        // nothing to apply
+        return $query;
     }
 
     /**
@@ -182,6 +191,26 @@ class TableFilter extends Element
     public function setTable($table)
     {
         $this->table = $table;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of value
+     */
+    public function getValue()
+    {
+        return $this->value;
+    }
+
+    /**
+     * Set the value of value
+     *
+     * @return  self
+     */
+    public function setValue($value)
+    {
+        $this->value = $value;
 
         return $this;
     }

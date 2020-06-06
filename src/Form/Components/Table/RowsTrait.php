@@ -64,6 +64,14 @@ trait RowsTrait
         if(!$query) return;
         $this->count = $query->count();
         $this->filtered_count = $this->count;
+
+        // apply filters
+        foreach($this->filters as $filter){
+            if(!$filter->getDisabled()){
+                $filter->apply($query, $filter->getValue());
+            }
+        }
+
         if ( $this->search) {
             $query = $this->addSearch($query, $this->search);
             $this->filtered_count = $query->count();

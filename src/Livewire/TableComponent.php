@@ -2,21 +2,25 @@
 
 namespace dimonka2\flatform\Livewire;
 
+use Closure;
+use dimonka2\flatform\Flatform;
 use Livewire\Component;
 use Livewire\WithPagination;
 use dimonka2\flatform\FlatformService;
 use dimonka2\flatform\Form\Components\Table\Table;
+use dimonka2\flatform\Form\Contracts\IElement;
 
 class TableComponent extends Component
 {
     use WithPagination;
 
+    protected $idField = 'id';
     public $search;
     public $info;  // make it false to exclude info column
     public $order;
     public $length = 10;
     public $class;
-
+    public $expanded = [];
     public $filtered = [];
 
     protected $table;
@@ -28,8 +32,12 @@ class TableComponent extends Component
         if($this->order) $table->setOrder($this->order);
         $table->setLength($this->length);
         $table->setSearch($this->search);
+        $this->redirectFilters($table);
         $table->buildRows();
 
+        if($table->hasDetails()) {
+            $this->addDetailsButton($table);
+        }
         if($this->info !== false) {
             $items = $table->getModels();
             $total = $items->total();
@@ -39,9 +47,34 @@ class TableComponent extends Component
         }
 
         // debug($table);
-        return view($this->getView())
+        return view($this->getView('table'))
             ->with('host', $this)
             ->with('table', $table);
+    }
+
+    protected function addDetailsButton($table)
+    {
+        $details = $table->getDetails();
+        if (!$details->expander) {
+            $details->setExpander(
+                ['button', 'color' => 'clean',
+                    '_data' => ['_item' => function (IElement $element, $row) {
+                        $id = $row->{$this->idField};
+                        $element->setAttribute('wire:click.prevent',
+                             'showDetails(' . json_encode($id) . ')');
+                        if($this->expanded[$id] ?? false) $row->_expanded = 1;
+                    }],
+                    'size' => 'sm', 'class' => 'btn-icon-md', [
+                        ['i',
+                            'class' =>'fa fa-caret-down',
+                            '_data' => ['_item' => function (IElement $element, $row) {
+                                if($row->_expanded) $element->class = 'fa fa-caret-up';
+                            }],
+                            ]
+                ]]
+            );
+        }
+
     }
 
     public function sortColumn($columnName)
@@ -59,9 +92,18 @@ class TableComponent extends Component
 
     }
 
-    protected function getView()
+    public function showDetails($id)
     {
-        return FlatformService::config('flatform.livewire.table_view', 'flatform::livewire.table');
+        if($this->expanded[$id] ?? false) {
+            unset($this->expanded[$id]);
+        } else {
+            $this->expanded[$id] = 1;
+        }
+    }
+
+    protected function getView($viewName)
+    {
+        return FlatformService::config('flatform.livewire.' . $viewName, 'flatform::livewire.' . $viewName);
     }
 
     protected function getTable(): ?Table
@@ -77,6 +119,76 @@ class TableComponent extends Component
             $res[$option] = $option;
         }
         return $res;
+    }
+
+    public function renderHeader(Table $table)
+    {
+        $order = $table->getOrder();
+
+        $html = "";
+        $view = $this->getView('table-th');
+
+        if( $table->hasDetails() ){
+            // add details column
+            $details = $table->getDetails();
+            $html .= Flatform::render([
+                ['include', 'name' => $view, 'with' => [
+                    'table' => $table,
+                    'column' => null,
+                    'title' => Flatform::context()->renderItem($details->getTitle()),
+                ]]
+            ]);
+
+        }
+        foreach($table->getColumns() as $column) {
+            if($column->visible()){
+                $html .= Flatform::render([
+                    ['include', 'name' => $view, 'with' => [
+                        'table' => $table,
+                        'column' => $column,
+                        'order' => $order[$column->name] ?? false,
+                    ]]
+                ]);
+            }
+        }
+        return $html;
+
+    }
+
+    // inject function to link currently
+    protected function redirectFilters($table)
+    {
+        foreach($table->getFilters() as $filter) {
+            if( !$filter->getDisabled() ) {
+                $filterFunction = $filter->getFilterFunction();
+                if($filterFunction instanceof Closure) {
+                    $filter->setFilterFunction(function($query, $value)
+                        use ($filterFunction, $filter) {
+                        $newValue = $this->filtered[$filter->getName()] ?? null;
+                        $value = $newValue ? $newValue : $value;
+                        return $filterFunction($query, $value);
+                    });
+                }
+            }
+        }
+
+    }
+
+    public function renderFilters()
+    {
+        $html = '';
+        $view = $this->getView('table-filter');
+        foreach($this->table->getFilters() as $filter) {
+            if( !$filter->getDisabled() ) $html .= Flatform::render([
+                ['include', 'name' => $view, 'with' => [
+                    'table' => $this->table,
+                    'value' => $this->filtered[$filter->getName()] ?? null,
+                    'filter' => $filter,
+                ]]
+            ]);
+
+        }
+        return $html;
     }
 
 }

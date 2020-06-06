@@ -35,5 +35,15 @@ trait ColumnsTrait
         return $this->columns;
     }
 
+    public function getVisibleColumnCount()
+    {
+        $count = 0;
+        foreach($this->columns as $column) {
+            if($column->visible()) $count ++;
+        }
+        if($this->hasDetails()) $count ++;
+        return $count;
+    }
+
 
 }

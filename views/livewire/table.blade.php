@@ -18,9 +18,10 @@
                             'drop_form' => [
                                 ['form', 'style' => 'min-width:320px;', 'class' => 'p-3', [
                                     ['div', 'class' => 'row', [
-                                        ['_text', 'text' => $table->renderFilters()],
-                                        ['col', 'md' => 6, '+class' => 'p-3', 'text' =>  __('Show entries'), ],
+                                        ['_text', 'text' => $host->renderFilters()],
+                                        ['col', 'md' => 6, '+class' => 'p-2', 'text' =>  __('Show entries'), ],
                                         ['select',
+                                            'label' => false,
                                             'selected' => $length,
                                             'list' => $host->getLengthOptions(),
                                             'col' => ['md' => 6],
@@ -39,12 +40,7 @@
     <div class="{{$class}}">
         <table class="{{ $table->class }}" id="{{$table->id}}">
             <thead>
-                {!! $table->getColumns()->render($table->getContext(),
-                    function ($def, $column) {
-                        if($column->sort) $def['wire:click.prevent'] = 'sortColumn("' . $column->name . '")';
-                        return $def;
-                    })
-                !!}
+                {!! $host->renderHeader($table) !!}
             </thead>
             <tbody>
                 {!! $table->getRows()->render($table->getContext()) !!}

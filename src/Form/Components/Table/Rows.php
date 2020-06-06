@@ -3,11 +3,13 @@ namespace dimonka2\flatform\Form\Components\Table;
 
 use Closure;
 use dimonka2\flatform\Form\Contracts\IContext;
+use dimonka2\flatform\Form\Contracts\IDataProvider;
 
-class Rows implements \ArrayAccess, \Countable, \IteratorAggregate
+class Rows implements \ArrayAccess, \Countable, \IteratorAggregate, IDataProvider
 {
     use ItemsTrait;
     protected $table;
+    protected $row;
 
     public function __construct(Table $table)
     {
@@ -17,22 +19,28 @@ class Rows implements \ArrayAccess, \Countable, \IteratorAggregate
 
     public function render(IContext $context)
     {
-        $out = '';
+        $html = '';
         $tableFormat = $this->table->getFormatFunction();
-        foreach($this->items as $item){
+        $details = $this->table->getDetails();
+        foreach($this->items as $row){
             $columns = [];
+            if($this->table->hasDetails()){
+                $td = ['td', [$details->getExpander()]];
+                if($details->class) $td['class'] = $details->class;
+                $columns[] = $td;
+            }
             foreach ($this->table->getColumns() as $column) {
                 if($column->visible()) {
-                    $val = $item[$column->name];
+                    $val = $row[$column->name];
                     if(is_array($val)) {
                         $td = ['td', 'items' => $val];
                     } else {
                         if($column->hasFormat()) {
-                            $val = $column->doFormat($val, $item);
+                            $val = $column->doFormat($val, $row);
                             // debug($val);
                         }
                         if($tableFormat instanceof Closure) {
-                            $val = $tableFormat($column->name, $val, $item);
+                            $val = $tableFormat($column->name, $val, $row);
                         }
                         $td = ['td', 'text' => $val];
                     }
@@ -40,11 +48,23 @@ class Rows implements \ArrayAccess, \Countable, \IteratorAggregate
                     $columns[] = $td;
                 }
             }
-            $def = ['tr', $columns];
-            $out .= $this->table->renderItem([$def]);
+            $def = ['tr',  $columns];
+            $this->row = $row;
+            $context->setDataProvider($this);
+            $html .= $this->table->renderItem([$def]);
+            $context->setDataProvider(null);
+            if($this->table->hasDetails() && $row->_expanded){
+                $html .= $details->render($row);
+            }
         }
-        return $out;
+        return $html;
     }
 
+    public function getData($name)
+    {
+        if(!$this->row) return;
+        if($name == '_item') return $this->row;
+        return $this->row->{$name} ?? null;
+    }
 
 }

@@ -2,8 +2,9 @@
 namespace dimonka2\flatform\Form\Components\Table;
 
 use dimonka2\flatform\FlatformService;
-use dimonka2\flatform\Form\Components\Table\Formatter\ElementMapping;
+use dimonka2\flatform\Form\ElementFactory;
 use dimonka2\flatform\Form\ElementContainer;
+use dimonka2\flatform\Form\Components\Table\Formatter\ElementMapping;
 
 class Table extends ElementContainer
 {
@@ -18,9 +19,10 @@ class Table extends ElementContainer
     protected $query;
     protected $search;
     protected $select;
-    protected $formatters = []; // this is a lookup list for column formatters
-    protected $formatFunction;  // this is a table element format function
-    protected $info;  // make it false to exclude info column
+    protected $details;
+    protected $formatters = [];     // this is a lookup list for column formatters
+    protected $formatFunction;      // this is a table element format function
+    protected $info;                // make it false to exclude info column
 
     protected $count;
     protected $filtered_count;
@@ -117,8 +119,8 @@ class Table extends ElementContainer
         $filters = self::readSingleSetting($element, 'filters');
         $this->createFilters($filters ?? []);
 
-//        $details = self::readSingleSetting($element, 'details');
-//        if(is_array($details)) $this->createDetails($details);
+        $details = self::readSingleSetting($element, 'details');
+        if(is_array($details)) $this->createDetails($details);
 
 //        $select = self::readSingleSetting($element, 'select');
 //        if(is_array($select)) $this->createSelect($select);
@@ -135,6 +137,17 @@ class Table extends ElementContainer
     {
         if(is_string($name) && ($this->formatters[$name] ?? false)) return $this->formatters[$name];
         return ElementMapping::map($name) ;
+    }
+
+    protected function createDetails(array $details)
+    {
+        $this->details = new TableDetails($this);
+        $this->details->read(ElementFactory::preprocessElement($details, false));
+    }
+
+    public function hasDetails()
+    {
+        return $this->details && !$this->details->getDisabled();
     }
 
     public function hasFormat()
@@ -283,5 +296,25 @@ class Table extends ElementContainer
     public function getCount()
     {
         return $this->count;
+    }
+
+    /**
+     * Get the value of details
+     */
+    public function getDetails()
+    {
+        return $this->details;
+    }
+
+    /**
+     * Set the value of details
+     *
+     * @return  self
+     */
+    public function setDetails($details)
+    {
+        $this->details = $details;
+
+        return $this;
     }
 }
