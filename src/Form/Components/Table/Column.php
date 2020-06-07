@@ -112,6 +112,7 @@ class Column implements IDataProvider
             if(is_object($format)) {
                 if($format instanceof \Closure) {
                     $html = $format($value, $this, $row);
+                    if(is_array($html)) $html = $this->table->renderItem($html);
                 }elseif($format instanceof IElement) {
                     $this->row = $row;
                     $context = $this->table->getContext();
