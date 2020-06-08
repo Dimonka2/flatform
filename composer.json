@@ -20,7 +20,8 @@
     "minimum-stability": "dev",
     "require": {
         "php": "^7",
-        "laravelcollective/html": "^6 | ^7"
+        "laravelcollective/html": "^6 | ^7",
+        "livewire/livewire": "^1"
     },
     "extra": {
         "laravel": {

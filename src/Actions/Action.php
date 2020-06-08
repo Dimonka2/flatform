@@ -36,12 +36,9 @@ class Action implements Contract
         return false;
     }
 
-    public function form()
+    public function prepareForm($form, $modalID = null)
     {
-        $form = $this->getForm();
-        if(!$form) return $this->ok('', self::noform);
-
-        $modal = ['modal', $form, 'id' => self::modalID,
+        $modal = ['modal', $form, 'id' => $modalID ? $modalID : self::modalID,
             'title' => $this->getTitle(),
             'footer' => [
             ['button', 'color' => $this->getConfirmColor(), 'title' => $this->getConfirmText(),
@@ -53,11 +50,29 @@ class Action implements Contract
         if($size) $modal['size'] = $size;
 
         // render complete form
-        $form = Flatform::context()->createElement(['form', 'url' => route('flatform.action'), 'id' => self::formID, [
+        $form = ['form', 'id' => self::formID, [
             ['hidden', 'name' => 'name', 'value' => static::name],
+            ['hidden', 'name' => '_action', 'value' => get_class($this)],
             $modal,
-        ]]);
-        $form = $this->addFormOptions($form);
+        ]];
+
+        if(Flatform::livewire() ){
+            // $form['wire:submit.prevent'] = 'formSubmit';
+        } else {
+            $form['url'] = route('flatform.action');
+        }
+
+        $form = Flatform::context()->createElement($form);
+        return $this->addFormOptions($form);
+    }
+
+    public function form()
+    {
+        $form = $this->getForm();
+        if(!$form) return $this->ok('', self::noform);
+
+        $form = $this->prepareForm($form);
+
         $this->form = Flatform::render([$form]);
         return $this->ok('Confirm', '');
     }
@@ -120,7 +135,7 @@ class Action implements Contract
 
     public function __construct(?array $params = [])
     {
-        $this->params = $params;
+        $this->params = new Fluent($params);
     }
 
     public static function make($action): ?Action
@@ -156,6 +171,10 @@ class Action implements Contract
         if(is_object($action)) {
             $name = $action->getName();
             $params = $action->getParams();
+
+            if(Flatform::livewire()) return 'window.livewire.emit("runAction", ' .
+                json_encode(get_class($action)) . ', ' . json_encode($params) . ')';
+
         } elseif(is_array($action)){
             if(isset($action['name'])){
                 $name = $action['name'];

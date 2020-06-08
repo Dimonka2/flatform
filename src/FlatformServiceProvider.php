@@ -49,8 +49,9 @@ class FlatformServiceProvider extends ServiceProvider
             Route::group($this->routeConfig(), function () {
                 $this->loadRoutesFrom(__DIR__.'/routes.php');
             });
-            if(FlatformService::config('flatform.livewire.active')) {
+            if(FlatformService::livewire() ) {
                 \Livewire\Livewire::component('flatform.table', \dimonka2\flatform\Livewire\TableComponent::class);
+                \Livewire\Livewire::component('flatform.actions', \dimonka2\flatform\Livewire\ActionComponent::class);
             }
             $this->registerMarcos();
 

@@ -19,7 +19,7 @@
                                 ['form', 'style' => 'min-width:320px;', 'class' => 'p-3', [
                                     ['div', 'class' => 'row', [
                                         ['_text', 'text' => $host->renderFilters()],
-                                        ['col', 'md' => 6, '+class' => 'p-2', 'text' =>  __('Show entries'), ],
+                                        ['col', 'md' => 6, '+class' => 'p-3', 'text' =>  __('Show entries'), ],
                                         ['select',
                                             'label' => false,
                                             'selected' => $length,

@@ -91,6 +91,11 @@ class FlatformService
         return static::$jsList;
     }
 
+    public static function livewire()
+    {
+        return FlatformService::config('flatform.livewire.active', false);
+    }
+
     public static function addAssets($assetName)
     {
         if(!self::isIncluded($assetName)){
