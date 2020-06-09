@@ -25,8 +25,36 @@ class ActionComponent extends Component
     public function formSubmit($data)
     {
         if(!is_array($data)){
-            debug("No action: " . $actionClass);
+            debug("Submit error: ", $data);
+            return;
         }
+        // debug($data);
+        // convert form data to array
+        $params = [];
+        foreach ($data as $item) {
+            $name = $item['name'];
+            $value = $item['value'];
+            if(substr($name, -2) == '[]') {
+                $name = substr($name, 0, -2);
+                $params[$name][] = $value;
+            } else {
+                $params[$name] = $value;
+            }
+        }
+        debug($params);
+        $actionClass = $params['_action'] ?? false;
+        if(!$actionClass || !$this::isAction($actionClass)) {
+            debug("No action: " . $actionClass);
+            return;
+        }
+        $action = new $actionClass($params);
+
+        if(!$action->autorize()) {
+            debug('Not authorized', $action);
+            return;
+        }
+        $response = $action->execute()->getOriginalContent();
+        debug($response);
     }
 
     protected static function isAction($actionClass)
