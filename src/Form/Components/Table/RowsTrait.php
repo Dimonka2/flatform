@@ -112,6 +112,7 @@ trait RowsTrait
                 }
                 $nestedData[ $column->name ] = $value;
             }
+            $nestedData[ '_item'] = $item;
             $this->addRow($nestedData);
         }
 

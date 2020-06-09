@@ -317,4 +317,24 @@ class Table extends ElementContainer
 
         return $this;
     }
+
+    /**
+     * Get the value of query
+     */
+    public function getQuery()
+    {
+        return $this->query;
+    }
+
+    /**
+     * Set the value of query
+     *
+     * @return  self
+     */
+    public function setQuery($query)
+    {
+        $this->query = $query;
+
+        return $this;
+    }
 }

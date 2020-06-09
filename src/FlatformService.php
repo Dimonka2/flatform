@@ -10,6 +10,7 @@ class FlatformService
     private static $jsList = [];
     private static $includes = [];
     private static $context = null;
+    private static $reload;
 
     public static function render($element)
     {
@@ -107,6 +108,16 @@ class FlatformService
             $view = self::config($pathPrefix . '.view');
             return $view ? self::context()->renderView(view($view)) : '';
         }
+    }
+
+    public static function getReload()
+    {
+        return self::$reload;
+    }
+
+    public static function setReload($relaod)
+    {
+        self::$reload = $relaod;
     }
 
 }

@@ -2,16 +2,24 @@
 
 namespace dimonka2\flatform\Livewire;
 
+use Closure;
 use Livewire\Component;
+use dimonka2\flatform\Flatform;
 use dimonka2\flatform\Actions\Action;
 
 class ActionComponent extends Component
 {
     public $formData;
+    public $url;
     protected $form;
     protected $listeners = [
         'runAction' => 'runAction',
     ];
+
+    public function mount()
+    {
+        $this->url = request()->url();
+    }
 
     public function render()
     {
@@ -25,8 +33,7 @@ class ActionComponent extends Component
     public function formSubmit($data)
     {
         if(!is_array($data)){
-            debug("Submit error: ", $data);
-            return;
+            return $this->error('Unable to process submited form data!');
         }
         // debug($data);
         // convert form data to array
@@ -41,20 +48,17 @@ class ActionComponent extends Component
                 $params[$name] = $value;
             }
         }
-        debug($params);
         $actionClass = $params['_action'] ?? false;
         if(!$actionClass || !$this::isAction($actionClass)) {
-            debug("No action: " . $actionClass);
-            return;
+            return $this->error('Action is not recognized:' . $actionClass);
         }
         $action = new $actionClass($params);
 
         if(!$action->autorize()) {
-            debug('Not authorized', $action);
-            return;
+            return $this->error('Action is not authorized!');
         }
         $response = $action->execute()->getOriginalContent();
-        debug($response);
+        return $this->processResponse($response);
     }
 
     protected static function isAction($actionClass)
@@ -69,28 +73,76 @@ class ActionComponent extends Component
 
         if(!$this::isAction($actionClass)) {
             // show error
-            debug("No action: " . $actionClass);
-            return;
+            return $this->error('Action is not recognized:' . $actionClass);
         }
         $action = new $actionClass($params);
 
         if(!$action->autorize()) {
-            debug('Not authorized', $action);
-            return;
+            return $this->error('Action is not authorized!');
         }
 
         $form = $action->getForm();
         if($form) {
             $this->form = $action->prepareForm($form, 'flatform-action');
-            debug($this->form);
             return;
         }
         $response = $action->execute()->getOriginalContent();
-        debug($response);
+        return $this->processResponse($response);
     }
 
     public function getID()
     {
         return $this->id;
+    }
+
+    protected function error($message, $title = "Error!")
+    {
+        return $this->displayMessage($message, $title, 'error');
+    }
+
+    protected function processResponse($response)
+    {
+        $result = $response['result'] ?? '';
+        $message = $response['message'] ?? null;
+        if( $result == 'error' ) return $this->error($message, 'Action error!');
+        $redirect = $response['redirect'] ?? '';
+        if($redirect) {
+            if($redirect == Action::reload) {
+                $reload = Flatform::getReload();
+                if($reload instanceof Closure) return $reload();
+                return redirect()->to($this->url);
+            }
+            return redirect()->to($redirect);
+        }
+        if($message) return $this->displayMessage($message, 'Info');
+    }
+
+    protected function displayMessage($message, $title, $type = 'info')
+    {
+        $icon = null;
+        switch ($type) {
+            case 'info':
+                $icon = 'fa fa-info-circle';
+                break;
+
+            case 'error':
+                $icon = 'fa fa-exclamation-circle';
+                break;
+        }
+        $alert = [
+            ['alert', 'title' => $message, 'icon' => $icon, 'color' => ($type == 'info' ? 'light' : 'danger' )]
+        ];
+        $modal = ['modal', $alert, 'id' => Action::modalID,
+            'title' => $title,
+            'footer' => [
+            ['button', 'title' => 'Close',
+                'data-dismiss' => "modal" ],
+        ]];
+
+        // render complete form
+        $form = ['form', 'id' => Action::formID, [
+            $modal,
+        ]];
+        $this->form = [$form];
     }
 }
