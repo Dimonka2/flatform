@@ -15,7 +15,7 @@
                         $('body').removeClass('modal-open');
                         $('.modal-backdrop').remove();
                         let componentId = $('.action-form-class').attr('wire:id');
-                        console.log(componentId);
+                        // console.log(componentId);
                         let component = window.livewire.find(componentId);
                         component.call('formSubmit', form.serializeArray() );
 
