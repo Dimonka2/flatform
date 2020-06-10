@@ -24,6 +24,13 @@
                     $("#" + id).modal('show');
                 }
             });
+            // navigate to element using ID
+            window.livewire.on('navigateTo', link => {
+                let element = $(link);
+                $([document.documentElement, document.body]).animate({
+                    scrollTop: element.offset().top
+                }, 500);
+            })
         });
     </script>
 @endif
