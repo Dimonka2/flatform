@@ -47,7 +47,7 @@
             </tbody>
         </table>
     </div>
-    @php( $links = $table->getLinks() )
+    @php( $links = $table->getLinks('flatform::livewire.paginator') )
     @if ($links)
         <div class="row">
             <div class="col-md-5">

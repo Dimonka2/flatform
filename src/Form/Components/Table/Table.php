@@ -64,7 +64,7 @@ class Table extends ElementContainer
                     ],
                 ]],
                 ['col', 'md' => 4, '+class' => 'p-3',
-                    'hide' => !is_null($this->info) && !$this->info,
+                    'hide' => $this->info === false,
                     'text' => $this->formatPosition()], // page length
                 ['col', 'md' => 8, [
                     ['div', '+class' => 'float-md-right mt-2', 'text' => $this->getLinks()], // paginator
@@ -196,9 +196,9 @@ class Table extends ElementContainer
         return $this;
     }
 
-    public function getLinks()
+    public function getLinks($paginationView = null)
     {
-        return $this->models ? $this->models->links() : null;
+        return $this->models ? $this->models->links($paginationView) : null;
     }
 
     /**

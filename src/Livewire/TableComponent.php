@@ -59,6 +59,7 @@ class TableComponent extends Component
             $details->setExpander(
                 ['button', 'color' => 'clean',
                     '_data' => ['_item' => function (IElement $element, $row) {
+                        //debug($row);
                         $id = $row->{$this->idField};
                         $element->setAttribute('wire:click.prevent',
                              'showDetails(' . json_encode($id) . ')');
