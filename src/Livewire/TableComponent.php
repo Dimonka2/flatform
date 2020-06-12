@@ -23,7 +23,12 @@ class TableComponent extends Component
     public $expanded = [];
     public $filtered = [];
 
+    protected $listeners = [
+        'showDetails' => 'showDetails',
+    ];
+
     protected $table;
+    protected $scrollUp = true;
 
     public function render()
     {
@@ -38,6 +43,8 @@ class TableComponent extends Component
         if($table->hasDetails()) {
             $this->addDetailsButton($table);
         }
+        // $this->addRowCallback($table);
+
         if($this->info !== false) {
             $items = $table->getModels();
             $total = $items->total();
@@ -52,6 +59,21 @@ class TableComponent extends Component
             ->with('table', $table);
     }
 
+    protected function addRowCallback($table)
+    {
+        $table->setRowRenderCallback(function($row, $html, $details = false) {
+            $id = 'row_' . $row->{$this->idField} . '_' . (int)$details;
+            // debug($id);
+
+            // $response = \Livewire\Livewire::mount('flatform.table-row', ['row' => $html, 'id' => $id]);
+            // return $response->dom;
+
+            return Flatform::render([
+                ['livewire', 'name' => 'flatform.table-row', 'with' => ['row' => $html, 'id' => $id]]
+            ]);
+        });
+    }
+
     protected function addDetailsButton($table)
     {
         $details = $table->getDetails();
@@ -62,7 +84,7 @@ class TableComponent extends Component
                         //debug($row);
                         $id = $row->{$this->idField};
                         $element->setAttribute('wire:click.prevent',
-                             'showDetails(' . json_encode($id) . ')');
+                             '$emitUp("showDetails", ' . json_encode($id) . ')');
                         if($this->expanded[$id] ?? false) $row->_expanded = 1;
                     }],
                     'size' => 'sm', 'class' => 'btn-icon-md', [
@@ -190,6 +212,33 @@ class TableComponent extends Component
 
         }
         return $html;
+    }
+
+    public function previousPage()
+    {
+        $this->page = max(1, $this->page - 1);
+        if($this->scrollUp) {
+            $this->table = $this->getTable();
+            $this->emit('navigateTo', '#' . $this->table->getId());
+        }
+    }
+
+    public function nextPage()
+    {
+        $this->page = $this->page + 1;
+        if($this->scrollUp) {
+            $this->table = $this->getTable();
+            $this->emit('navigateTo', '#' . $this->table->getId());
+        }
+    }
+
+    public function gotoPage($page)
+    {
+        $this->page = $page;
+        if($this->scrollUp) {
+            $this->table = $this->getTable();
+            $this->emit('navigateTo', '#' . $this->table->getId());
+        }
     }
 
 }

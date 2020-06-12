@@ -27,9 +27,14 @@
             // navigate to element using ID
             window.livewire.on('navigateTo', link => {
                 let element = $(link);
-                $([document.documentElement, document.body]).animate({
-                    scrollTop: element.offset().top
-                }, 500);
+                if(element.length) {
+                    //console.log(element, element.offset().top, {!! Flatform::config('flatform.livewire.top_offset_script')!!} );
+                    $([document.documentElement, document.body]).animate({
+                        scrollTop: element.offset().top {!! Flatform::config('flatform.livewire.top_offset_script') !!}
+                    }, 500);
+                } else {
+                    console.log('Element "' + link + '" is not found.');
+                }
             })
         });
     </script>

@@ -21,8 +21,10 @@ class Table extends ElementContainer
     protected $select;
     protected $details;
     protected $formatters = [];     // this is a lookup list for column formatters
-    protected $formatFunction;      // this is a table element format function
+    protected $formatFunction;      // this is a table td element format function
     protected $info;                // make it false to exclude info column
+    protected $rowRenderCallback;   // this needed for a livewire table to separate table from rows rendering
+        // parameters ($row, $html, $details = false)
 
     protected $count;
     protected $filtered_count;
@@ -107,6 +109,7 @@ class Table extends ElementContainer
             'formatters',
             'formatFunction',
             'info',
+            'rowRenderCallback',
         ]);
 
         $columns = self::readSingleSetting($element, 'columns');
@@ -150,11 +153,21 @@ class Table extends ElementContainer
         return $this->details && !$this->details->getDisabled();
     }
 
+    protected function createSelect(array $details)
+    {
+        $this->select = new TableSelect($this);
+        $this->select->read(ElementFactory::preprocessElement($details, false));
+    }
+
+    public function hasSelect()
+    {
+        return $this->select && !$this->select->getDisabled();
+    }
+
     public function hasFormat()
     {
         return !!$this->formatFunction;
     }
-
 
     /**
      * Get the value of order
@@ -334,6 +347,52 @@ class Table extends ElementContainer
     public function setQuery($query)
     {
         $this->query = $query;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of rowRenderCallback
+     */
+    public function getRowRenderCallback()
+    {
+        return $this->rowRenderCallback;
+    }
+
+    /**
+     * Set the value of rowRenderCallback
+     *
+     * @return  self
+     */
+    public function setRowRenderCallback($rowRenderCallback)
+    {
+        $this->rowRenderCallback = $rowRenderCallback;
+
+        return $this;
+    }
+
+    public function getId()
+    {
+        if(!$this->id) $this->requireID();
+        return $this->id;
+    }
+
+    /**
+     * Get the value of select
+     */
+    public function getSelect()
+    {
+        return $this->select;
+    }
+
+    /**
+     * Set the value of select
+     *
+     * @return  self
+     */
+    public function setSelect($select)
+    {
+        $this->select = $select;
 
         return $this;
     }

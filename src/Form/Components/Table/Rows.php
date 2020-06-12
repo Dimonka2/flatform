@@ -21,6 +21,7 @@ class Rows implements \ArrayAccess, \Countable, \IteratorAggregate, IDataProvide
     {
         $html = '';
         $tableFormat = $this->table->getFormatFunction();
+        $rowRenderCallback = $this->table->getRowRenderCallback();
         $details = $this->table->getDetails();
         foreach($this->items as $row){
             $columns = [];
@@ -53,8 +54,10 @@ class Rows implements \ArrayAccess, \Countable, \IteratorAggregate, IDataProvide
             $context->setDataProvider($this);
             $html .= $this->table->renderItem([$def]);
             $context->setDataProvider(null);
+            if($rowRenderCallback instanceof Closure) $html = $rowRenderCallback($row, $html);
             if($this->table->hasDetails() && $row->_expanded){
                 $html .= $details->render($row);
+                if($rowRenderCallback instanceof Closure) $html = $rowRenderCallback($row, $html, true);
             }
         }
         return $html;

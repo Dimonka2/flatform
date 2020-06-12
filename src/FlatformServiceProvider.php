@@ -51,6 +51,7 @@ class FlatformServiceProvider extends ServiceProvider
             });
             if(FlatformService::livewire() ) {
                 \Livewire\Livewire::component('flatform.table', \dimonka2\flatform\Livewire\TableComponent::class);
+                \Livewire\Livewire::component('flatform.table-row', \dimonka2\flatform\Livewire\TableRowComponent::class);
                 \Livewire\Livewire::component('flatform.actions', \dimonka2\flatform\Livewire\ActionComponent::class);
                 \Livewire\Livewire::component('flatform.form', \dimonka2\flatform\Livewire\FormComponent::class);
             }

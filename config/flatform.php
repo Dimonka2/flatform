@@ -8,6 +8,7 @@ return [
     'livewire' => [
         'active' => false,
         'table_view' => 'flatform::livewire.table',
+        'top_offset_script' => '',
     ],
     'assets' =>[
         'select2'   => [

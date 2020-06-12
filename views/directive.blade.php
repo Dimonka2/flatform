@@ -24,6 +24,10 @@
         @endpush
         @break
     @case('livewire')
-        @livewire($element->name, $element->with ?? [], $element->id)
+        @if($element->id)
+            @livewire($element->name, $element->with ?? [], key($element->id))
+        @else
+            @livewire($element->name, $element->with ?? [])
+        @endif
         @break;
 @endswitch
