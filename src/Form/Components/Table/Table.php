@@ -16,6 +16,7 @@ class Table extends ElementContainer
     protected $page;
     protected $length = 10;
     protected $lengthOptions = [10, 20, 30, 50, 100];
+    protected $evenOddClasses = ['even', 'odd'];
     protected $query;
     protected $search;
     protected $select;
@@ -104,6 +105,7 @@ class Table extends ElementContainer
             'page',
             'length',
             'lengthOptions',
+            'evenOddClasses',
             'query',
             'search',
             'formatters',
@@ -393,6 +395,28 @@ class Table extends ElementContainer
     public function setSelect($select)
     {
         $this->select = $select;
+
+        return $this;
+    }
+
+
+
+    /**
+     * Get the value of evenOddClasses
+     */
+    public function getEvenOddClasses(): ?array
+    {
+        return $this->evenOddClasses;
+    }
+
+    /**
+     * Set the value of evenOddClasses
+     *
+     * @return  self
+     */
+    public function setEvenOddClasses(?array $evenOddClasses)
+    {
+        $this->evenOddClasses = $evenOddClasses;
 
         return $this;
     }

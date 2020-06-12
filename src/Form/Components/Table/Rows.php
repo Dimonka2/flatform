@@ -22,7 +22,9 @@ class Rows implements \ArrayAccess, \Countable, \IteratorAggregate, IDataProvide
         $html = '';
         $tableFormat = $this->table->getFormatFunction();
         $rowRenderCallback = $this->table->getRowRenderCallback();
+        $evenOdd = $this->table->getEvenOddClasses();
         $details = $this->table->getDetails();
+        $i = 0;
         foreach($this->items as $row){
             $columns = [];
             if($this->table->hasDetails()){
@@ -50,6 +52,7 @@ class Rows implements \ArrayAccess, \Countable, \IteratorAggregate, IDataProvide
                 }
             }
             $def = ['tr',  $columns];
+            if(is_array($evenOdd)) $def['class'] = $evenOdd[$i % 2];
             $this->row = $row;
             $context->setDataProvider($this);
             $html .= $this->table->renderItem([$def]);
@@ -59,6 +62,7 @@ class Rows implements \ArrayAccess, \Countable, \IteratorAggregate, IDataProvide
                 $html .= $details->render($row);
                 if($rowRenderCallback instanceof Closure) $html = $rowRenderCallback($row, $html, true);
             }
+            $i++;
         }
         return $html;
     }
