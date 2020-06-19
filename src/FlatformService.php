@@ -32,6 +32,11 @@ class FlatformService
         return self::$context;
     }
 
+    public static function make($type, $definition = [])
+    {
+        return self::context()->make($type, $definition);
+    }
+
     public static function config($path, $default = null)
     {
         return config($path, $default);

@@ -49,6 +49,9 @@ class Column implements IDataProvider
             'name', 'title', 'search', 'sort', 'system', 'class', 'hide', 'width', 'noSelect', 'as',
         ]);
         if($this->sort === null) $this->sort = !$this->system;
+
+        // fix naming issues
+        if((strpos($this->name, '.') > 0 ) && !$this->as) $this->as = str_replace('.', '__', $this->name);
     }
 
     public function renderDefinition($order)

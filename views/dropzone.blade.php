@@ -55,7 +55,13 @@
         function initDropzones() {
             $('.dropzone:not(.dropzone-enabled)').each(function(i, obj) {
                 $(obj).addClass('dropzone-enabled');
-                dropzoneInit(obj);
+                try {
+                    dropzoneInit(obj);
+                }
+                catch (e) {
+                    console.log(e);
+                }
+
             });
         }
 

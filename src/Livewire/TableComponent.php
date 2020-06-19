@@ -15,7 +15,9 @@ class TableComponent extends Component
     use WithPagination;
 
     protected $idField = 'id';
+
     public $search;
+    public $searchDebounce = 500;
     public $info;  // make it false to exclude info column
     public $order;
     public $length = 10;
@@ -84,7 +86,7 @@ class TableComponent extends Component
                         //debug($row);
                         $id = $row->{$this->idField};
                         $element->setAttribute('wire:click.prevent',
-                             '$emitUp("showDetails", ' . json_encode($id) . ')');
+                             'showDetails(' . json_encode($id) . ')');
                         if($this->expanded[$id] ?? false) $row->_expanded = 1;
                     }],
                     'size' => 'sm', 'class' => 'btn-icon-md', [
