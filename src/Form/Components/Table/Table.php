@@ -127,8 +127,8 @@ class Table extends ElementContainer
         $details = self::readSingleSetting($element, 'details');
         if(is_array($details)) $this->createDetails($details);
 
-//        $select = self::readSingleSetting($element, 'select');
-//        if(is_array($select)) $this->createSelect($select);
+        $select = self::readSingleSetting($element, 'select');
+        if(is_array($select)) $this->createSelect($select);
 
 
         if($this->order) $this->preprocessOrder();
@@ -398,8 +398,6 @@ class Table extends ElementContainer
 
         return $this;
     }
-
-
 
     /**
      * Get the value of evenOddClasses

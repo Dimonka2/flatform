@@ -1,7 +1,7 @@
 <div>
     <div class="row">
         <div class="col-lg-6">
-            {{ $info }}
+            {{ $host->getInfo() }}
         </div>
         <div class="col-lg-6">
             <div class="pull-right d-flex">

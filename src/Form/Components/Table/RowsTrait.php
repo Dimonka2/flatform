@@ -36,6 +36,15 @@ trait RowsTrait
         return $this->rows;
     }
 
+    public function getVisibleValues($fieldName)
+    {
+        $values = [];
+        foreach($this->rows as $row){
+            $values[] = $row[$fieldName] ?? null;
+        }
+        return $values;
+    }
+
     protected function addOrderLinks()
     {
         if($this->order) {

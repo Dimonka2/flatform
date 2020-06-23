@@ -34,6 +34,6 @@
 @else
     {{-- Special case for select or details --}}
     <th class="text-nowrap text-truncate {{$class ?? ''}}">
-        {{$title}}
+        {!! $title !!}
     </th>
 @endif

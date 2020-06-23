@@ -2,7 +2,6 @@
 
 namespace dimonka2\flatform\Form\Components\Table;
 
-use Closure;
 use dimonka2\flatform\Traits\SettingReaderTrait;
 
 class TableSelect
@@ -14,20 +13,31 @@ class TableSelect
     protected $headerCheckbox;
     protected $column;
     protected $disabled;
-    protected $title;
+
     protected $class;
+    protected $actions; // set of table actions associated with selected elements
 
     public function read($definition)
     {
         $this->readSettings($definition, [
-            'checkbox', 'headerCheckbox', 'column', 'disabled', 'class', 'title',
+            'checkbox', 'headerCheckbox', 'column', 'disabled', 'class',
         ]);
+    }
+
+    public function __construct(Table $table)
+    {
+        $this->table = $table;
     }
 
     public function render($row)
     {
         $checkbox = $row ? $this->checkbox : $this->headerCheckbox;
         return $this->table->renderItem([$checkbox]);
+    }
+
+    public function __get($property)
+    {
+        return $this->$property;
     }
 
     /**
@@ -95,20 +105,9 @@ class TableSelect
      */
     public function getTitle()
     {
-        return $this->title;
+        return $this->render(null);
     }
 
-    /**
-     * Set the value of title
-     *
-     * @return  self
-     */
-    public function setTitle($title)
-    {
-        $this->title = $title;
-
-        return $this;
-    }
 
     /**
      * Get the value of class
@@ -146,6 +145,26 @@ class TableSelect
     public function setHeaderCheckbox($headerCheckbox)
     {
         $this->headerCheckbox = $headerCheckbox;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of actions
+     */
+    public function getActions()
+    {
+        return $this->actions;
+    }
+
+    /**
+     * Set the value of actions
+     *
+     * @return  self
+     */
+    public function setActions($actions)
+    {
+        $this->actions = $actions;
 
         return $this;
     }

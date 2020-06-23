@@ -23,11 +23,15 @@ class Rows implements \ArrayAccess, \Countable, \IteratorAggregate, IDataProvide
         $tableFormat = $this->table->getFormatFunction();
         $rowRenderCallback = $this->table->getRowRenderCallback();
         $evenOdd = $this->table->getEvenOddClasses();
-        $details = $this->table->getDetails();
+        $details = $this->table->hasDetails() ? $this->table->getDetails() : 0;
+        $select = $this->table->hasSelect() ? $this->table->getSelect() : 0;
         $i = 0;
         foreach($this->items as $row){
             $columns = [];
-            if($this->table->hasDetails()){
+
+            if($select)$columns[] = ['td', [$select->getCheckbox()]];
+
+            if($details){
                 $td = ['td', [$details->getExpander()]];
                 if($details->class) $td['class'] = $details->class;
                 $columns[] = $td;
@@ -62,6 +66,7 @@ class Rows implements \ArrayAccess, \Countable, \IteratorAggregate, IDataProvide
                 $html .= $details->render($row);
                 if($rowRenderCallback instanceof Closure) $html = $rowRenderCallback($row, $html, true);
             }
+
             $i++;
         }
         return $html;
