@@ -1,8 +1,6 @@
 <?php
 
 namespace dimonka2\flatform\Form\Components;
-
-use dimonka2\flatform\FlatformService;
 use dimonka2\flatform\Form\Elements\Form;
 
 class Dropzone extends Form

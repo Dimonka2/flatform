@@ -15,30 +15,34 @@ class TableComponent extends Component
     use WithPagination;
 
     protected $idField = 'id';
+
+    public $selectAll = false;
     public $search;
-    public $info;  // make it false to exclude info column
+    public $searchDebounce = 500;
     public $order;
     public $length = 10;
     public $class;
     public $expanded = [];
     public $filtered = [];
+    public $selected = [];
+
+    protected $info;  // make it false to exclude info column
 
     protected $listeners = [
         'showDetails' => 'showDetails',
     ];
 
     protected $table;
+    protected $rowsReady;
     protected $scrollUp = true;
 
     public function render()
     {
-        if(!$this->table) $this->table = $this->getTable();
+        $this->ensureTable(true);
         $table = $this->table;
-        if($this->order) $table->setOrder($this->order);
-        $table->setLength($this->length);
-        $table->setSearch($this->search);
-        $this->redirectFilters($table);
-        $table->buildRows();
+        if($table->hasSelect()) {
+            $this->addSelectCheckbox($table);
+        }
 
         if($table->hasDetails()) {
             $this->addDetailsButton($table);
@@ -59,6 +63,19 @@ class TableComponent extends Component
             ->with('table', $table);
     }
 
+    protected function ensureTable($prepareRows = false)
+    {
+        if(!$this->table) $this->table = $this->getTable();
+        if(!$prepareRows || $this->rowsReady) return;
+        $table = $this->table;
+        if($this->order) $table->setOrder($this->order);
+        $table->setLength($this->length);
+        $table->setSearch($this->search);
+        $this->redirectFilters($table);
+        $table->buildRows();
+        $this->rowsReady = true;
+    }
+
     protected function addRowCallback($table)
     {
         $table->setRowRenderCallback(function($row, $html, $details = false) {
@@ -74,6 +91,29 @@ class TableComponent extends Component
         });
     }
 
+    protected function addSelectCheckbox($table)
+    {
+        $select = $table->getSelect();
+        if (!$select->checkbox) {
+            $select->setCheckbox(
+                ['checkbox', 'label' => false,
+                    '_data' => ['_item' => function (IElement $element, $row) {
+                        //debug($row);
+                        $id = $row->{$this->idField};
+                        $element->setAttribute('wire:model', 'selected.' . $id);
+                        $element->checked = $this->selected[$id] ?? false;
+                        $row->_selected = $element->checked;
+                    }],
+                ]
+            );
+
+            $select->setHeaderCheckbox(
+                ['checkbox', 'label' => false, 'wire:model' => 'selectAll', 'tooltip' => 'Select all', ]
+            );
+        }
+
+    }
+
     protected function addDetailsButton($table)
     {
         $details = $table->getDetails();
@@ -84,7 +124,7 @@ class TableComponent extends Component
                         //debug($row);
                         $id = $row->{$this->idField};
                         $element->setAttribute('wire:click.prevent',
-                             '$emitUp("showDetails", ' . json_encode($id) . ')');
+                             'showDetails(' . json_encode($id) . ')');
                         if($this->expanded[$id] ?? false) $row->_expanded = 1;
                     }],
                     'size' => 'sm', 'class' => 'btn-icon-md', [
@@ -151,6 +191,17 @@ class TableComponent extends Component
         $html = "";
         $view = $this->getView('table-th');
 
+        if( $table->hasSelect()) {
+            $select = $table->getSelect();
+            $html .= Flatform::render([
+                ['include', 'name' => $view, 'with' => [
+                    'table' => $table,
+                    'column' => null,
+                    'title' => Flatform::context()->renderItem($select->getTitle()),
+                ]]
+            ]);
+        }
+
         if( $table->hasDetails() ){
             // add details column
             $details = $table->getDetails();
@@ -178,7 +229,7 @@ class TableComponent extends Component
 
     }
 
-    // inject function to link currently
+    // inject function to link currently selected filter value
     protected function redirectFilters($table)
     {
         foreach($table->getFilters() as $filter) {
@@ -218,7 +269,7 @@ class TableComponent extends Component
     {
         $this->page = max(1, $this->page - 1);
         if($this->scrollUp) {
-            $this->table = $this->getTable();
+            $this->ensureTable();
             $this->emit('navigateTo', '#' . $this->table->getId());
         }
     }
@@ -227,7 +278,7 @@ class TableComponent extends Component
     {
         $this->page = $this->page + 1;
         if($this->scrollUp) {
-            $this->table = $this->getTable();
+            $this->ensureTable();
             $this->emit('navigateTo', '#' . $this->table->getId());
         }
     }
@@ -236,9 +287,37 @@ class TableComponent extends Component
     {
         $this->page = $page;
         if($this->scrollUp) {
-            $this->table = $this->getTable();
+            $this->ensureTable();
             $this->emit('navigateTo', '#' . $this->table->getId());
         }
     }
 
+
+    /**
+     * Get the value of info
+     */
+    public function getInfo()
+    {
+        return $this->info;
+    }
+
+    // select/deselect all rows
+    public function updatedSelectAll($value)
+    {
+        if(!$value){
+            foreach ($this->selected as $key => $value) {
+                $this->selected[$key] = 0;
+            }
+            return;
+        }
+        $this->ensureTable(true);
+        $table = $this->table;
+        $ids = $table->getVisibleValues($this->idField);
+
+        foreach ($ids as $id) {
+            if($id) $this->selected[$id] = 1;
+        }
+
+
+    }
 }

@@ -1,14 +1,14 @@
 <div>
     <div class="row">
         <div class="col-lg-6">
-            {{ $info }}
+            {{ $host->getInfo() }}
         </div>
         <div class="col-lg-6">
             <div class="pull-right d-flex">
                 @if ($search !== false)
                     <label class="d-inline">
                         <span class="py-1 pr-2 d-inline"> @lang('Search')</span>
-                        <input type="text" wire:model='search' class="form-control form-control-sm d-inline-block w-auto">
+                        <input type="text" wire:model.debounce{{ $searchDebounce ? ('.' . $searchDebounce . 'ms') : '' }}='search' class="form-control form-control-sm d-inline-block w-auto">
                     </label>
                 @endif
                 <div class="d-inline ml-2 mr-2 btn-group">

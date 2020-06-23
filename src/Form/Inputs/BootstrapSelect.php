@@ -63,6 +63,7 @@ class BootstrapSelect extends Select
 
     protected function renderList()
     {
+        if(is_array($this->options)) return $this->renderItem($this->options);
         return $this->options->renderItems();
     }
 

@@ -161,7 +161,13 @@ class Context implements IContext
 
     public static function ensureType(array $element, $type)
     {
-        if(!isset($element['type'])){
+        if(isset($element['type'])){
+            if($element['type'] == $type) return $element;
+            $element['type'] = $type;
+        } else if(isset($element[0]) && !is_array($element[0])){
+            if($element[0] == $type) return $element;
+            $element['type'] = $type;
+        } else {
             $element['type'] = $type;
         }
         return $element;
@@ -179,11 +185,20 @@ class Context implements IContext
 
 
     // create specific elements
+    public function make($type, $definition = []): ?IElement
+    {
+        $definition = $this::ensureType($definition, $type);
+        return $this->createElement($definition);
+    }
 
     public function Datatable($defaults = [])
     {
-        if(!isset($defaults['type'])) $defaults['type'] = 'datatable';
-        return $this->createElement($defaults);
+        return $this->make('datatable', $defaults);
+    }
+
+    public function Table($defaults = [])
+    {
+        return $this->make('xtable', $defaults);
     }
 
     public function getForm(): ?IForm
