@@ -24,7 +24,7 @@
                     <i class="text-nowrap {{$sortingClass}}"></i>
                 </div>
                 <div class="text-slate-600 d-inline-block mr-3">
-                    {!! $column->getTitle() !!}
+                    {!! $column->getTitle(true) !!}
                 </div>
             </a>
         @else

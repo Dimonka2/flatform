@@ -202,8 +202,10 @@ class Column implements IDataProvider
     /**
      * Get the value of title
      */
-    public function getTitle()
+    public function getTitle($render = false)
     {
+        if(!$render)return $this->title;
+        if(is_array($this->title)) return $this->table->renderItem($this->title);
         return $this->title;
     }
 
