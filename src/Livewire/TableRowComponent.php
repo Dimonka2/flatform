@@ -11,10 +11,10 @@ class TableRowComponent extends Component
 {
     public $_id;
     protected $row;
-    public function mount($row, $id)
+    public function mount($row, $_id)
     {
         $this->row = $row;
-        $this->_id = $id;
+        $this->_id = $_id;
 
     }
 

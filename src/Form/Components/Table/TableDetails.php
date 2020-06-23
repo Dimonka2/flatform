@@ -19,6 +19,8 @@ class TableDetails
     protected $disabled;
     protected $title;
     protected $class;
+    protected $width;
+
 
     public function __construct(Table $table)
     {
@@ -28,7 +30,7 @@ class TableDetails
     public function read($definition)
     {
         $this->readSettings($definition, [
-            'expander', 'callback', 'disabled', 'title', 'class'
+            'expander', 'callback', 'disabled', 'title', 'class', 'width',
         ]);
     }
 

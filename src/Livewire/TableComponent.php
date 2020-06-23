@@ -78,15 +78,16 @@ class TableComponent extends Component
 
     protected function addRowCallback($table)
     {
-        $table->setRowRenderCallback(function($row, $html, $details = false) {
-            $id = 'row_' . $row->{$this->idField} . '_' . (int)$details;
-            // debug($id);
+        $table->setRowRenderCallback(function($row, $html) {
+            $id = 'row_' . $row->{$this->idField} . '_' .
+                (int)$row->_details . '_' . (int) $row->_selected;
+            // logger($html);
 
-            // $response = \Livewire\Livewire::mount('flatform.table-row', ['row' => $html, 'id' => $id]);
-            // return $response->dom;
+            $response = \Livewire\Livewire::mount('flatform.table-row', ['row' => $html, '_id' => $id]);
+            return $response->dom;
 
             return Flatform::render([
-                ['livewire', 'name' => 'flatform.table-row', 'with' => ['row' => $html, 'id' => $id]]
+                ['livewire', 'name' => 'flatform.table-row', 'with' => ['row' => $html, '_id' => $id]]
             ]);
         });
     }
@@ -102,7 +103,6 @@ class TableComponent extends Component
                         $id = $row->{$this->idField};
                         $element->setAttribute('wire:model', 'selected.' . $id);
                         $element->checked = $this->selected[$id] ?? false;
-                        $row->_selected = $element->checked;
                     }],
                 ]
             );
@@ -112,6 +112,10 @@ class TableComponent extends Component
             );
         }
 
+        $select->setSelectCallback(function($row) {
+            $id = $row->{$this->idField};
+            return $this->selected[$id] ?? false;
+        });
     }
 
     protected function addDetailsButton($table)
@@ -196,6 +200,7 @@ class TableComponent extends Component
             $html .= Flatform::render([
                 ['include', 'name' => $view, 'with' => [
                     'table' => $table,
+                    'width' => $select->width,
                     'column' => null,
                     'title' => Flatform::context()->renderItem($select->getTitle()),
                 ]]
@@ -208,6 +213,7 @@ class TableComponent extends Component
             $html .= Flatform::render([
                 ['include', 'name' => $view, 'with' => [
                     'table' => $table,
+                    'width' => $details->width,
                     'column' => null,
                     'title' => Flatform::context()->renderItem($details->getTitle()),
                 ]]

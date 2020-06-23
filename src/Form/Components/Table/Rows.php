@@ -20,23 +20,31 @@ class Rows implements \ArrayAccess, \Countable, \IteratorAggregate, IDataProvide
     public function render(IContext $context)
     {
         $html = '';
-        $tableFormat = $this->table->getFormatFunction();
-        $rowRenderCallback = $this->table->getRowRenderCallback();
-        $evenOdd = $this->table->getEvenOddClasses();
-        $details = $this->table->hasDetails() ? $this->table->getDetails() : 0;
-        $select = $this->table->hasSelect() ? $this->table->getSelect() : 0;
+        $table = $this->table;
+        $tableFormat = $table->getFormatFunction();
+        $rowRenderCallback = $table->getRowRenderCallback();
+        $evenOdd = $table->getEvenOddClasses();
+        $details = $table->hasDetails() ? $table->getDetails() : 0;
+        $select = $table->hasSelect() ? $table->getSelect() : 0;
+        if($select) $selectCallback = $select->getSelectCallback();
         $i = 0;
         foreach($this->items as $row){
             $columns = [];
 
-            if($select)$columns[] = ['td', [$select->getCheckbox()]];
+            if($select){
+                if($selectCallback instanceof Closure) $row->_selected = $selectCallback($row);
+                $td = ['td', [$select->getCheckbox()]];
+                if($select->width) $td['style'] = 'width:' . $select->width . ';';
+                $columns[] = $td;
+            }
 
             if($details){
                 $td = ['td', [$details->getExpander()]];
+                if($details->width) $td['style'] = 'width:' . $details->width . ';';
                 if($details->class) $td['class'] = $details->class;
                 $columns[] = $td;
             }
-            foreach ($this->table->getColumns() as $column) {
+            foreach ($table->getColumns() as $column) {
                 if($column->visible()) {
                     $val = $row[$column->name];
                     if(is_array($val)) {
@@ -55,16 +63,21 @@ class Rows implements \ArrayAccess, \Countable, \IteratorAggregate, IDataProvide
                     $columns[] = $td;
                 }
             }
-            $def = ['tr',  $columns];
-            if(is_array($evenOdd)) $def['class'] = $evenOdd[$i % 2];
+            $def = ['tr',  $columns, 'class' => ''];
+            if(is_array($evenOdd)) $def['class'] .= ' ' . $evenOdd[$i % 2];
+            if($select && $row->_selected && $select->class) $def['class'] .= ' ' . $select->class;
+
             $this->row = $row;
             $context->setDataProvider($this);
-            $html .= $this->table->renderItem([$def]);
+            $row_html = $table->renderItem([$def]);
             $context->setDataProvider(null);
-            if($rowRenderCallback instanceof Closure) $html = $rowRenderCallback($row, $html);
-            if($this->table->hasDetails() && $row->_expanded){
-                $html .= $details->render($row);
-                if($rowRenderCallback instanceof Closure) $html = $rowRenderCallback($row, $html, true);
+
+            if($rowRenderCallback instanceof Closure) $row_html = $rowRenderCallback($row, $row_html);
+            $html .= $row_html;
+            if($table->hasDetails() && $row->_expanded){
+                $row_html = $details->render($row);
+                if($rowRenderCallback instanceof Closure) $row_html = $rowRenderCallback($row, $row_html, true);
+                $html .= $row_html;
             }
 
             $i++;

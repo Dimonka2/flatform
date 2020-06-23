@@ -7,7 +7,7 @@
             <div class="pull-right d-flex">
                 @if ($search !== false)
                     <label class="d-inline">
-                        <span class="py-1 pr-2 d-inline"> @lang('Search')</span>
+                        <span class="py-1 pr-2 d-inline"> @lang('flatform::table.search')</span>
                         <input type="text" wire:model.debounce{{ $searchDebounce ? ('.' . $searchDebounce . 'ms') : '' }}='search' class="form-control form-control-sm d-inline-block w-auto">
                     </label>
                 @endif
@@ -19,7 +19,7 @@
                                 ['form', 'style' => 'min-width:320px;', 'class' => 'p-3', [
                                     ['div', 'class' => 'row', [
                                         ['_text', 'text' => $host->renderFilters()],
-                                        ['col', 'md' => 6, '+class' => 'p-3', 'text' =>  __('Show entries'), ],
+                                        ['col', 'md' => 6, '+class' => 'p-3', 'text' =>  __('flatform::table.show_entries'), ],
                                         ['select',
                                             'label' => false,
                                             'selected' => $length,

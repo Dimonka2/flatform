@@ -33,7 +33,8 @@
     </th>
 @else
     {{-- Special case for select or details --}}
-    <th class="text-nowrap text-truncate {{$class ?? ''}}">
+        <th class="text-nowrap text-truncate {{$class ?? ''}}"{!!
+            ($width ?? false) ? " style=\"width:$width;\"" : ''!!}>
         {!! $title !!}
     </th>
 @endif

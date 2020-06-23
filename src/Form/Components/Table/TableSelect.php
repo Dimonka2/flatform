@@ -13,6 +13,8 @@ class TableSelect
     protected $headerCheckbox;
     protected $column;
     protected $disabled;
+    protected $width;
+    protected $selectCallback;
 
     protected $class;
     protected $actions; // set of table actions associated with selected elements
@@ -20,7 +22,8 @@ class TableSelect
     public function read($definition)
     {
         $this->readSettings($definition, [
-            'checkbox', 'headerCheckbox', 'column', 'disabled', 'class',
+            'checkbox', 'headerCheckbox', 'column', 'disabled', 'class', 'width',
+            'selectCallback',
         ]);
     }
 
@@ -165,6 +168,26 @@ class TableSelect
     public function setActions($actions)
     {
         $this->actions = $actions;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of getSelectCallback
+     */
+    public function getSelectCallback()
+    {
+        return $this->selectCallback;
+    }
+
+    /**
+     * Set the value of getSelectCallback
+     *
+     * @return  self
+     */
+    public function setSelectCallback($getSelectCallback)
+    {
+        $this->selectCallback = $getSelectCallback;
 
         return $this;
     }
