@@ -26,13 +26,11 @@ class Rows implements \ArrayAccess, \Countable, \IteratorAggregate, IDataProvide
         $evenOdd = $table->getEvenOddClasses();
         $details = $table->hasDetails() ? $table->getDetails() : 0;
         $select = $table->hasSelect() ? $table->getSelect() : 0;
-        if($select) $selectCallback = $select->getSelectCallback();
         $i = 0;
         foreach($this->items as $row){
             $columns = [];
 
             if($select){
-                if($selectCallback instanceof Closure) $row->_selected = $selectCallback($row);
                 $td = ['td', [$select->getCheckbox()]];
                 if($select->width) $td['style'] = 'width:' . $select->width . ';';
                 $columns[] = $td;

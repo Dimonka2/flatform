@@ -2,6 +2,7 @@
 
 namespace dimonka2\flatform\Form\Components\Table;
 
+use Closure;
 use Illuminate\Support\Fluent;
 
 trait RowsTrait
@@ -16,9 +17,13 @@ trait RowsTrait
         }
     }
 
-    public function addRow(array $definition)
+    public function addRow($definition)
     {
-        $row = new Fluent($definition);
+        if($definition instanceof Fluent) {
+            $row = $definition;
+        } else {
+            $row = new Fluent($definition);
+        }
         $this->rows[] = $row;
         return $row;
     }
@@ -69,6 +74,7 @@ trait RowsTrait
 
     public function buildRows()
     {
+        $this->rows->clear();
         $query = $this->query;
         if(!$query) return;
         $this->count = $query->count();
@@ -112,8 +118,9 @@ trait RowsTrait
             debug($query->toSql() );
             debug($items);
         }
+
         foreach ($items as $item) {
-            $nestedData = [];
+            $nestedData = new Fluent();
             foreach($this->columns as $column) {
                 $value = '';
                 if (!$column->system ) {
@@ -124,7 +131,7 @@ trait RowsTrait
             $nestedData[ '_item'] = $item;
             $this->addRow($nestedData);
         }
-
+        $this->processSelection();
     }
 
 }

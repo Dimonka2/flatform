@@ -1,7 +1,7 @@
 <div>
     <div class="row">
         <div class="col-lg-6">
-            {{ $host->getInfo() }}
+            {!! $host->getInfo() !!}
         </div>
         <div class="col-lg-6">
             <div class="pull-right d-flex">
@@ -16,18 +16,19 @@
                        ['dropdown', 'toggle', 'group', 'color' => 'outline-secondary', 'size' => 'sm', 'shadow',
                             'icon' => 'fa fa-filter',
                             'drop_form' => [
-                                ['form', 'style' => 'min-width:320px;', 'class' => 'p-3', [
-                                    ['div', 'class' => 'row', [
-                                        ['_text', 'text' => $host->renderFilters()],
-                                        ['col', 'md' => 6, '+class' => 'p-3', 'text' =>  __('flatform::table.show_entries'), ],
-                                        ['select',
-                                            'label' => false,
-                                            'selected' => $length,
-                                            'list' => $host->getLengthOptions(),
-                                            'col' => ['md' => 6],
-                                            'wire:model' => 'length',
-                                        ],
+                                ['form', 'style' => 'min-width:320px;', 'class' => 'row p-3', [
+                                    ['_text', 'text' => $host->renderFilters()],
+                                    ['col', 'md' => 6, '+class' => 'my-auto', [
+                                        ['div', 'text' =>  __('flatform::table.show_entries'), 'class' => '']
                                     ]],
+                                    ['select',
+                                        'label' => false,
+                                        'class' => 'align-middle',
+                                        'selected' => $length,
+                                        'list' => $host->getLengthOptions(),
+                                        'col' => ['md' => 6],
+                                        'wire:model' => 'length',
+                                    ],
                                 ]],
                             ]
                         ]

@@ -1,6 +1,7 @@
 <?php
 namespace dimonka2\flatform\Form\Components\Table;
 
+use Closure;
 use dimonka2\flatform\FlatformService;
 use dimonka2\flatform\Form\ElementFactory;
 use dimonka2\flatform\Form\ElementContainer;
@@ -15,11 +16,13 @@ class Table extends ElementContainer
 
     protected $page;
     protected $length = 10;
+    protected $selected;
     protected $lengthOptions = [10, 20, 30, 50, 100];
     protected $evenOddClasses = ['even', 'odd'];
     protected $query;
     protected $search;
     protected $select;
+    protected $actions = [];
     protected $details;
     protected $formatters = [];     // this is a lookup list for column formatters
     protected $formatFunction;      // this is a table td element format function
@@ -130,6 +133,8 @@ class Table extends ElementContainer
         $select = self::readSingleSetting($element, 'select');
         if(is_array($select)) $this->createSelect($select);
 
+        $actions = self::readSingleSetting($element, 'actions');
+        if(is_array($actions)) $this->createActions($actions);
 
         if($this->order) $this->preprocessOrder();
 
@@ -155,10 +160,10 @@ class Table extends ElementContainer
         return $this->details && !$this->details->getDisabled();
     }
 
-    protected function createSelect(array $details)
+    protected function createSelect(array $select)
     {
         $this->select = new TableSelect($this);
-        $this->select->read(ElementFactory::preprocessElement($details, false));
+        $this->select->read(ElementFactory::preprocessElement($select, false));
     }
 
     public function hasSelect()
@@ -169,6 +174,23 @@ class Table extends ElementContainer
     public function hasFormat()
     {
         return !!$this->formatFunction;
+    }
+
+    protected function createActions(array $actions)
+    {
+        foreach ($actions as $action) {
+            if(is_array($action)) $this->actions[] = new TableAction($action);
+        }
+    }
+
+    public function hasActions()
+    {
+        return count($this->actions) > 0;
+    }
+
+    public function renderActions()
+    {
+
     }
 
     /**
@@ -417,5 +439,37 @@ class Table extends ElementContainer
         $this->evenOddClasses = $evenOddClasses;
 
         return $this;
+    }
+
+    /**
+     * Get the value of selected
+     */
+    public function getSelected()
+    {
+        return $this->selected;
+    }
+
+    public function processSelection()
+    {
+        $this->selected = 0;
+        if($this->hasSelect()) {
+            $selectCallback = $this->select->getSelectCallback();
+            if($selectCallback instanceof Closure) {
+                foreach($this->rows as $row) {
+                    $row->_selected = $selectCallback($row);
+                    if($row->_selected) $this->selected ++;
+                }
+
+            }
+        }
+
+    }
+
+    /**
+     * Get the value of actions
+     */
+    public function getActions()
+    {
+        return $this->actions;
     }
 }

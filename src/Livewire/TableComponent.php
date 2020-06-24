@@ -40,23 +40,11 @@ class TableComponent extends Component
     {
         $this->ensureTable(true);
         $table = $this->table;
-        if($table->hasSelect()) {
-            $this->addSelectCheckbox($table);
-        }
 
         if($table->hasDetails()) {
             $this->addDetailsButton($table);
         }
         // $this->addRowCallback($table);
-
-        if($this->info !== false) {
-            $items = $table->getModels();
-            $total = $items->total();
-            $this->info = 'Showing ' . $items->firstItem() . ' to ' . $items->lastItem() . ' of ' . $total . ' entries';
-            $count = $table->getCount();
-            if($total != $count) $this->info .= ' (filtered from ' . $count . ' total entries)';
-        }
-
         // debug($table);
         return view($this->getView('table'))
             ->with('host', $this)
@@ -72,6 +60,9 @@ class TableComponent extends Component
         $table->setLength($this->length);
         $table->setSearch($this->search);
         $this->redirectFilters($table);
+        if($table->hasSelect()) {
+            $this->addSelectCheckbox($table);
+        }
         $table->buildRows();
         $this->rowsReady = true;
     }
@@ -97,18 +88,25 @@ class TableComponent extends Component
         $select = $table->getSelect();
         if (!$select->checkbox) {
             $select->setCheckbox(
-                ['checkbox', 'label' => false,
+                ['input', 'template' => false,
+                    '_attributes' => ['type' => 'checkbox'],
+                    'autocomplete' => 'off',
                     '_data' => ['_item' => function (IElement $element, $row) {
                         //debug($row);
                         $id = $row->{$this->idField};
+                        $element->id = $this->id . '_' . $id;
                         $element->setAttribute('wire:model', 'selected.' . $id);
-                        $element->checked = $this->selected[$id] ?? false;
+                        if($this->selected[$id] ?? false) $element->setAttribute('checked', '');
                     }],
                 ]
             );
 
             $select->setHeaderCheckbox(
-                ['checkbox', 'label' => false, 'wire:model' => 'selectAll', 'tooltip' => 'Select all', ]
+                ['input', 'wire:model' => 'selectAll',
+                    'autocomplete' => 'off', 'template' => false,
+                    'tooltip' => 'Select all',
+                    '_attributes' => ['type' => 'checkbox'],
+                ]
             );
         }
 
@@ -304,7 +302,55 @@ class TableComponent extends Component
      */
     public function getInfo()
     {
-        return $this->info;
+        if($this->info !== false) {
+            $table = $this->table;
+            $selected = $table->getSelected();
+            if($selected){
+                $this->info = trans_choice('flatform::table.selected', $selected, ['value' => $selected]);
+                // render actions
+                if($table->hasActions() ){
+                    $inlineActions = [];
+                    $ddActions = [];
+
+                    foreach ($table->getActions() as $action) {
+                        if(!$action->disabled){
+                            if($action->isSelection() ){
+                                $element = $action->getElement();
+                                if($action->type == 'dd-item') {
+                                    $ddActions[] = $element;
+                                } else {
+                                    $inlineActions[] = $element;
+                                }
+                            }
+                        }
+                    }
+                    if(count($inlineActions) > 0 || count($ddActions) > 0){
+                        $this->info = [['span', 'text' => $this->info, 'class' => 'mr-4']];
+                        if(count($inlineActions)){
+                            $this->info = array_merge($this->info, $inlineActions);
+                        }
+                        if(count($ddActions)){
+                            $this->info[] = ['dropdown', 'group', 'size' => 'sm',
+                                'icon' => 'fa fa-play', 'toggle', 'shadow',
+                                'color' => 'outline-secondary',
+                                'items' => $ddActions];
+                        }
+                    }
+                }
+
+            } else {
+                $items = $table->getModels();
+                $total = $items->total();
+                $this->info = __('flatform::table.info',[
+                    'first' => $items->firstItem(),
+                    'last' => $items->lastItem(),
+                    'total' => $total]);
+                $count = $table->getCount();
+                if($total != $count) $this->info .= trans_choice('flatform::table.filtered', ['filtered' => $count]);
+            }
+        }
+
+        return $this->table->renderItem($this->info);
     }
 
     // select/deselect all rows
@@ -323,7 +369,24 @@ class TableComponent extends Component
         foreach ($ids as $id) {
             if($id) $this->selected[$id] = 1;
         }
+        $table->processSelection();
 
+    }
 
+    protected function getSelected($models = false)
+    {
+        $selected = [];
+        $this->ensureTable(true);
+        $table = $this->table;
+        foreach ($table->getRows() as $row) {
+            if($row->_selected) $selected[] = $models ? $row->_item : $row->{$this->idField};
+        }
+        return $selected;
+    }
+
+    protected function reload()
+    {
+        $this->rowsReady = false;
+        $this->ensureTable(true);
     }
 }

@@ -35,6 +35,8 @@ class Element implements IElement
     {
 
         $this->onRender = $this->readSingleSetting($element, 'onRender');
+        $attributes = $this->readSingleSetting($element, '_attributes');
+        if(is_array($attributes)) $this->processAttributes($attributes);
 
         $this->readSettings($element, [
             'text',

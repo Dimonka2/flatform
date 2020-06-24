@@ -14,6 +14,11 @@ trait ItemsTrait
         return $this->items->count();
     }
 
+    public function clear()
+    {
+        $this->items = collect();
+    }
+
     /**
      * Implements IteratorAggregate.
      */
