@@ -100,6 +100,13 @@ class ActionComponent extends Component
         return $this->displayMessage($message, $title, 'error');
     }
 
+    public function reload()
+    {
+        $reload = Flatform::getReload();
+        if($reload instanceof Closure) return $reload();
+        return redirect()->to($this->url);
+    }
+
     protected function processResponse($response)
     {
         $result = $response['result'] ?? '';
@@ -107,11 +114,7 @@ class ActionComponent extends Component
         if( $result == 'error' ) return $this->error($message, 'Action error!');
         $redirect = $response['redirect'] ?? '';
         if($redirect) {
-            if($redirect == Action::reload) {
-                $reload = Flatform::getReload();
-                if($reload instanceof Closure) return $reload();
-                return redirect()->to($this->url);
-            }
+            if($redirect == Action::reload) return $this->reload();
             return redirect()->to($redirect);
         }
         if($message) return $this->displayMessage($message, 'Info');
