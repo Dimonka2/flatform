@@ -6,6 +6,7 @@ use dimonka2\flatform\FlatformService;
 use dimonka2\flatform\Form\ElementFactory;
 use dimonka2\flatform\Form\ElementContainer;
 use dimonka2\flatform\Form\Components\Table\Formatter\ElementMapping;
+use Symfony\Component\ErrorHandler\Debug;
 
 class Table extends ElementContainer
 {
@@ -22,7 +23,7 @@ class Table extends ElementContainer
     protected $query;
     protected $search;
     protected $select;
-    protected $actions = [];
+    protected $actions;
     protected $details;
     protected $formatters = [];     // this is a lookup list for column formatters
     protected $formatFunction;      // this is a table td element format function
@@ -178,19 +179,23 @@ class Table extends ElementContainer
 
     protected function createActions(array $actions)
     {
-        foreach ($actions as $action) {
-            if(is_array($action)) $this->actions[] = new TableAction($action);
-        }
+        $this->actions = new Actions($this);
+        $this->actions->read($actions);
     }
 
     public function hasActions()
     {
-        return count($this->actions) > 0;
+        return !!$this->actions;
     }
 
-    public function renderActions()
+    public function getSelectionActions()
     {
+        return $this->hasActions() ? $this->actions->getSelectionActions() : [];
+    }
 
+    public function getRowActions()
+    {
+        return $this->hasActions() ? $this->actions->getRowActions() : [];
     }
 
     /**

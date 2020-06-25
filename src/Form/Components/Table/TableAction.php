@@ -2,7 +2,6 @@
 
 namespace dimonka2\flatform\Form\Components\Table;
 
-use Closure;
 use dimonka2\flatform\Traits\SettingReaderTrait;
 
 class TableAction
@@ -11,12 +10,11 @@ class TableAction
     protected $table;
 
     protected $name;            // action unique name
-    protected $position;        // array where action is rendered: 'selection', 'row'
+    protected $position;        // array where action is rendered: 'selection', 'dropdown', 'row', 'row-dd'
     protected $title;           // action title or label
-    protected $type;            // action type: link, button, dd-item
     protected $disabled;        // disables action
     protected $callback;        // action callback
-    protected $attributes;      // all other element
+    protected $attributes;      // all other elements
 
     public function __construct($action)
     {
@@ -26,7 +24,7 @@ class TableAction
     public function read(array $definition)
     {
         $this->readSettings($definition, [
-            'name', 'position', 'title', 'type', 'disabled', 'callback'
+            'name', 'action', 'position', 'title', 'disabled', 'callback'
         ]);
         $this->attributes = $definition;
     }
@@ -38,19 +36,25 @@ class TableAction
 
     public function getElement()
     {
-        $element =  ['type' => $this->type, 'title' => $this->title, ];
+        $element =  ['title' => $this->title, ];
         $element = array_merge($this->attributes, $element);
         return $element;
     }
 
-    public function isSelection()
+    public function hasPosition($position)
     {
-        return is_array($this->position) ? in_array('selection',  $this->position) : false;
+        $action_position = $this->position;
+        return (is_array($action_position) && in_array($position, $action_position)) || $action_position == $position;
+    }
+
+    public function isSelectionAction()
+    {
+        return $this->hasPosition('selection') || $this->hasPosition('dropdown');
     }
 
     public function isRow()
     {
-        return is_array($this->position) ? in_array('row',  $this->position) : false;
+        return $this->hasPosition('row-inline') || $this->hasPosition('row-dd');
     }
 
 }

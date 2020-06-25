@@ -308,35 +308,9 @@ class TableComponent extends Component
             if($selected){
                 $this->info = trans_choice('flatform::table.selected', $selected, ['value' => $selected]);
                 // render actions
-                if($table->hasActions() ){
-                    $inlineActions = [];
-                    $ddActions = [];
 
-                    foreach ($table->getActions() as $action) {
-                        if(!$action->disabled){
-                            if($action->isSelection() ){
-                                $element = $action->getElement();
-                                if($action->type == 'dd-item') {
-                                    $ddActions[] = $element;
-                                } else {
-                                    $inlineActions[] = $element;
-                                }
-                            }
-                        }
-                    }
-                    if(count($inlineActions) > 0 || count($ddActions) > 0){
-                        $this->info = [['span', 'text' => $this->info, 'class' => 'mr-4']];
-                        if(count($inlineActions)){
-                            $this->info = array_merge($this->info, $inlineActions);
-                        }
-                        if(count($ddActions)){
-                            $this->info[] = ['dropdown', 'group', 'size' => 'sm',
-                                'icon' => 'fa fa-play', 'toggle', 'shadow',
-                                'color' => 'outline-secondary',
-                                'items' => $ddActions];
-                        }
-                    }
-                }
+                $this->info = [['span', 'text' => $this->info, 'class' => 'mr-4']];
+                $this->info = array_merge($this->info, $table->getSelectionActions());
 
             } else {
                 $items = $table->getModels();
