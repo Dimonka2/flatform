@@ -320,7 +320,7 @@ class TableComponent extends Component
                     'last' => $items->lastItem(),
                     'total' => $total]);
                 $count = $table->getCount();
-                if($total != $count) $this->info .= trans_choice('flatform::table.filtered', ['filtered' => $count]);
+                if($total != $count) $this->info .= trans_choice('flatform::table.filtered', $count, ['filtered' => $count]);
             }
         }
 

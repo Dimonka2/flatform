@@ -1,27 +1,17 @@
 @if($column)
-    <th class="text-nowrap text-truncate {{$column->getClass()}}"
+    <th class="text-nowrap text-truncate pr-0 {{$column->getClass()}}"
         wire:click.prevent='sortColumn("{{$column->getName()}}")'
         style="{{$column->getWidth() ? 'width: ' . $column->getWidth() : '' }} ">
 
-        @php
-        switch ($order) {
-            case 'ASC':
-                $sortingClass = 'fa fa-sort-up text-danger';
-                break;
-            case 'DESC':
-                $sortingClass = 'fa fa-sort-down text-danger';
-                break;
-
-            default:
-                $sortingClass = 'fa fa-sort text-slate-300';
-                break;
-        }
-        @endphp
-
         @if($column->getSort())
             <a href="#" class="d-block">
-                <div class="float-right d-block ml-2">
-                    <i class="text-nowrap {{$sortingClass}}"></i>
+                <div class="float-right text-nowrap">
+                    <span style='margin-right:-0.3rem;' class="{{
+                        $order == 'ASC' ? 'text-dark' : 'text-muted'}}">{!!
+                        $order == 'ASC' ? '&#x1F819;' : '&#x2191;'  !!}</span>
+                    <span class="{{
+                        $order == 'DESC' ? 'text-dark' : 'text-muted'}}">{!!
+                        $order == 'DESC' ? '&#x1F81B;' : '&#x2193;'  !!}</span>
                 </div>
                 <div class="text-slate-600 d-inline-block mr-3">
                     {!! $column->getTitle(true) !!}
