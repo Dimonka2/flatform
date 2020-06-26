@@ -8,7 +8,7 @@ trait FiltersTrait
 {
     protected $filters = [];   // collection of DTFilter objects
 
-    protected function createFilters(array $filters)
+    protected function createFilters($filters)
     {
         foreach($filters as $filter) {
             $this->addFilter($filter);

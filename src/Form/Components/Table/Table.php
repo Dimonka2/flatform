@@ -161,6 +161,11 @@ class Table extends ElementContainer
         return $this->details && !$this->details->getDisabled();
     }
 
+    public function hasSearch()
+    {
+        return $this->search !== false;
+    }
+
     protected function createSelect(array $select)
     {
         $this->select = new TableSelect($this);

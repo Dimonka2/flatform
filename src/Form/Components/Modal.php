@@ -18,6 +18,13 @@ class Modal extends ElementContainer
         parent::read($element);
     }
 
+    public function render()
+    {
+        $html = $this->text . $this->renderItems();
+
+        return $html;
+    }
+
     public function hasTitle()
     {
         return !!$this->title;

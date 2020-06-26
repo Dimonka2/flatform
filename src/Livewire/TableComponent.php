@@ -58,7 +58,7 @@ class TableComponent extends Component
         $table = $this->table;
         if($this->order) $table->setOrder($this->order);
         $table->setLength($this->length);
-        $table->setSearch($this->search);
+        if( $table->hasSearch() ) $table->setSearch($this->search);
         $this->redirectFilters($table);
         if($table->hasSelect()) {
             $this->addSelectCheckbox($table);
@@ -314,13 +314,15 @@ class TableComponent extends Component
 
             } else {
                 $items = $table->getModels();
-                $total = $items->total();
-                $this->info = __('flatform::table.info',[
-                    'first' => $items->firstItem(),
-                    'last' => $items->lastItem(),
-                    'total' => $total]);
-                $count = $table->getCount();
-                if($total != $count) $this->info .= trans_choice('flatform::table.filtered', $count, ['filtered' => $count]);
+                if($items) {
+                    $total = $items->total();
+                    $this->info = __('flatform::table.info',[
+                        'first' => $items->firstItem(),
+                        'last' => $items->lastItem(),
+                        'total' => $total]);
+                    $count = $table->getCount();
+                    if($total != $count) $this->info .= trans_choice('flatform::table.filtered', $count, ['filtered' => $count]);
+                }
             }
         }
 

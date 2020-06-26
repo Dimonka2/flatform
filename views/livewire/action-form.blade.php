@@ -1,6 +1,5 @@
-<div class="action-form-class">
+<div class="action-form-class" id='flatform-actions'>
     @if($form)
         @form($form)
-        <input type="hidden" name="formData" wire:model='formData'>
     @endif
 </div>

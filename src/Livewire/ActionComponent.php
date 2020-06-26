@@ -24,7 +24,6 @@ class ActionComponent extends Component
     public function render()
     {
         $form = $this->form;
-
         return view("flatform::livewire.action-form")
             ->with('form', $form)
             ->with('host', $this);
@@ -57,8 +56,9 @@ class ActionComponent extends Component
         if(!$action->autorize()) {
             return $this->error('Action is not authorized!');
         }
-        $response = $action->execute()->getOriginalContent();
-        return $this->processResponse($response);
+
+        $response = $action->execute();
+        return $this->processResponse($response, $action);
     }
 
     protected static function isAction($actionClass)
@@ -86,8 +86,8 @@ class ActionComponent extends Component
             $this->form = $action->prepareForm($form, 'flatform-action');
             return;
         }
-        $response = $action->execute()->getOriginalContent();
-        return $this->processResponse($response);
+        $response = $action->execute();
+        return $this->processResponse($response, $action);
     }
 
     public function getID()
@@ -107,8 +107,10 @@ class ActionComponent extends Component
         return redirect()->to($this->url);
     }
 
-    protected function processResponse($response)
+    protected function processResponse($response, $action)
     {
+        if(!$response) return $this->displayMessage('No response from the action..', $action->getTitle(), 'error');
+        $response = $response->getOriginalContent();
         $result = $response['result'] ?? '';
         $message = $response['message'] ?? null;
         if( $result == 'error' ) return $this->error($message, 'Action error!');

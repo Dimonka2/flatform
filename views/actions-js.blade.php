@@ -9,8 +9,12 @@
             window.livewire.hook('afterDomUpdate', () => {
                 if($("#" + id).length > 0) {
                     let formID = "#{{$actions::formID}}";
-                    let form = $(formID)
+                    let form = $(formID + ":not(.form-shown)")
+                    if(!form.length) return;
+                    form.addClass('form-shown');
+                    console.log(form);
                     form.submit(function() {
+                        console.log('submit', event);
                         $("#" + id).modal('hide');
                         $('body').removeClass('modal-open');
                         $('.modal-backdrop').remove();

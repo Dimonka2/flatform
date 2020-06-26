@@ -4,6 +4,7 @@
             {!! $host->getInfo() !!}
         </div>
         <div class="col-lg-6">
+            @if($table->hasSearch())
             <div class="pull-right d-flex">
                 @if ($search !== false)
                     <label class="d-inline">
@@ -35,7 +36,7 @@
                    ])
                 </div>
             </div>
-
+            @endif
         </div>
     </div>
     <div class="{{$class}}">
