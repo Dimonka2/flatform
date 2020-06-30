@@ -6,8 +6,12 @@ use dimonka2\flatform\Form\Contracts\IElement;
 
 return [
     'livewire' => [
-        'active' => false,
+        // it is possible to disable all Livewire dependent stuff here
+        'active' => true,
         'table_view' => 'flatform::livewire.table',
+        // here it is possible to add a script code that will adjust page top
+        // in order to offset scroll events by fixed header height
+        // for example: 'top_offset_script' => '- $("#top-header").height()'
         'top_offset_script' => '',
     ],
     'assets' =>[
@@ -56,13 +60,13 @@ return [
         //  default tag type
         'default-type' => 'div',
         // active styles config paths delimited by comma with a priority left to right
-        'style' => 'metronic_templates,bootstrap',
+        'style' => 'bootstrap',
         // name of the stacks for JS and CSS
         'css_stack' => 'css',
         'js_stack'  => 'js',
 
         // default column style
-        'col' => 'col-6',
+        'col' => 'col-md-6',
 
         'date_format_js' => 'dd.mm.yy',
 
@@ -153,23 +157,8 @@ return [
     ],
     // add application specific actions here
     'actions' => [
-        // action controller middleware
-        'middleware' => null,
-        // class (invoke) or callable with parameters: actionName, request
-        // resolver may return:
-        // * class name
-        // * array [class name, [params] ]
-        'resolver' => null,
         // javascript run actions variable
         'js-function' => 'ffactions',
-    ],
-    'selects' => [
-        // select controller middleware
-        'middleware' => null,
-        // class (invoke) or callable with parameters: selectName, request
-        // resolver has to return:
-        // * class object that implements IAJAXSelect
-        'resolver' => null,
     ],
 
     // add more flatform elements here
