@@ -18,7 +18,7 @@
                 </div>
             </a>
         @else
-            {{$column->getTitle()}}
+            {!! $column->getTitle(true) !!}
         @endif
     </th>
 @else
