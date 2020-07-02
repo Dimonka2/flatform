@@ -14,7 +14,11 @@ class Dropzone extends Form
     protected $fileList;
 
     protected const options = ['onSuccess', 'onError', 'onRemovedfile', 'onInit', 'onAddedfile'];
-    protected $defaultOptions = ['id', 'class', 'style'] + self::options;
+
+    protected function getDefaultOptions(): array
+    {
+        return array_merge(['id', 'class', 'style'], self::options);
+    }
 
     protected function read(array $element)
     {
