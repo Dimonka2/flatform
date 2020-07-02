@@ -57,9 +57,9 @@ class Column implements IDataProvider
     public function renderDefinition($order)
     {
         $def = ['th'];
-        $def['class'] = 'text-nowrap text-truncate ';
+        $def['class'] = 'text-nowrap text-truncate ' . $this->class;
         if($this->width) $def['style'] = 'width: ' . $this->width . ';';
-        if ($this->sort) {
+        if ($this->sort && $order !== false) {
             switch ($order[$this->name] ?? null) {
                 case 'ASC':
                     $sortingClass = 'fa fa-sort-up text-danger';

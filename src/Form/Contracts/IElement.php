@@ -16,6 +16,8 @@ interface IElement
     public function addClass($class);
     public function addStyle($style);
     public function getContext(): IContext;
+    public function getText();
+    public function setText($text);
 
     public function setOnRender(?callable $onRender);
     public function getOnRender(): ?callable;

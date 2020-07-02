@@ -2,11 +2,12 @@
 namespace dimonka2\flatform\Form\Components\Table;
 
 use Closure;
+use dimonka2\flatform\Flatform;
 use dimonka2\flatform\FlatformService;
 use dimonka2\flatform\Form\ElementFactory;
 use dimonka2\flatform\Form\ElementContainer;
+use dimonka2\flatform\Form\Contracts\IElement;
 use dimonka2\flatform\Form\Components\Table\Formatter\ElementMapping;
-use Symfony\Component\ErrorHandler\Debug;
 
 class Table extends ElementContainer
 {
@@ -64,9 +65,7 @@ class Table extends ElementContainer
                                 ['onRender' => function($item){return $this->renderHead();},]
                                 ]]
                             ]],
-                            ['tbody', [
-                                ['onRender' => function($item){return $this->renderBody();},]
-                            ]],
+                            ['tbody', 'onRender' => function($item){return $this->renderBody($item);},]
                         ]
                     ],
                 ]],
@@ -87,9 +86,19 @@ class Table extends ElementContainer
         return $this->columns->render($this->context);
     }
 
-    protected function renderBody()
+    protected function renderBody(IElement $item)
     {
-        return $this->rows->render($this->context);
+        $tbody = $this->attributes->tbody;
+        if(is_array($tbody)) {
+            foreach ($tbody as $key => $value) {
+                $item->setAttribute($key, $value);
+            }
+            $tbody['type'] = 'tbody';
+        } else {
+            $tbody = ['tbody'];
+        }
+        $tbody['text'] = $this->rows->render($this->context);
+        return Flatform::render([$tbody]);
     }
 
     protected function formatPosition()
