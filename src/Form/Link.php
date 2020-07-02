@@ -32,6 +32,7 @@ class Link extends ElementContainer
 
     public function getUrl()
     {
+        if($this->action) return '#';
         if(is_string($this->href)) return $this->href;
         if (is_array($this->href)) {
             $len = count($this->href);
