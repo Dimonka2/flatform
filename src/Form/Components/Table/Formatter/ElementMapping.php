@@ -10,6 +10,7 @@ class ElementMapping
         'check'         => Check::class,
         'date'          => Date::class,
         'number'        => Number::class,
+        'state'         => State::class,
     ];
 
     static protected function getBinding($type)

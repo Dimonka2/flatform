@@ -13,7 +13,7 @@
                         <input type="text" wire:model.debounce{{ $searchDebounce ? ('.' . $searchDebounce . 'ms') : '' }}='search' class="form-control form-control-sm d-inline-block w-auto">
                     </label>
                 @endif
-                <div class="d-inline ml-2 mr-2 btn-group">
+                <div class="d-inline ml-2 mr-2 btn-group" wire:ignore >
                    @form([
                        ['dropdown', 'toggle', 'group', 'color' => 'outline-secondary', 'size' => 'sm', 'shadow',
                             'icon' => 'fa fa-filter',
