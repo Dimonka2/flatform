@@ -3,6 +3,7 @@
 namespace dimonka2\flatform\Form\Components\Table;
 
 use Closure;
+use dimonka2\flatform\Flatform;
 use dimonka2\flatform\Traits\SettingReaderTrait;
 
 class TableDetails
@@ -19,6 +20,8 @@ class TableDetails
     protected $disabled;
     protected $title;
     protected $class;
+    protected $trClass;
+    protected $tdClass;
     protected $width;
 
 
@@ -30,7 +33,7 @@ class TableDetails
     public function read($definition)
     {
         $this->readSettings($definition, [
-            'expander', 'callback', 'disabled', 'title', 'class', 'width',
+            'expander', 'callback', 'disabled', 'title', 'class', 'trClass', 'tdClass', 'width',
         ]);
     }
 
@@ -38,10 +41,11 @@ class TableDetails
     {
         $html = 'No detail callbak!';
         if($this->callback instanceof Closure) $html = ($this->callback)($row);
-        return $this->table->renderItem([
-            ['tr', [
-                ['td', 'colspan' => $this->table->getVisibleColumnCount(), 'text' => $html]]]
-        ]);
+        $td = ['td', 'colspan' => $this->table->getVisibleColumnCount(), 'text' => $html];
+        if($this->tdClass) $td['class'] = $this->tdClass;
+        $tr = ['tr', [$td]];
+        if($this->trClass) $tr['class'] = $this->trClass;
+        return Flatform::render([$tr]);
     }
 
     /**

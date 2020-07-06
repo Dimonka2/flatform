@@ -58,10 +58,10 @@ class Rows implements \ArrayAccess, \Countable, \IteratorAggregate, IDataProvide
                         $td = ['td', 'text' => $val];
                     }
                     if($column->class) $td['class'] = $column->class;
-                    if($column->width) $td['style'] = 'width:' . $column->width . ';';
                     $columns[] = $td;
                 }
-            }
+                        if($column->width) $td['style'] = 'width:' . $column->width . ';';
+        }
             $def = ['tr',  $columns, 'class' => ''];
             if(is_array($evenOdd)) $def['class'] .= ' ' . $evenOdd[$i % 2];
             if($select && $row->_selected && $select->class) $def['class'] .= ' ' . $select->class;

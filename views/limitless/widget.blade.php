@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card {{$element->class}}">
     @if( $element->hasHeader() )
     <div class="card-header header-elements-inline">
         @if( $element->hasTitle() )

@@ -1,7 +1,8 @@
 <div>
+    {!! $host->getElement('top') !!}
     <div class="row">
         <div class="col-lg-6">
-            {!! $host->getInfo() !!}
+            {!! $host->getElement('info') !!}
         </div>
         <div class="col-lg-6">
             @if($table->hasSearch())
@@ -18,7 +19,7 @@
                             'icon' => 'fa fa-filter',
                             'drop_form' => [
                                 ['form', 'style' => 'min-width:320px;', 'class' => 'row p-3', [
-                                    ['_text', 'text' => $host->renderFilters()],
+                                    ['_text', 'text' => $host->getElement('filters')],
                                     ['col', 'md' => 6, '+class' => 'my-auto', [
                                         ['div', 'text' =>  __('flatform::table.show_entries'), 'class' => '']
                                     ]],
@@ -62,4 +63,5 @@
             </div>
         </div>
     @endif
+    {!! $host->getElement('bottom') !!}
 </div>

@@ -123,7 +123,6 @@ class TableComponent extends Component
             $details->setExpander(
                 ['button', 'color' => 'clean',
                     '_data' => ['_item' => function (IElement $element, $row) {
-                        //debug($row);
                         $id = $row->{$this->idField};
                         $element->setAttribute('wire:click.prevent',
                              'showDetails(' . json_encode($id) . ')');
@@ -252,7 +251,18 @@ class TableComponent extends Component
 
     }
 
-    public function renderFilters()
+    public function getElement($element)
+    {
+        switch ($element) {
+            case 'info':
+                return $this->getInfo();
+            case 'filters':
+                return $this->renderFilters();
+            }
+    }
+
+
+    protected function renderFilters()
     {
         $html = '';
         $view = $this->getView('table-filter');
@@ -296,33 +306,31 @@ class TableComponent extends Component
         }
     }
 
-
     /**
      * Get the value of info
      */
-    public function getInfo()
+    protected function getInfo()
     {
-        if($this->info !== false) {
-            $table = $this->table;
-            $selected = $table->getSelected();
-            if($selected){
-                $this->info = trans_choice('flatform::table.selected', $selected, ['value' => $selected]);
-                // render actions
+        if($this->info === false) return;
+        $table = $this->table;
+        $selected = $table->getSelected();
+        if($selected){
+            $this->info = trans_choice('flatform::table.selected', $selected, ['value' => $selected]);
+            // render actions
 
-                $this->info = [['span', 'text' => $this->info, 'class' => 'mr-4']];
-                $this->info = array_merge($this->info, $table->getSelectionActions());
+            $this->info = [['span', 'text' => $this->info, 'class' => 'mr-4']];
+            $this->info = array_merge($this->info, $table->getSelectionActions());
 
-            } else {
-                $items = $table->getModels();
-                if($items) {
-                    $total = $items->total();
-                    $this->info = __('flatform::table.info',[
-                        'first' => $items->firstItem(),
-                        'last' => $items->lastItem(),
-                        'total' => $total]);
-                    $count = $table->getCount();
-                    if($total != $count) $this->info .= trans_choice('flatform::table.filtered', $count, ['filtered' => $count]);
-                }
+        } else {
+            $items = $table->getModels();
+            if($items) {
+                $total = $items->total();
+                $this->info = __('flatform::table.info',[
+                    'first' => $items->firstItem(),
+                    'last' => $items->lastItem(),
+                    'total' => $total]);
+                $count = $table->getCount();
+                if($total != $count) $this->info .= trans_choice('flatform::table.filtered', $count, ['filtered' => $count]);
             }
         }
 

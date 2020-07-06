@@ -2,7 +2,6 @@
 
 namespace dimonka2\flatform\Form\Components\Table;
 
-use Closure;
 use Illuminate\Support\Fluent;
 
 trait RowsTrait
@@ -74,9 +73,10 @@ trait RowsTrait
 
     public function buildRows()
     {
-        $this->rows->clear();
         $query = $this->query;
         if(!$query) return;
+        $this->rows->clear();
+
         $this->count = $query->count();
         $this->filtered_count = $this->count;
 
