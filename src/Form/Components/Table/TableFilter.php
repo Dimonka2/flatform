@@ -15,7 +15,7 @@ class TableFilter extends Element
     protected $type;           // filter type: checkbox, select, text
     protected $disabled;       // disables filter
     protected $value;          // current value
-    protected $list;           // item list for select
+    protected $list;           // item list for select, might be a closure
     protected $filterFunction; // filter callback
 
     public function read(array $definition)
@@ -36,11 +36,13 @@ class TableFilter extends Element
                     ['div', 'class' => 'col-md-12', [$checkbox]]
                 ]);
             case 'select':
+                $list = $this->list;
+                if($list instanceof Closure) $list = $list(); // allow funciton as a list parameter
                 $select = array_merge(
                     ['select', 'label' => $this->title,
                         'selected' => $value,
                         'wire:model' => 'filtered.' . $this->name,
-                        'col' => 12, 'list' => $this->list],
+                        'col' => 12, 'list' => $list],
                         $this->getOptions([]));
                 // if($this->default) $select['value'] = $this->default;
                 return Flatform::render([ $select ]);

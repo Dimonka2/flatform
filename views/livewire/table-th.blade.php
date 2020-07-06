@@ -6,12 +6,16 @@
         @if($column->getSort())
             <a href="#" class="d-block">
                 <div class="float-right text-nowrap">
-                    <span style='margin-right:-0.3rem;' class="{{
-                        $order == 'ASC' ? 'text-dark' : 'text-muted'}}">{!!
-                        $order == 'ASC' ? '&#x1F819;' : '&#x2191;'  !!}</span>
-                    <span class="{{
-                        $order == 'DESC' ? 'text-dark' : 'text-muted'}}">{!!
-                        $order == 'DESC' ? '&#x1F81B;' : '&#x2193;'  !!}</span>
+                    @if($order == 'ASC')
+                        <span style='margin-right:-0.3rem;' class="text-dark">&#x1F819;</span>
+                    @else
+                        <span style='margin-right:-0.3rem;' class="text-muted">&#x2191;</span>
+                    @endif
+                    @if($order == 'DESC')
+                        <span class="text-dark mr-1">&#x1F81B;</span>
+                    @else
+                        <span class="text-muted mr-1">&#x2193;</span>
+                    @endif
                 </div>
                 <div class="text-slate-600 d-inline-block mr-3">
                     {!! $column->getTitle(true) !!}

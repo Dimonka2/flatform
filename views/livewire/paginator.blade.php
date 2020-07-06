@@ -1,6 +1,5 @@
 @if ($paginator->hasPages())
     @php
-        $pageLink = ' role="button" '; //  href="#{!! $pageLink !!}" $paginator->getPageName();
         $current = $paginator->currentPage();
     @endphp
     <ul class="pagination" role="navigation">
@@ -14,38 +13,38 @@
 
         @if($current > 3)
             <li class="paginate_button page-item disabled">
-                <button {!! $pageLink !!} class="page-link">…</button>
+                <button class="page-link">…</button>
             </li>
         @endif
         @if ( $paginator->hasMorePages() )
             @for ($page = max(2, $current - 1); $page < min($paginator->lastPage(), $current + 2
                 + ($paginator->onFirstPage() ? 1 : 0)); $page++)
             <li class="paginate_button page-item {{$page == $current ? ' active' : ''}}">
-                <button {!! $pageLink !!} class="page-link" wire:click="gotoPage({{$page}})">{{$page}}</button>
+                <button class="page-link" wire:click="gotoPage({{$page}})">{{$page}}</button>
             </li>
             @endfor
 
             @if($paginator->lastPage() - 2 > $current )
             <li class="paginate_button page-item disabled">
-                <button {!! $pageLink !!} class="page-link">…</button>
+                <button class="page-link">…</button>
             </li>
             @endif
 
             <li class="paginate_button page-item ">
-                <button {!! $pageLink !!} class="page-link"
+                <button class="page-link"
                     wire:click="gotoPage({{$paginator->lastPage()}})">{{$paginator->lastPage()}}</button>
             </li>
             <li class="paginate_button page-item next">
-                <button {!! $pageLink !!} class="page-link" wire:click="nextPage">@lang('pagination.next')</button>
+                <button class="page-link" wire:click="nextPage">@lang('pagination.next')</button>
             </li>
         @else
         @for ($page = max(min(3, $current - 1), $current - 2, 2); $page < $current + 1; $page++)
         <li class="paginate_button page-item {{$page == $current ? ' active' : ''}}">
-            <button {!! $pageLink !!} class="page-link" wire:click="gotoPage({{$page}})">{{$page}}</button>
+            <button class="page-link" wire:click="gotoPage({{$page}})">{{$page}}</button>
         </li>
         @endfor
             <li class="paginate_button page-item next disabled">
-                <button {!! $pageLink !!} class="page-link">@lang('pagination.next')</button>
+                <button class="page-link">@lang('pagination.next')</button>
             </li>
         @endif
     </ul>
