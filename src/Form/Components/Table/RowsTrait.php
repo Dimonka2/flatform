@@ -32,6 +32,11 @@ trait RowsTrait
         return $this->rows->getRow($index);
     }
 
+    public function getRowCount()
+    {
+        return $this->rows->count();
+    }
+
     /**
     * Get the value of Rows
     */

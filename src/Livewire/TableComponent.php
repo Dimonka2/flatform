@@ -64,6 +64,12 @@ class TableComponent extends Component
             $this->addSelectCheckbox($table);
         }
         $table->buildRows();
+        if($this->page > 1 && $table->getRowCount() == 0) {
+            // try to rebuid
+            $this->page = 1;
+            $table->setPage(1);
+            $table->buildRows();
+        }
         $this->rowsReady = true;
     }
 
