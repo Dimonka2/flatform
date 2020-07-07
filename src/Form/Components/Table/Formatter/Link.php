@@ -2,7 +2,6 @@
 namespace dimonka2\flatform\Form\Components\Table\Formatter;
 
 use Illuminate\Support\Str;
-use dimonka2\flatform\Flatform;
 use dimonka2\flatform\Traits\SettingReaderTrait;
 use dimonka2\flatform\Form\Components\Table\IColumnFormat;
 
@@ -13,6 +12,7 @@ class Link extends BaseFormatter implements IColumnFormat
     protected $idField;
     protected $emptyString;
     protected $limit;
+    protected $tag = 'a';
 
 
     protected function read(array $definition)
@@ -24,15 +24,15 @@ class Link extends BaseFormatter implements IColumnFormat
 
     }
 
-    protected function transformValue($value)
+    protected function render($value)
     {
         if(!$value) $value = $this->emptyString;
         $limited = $value;
         if($this->limit) $limited = Str::limit($limited, $this->limit, '...');
         $link = ['a', 'href' => route($this->route, $this->row[$this->idField]), 'text' => $limited];
         if($limited != $value) $link['tooltip'] = $value;
-        $value = Flatform::render([$link]);
-        return  $value;
+        $value = [$link];
+        return $value;
     }
 
 

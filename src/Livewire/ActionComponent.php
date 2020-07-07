@@ -11,6 +11,7 @@ class ActionComponent extends Component
 {
     public $formData;
     public $url;
+    public $reloadAction;
     protected $form;
     protected $listeners = [
         'runAction' => 'runAction',
@@ -19,6 +20,7 @@ class ActionComponent extends Component
     public function mount()
     {
         $this->url = request()->url();
+        $this->reloadAction = Flatform::getReloadAction();
     }
 
     public function render()
@@ -107,8 +109,7 @@ class ActionComponent extends Component
 
     public function reload()
     {
-        $reload = Flatform::getReload();
-        if($reload instanceof Closure) return $reload();
+        if($this->reloadAction) return $this->emit($this->reloadAction);
         return redirect()->to($this->url);
     }
 

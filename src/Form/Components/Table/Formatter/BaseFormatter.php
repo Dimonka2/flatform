@@ -3,7 +3,6 @@ namespace dimonka2\flatform\Form\Components\Table\Formatter;
 
 use dimonka2\flatform\FlatformService;
 use dimonka2\flatform\Traits\SettingReaderTrait;
-use dimonka2\flatform\Form\Components\Table\Column;
 use dimonka2\flatform\Form\Components\Table\IColumnFormat;
 
 abstract class BaseFormatter implements IColumnFormat

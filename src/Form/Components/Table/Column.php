@@ -116,7 +116,6 @@ class Column implements IDataProvider
             if(is_object($format)) {
                 if($format instanceof \Closure) {
                     $html = $format($value, $this, $row);
-                    if(is_array($html)) $html = $this->table->renderItem($html);
                 }elseif($format instanceof IElement) {
                     $this->row = $row;
                     $context = $this->table->getContext();
@@ -129,9 +128,9 @@ class Column implements IDataProvider
                 }
             }elseif (is_callable($format)) {
                 $html = call_user_func_array($format, [$value, $this, $row]);
-
             }
         }
+        if(is_array($html)) return $this->table->renderItem($html);
         return $html;
     }
 

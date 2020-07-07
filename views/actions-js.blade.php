@@ -12,7 +12,7 @@
                     let form = $(formID + ":not(.form-shown)")
                     if(!form.length) return;
                     form.addClass('form-shown');
-                    console.log(form);
+                    // console.log(form);
                     form.submit(function() {
                         $("#" + id).modal('hide');
                         $('body').removeClass('modal-open');

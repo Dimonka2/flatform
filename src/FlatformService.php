@@ -10,7 +10,7 @@ class FlatformService
     private static $jsList = [];
     private static $includes = [];
     private static $context = null;
-    private static $reload;
+    private static $reloadAction;
 
     public static function render($element)
     {
@@ -115,14 +115,14 @@ class FlatformService
         }
     }
 
-    public static function getReload()
+    public static function getReloadAction()
     {
-        return self::$reload;
+        return self::$reloadAction;
     }
 
-    public static function setReload($relaod)
+    public static function setReloadAction($reloadAction)
     {
-        self::$reload = $relaod;
+        self::$reloadAction = $reloadAction;
     }
 
 }

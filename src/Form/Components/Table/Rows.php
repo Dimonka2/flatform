@@ -2,6 +2,7 @@
 namespace dimonka2\flatform\Form\Components\Table;
 
 use Closure;
+use dimonka2\flatform\Flatform;
 use dimonka2\flatform\Form\Contracts\IContext;
 use dimonka2\flatform\Form\Contracts\IDataProvider;
 
@@ -27,6 +28,16 @@ class Rows implements \ArrayAccess, \Countable, \IteratorAggregate, IDataProvide
         $details = $table->hasDetails() ? $table->getDetails() : 0;
         $select = $table->hasSelect() ? $table->getSelect() : 0;
         $i = 0;
+        if($this->count() == 0) {
+            // return "no data" row
+            $label = ['row', [['col', 'col' => 12, 'class' => 'd-flex', [['div', 'class' => 'mx-auto', 'text' => __('flatform::table.no_data')]]]]];
+            $td = ['td', 'colspan' => $this->table->getVisibleColumnCount(), [$label]];
+            $tr = ['tr', [$td]];
+            $html = Flatform::render([$tr]);
+            if($rowRenderCallback instanceof Closure) $html = $rowRenderCallback(null, $html);
+            return $html;
+        }
+
         foreach($this->items as $row){
             $columns = [];
 
@@ -50,7 +61,6 @@ class Rows implements \ArrayAccess, \Countable, \IteratorAggregate, IDataProvide
                     } else {
                         if($column->hasFormat()) {
                             $val = $column->doFormat($val, $row);
-                            // debug($val);
                         }
                         if($tableFormat instanceof Closure) {
                             $val = $tableFormat($column->name, $val, $row);

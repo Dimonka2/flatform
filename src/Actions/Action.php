@@ -4,7 +4,6 @@ namespace dimonka2\flatform\Actions;
 use Illuminate\Support\Fluent;
 use dimonka2\flatform\Flatform;
 use dimonka2\flatform\Form\Contracts\IForm;
-use dimonka2\flatform\Http\Requests\ActionRequest;
 
 class Action implements Contract
 {
@@ -26,9 +25,8 @@ class Action implements Contract
 
     }
 
-    public function init(ActionRequest $request)
+    public function init(array $params)
     {
-        $this->params = new Fluent($request->all());
     }
 
     public function autorize()
@@ -135,6 +133,7 @@ class Action implements Contract
 
     public function __construct(?array $params = [])
     {
+        if(is_array($params)) $this->init($params);
         $this->params = new Fluent($params);
     }
 
