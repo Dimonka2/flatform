@@ -8,6 +8,7 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use dimonka2\flatform\FlatformService;
 use dimonka2\flatform\Form\Components\Table\Table;
+use dimonka2\flatform\Form\Contracts\IContainer;
 use dimonka2\flatform\Form\Contracts\IElement;
 
 class TableComponent extends Component
@@ -127,21 +128,17 @@ class TableComponent extends Component
         $details = $table->getDetails();
         if (!$details->expander) {
             $details->setExpander(
-                ['button', 'color' => 'clean',
-                    '_data' => ['_item' => function (IElement $element, $row) {
+                ['button', 'color' => 'clean',  'size' => 'sm', 'class' => 'btn-icon-md',
+                    '_data' => ['_item' => function (IContainer $element, $row) {
                         $id = $row->{$this->idField};
                         $element->setAttribute('wire:click.prevent',
                              'showDetails(' . json_encode($id) . ')');
-                        if($this->expanded[$id] ?? false) $row->_expanded = 1;
-                    }],
-                    'size' => 'sm', 'class' => 'btn-icon-md', [
-                        ['i',
-                            'class' =>'fa fa-caret-down',
-                            '_data' => ['_item' => function (IElement $element, $row) {
-                                if($row->_expanded) $element->class = 'fa fa-caret-up';
-                            }],
-                            ]
-                ]]
+                        $row->_expanded = ($this->expanded[$id] ?? false);
+                        $element->readItems([
+                            ['i', 'class' => $row->_expanded ? 'fa fa-caret-up' : 'fa fa-caret-down',]
+                        ]);
+                    }]
+                ]
             );
         }
 

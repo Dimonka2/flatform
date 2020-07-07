@@ -111,28 +111,51 @@ return [
     ],
 
     'metronic_templates' =>[
-        'input' => ['template' => 'flatform::metronic.input', '+class' => ' form-control form-control-alt'],
+        'input' => ['template' => 'flatform::metronic.input',
+            '+class' => ' form-control form-control-alt',
+            'onLoaded' => function(IElement $element, array $def){
+                if($element->error) $element->addClass('is-invalid');
+            }],
         'checkbox' => ['template' => 'flatform::metronic.checkbox', '+class' => 'kt-checkbox'],
+        'radio' => ['template' => 'flatform::metronic.radio', '+class' => 'kt-radio'],
+        'table-checkbox' => ['type' => 'checkbox', '+class' => 'kt-checkbox--single'],
         'dropdown' => ['type' => 'div', 'template' => 'flatform::metronic.dropdown'],
         'tabs' => ['type' => 'div', 'template' => 'flatform::metronic.tab-navs'],
         'widget' => ['template' => 'flatform::metronic.widget'],
+        'progress' => ['template' => 'flatform::metronic.progress-bar', ],
+
         'dd-item' => ['+class' => 'dropdown-item kt-nav__link', 'template' => 'flatform::metronic.dd-item',],
+
         'dd-item-icon' => ['type' => 'i', 'class' => 'kt-nav__link-icon',],
         'dd-item-title' => ['type' => 'span', 'class' => 'kt-nav__link-text',],
         'form' => ['+class' => 'kt-form',],
-
-        'tab-content' => ['template' => 'flatform::metronic.tab-content',],
-        'checkbox-list' => ['type' => 'div', 'class' => 'kt-checkbox-list mt-5', ],
-
-        'breadcrumbs' => ['template' => 'flatform::metronic.breadcrumbs'],
         'badge' => ['type' => 'span', 'class' => 'kt-badge',
             'onLoaded' => function(IElement $element, array $def){
                 if($element->getColor()) $element->addClass('kt-badge--' . $element->getColor());
                 if($element->getSize()) $element->addClass('kt-badge--' . $element->getSize());
                 if($element->getPill()) $element->addClass('kt-badge--pill');
-                if($element->getPill()) $element->addClass('kt-badge--inline');
+                if($element->getInline()) $element->addClass('kt-badge--inline');
+                if($element->getAttribute('bold')) $element->addClass('kt-badge--bold');
+                if($element->getAttribute('rounded')) $element->addClass('kt-badge--rounded');
             }
         ],
+        'media' => ['type' => 'span', 'class' => 'kt-media kt-margin-r-5 kt-margin-t-5',
+            'onLoaded' => function(IElement $element, array $def){
+                $a = $element->getAttribute('color');   if($a) $element->addClass('kt-media--' . $a);
+                $a = $element->getAttribute('size');    if($a) $element->addClass('kt-media--' . $a);
+                $a = $element->getAttribute('circle');  if($a) $element->addClass('kt-media--circle');
+                $a = $element->getAttribute('title');
+                if($a) {
+                    $element->readItems([['span', 'text' => $a]]);
+                    $element->removeAttribute('title');
+                }
+            }
+        ],
+
+        'tab-content' => ['template' => 'flatform::metronic.tab-content',],
+        'checkbox-list' => ['type' => 'div', 'class' => 'kt-checkbox-list', ],
+
+        'breadcrumbs' => ['template' => 'flatform::metronic.breadcrumbs'],
 
     ],
 

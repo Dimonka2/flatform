@@ -3,6 +3,7 @@
 namespace dimonka2\flatform\Form\Components\Table;
 
 use Illuminate\Support\Fluent;
+use Illuminate\Support\Facades\DB;
 
 trait RowsTrait
 {
@@ -103,7 +104,11 @@ trait RowsTrait
         $fields = [];
         foreach($this->columns as $field) {
             if (!$field->noSelect && !$field->system) {
-                $fields[] =  $field->name . ($field->as ? ' as ' . $field->as : '' );
+                if($field->raw) {
+                    $fields[] = DB::raw($field->raw . ($field->as ? ' as ' . $field->as : '' ) );
+                } else {
+                    $fields[] =  $field->name . ($field->as ? ' as ' . $field->as : '' );
+                }
             }
         }
 

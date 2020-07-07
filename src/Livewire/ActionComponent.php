@@ -29,6 +29,12 @@ class ActionComponent extends Component
             ->with('host', $this);
     }
 
+    protected static function extractArray($value)
+    {
+        if(!preg_match("/^\[(.*)\]$/", $value, $matches)) return [$value];
+        return explode(',', $matches[1]);
+    }
+
     public function formSubmit($data)
     {
         if(!is_array($data)){
@@ -42,7 +48,7 @@ class ActionComponent extends Component
             $value = $item['value'];
             if(substr($name, -2) == '[]') {
                 $name = substr($name, 0, -2);
-                $params[$name][] = $value;
+                $params[$name] = self::extractArray($value);
             } else {
                 $params[$name] = $value;
             }
@@ -56,7 +62,6 @@ class ActionComponent extends Component
         if(!$action->autorize()) {
             return $this->error('Action is not authorized!');
         }
-
         $response = $action->execute();
         return $this->processResponse($response, $action);
     }

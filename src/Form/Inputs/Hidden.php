@@ -11,5 +11,6 @@ class Hidden extends Input
     {
         parent::read($element);
         $this->col = false;
+        if(is_array($this->value)) $this->value = json_encode($this->value);
     }
 }
