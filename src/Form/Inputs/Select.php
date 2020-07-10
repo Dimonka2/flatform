@@ -13,15 +13,21 @@ class Select extends Input
     protected $selected;
     protected $multiple;
 
+    protected function getDefaultOptions(): array
+    {
+        $options = parent::getDefaultOptions();
+        $options[] = 'multiple';
+        return $options;
+    }
+
     protected function read(array $element)
     {
         // debug($element);
         $this->readSettings($element, ['state-list', 'list', 'selected', 'multiple']);
         parent::read($element);
         if(is_null($this->list) && !is_null($this->state_list)) {
-            // a temporary feature
-            if(class_exists ('\App\Helpers\StateHelper') ) {
-                $this->list = \App\Helpers\StateHelper::selectStateList($this->state_list);
+            if( app()->bound('flatstates') ) {
+                $this->list = app('flatstates')->selectStateList($this->state_list);
             }
         }
     }
