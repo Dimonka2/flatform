@@ -1,6 +1,6 @@
 <?php
 
-namespace dimonka2\flatform\Form\Components;
+namespace dimonka2\flatform\Form\Navs;
 
 use dimonka2\flatform\Form\Link;
 

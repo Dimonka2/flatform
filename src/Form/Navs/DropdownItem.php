@@ -1,11 +1,18 @@
 <?php
 
-namespace dimonka2\flatform\Form\Components;
+namespace dimonka2\flatform\Form\Navs;
 
 use dimonka2\flatform\Form\Link;
 
 class DropdownItem extends Link
 {
+    public $active;
+
+    protected function read(array $element)
+    {
+        $this->readSettings($element, ['active',]);
+        parent::read($element);
+    }
 
     public function getTitle()
     {

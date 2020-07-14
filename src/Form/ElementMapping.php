@@ -23,9 +23,7 @@ class ElementMapping
 
         // components
         'widget'        => Components\Widget::class,
-        'modal'        => Components\Modal::class,
-        'dropdown'      => Components\Dropdown::class,
-        'dd-item'       => Components\DropdownItem::class,
+        'modal'         => Components\Modal::class,
         'datatable'     => Components\Datatable\Datatable::class,
         'dt-details'    => Components\Datatable\DatatableDetails::class,
         'dt-select'     => Components\Datatable\DatatableSelect::class,
@@ -42,12 +40,14 @@ class ElementMapping
         'tabs'          => Navs\Tabs::class,
         'menu'          => Navs\Menu::class,
         'menu-item'     => Navs\MenuItem::class,
+        'dropdown'      => Navs\Dropdown::class,
+        'dd-item'       => Navs\DropdownItem::class,
 
         // links and buttons
         'a'             => Link::class,
         'link'          => Link::class,
-        'submit'        => Components\Button::class,
-        'button'        => Components\Button::class,
+        'submit'        => Navs\Button::class,
+        'button'        => Navs\Button::class,
 
         // basic elements
         'form'          => Elements\Form::class,
