@@ -10,11 +10,11 @@ class Progress extends ElementContainer
     public $position;
     public $striped;
     public $animated;
-    public $size;
+    public $height;
 
     protected function read(array $element)
     {
-        $this->readSettings($element, ['color', 'position', 'striped', 'animated', 'size']);
+        $this->readSettings($element, ['color', 'position', 'striped', 'animated', 'height']);
         parent::read($element);
     }
 

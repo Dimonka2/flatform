@@ -65,6 +65,7 @@ class Rows implements \ArrayAccess, \Countable, \IteratorAggregate, IDataProvide
                         if($tableFormat instanceof Closure) {
                             $val = $tableFormat($column->name, $val, $row);
                         }
+                        if(is_array($val)) $val = Flatform::render($val);
                         $td = ['td', 'text' => $val];
                     }
                     if($column->class) $td['class'] = $column->class;
