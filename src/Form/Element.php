@@ -3,7 +3,7 @@
 namespace dimonka2\flatform\Form;
 
 use Illuminate\Support\Fluent;
-use dimonka2\flatform\Flatform;
+use dimonka2\flatform\FlatformService;
 use dimonka2\flatform\Form\Contracts\IContext;
 use dimonka2\flatform\Form\Contracts\IElement;
 use dimonka2\flatform\Traits\SettingReaderTrait;
@@ -118,7 +118,7 @@ class Element implements IElement
     public function __construct(array $element = [], ?IContext $context = null)
     {
         $this->attributes = new Fluent();
-        $this->context = $context ?? Flatform::context();
+        $this->context = $context ?? FlatformService::context();
         $onLoaded = $this->readSingleSetting($element, 'onLoaded');
         $this->read($element);
         if(is_callable($onLoaded)) call_user_func_array($onLoaded, [$this, $element]);
@@ -237,12 +237,12 @@ class Element implements IElement
     {
         // special case
         if($this->type == '_text') return $this->text;
-        return $this->context->renderElement($this);
+        return $this->context->renderElement($this, $this->text);
     }
 
     public function getTag()
     {
-        return ($this->type ?? Flatform::config('flatform.form.default-type', 'div') );
+        return ($this->type ?? FlatformService::config('flatform.form.default-type', 'div') );
     }
 
     protected function requireID()
@@ -256,7 +256,7 @@ class Element implements IElement
 
     protected function addAssets()
     {
-        if( static::assets ?? false ) return Flatform::addAssets(static::assets);
+        if( static::assets ?? false ) return FlatformService::addAssets(static::assets);
     }
 
     public function getParent(): IElement

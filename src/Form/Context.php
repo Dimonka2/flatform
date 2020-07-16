@@ -28,7 +28,9 @@ class Context implements IContext
     {
         $this->style_priority = FlatformService::config('flatform.form.style');
         $this->factory = new ElementFactory($this);
-        $this->errors = session('errors') ? session('errors')->getBags()['default'] ?? new MessageBag : null;
+        if(!config('flatform.test')) {
+            // $this->errors = session('errors') ? session('errors')->getBags()['default'] ?? new MessageBag : null;
+        }
     }
 
     public function setMapping($id, IElement $element)

@@ -1,0 +1,1 @@
+C:37:"PHPUnit\Runner\DefaultTestResultCache":298:{a:2:{s:7:"defects";a:2:{s:49:"Tests\UnitTests\ElementTest::test_basic_rendering";i:4;s:52:"Tests\UnitTests\ElementTest::test_element_properties";i:3;}s:5:"times";a:2:{s:49:"Tests\UnitTests\ElementTest::test_basic_rendering";d:0.009;s:52:"Tests\UnitTests\ElementTest::test_element_properties";d:0;}}}
