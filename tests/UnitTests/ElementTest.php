@@ -6,8 +6,6 @@ use dimonka2\flatform\Form\Context;
 use dimonka2\flatform\Form\Element;
 use dimonka2\flatform\FlatformService;
 use dimonka2\flatform\Form\Contracts\IElement;
-use InfyOm\Generator\Utils\ResponseUtil;
-use Illuminate\Contracts\Config\Repository;
 use Illuminate\Config\Repository as ConfigRepository;
 
 class ElementTest extends TestCase
@@ -50,11 +48,16 @@ class ElementTest extends TestCase
         $this->assertEquals('<div />', FlatformService::render([[]]));
         $this->assertEquals('<div>test</div>', FlatformService::render([['text' => 'test']]));
 
+        // test typed element
+        $element = new Element(['type' => 'br'], $context);
+        $this->assertEquals('<br />', $element->renderElement());
+
+
     }
 
     public function test_element_properties()
     {
-        $context = new Context();
+        $context = new Context(false);
         $element = new Element([], $context);
         $element->setText('test');
         $this->assertEquals('test', $element->getText() );

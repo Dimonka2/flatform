@@ -28,8 +28,8 @@ class Context implements IContext
     {
         $this->style_priority = FlatformService::config('flatform.form.style');
         $this->factory = new ElementFactory($this);
-        if(!config('flatform.test')) {
-            // $this->errors = session('errors') ? session('errors')->getBags()['default'] ?? new MessageBag : null;
+        if(app()->has('session')) {
+            $this->errors = session('errors') ? session('errors')->getBags()['default'] ?? new MessageBag : null;
         }
     }
 
