@@ -24,6 +24,9 @@ class Context implements IContext
     private $dataProvider;      // helps to register data elements for data providers
     protected $errors;
 
+    public const VOID_TAGS = ['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'param',
+         'source', 'track', 'wbr'];
+
     public function __construct()
     {
         $this->style_priority = FlatformService::config('flatform.form.style');
@@ -102,12 +105,14 @@ class Context implements IContext
 
     public static function renderArray(array $element, $tag, $text = null)
     {
-        //debug(print_r($element, true));
+        $tag = strtolower($tag);
+        $voidElement = in_array($tag, self::VOID_TAGS);
         $html = '<' . $tag;
         foreach($element as $key => $value) {
             if(is_scalar($value)) $html .= ' ' . $key . '="' . htmlentities($value) . '"';
         }
-        if(is_null($text)) {
+        if($voidElement) {
+            if(!is_null($text)) logger('Warning! Skipping inner HTML text for void element "' . $tag . '": ' . $text);
             $html .= ' />';
         } else {
             $html .= '>' . $text . '</' . $tag . '>';
@@ -153,9 +158,9 @@ class Context implements IContext
             $assets = $options['assets'];
             if(is_iterable($assets)) {
                 foreach ($assets as $asset) {
-                    Flatform::addAssets($asset);
+                    FlatformService::addAssets($asset);
                 }
-            } else Flatform::addAssets($assets);
+            } else FlatformService::addAssets($assets);
         }
         $this->debug = $options['debug'] ?? false || !!array_search('debug', $options);
         return $this;
