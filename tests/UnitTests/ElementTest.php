@@ -1,7 +1,7 @@
 <?php
 namespace Tests\UnitTests;
 
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 use dimonka2\flatform\Form\Context;
 use dimonka2\flatform\Form\Element;
 use dimonka2\flatform\FlatformService;
@@ -12,9 +12,11 @@ class ElementTest extends TestCase
 {
     public function setUp(): void
     {
-        app()->bind('config', ConfigRepository::class);
-        app()->bind('flatform', FlatformService::class);
-        config(['flatform.test' => 1]);
+        // app()->bind('config', ConfigRepository::class);
+        // app()->bind('flatform', FlatformService::class);
+        // config(['flatform.test' => 1]);
+        parent::setUp();
+
     }
 
     public function test_basic_rendering()
@@ -22,7 +24,7 @@ class ElementTest extends TestCase
         // empty element
         $context = new Context();
         $element = new Element([], $context);
-        $this->assertEquals('<div />', $element->renderElement());
+        $this->assertEquals('<div></div>', $element->renderElement());
 
         // add some text
         $element->setText('test');
@@ -35,17 +37,17 @@ class ElementTest extends TestCase
 
         // init element with class
         $element = new Element(['class' => 'test'], $context);
-        $this->assertEquals('<div class="test" />', $element->renderElement());
+        $this->assertEquals('<div class="test"></div>', $element->renderElement());
 
         // init element with style
         $element = new Element(['style' => 'width:0;'], $context);
-        $this->assertEquals('<div style="width:0;" />', $element->renderElement());
+        $this->assertEquals('<div style="width:0;"></div>', $element->renderElement());
 
         // set element id
         $element = new Element(['id' => 'test'], $context);
-        $this->assertEquals('<div id="test" />', $element->renderElement());
+        $this->assertEquals('<div id="test"></div>', $element->renderElement());
 
-        $this->assertEquals('<div />', FlatformService::render([[]]));
+        $this->assertEquals('<div></div>', FlatformService::render([[]]));
         $this->assertEquals('<div>test</div>', FlatformService::render([['text' => 'test']]));
 
         // test typed element
@@ -81,10 +83,10 @@ class ElementTest extends TestCase
         $element = new Element(['onLoaded' => function(IElement $el) {
             $el->class = 'test';
         }], $context);
-        $this->assertEquals('<div class="test" />', $element->renderElement());
+        $this->assertEquals('<div class="test"></div>', $element->renderElement());
 
         $element->addClass('plus');
-        $this->assertEquals('<div class="test plus" />', $element->renderElement());
+        $this->assertEquals('<div class="test plus"></div>', $element->renderElement());
     }
 
 }

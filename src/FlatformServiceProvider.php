@@ -39,6 +39,7 @@ class FlatformServiceProvider extends ServiceProvider
             $this->publishes([
                 __DIR__.'/../lang' => resource_path('lang/vendor/flatform'),
             ]);
+            if(FlatformService::config('flatform.test')) $this->loadViewsFrom(__DIR__.'/../views', 'flatform');
         } else {
             Blade::directive(FlatformService::config('flatform.blade_directive', 'form'), function ($form) {
                 return "<?php echo Flatform::render($form); ?>";
