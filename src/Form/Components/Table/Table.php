@@ -127,6 +127,7 @@ class Table extends ElementContainer
             'formatters',
             'formatFunction',
             'info',
+            'links',
             'rowRenderCallback',
         ]);
 
