@@ -29,6 +29,7 @@ class Table extends ElementContainer
     protected $formatters = [];     // this is a lookup list for column formatters
     protected $formatFunction;      // this is a table td element format function
     protected $info;                // make it false to exclude info column
+    protected $links;               // make it false to hide links
     protected $rowRenderCallback;   // this needed for a livewire table to separate table from rows rendering
         // parameters ($row, $html, $details = false)
 
@@ -73,7 +74,9 @@ class Table extends ElementContainer
                     'hide' => $this->info === false,
                     'text' => $this->formatPosition()], // page length
                 ['col', 'md' => 8, [
-                    ['div', '+class' => 'float-md-right mt-2', 'text' => $this->getLinks()], // paginator
+                    ['div', '+class' => 'float-md-right mt-2',
+                        'hide' => $this->links === false,
+                        'text' => $this->links !== false ? $this->getLinks() : null], // paginator
                 ]],
             ]],
         ];

@@ -405,7 +405,9 @@ class TableComponent extends Component
     {
         $p = $this->WithPagination__get($property);
         if($p !== null) return $p;
-        return $this->TableSearchQuery__get($property);
+        $p = $this->TableSearchQuery__get($property);
+        if($p !== null) return $p;
+        return parent::__get($property);
     }
 
     public function __set($property, $value)

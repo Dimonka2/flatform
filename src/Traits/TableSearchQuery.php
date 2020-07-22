@@ -5,14 +5,14 @@ namespace dimonka2\flatform\Traits;
 trait TableSearchQuery
 {
     protected $searchQueryString = 'search';
-    protected $filterQueryString = 'filter';
+    protected $filterQueryString = 'filtered';
 
     public function initializeTableSearchQuery()
     {
         $this->updatesQueryString = array_merge([$this->searchQueryString => ['except' => '']], $this->updatesQueryString);
         $this->updatesQueryString = array_merge([$this->filterQueryString => ['except' => []]], $this->updatesQueryString);
         $this->search = request()->query($this->searchQueryString, $this->search);
-        $this->filter = request()->query($this->filterQueryString, $this->filter);
+        $this->filter = request()->query($this->filterQueryString, $this->filtered);
     }
 
     public function __get($property)
@@ -21,7 +21,7 @@ trait TableSearchQuery
             return $this->search;
         }
         if ($property == $this->filterQueryString) {
-            return $this->filter;
+            return $this->filtered;
         }
         return $this;
     }
@@ -31,7 +31,7 @@ trait TableSearchQuery
         if ($property == $this->searchQueryString) {
             $this->search = $value;
         } elseif($property == $this->filterQueryString) {
-            $this->filter = $value;
+            $this->filtered = $value;
         }
         return $this;
     }
