@@ -3,17 +3,25 @@
 namespace dimonka2\flatform\Livewire;
 
 use Closure;
-use dimonka2\flatform\Flatform;
 use Livewire\Component;
-use Livewire\WithPagination;
+use dimonka2\flatform\Flatform;
 use dimonka2\flatform\FlatformService;
-use dimonka2\flatform\Form\Components\Table\Table;
-use dimonka2\flatform\Form\Contracts\IContainer;
+use dimonka2\flatform\Traits\WithPagination;
 use dimonka2\flatform\Form\Contracts\IElement;
+use dimonka2\flatform\Form\Contracts\IContainer;
+use dimonka2\flatform\Form\Components\Table\Table;
+use dimonka2\flatform\Traits\TableSearchQuery;
 
 class TableComponent extends Component
 {
-    use WithPagination;
+    use WithPagination{
+        __get as WithPagination__get;
+        __set as WithPagination__set;
+    }
+    use TableSearchQuery{
+        __get as TableSearchQuery__get;
+        __set as TableSearchQuery__set;
+    }
 
     protected $idField = 'id';
 
@@ -37,6 +45,14 @@ class TableComponent extends Component
     protected $rowsReady;
     protected $scrollUp = true;
 
+
+    public function getUpdatesQueryString()
+    {
+        $query = array_merge([$this->searchQueryString => ['except' => '']],
+            parent::getUpdatesQueryString());
+        return $query;
+    }
+
     public function render()
     {
         $this->ensureTable(true);
@@ -46,7 +62,7 @@ class TableComponent extends Component
             $this->addDetailsButton($table);
         }
         // $this->addRowCallback($table);
-        // debug($table);
+        // debug($this);
         return view($this->getView('table'))
             ->with('host', $this)
             ->with('table', $table);
@@ -284,7 +300,7 @@ class TableComponent extends Component
 
     public function previousPage()
     {
-        $this->page = max(1, $this->page - 1);
+        $this->{$this->pageQueryString} = max(1, $this->{$this->pageQueryString} - 1);
         if($this->scrollUp) {
             $this->ensureTable();
             $this->emit('navigateTo', '#' . $this->table->getId());
@@ -293,7 +309,7 @@ class TableComponent extends Component
 
     public function nextPage()
     {
-        $this->page = $this->page + 1;
+        $this->{$this->pageQueryString}++;
         if($this->scrollUp) {
             $this->ensureTable();
             $this->emit('navigateTo', '#' . $this->table->getId());
@@ -302,7 +318,7 @@ class TableComponent extends Component
 
     public function gotoPage($page)
     {
-        $this->page = $page;
+        $this->{$this->pageQueryString} = $page;
         if($this->scrollUp) {
             $this->ensureTable();
             $this->emit('navigateTo', '#' . $this->table->getId());
@@ -375,5 +391,26 @@ class TableComponent extends Component
     {
         $this->rowsReady = false;
         $this->ensureTable(true);
+    }
+
+    public function getPublicPropertiesDefinedBySubClass()
+    {
+        $data = parent::getPublicPropertiesDefinedBySubClass();
+        $data[$this->searchQueryString] = $this->{$this->searchQueryString};
+        $data = $this->addPaginatorPublicPropertiesDefinedBySubClass($data);
+        return $data;
+    }
+
+    public function __get($property)
+    {
+        $p = $this->WithPagination__get($property);
+        if($p !== null) return $p;
+        return $this->TableSearchQuery__get($property);
+    }
+
+    public function __set($property, $value)
+    {
+        $this->WithPagination__set($property, $value);
+        $this->TableSearchQuery__set($property, $value);
     }
 }
