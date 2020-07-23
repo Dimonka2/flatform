@@ -35,6 +35,10 @@ class TableFilter extends Element
                 return Flatform::render([
                     ['div', 'class' => 'col-md-12', [$checkbox]]
                 ]);
+            case 'text':
+                return Flatform::render([
+                    ['text', 'label' => $this->title, 'col' => 12, 'value' => $value, 'wire:model.debounce.500ms' => 'filtered.' . $this->name,]
+                ]);
             case 'select':
                 $list = $this->list;
                 if($list instanceof Closure) $list = $list(); // allow funciton as a list parameter

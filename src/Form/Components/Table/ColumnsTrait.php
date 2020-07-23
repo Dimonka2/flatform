@@ -42,6 +42,7 @@ trait ColumnsTrait
             if($column->visible()) $count ++;
         }
         if($this->hasDetails()) $count ++;
+        if($this->hasSelect()) $count ++;
         return $count;
     }
 

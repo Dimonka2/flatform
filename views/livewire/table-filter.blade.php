@@ -17,12 +17,13 @@
                 $checkbox,
             ]]
         ])
-        @break
+    @break
     @case('select')
         @php
             $select = array_merge(
                 ['select', 'label' => $title,
                     'selected' => $value,
+                    'name' => $name,
                     'wire:model' => 'filtered.' . $name,
                     'col' => 12, 'list' => $filter->getList()
                 ],
@@ -32,6 +33,19 @@
 
         @endphp
         @form([$select])
-        @break
-    @default
+    @break
+    @case('text')
+        @php
+            $_text = array_merge(
+                ['text', 'label' => $title,
+                    'value' => $value,
+                    'name' => $name,
+                    'wire:model.debounce.500ms' => 'filtered.' . $name,
+                    'col' => 12,
+                ],
+                $filter->getOptions([])
+            );
+        @endphp
+        @form([ $_text ])
+    @break
 @endswitch

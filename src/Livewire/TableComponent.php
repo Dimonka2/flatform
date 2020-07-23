@@ -414,5 +414,6 @@ class TableComponent extends Component
     {
         $this->WithPagination__set($property, $value);
         $this->TableSearchQuery__set($property, $value);
+        // parent::__set($property, $value);
     }
 }
