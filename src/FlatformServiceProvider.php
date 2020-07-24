@@ -22,6 +22,26 @@ class FlatformServiceProvider extends ServiceProvider
         AliasLoader::getInstance(FlatformService::config('flatform.aliases', []));
     }
 
+    protected function bootBladeRelateItems()
+    {
+        Blade::directive(FlatformService::config('flatform.blade_directive', 'form'), function ($form) {
+            return "<?php echo Flatform::render($form); ?>";
+        });
+        $this->loadViewsFrom(
+            FlatformService::config('flatform.views_directory', __DIR__.'/../views'), 'flatform');
+
+        Route::group($this->routeConfig(), function () {
+            $this->loadRoutesFrom(__DIR__.'/routes.php');
+        });
+        if(FlatformService::livewire() ) {
+            \Livewire\Livewire::component('flatform.table', \dimonka2\flatform\Livewire\TableComponent::class);
+            \Livewire\Livewire::component('flatform.table-row', \dimonka2\flatform\Livewire\TableRowComponent::class);
+            \Livewire\Livewire::component('flatform.actions', \dimonka2\flatform\Livewire\ActionComponent::class);
+            \Livewire\Livewire::component('flatform.form', \dimonka2\flatform\Livewire\FormComponent::class);
+        }
+        $this->registerMarcos();
+    }
+
     /**
      * Bootstrap services.
      *
@@ -39,24 +59,10 @@ class FlatformServiceProvider extends ServiceProvider
             $this->publishes([
                 __DIR__.'/../lang' => resource_path('lang/vendor/flatform'),
             ]);
-            if(FlatformService::config('flatform.test')) $this->loadViewsFrom(__DIR__.'/../views', 'flatform');
-        } else {
-            Blade::directive(FlatformService::config('flatform.blade_directive', 'form'), function ($form) {
-                return "<?php echo Flatform::render($form); ?>";
-            });
-            $this->loadViewsFrom(
-                FlatformService::config('flatform.views_directory', __DIR__.'/../views'), 'flatform');
+            if(app()->runningUnitTests()) $this->bootBladeRelateItems();
 
-            Route::group($this->routeConfig(), function () {
-                $this->loadRoutesFrom(__DIR__.'/routes.php');
-            });
-            if(FlatformService::livewire() ) {
-                \Livewire\Livewire::component('flatform.table', \dimonka2\flatform\Livewire\TableComponent::class);
-                \Livewire\Livewire::component('flatform.table-row', \dimonka2\flatform\Livewire\TableRowComponent::class);
-                \Livewire\Livewire::component('flatform.actions', \dimonka2\flatform\Livewire\ActionComponent::class);
-                \Livewire\Livewire::component('flatform.form', \dimonka2\flatform\Livewire\FormComponent::class);
-            }
-            $this->registerMarcos();
+        } else {
+           $this->bootBladeRelateItems();
 
         }
         $this->app->bind('flatform', FlatformService::class);
