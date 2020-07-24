@@ -28,7 +28,8 @@ class TableComponent extends Component
     public $selectAll = false;
     public $search;
     public $searchDebounce = 500;
-    public $order;
+    public $order = "";
+    public $defaultOrder;
     public $length = 10;
     public $class;
     public $expanded = [];
@@ -44,14 +45,6 @@ class TableComponent extends Component
     protected $table;
     protected $rowsReady;
     protected $scrollUp = true;
-
-
-    public function getUpdatesQueryString()
-    {
-        $query = array_merge([$this->searchQueryString => ['except' => '']],
-            parent::getUpdatesQueryString());
-        return $query;
-    }
 
     public function render()
     {
@@ -73,7 +66,9 @@ class TableComponent extends Component
         if(!$this->table) $this->table = $this->getTable();
         if(!$prepareRows || $this->rowsReady) return;
         $table = $this->table;
+        if(!$this->defaultOrder) $this->defaultOrder = $this->table->getOrder();
         if($this->order) $table->setOrder($this->order);
+
         $table->setLength($this->length);
         if( $table->hasSearch() ) $table->setSearch($this->search);
         $this->redirectFilters($table);
@@ -300,7 +295,7 @@ class TableComponent extends Component
 
     public function previousPage()
     {
-        $this->{$this->pageQueryString} = max(1, $this->{$this->pageQueryString} - 1);
+        $this->page = max(1, $this->page - 1);
         if($this->scrollUp) {
             $this->ensureTable();
             $this->emit('navigateTo', '#' . $this->table->getId());
@@ -309,7 +304,7 @@ class TableComponent extends Component
 
     public function nextPage()
     {
-        $this->{$this->pageQueryString}++;
+        $this->page++;
         if($this->scrollUp) {
             $this->ensureTable();
             $this->emit('navigateTo', '#' . $this->table->getId());
@@ -318,7 +313,7 @@ class TableComponent extends Component
 
     public function gotoPage($page)
     {
-        $this->{$this->pageQueryString} = $page;
+        $this->page = $page;
         if($this->scrollUp) {
             $this->ensureTable();
             $this->emit('navigateTo', '#' . $this->table->getId());
@@ -398,6 +393,7 @@ class TableComponent extends Component
         $data = parent::getPublicPropertiesDefinedBySubClass();
         $data[$this->searchQueryString] = $this->{$this->searchQueryString};
         $data = $this->addPaginatorPublicPropertiesDefinedBySubClass($data);
+        $data = $this->addSearchPublicPropertiesDefinedBySubClass($data);
         return $data;
     }
 
