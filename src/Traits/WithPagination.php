@@ -53,19 +53,20 @@ trait WithPagination
         return request()->query($this->pageQueryString, $this->page);
     }
 
-    public function __get($property)
+    protected function paginator__get($property)
     {
         if ($property == $this->pageQueryString) {
-            return $this->page;
+            return [$this->page];
         }
       }
 
-      public function __set($property, $value)
+      protected function paginator__set($property, $value)
       {
         if ($property == $this->pageQueryString) {
             $this->page = $value;
+            return $this;
         }
-        return $this;
+
       }
 
       protected function addPaginatorPublicPropertiesDefinedBySubClass($data)

@@ -6,43 +6,45 @@ trait TableSearchQuery
 {
     protected $searchQueryString    = 'search';
     protected $filterQueryString    = 'filtered';
-    protected $orderQueryString     = 'order';
+    protected $orderQueryString     = 'sort';
 
     public function initializeTableSearchQuery()
     {
+        $table = $this->getTable();
+        $defaultOrder = $table->setOrder($table->getOrder())->getOrder();
+
         $this->updatesQueryString = array_merge([$this->searchQueryString => ['except' => '']], $this->updatesQueryString);
         $this->updatesQueryString = array_merge([$this->filterQueryString => ['except' => []]], $this->updatesQueryString);
-        $this->updatesQueryString = array_merge([$this->orderQueryString => ['except' => $this->defaultOrder]], $this->updatesQueryString);
+        $this->updatesQueryString = array_merge([$this->orderQueryString => ['except' => $defaultOrder]], $this->updatesQueryString);
         $this->search   = request()->query($this->searchQueryString , $this->search);
         $this->filtered = request()->query($this->filterQueryString , $this->filtered);
-        $this->order    = request()->query($this->orderQueryString  , $this->defaultOrder);
+        $this->order    = request()->query($this->orderQueryString  , $defaultOrder);
     }
 
-    public function __get($property)
+    protected function search__get($property)
     {
-        debug($property);
-        debug($this->order);
-
         if ($property == $this->searchQueryString) {
-            return $this->search;
+            return [$this->search];
         } elseif ($property == $this->filterQueryString) {
-            return $this->filtered;
+            return [$this->filtered];
         }elseif ($property == $this->orderQueryString) {
-            return $this->order;
+            return [$this->order];
         }
     }
 
-    public function __set($property, $value)
+    protected function search__set($property, $value)
     {
         // debug($property, $value);
         if ($property == $this->searchQueryString) {
             $this->search = $value;
+            return $this;
         } elseif($property == $this->filterQueryString) {
             $this->filtered = $value;
+            return $this;
         } elseif($property == $this->orderQueryString) {
             $this->order = $value;
+            return $this;
         }
-        return $this;
     }
 
     protected function addSearchPublicPropertiesDefinedBySubClass($data)

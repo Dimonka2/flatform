@@ -14,14 +14,8 @@ use dimonka2\flatform\Traits\TableSearchQuery;
 
 class TableComponent extends Component
 {
-    use WithPagination{
-        __get as WithPagination__get;
-        __set as WithPagination__set;
-    }
-    use TableSearchQuery{
-        __get as TableSearchQuery__get;
-        __set as TableSearchQuery__set;
-    }
+    use TableSearchQuery;
+    use WithPagination;
 
     protected $idField = 'id';
 
@@ -29,7 +23,6 @@ class TableComponent extends Component
     public $search;
     public $searchDebounce = 500;
     public $order = "";
-    public $defaultOrder;
     public $length = 10;
     public $class;
     public $expanded = [];
@@ -66,7 +59,6 @@ class TableComponent extends Component
         if(!$this->table) $this->table = $this->getTable();
         if(!$prepareRows || $this->rowsReady) return;
         $table = $this->table;
-        if(!$this->defaultOrder) $this->defaultOrder = $this->table->getOrder();
         if($this->order) $table->setOrder($this->order);
 
         $table->setLength($this->length);
@@ -399,17 +391,19 @@ class TableComponent extends Component
 
     public function __get($property)
     {
-        $p = $this->WithPagination__get($property);
-        if($p !== null) return $p;
-        $p = $this->TableSearchQuery__get($property);
-        if($p !== null) return $p;
+        $p = $this->paginator__get($property);
+        if(is_array($p)) return $p[0];
+        $p = $this->search__get($property);
+        if(is_array($p)) return $p[0];
         return parent::__get($property);
     }
 
     public function __set($property, $value)
     {
-        $this->WithPagination__set($property, $value);
-        $this->TableSearchQuery__set($property, $value);
+        $p = $this->paginator__set($property, $value);
+        if($p) return;
+        $p = $this->search__set($property, $value);
+        if($p) return;
         // parent::__set($property, $value);
     }
 }
