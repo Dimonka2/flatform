@@ -246,7 +246,7 @@ class Column implements IDataProvider
      */
     public function getSort()
     {
-        return $this->sort;
+        return $this->table->getOrder() ? $this->sort : false;
     }
 
     /**

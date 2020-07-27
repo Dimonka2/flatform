@@ -317,9 +317,10 @@ class TableComponent extends Component
      */
     protected function getInfo()
     {
-        if($this->info === false) return;
         $table = $this->table;
         $selected = $table->getSelected();
+        if(!$selected && $this->info === false ) return;
+
         if($selected){
             $this->info = trans_choice('flatform::table.selected', $selected, ['value' => $selected]);
             // render actions
