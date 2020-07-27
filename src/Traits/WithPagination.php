@@ -29,21 +29,25 @@ trait WithPagination
     public function previousPage()
     {
         $this->page += -1;
+        $this->afterPageChange();
     }
 
     public function nextPage()
     {
         $this->page += 1;
+        $this->afterPageChange();
     }
 
     public function gotoPage($page)
     {
         $this->page = $page;
+        $this->afterPageChange();
     }
 
     public function resetPage()
     {
         $this->page = 1;
+        $this->afterPageChange();
     }
 
     public function resolvePage()
@@ -66,7 +70,6 @@ trait WithPagination
             $this->page = $value;
             return $this;
         }
-
       }
 
       protected function addPaginatorPublicPropertiesDefinedBySubClass($data)

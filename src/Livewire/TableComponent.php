@@ -318,31 +318,13 @@ class TableComponent extends Component
         return $html;
     }
 
-    public function previousPage()
+    protected function afterPageChange()
     {
-        $this->page = max(1, $this->page - 1);
         if($this->scrollUp) {
-            $this->ensureTable();
-            $this->emit('navigateTo', '#' . $this->table->getId());
+            $table = $this->getTable();
+            $this->emit('navigateTo', '#' . $table->getId());
         }
-    }
 
-    public function nextPage()
-    {
-        $this->page++;
-        if($this->scrollUp) {
-            $this->ensureTable();
-            $this->emit('navigateTo', '#' . $this->table->getId());
-        }
-    }
-
-    public function gotoPage($page)
-    {
-        $this->page = $page;
-        if($this->scrollUp) {
-            $this->ensureTable();
-            $this->emit('navigateTo', '#' . $this->table->getId());
-        }
     }
 
     /**
