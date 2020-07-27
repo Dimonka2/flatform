@@ -54,12 +54,45 @@ class TableComponent extends Component
             ->with('table', $table);
     }
 
+    protected function processDynamicProperties(Table $table)
+    {
+        if(!$table->getQuery()){
+            if (method_exists(static::class, $method = 'getQuery')) {
+                $table->setQuery($this->{$method}());
+            }
+        }
+        if(!$table->hasSelect()){
+            if (method_exists(static::class, $method = 'getSelect')) {
+                $table->setSelect($this->{$method}());
+            }
+        }
+        if(!$table->hasDetails()){
+            if (method_exists(static::class, $method = 'getDetails')) {
+                $table->setDetails($this->{$method}());
+            }
+        }
+
+        if(!$table->hasActions()){
+            if (method_exists(static::class, $method = 'getActions')) {
+                $table->setActions($this->{$method}());
+            }
+        }
+
+        if(!$table->getFilters()){
+            if (method_exists(static::class, $method = 'getFilters')) {
+                $table->setFilters($this->{$method}());
+            }
+        }
+
+    }
+
     protected function ensureTable($prepareRows = false)
     {
         if(!$this->table) $this->table = $this->getTable();
         if(!$prepareRows || $this->rowsReady) return;
         $table = $this->table;
         if($this->order) $table->setOrder($this->order);
+        $this->processDynamicProperties($table);
 
         $table->setLength($this->length);
         if( $table->hasSearch() ) $table->setSearch($this->search);

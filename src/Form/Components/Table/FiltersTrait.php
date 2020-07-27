@@ -36,6 +36,13 @@ trait FiltersTrait
         return $this->filters;
     }
 
+    public function setFilters(?array $filters)
+    {
+        $this->createFilters($filters ?? []);
+        return $this;
+    }
+
+
     public function renderFilters()
     {
         $html = '';

@@ -373,7 +373,7 @@ class Table extends ElementContainer
      */
     public function setDetails($details)
     {
-        $this->details = $details;
+        $this->createDetails($details);
 
         return $this;
     }
@@ -439,7 +439,7 @@ class Table extends ElementContainer
      */
     public function setSelect($select)
     {
-        $this->select = $select;
+        $this->createSelect($select);
 
         return $this;
     }
@@ -494,6 +494,13 @@ class Table extends ElementContainer
     public function getActions()
     {
         return $this->actions;
+    }
+
+    public function setActions($actions)
+    {
+        $this->createActions($actions);
+
+        return $this;
     }
 
     /**

@@ -41,6 +41,7 @@ class TableDetails
     {
         $html = 'No detail callbak!';
         if($this->callback instanceof Closure) $html = ($this->callback)($row);
+        if(is_array($html)) $html = $this->table->renderItems($html);
         $td = ['td', 'colspan' => $this->table->getVisibleColumnCount(), 'text' => $html];
         if($this->tdClass) $td['class'] = $this->tdClass;
         $tr = ['tr', [$td]];

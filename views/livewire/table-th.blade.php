@@ -1,7 +1,7 @@
 @if($column)
     <th class="text-nowrap text-truncate pr-0 {{$column->getClass()}}"
         wire:click.prevent='sortColumn("{{$column->getName()}}")'
-        style="{{$column->getWidth() ? 'width: ' . $column->getWidth() : '' }} ">
+        style="{{$column->getWidth() ? 'width:' . $column->getWidth() . ';': '' }} ">
 
         @if($column->getSort())
             <a href="#" class="d-block">
