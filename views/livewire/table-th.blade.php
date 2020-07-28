@@ -2,8 +2,7 @@
     <th class="text-nowrap text-truncate pr-0 {{$column->getClass()}}"
         wire:click.prevent='sortColumn("{{$column->getName()}}")'
         style="{{$column->getWidth() ? 'width:' . $column->getWidth() . ';': '' }} ">
-
-        @if($column->getSort())
+        @if($column->getSort() !== false)
             <a href="#" class="d-block">
                 <div class="float-right text-nowrap">
                     @if($order == 'ASC')
@@ -26,6 +25,7 @@
         @endif
     </th>
 @else
+
     {{-- Special case for select or details --}}
         <th class="text-nowrap text-truncate {{$class ?? ''}}"{!!
             ($width ?? false) ? " style=\"width:$width;\"" : ''!!}>
