@@ -1,8 +1,9 @@
 @if($column)
+    @php($sort = $column->getSort() !== false)
     <th class="text-nowrap text-truncate pr-0 {{$column->getClass()}}"
-        wire:click.prevent='sortColumn("{{$column->getName()}}")'
+        @if($sort) wire:click.prevent='sortColumn("{{$column->getName()}}")' @endif
         style="{{$column->getWidth() ? 'width:' . $column->getWidth() . ';': '' }} ">
-        @if($column->getSort() !== false)
+        @if($sort)
             <a href="#" class="d-block">
                 <div class="float-right text-nowrap">
                     @if($order == 'ASC')
