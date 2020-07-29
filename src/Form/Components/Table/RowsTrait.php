@@ -84,7 +84,6 @@ trait RowsTrait
         $this->rows->clear();
 
         $this->count = $query->count();
-        $this->filtered_count = $this->count;
 
         // apply filters
         foreach($this->filters as $filter){
@@ -95,7 +94,6 @@ trait RowsTrait
 
         if ( $this->search) {
             $query = $this->addSearch($query, $this->search);
-            $this->filtered_count = $query->count();
         }
 
         // $query = $query->limit($this->length)->offset($this->start ?? 0);
@@ -120,6 +118,7 @@ trait RowsTrait
 
         $query = $query->addSelect($fields);
         $items = $query->paginate($this->length, ['*'], $this->id . '-p', $this->page);
+        $this->filtered_count = $items->total();
 
         $this->page = $items->currentPage();
         $this->models = $items;
