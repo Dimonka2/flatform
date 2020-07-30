@@ -47,7 +47,7 @@ trait TableSearchQuery
         }
     }
 
-    protected function addSearchPublicPropertiesDefinedBySubClass($data)
+    protected function addSearchPublicProperties($data)
     {
         $data[$this->searchQueryString] = $this->search;
         $data[$this->filterQueryString] = $this->filtered;

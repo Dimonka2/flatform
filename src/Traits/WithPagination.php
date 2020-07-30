@@ -72,7 +72,7 @@ trait WithPagination
         }
       }
 
-      protected function addPaginatorPublicPropertiesDefinedBySubClass($data)
+      protected function addPaginatorPublicProperties($data)
       {
           $data[$this->pageQueryString] = $this->page;
           return $data;

@@ -400,8 +400,8 @@ class TableComponent extends Component
     {
         $data = parent::getPublicPropertiesDefinedBySubClass();
         $data[$this->searchQueryString] = $this->{$this->searchQueryString};
-        $data = $this->addPaginatorPublicPropertiesDefinedBySubClass($data);
-        $data = $this->addSearchPublicPropertiesDefinedBySubClass($data);
+        $data = $this->addPaginatorPublicProperties($data);
+        $data = $this->addSearchPublicProperties($data);
         return $data;
     }
 
