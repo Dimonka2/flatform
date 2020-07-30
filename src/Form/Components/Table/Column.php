@@ -18,6 +18,7 @@ class Column implements IDataProvider
     protected $sort;            // disable sort by this column or make it "DESC"
     protected $system;          // virtual field without sort and search
     protected $class;           // field class
+    protected $titleClass;      // column title class
     protected $hide;            // this column is not displayed
     protected $raw;             // this does mean that the select is calculated value and it should be used DB:raw select
     protected $noSelect;        // special case for some columns there is no need to add a select, like "count"
@@ -47,7 +48,7 @@ class Column implements IDataProvider
         $definition = ElementFactory::preprocessElement($definition, false);
 
         $this->readSettings($definition, [
-            'name', 'title', 'search', 'sort', 'system', 'class', 'hide', 'width', 'noSelect', 'as', 'raw',
+            'name', 'title', 'search', 'sort', 'system', 'class', 'titleClass', 'hide', 'width', 'noSelect', 'as', 'raw',
         ]);
         if($this->sort === null) $this->sort = !$this->system;
 
@@ -58,7 +59,7 @@ class Column implements IDataProvider
     public function renderDefinition($order)
     {
         $def = ['th'];
-        $def['class'] = 'text-nowrap text-truncate ' . $this->class;
+        $def['class'] = 'text-nowrap text-truncate ' . $this->class . ' ' .  $this->titleClass;
         if($this->width) $def['style'] = 'width: ' . $this->width . ';';
         if ($this->sort && $order !== false) {
             switch ($order[$this->name] ?? null) {
