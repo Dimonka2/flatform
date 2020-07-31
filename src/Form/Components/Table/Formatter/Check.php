@@ -1,13 +1,8 @@
 <?php
 namespace dimonka2\flatform\Form\Components\Table\Formatter;
 
-use dimonka2\flatform\FlatformService;
-use dimonka2\flatform\Traits\SettingReaderTrait;
-use dimonka2\flatform\Form\Components\Table\IColumnFormat;
-
-class Check extends BaseFormatter implements IColumnFormat
+class Check extends BaseFormatter
 {
-    use SettingReaderTrait;
     protected $class = 'text-center';
     protected $checked = 'fa fa-check text-success';
     protected $unchecked = 'fa fa-times text-danger';
@@ -24,7 +19,7 @@ class Check extends BaseFormatter implements IColumnFormat
     protected function transformValue($value)
     {
         $class = !!$value ? $this->checked : $this->unchecked;
-        $html = FlatformService::render([['i', 'class' => $class  ]]);
+        $html = [['i', 'class' => $class  ]];
         // debug($value . ' = ' . $html);
         return $html;
     }

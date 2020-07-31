@@ -37,10 +37,15 @@ abstract class BaseFormatter implements IColumnFormat
 
     protected function render($value)
     {
-        $form = [[$this->tag,
-            'class' => $this->getValueClass($value),
-            'text' => $this->transformValue($value)]];
-        return FlatformService::render($form);
+        $value = $this->transformValue($value);
+        $element = [$this->tag,
+            'class' => $this->getValueClass($value)];
+        if(is_array($value)) {
+            $element['items'] = $value;
+        } else {
+            $element['text'] = $value;
+        }
+        return FlatformService::render([$element]);
     }
 
     public function __invoke($value, $column, $row)

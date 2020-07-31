@@ -2,12 +2,9 @@
 namespace dimonka2\flatform\Form\Components\Table\Formatter;
 
 use Illuminate\Support\Str;
-use dimonka2\flatform\Traits\SettingReaderTrait;
-use dimonka2\flatform\Form\Components\Table\IColumnFormat;
 
-class Link extends BaseFormatter implements IColumnFormat
+class Link extends BaseFormatter
 {
-    use SettingReaderTrait;
     protected $route;
     protected $idField;
     protected $emptyString;

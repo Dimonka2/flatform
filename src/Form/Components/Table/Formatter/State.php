@@ -1,12 +1,8 @@
 <?php
 namespace dimonka2\flatform\Form\Components\Table\Formatter;
 
-use dimonka2\flatform\Traits\SettingReaderTrait;
-use dimonka2\flatform\Form\Components\Table\IColumnFormat;
-
-class State extends BaseFormatter implements IColumnFormat
+class State extends BaseFormatter
 {
-    use SettingReaderTrait;
     protected $icon = true;
     protected $emptyString;
     protected $flatstate;

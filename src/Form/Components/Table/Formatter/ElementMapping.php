@@ -12,6 +12,7 @@ class ElementMapping
         'number'        => Number::class,
         'state'         => State::class,
         'link'          => Link::class,
+        'str'           => Str::class,
     ];
 
     static protected function getBinding($type)

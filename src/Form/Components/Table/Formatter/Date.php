@@ -1,12 +1,10 @@
 <?php
 namespace dimonka2\flatform\Form\Components\Table\Formatter;
 
-use dimonka2\flatform\Traits\SettingReaderTrait;
-use dimonka2\flatform\Form\Components\Table\IColumnFormat;
+use Illuminate\Support\Carbon;
 
-class Date extends BaseFormatter implements IColumnFormat
+class Date extends BaseFormatter
 {
-    use SettingReaderTrait;
     protected $format;
     protected $emptyString;
 
@@ -21,7 +19,7 @@ class Date extends BaseFormatter implements IColumnFormat
     protected function transformValue($value)
     {
         if(!$value) return $this->emptyString;
-        $value = \Carbon\Carbon::parse($value);
+        $value = Carbon::parse($value);
         $value = $this->format ? $value->format($this->format) : $value->diffForHumans();
         return $value;
     }

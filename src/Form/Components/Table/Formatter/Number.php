@@ -1,13 +1,8 @@
 <?php
 namespace dimonka2\flatform\Form\Components\Table\Formatter;
 
-use dimonka2\flatform\Flatform;
-use dimonka2\flatform\Traits\SettingReaderTrait;
-use dimonka2\flatform\Form\Components\Table\IColumnFormat;
-
-class Number extends BaseFormatter implements IColumnFormat
+class Number extends BaseFormatter
 {
-    use SettingReaderTrait;
     protected $decimals = 0;
     protected $emptyString;
 
@@ -23,9 +18,9 @@ class Number extends BaseFormatter implements IColumnFormat
     {
         if(!$value) return $this->emptyString;
         $value = is_numeric($value) ? number_format($value, $this->decimals) : $value;
-        return  Flatform::render([
+        return  [
             ['div', 'class' => 'text-right', 'text' => $value],
-        ]);
+        ];
     }
 
 
