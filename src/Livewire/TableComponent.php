@@ -416,10 +416,8 @@ class TableComponent extends Component
 
     public function __set($property, $value)
     {
-        $p = $this->paginator__set($property, $value);
-        if($p) return;
-        $p = $this->search__set($property, $value);
-        if($p) return;
+        if($this->paginator__set($property, $value)) return;
+        if($this->search__set($property, $value)) return;
         // parent::__set($property, $value);
     }
 }
