@@ -4,13 +4,14 @@ namespace dimonka2\flatform\Livewire;
 
 use Closure;
 use Livewire\Component;
+use Illuminate\Support\Str;
 use dimonka2\flatform\Flatform;
 use dimonka2\flatform\FlatformService;
 use dimonka2\flatform\Traits\WithPagination;
 use dimonka2\flatform\Form\Contracts\IElement;
+use dimonka2\flatform\Traits\TableSearchQuery;
 use dimonka2\flatform\Form\Contracts\IContainer;
 use dimonka2\flatform\Form\Components\Table\Table;
-use dimonka2\flatform\Traits\TableSearchQuery;
 
 class TableComponent extends Component
 {
@@ -297,7 +298,13 @@ class TableComponent extends Component
                 return $this->getInfo();
             case 'filters':
                 return $this->renderFilters();
-            }
+            case 'top':
+            case 'bottom':
+                if (method_exists(static::class, $method = 'get' . Str::ucfirst($element))) {
+                    return $this->{$method}();
+                }
+                return;
+        }
     }
 
 

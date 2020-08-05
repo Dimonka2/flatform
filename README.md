@@ -96,7 +96,7 @@ protected function getTable(): ?Table
             ],
             'order' => 'updated_at',
             'query' => User::whereNull('disabled_at'),
-        ], Flatform::context());
+        ]);
 
         return $table;
     }
@@ -106,31 +106,88 @@ This component will generate a table with a user list with 4 columns.
 
 ### Table properties
 
-* `lengthOptions` - number of itmems per page in filter dropdown. Default: [10, 20, 30, 50, 100]
-* `evenOddClasses` - array with even/odd classes. Default: ['even', 'odd'];
-* `query` - Laravel Builder query that might contain any kind of joins, whereExists or Counts 
-* `search` - setting this property to false will disable search functionality
-* `select` - enable and define row select options as sub array options 
-* `actions` - define table actions as sub array
-* `columns` - sub array with table column definitions
-* `rows`  - sub array with table rows definitions. You can define content of rows and columns without setting up `query` property 
-* `details` - define table row details as sub array options
-* `formatters` - lookup list for column formatters
-* `formatFunction` - this is a table td element format function
-* `info` - setting this property to false will hide info column
-* `links` - setting this property to false will hide pagination links
-* `rowRenderCallback` - callback required for a livewire table to separate table from rows rendering
+| Property | Default | Usage |
+| -------- | ------- | ----- |
+|`actions`|null|Define table actions as sub array|
+|`columns`|[]|Sub array with table column definitions. See "Table Column properties" section|
+|`details`|null|Enables table row details as sub array options|
+|`lengthOptions`| [10, 20, 30, 50, 100] |Number of itmems per page in filter dropdown.|
+|`evenOddClasses`| ['even', 'odd'] |Array with even/odd classes|
+|`query`|null|Laravel Builder query that might contain any kind of joins, whereExists, with or Counts|
+|`search`|null|Setting this property to `false` will disable and hide table search functionality|
+|`select`|null|Enables and define row select options as sub array options|
+|`rows`|null|Sub array with table rows definitions. You can define content of rows and columns without setting up `query` property|
+|`formatters`|[]|Lookup array for custom column formatters|
+|`formatFunction`|null|TD element format closure function|
+|`info`|null|Setting this property to `false` will hide info column|
+|`links`|null|Setting this property to `false` will hide pagination links|
+|`rowRenderCallback`|null|Callback required for a livewire table to separate table from rows rendering, currently unused|
+|`order`|null|Default ordered column. Can be defined as a column name or as `false` to disable table ordering|
 
 ### Table Column properties
-* `name`  -  field name, that is queried from the query via select, also the row data will use field name as a key
-* `title` - column title used in a header. Title might be in Flatform rendering format.
-* `search` - setting this property to false will exclude this column from searching
-* `sort` - setting to false will disable sort by this column, setting column to "DESC" will make DESC as default (first) sort order
-* `system` - setting this property to true means a virtual (calculated) field with disabled sort and search
-* `class`  - this class will be added to column's TD and TH tag classes
-* `hide` - true denotes that this column is not displayed
-* `raw` - this option oes mean that the select is calculated value and it should be used DB:raw select
-* `noSelect` - setting this to true denotes a special case for some columns there is no need to add a select, like "count"
-* `as` - this property specifies how this column will be mapped to the Model attributes. If this field is undefined for a column fields with table name like `users.name` will have a replacement of dot to '__' e.g.  `users__name`
-* `format` - column format: callable (IColumnFormat), container or template name 
-* `width` - column width. Column width will be added to the header style and each TD tag style.
+| Property | Default | Usage |
+| -------- | ------- | ----- |
+|`name`|null|Field name, this name is queried from the query via select, also the row data will use field name as a key|
+|`title`|null|Column title used in a header. Title might be in Flatform rendering format|
+|`search`|false|Setting this property to true will include this column in text search query|
+|`sort`|ASC|Setting to false will disable sort by this column, setting column to "DESC" will make DESC as default (first) sort order|
+|`system`|false|Setting this property to true means a virtual (calculated) field without adding it to select query statement with disabled sort and search. Useful for calculated fields and menu elements|
+|`class`|null|Class will be added to column's TD and TH tag class attribute|
+|`hide`|false| `true` denotes that this column will not be rendered|
+|`raw`|null|This option might be used when you need a calculated value and it used as DB:raw select statement|
+|`noSelect`|null|Setting this to true denotes a special case for some columns are in a select statement and there is no need to add an extra select, like “count()”|
+|`as`|see usage|This property specifies field alias and how this column will be mapped to the Model attributes. If this field is undefined for a column fields with table name like `users.name` will have a replacement of dot to '__' e.g.  `users__name`|
+|`format`|null|Column format: callable (IColumnFormat), Flatform language definition or container|
+|`_format`|null|Quick column format: 'number','link', 'check', 'str'|
+|`width`|null|Column width style. Column width will be added to the header style and each TD tag style|
+
+### Table Details properties
+Table Details is a pull down row that may contain any additional details connected to the row including even Livewire components. 
+
+| Property | Default | Usage |
+| -------- | ------- | ----- |
+|`expander`| Flatform expander| You may override default table expander by defining this property. See default expander setup in `TableDetails::default_expander` |
+|`callback`|null|Closure function that should return the content of the row details, defined as `function ($row){}`|
+|`disabled`|false|Setting this option to true will disable details|
+|`title`|null|Detail column title|
+|`class`|null|Style classes that will be applied to the expander TD element|
+|`trClass`|null|Style classes that will be applied to the details TR element|
+|`tdClass`|null|Style classes that will be applied to the details TD element|
+|`width`|null|Expander column width style|
+
+Example of table with details:
+
+```php
+protected function getTable(): ?Table
+    {
+        $table = new Table([
+            'columns' => [
+                // ...
+            ],
+            'details' => [
+                'callback' => function($row) {
+                    // get a queried model from the row
+                    $model = $row->_item;
+                    return 'Model name: <strong>' . $model->name . '</strong>';
+                    // or alternatively in Flatform language:
+                    return [['span', 'text' => 'Model name: '], ['strong', 'text' => $model->name]];
+                }
+            ],
+        ]);
+
+        return $table;
+    }
+}
+```
+
+### Table Select properties
+Table Select is an additional checkbox in most left column that enables to select table rows.
+| Property | Default | Usage |
+| -------- | ------- | ----- |
+|`checkbox`|Flatform checkbox|Definition of the checkbox in flatform format|
+|`headerCheckbox`|Flatform checkbox|Definition of the checkbox in header that works as "select all" in flatform format|
+|`column`|???||
+|`disabled`|false|Setting this option to true will disable Table Select|
+|`width`|null|Checkbox column width style|
+|`selectCallback`|null|Callback function used internally by the TableComponent to determin whether the row is selcted|
+|`class`|null|Style classes that will be applied to the checkbox TD element|
