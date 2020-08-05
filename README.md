@@ -109,13 +109,14 @@ This component will generate a table with a user list with 4 columns.
 | Property | Default | Usage |
 | -------- | ------- | ----- |
 |`actions`|null|Define table actions as sub array|
-|`columns`|[]|Sub array with table column definitions. See "Table Column properties" section|
-|`details`|null|Enables table row details as sub array options|
-|`lengthOptions`| [10, 20, 30, 50, 100] |Number of itmems per page in filter dropdown.|
+|`columns`|[]|Sub array with table column definitions. See **Table Column properties** section|
+|`details`|null|Enables table row details as sub array options. See **Table Details properties** section|
+|`filters`|null|Enables table query filters as sub array options. See **Table Filter properties** section|
+|`lengthOptions`| [10, 20, 30, 50, 100] |Number of items per page in filter dropdown|
 |`evenOddClasses`| ['even', 'odd'] |Array with even/odd classes|
 |`query`|null|Laravel Builder query that might contain any kind of joins, whereExists, with or Counts|
 |`search`|null|Setting this property to `false` will disable and hide table search functionality|
-|`select`|null|Enables and define row select options as sub array options|
+|`select`|null|Enables and define row select options as sub array options. See **Table Select properties** section|
 |`rows`|null|Sub array with table rows definitions. You can define content of rows and columns without setting up `query` property|
 |`formatters`|[]|Lookup array for custom column formatters|
 |`formatFunction`|null|TD element format closure function|
@@ -187,7 +188,88 @@ Table Select is an additional checkbox in most left column that enables to selec
 |`checkbox`|Flatform checkbox|Definition of the checkbox in flatform format|
 |`headerCheckbox`|Flatform checkbox|Definition of the checkbox in header that works as "select all" in flatform format|
 |`column`|???||
-|`disabled`|false|Setting this option to true will disable Table Select|
+|`disabled`|false|Setting this option to `true` will disable Table Select|
 |`width`|null|Checkbox column width style|
 |`selectCallback`|null|Callback function used internally by the TableComponent to determin whether the row is selcted|
-|`class`|null|Style classes that will be applied to the checkbox TD element|
+|`class`|null|Style classes that will be applied to the selected row TR element|
+
+Example of table with Select that will highlight selected rows using class `table-primary`:
+
+```php
+protected function getTable(): ?Table
+    {
+        $table = new Table([
+            'columns' => [
+                // ...
+            ],
+            'select' => [
+                'class' => 'table-primary',
+            ], 
+        ]);
+
+        return $table;
+    }
+}
+```
+
+### Table Action properties
+
+Table actions should be defined together with TableSelect as they currently rendered for selected items.
+
+| Property | Default | Usage |
+| -------- | ------- | ----- |
+|`name`| |Action unique name. This can be ignored. See example.|
+|`position`|null|array where action is rendered: `selection`, `dropdown`, `row`, `row-dd`|
+|`title`| |action title or label|
+|`disabled`|false| Setting this option to `true` will disable this action|
+|`callback`||Action callback. This can be ignored. See example.|
+|`attributes`||All other elements. Those attributes are populated automatically from the unspecified action properties|
+
+Example of table with Table Select and Actions:
+
+```php
+    protected function getTable(): ?Table
+        {
+            return new Table([
+                'columns' => [
+                    // ...
+                ],
+                'select' => [
+                ], 
+                'actions' => [
+                    // in this case we just calling a normal Livewire action for this action
+                    ['title' => 'Disable selected users', 'position' => 'dropdown',
+                        'icon' => 'fa fa-ban', 'wire:click.prevent' => 'disableUsers', 'href' => '#'],
+                ],
+            ]);
+            
+        }
+    }
+    // handle action
+    public function disableUsers()
+    {
+        // get selected models
+        $users = $this->getSelected(true);
+        // disable users one by one
+        foreach ($users as $user) {
+            if($user->id != Auth::user()->id) {
+                $user->disabled = $disable;
+                $user->update();
+            }
+        }
+        // reload table rows in order to populate changes
+        $this->reload();        
+    }
+```
+
+### Table Filter properties
+Filter is a basic Flatform input control that is associated with persistent input and a closure function that can be attached to filter query based on the user input.
+| Property | Default | Usage |
+| -------- | ------- | ----- |
+|`name`|           | Filter name, assigned to input. This name is used to map filter input. Name has to be unique.|
+|`title`|          | Filter control title or label|
+|`type`|           | Filter type: checkbox, select, text|
+|`disabled`|false  | Disables filter|
+|`value`|          | Default value|
+|`list`|           | Item list for select, might be a closure|
+|`filterFunction`| | Filter callback in format: `function($query, $data) {}`|
