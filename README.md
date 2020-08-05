@@ -62,7 +62,7 @@ Depending on styles the code above will generate something like:
 * **Components**: alert, breadcrumb, button, dropdown, progress, tabs, widget, datatable, table
 * **Trait for datatable**
 * **HTML tags**: form, text, div, row (div with class "row"), col (div with class 'col-xx')
-* **Blade directives**: stack, include, yield, section, livewire
+* **Blade directives**: stack, include, yield, section, Livewire
 * **TableComponent**: Livewire table component
 
 ## Documentation
@@ -122,7 +122,7 @@ This component will generate a table with a user list with 4 columns.
 |`formatFunction`|null|TD element format closure function|
 |`info`|null|Setting this property to `false` will hide info column|
 |`links`|null|Setting this property to `false` will hide pagination links|
-|`rowRenderCallback`|null|Callback required for a livewire table to separate table from rows rendering, currently unused|
+|`rowRenderCallback`|null|Callback required for a Livewire table to separate table from rows rendering, currently unused|
 |`order`|null|Default ordered column. Can be defined as a column name or as `false` to disable table ordering|
 
 ### Table Column properties
@@ -273,3 +273,16 @@ Filter is a basic Flatform input control that is associated with persistent inpu
 |`value`|          | Default value|
 |`list`|           | Item list for select, might be a closure|
 |`filterFunction`| | Filter callback in format: `function($query, $data) {}`|
+
+
+Table also has few functions, that can be defined or overridden:
+| Function | Parameters | Usage |
+| -------- | ---------- | ----- |
+|`getQuery()`||Enables defining table query as a separate function|
+|`getSelect()`||Enables defining table Select as a separate function|
+|`getDetails()`||Enables defining table Details as a separate function|
+|`getActions()`||Enables defining table Actions as a separate function|
+|`getFilters()`||Enables defining table Filters as a separate function|
+|`getView()`|$viewName|By overriding this function you may replace default table views by your own views blades|
+|`getTable()`|||
+    public function getLengthOptions()

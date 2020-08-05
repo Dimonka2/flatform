@@ -1,6 +1,6 @@
 @if($column)
     @php($sort = $column->getSort() !== false)
-    <th class="text-nowrap text-truncate pr-0 {{$column->getClass()}}"
+    <th class="text-nowrap text-truncate pr-0 {{$column->class . ' ' . $column->titleClass}}"
         @if($sort) wire:click.prevent='sortColumn("{{$column->getName()}}")' @endif
         style="{{$column->getWidth() ? 'width:' . $column->getWidth() . ';': '' }} ">
         @if($sort)
