@@ -163,10 +163,15 @@ class Table extends ElementContainer
         return ElementMapping::map($name) ;
     }
 
-    protected function createDetails(array $details)
+    protected function createDetails(?array $details)
     {
+        if(!$details) {
+            $this->details = null;
+            return;
+        }
         $this->details = new TableDetails($this);
         $this->details->read(ElementFactory::preprocessElement($details, false));
+        return $this->details;
     }
 
     public function hasDetails()
@@ -179,10 +184,15 @@ class Table extends ElementContainer
         return $this->search !== false;
     }
 
-    protected function createSelect(array $select)
+    protected function createSelect(?array $select)
     {
+        if(!$select) {
+            $this->select = null;
+            return;
+        }
         $this->select = new TableSelect($this);
         $this->select->read(ElementFactory::preprocessElement($select, false));
+        return $this->select;
     }
 
     public function hasSelect()
@@ -195,10 +205,15 @@ class Table extends ElementContainer
         return !!$this->formatFunction;
     }
 
-    protected function createActions(array $actions)
+    protected function createActions(?array $actions)
     {
+        if(!$actions) {
+            $this->actions = null;
+            return;
+        }
         $this->actions = new Actions($this);
         $this->actions->read($actions);
+        return $this->actions;
     }
 
     public function hasActions()
