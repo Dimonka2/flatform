@@ -14,7 +14,7 @@ HTML control rendering helper for Laravel and Livewire
 
 - **Possibility to switch styles via config.** It is possible to declare several styles and switch between them. Option to switch styles at runtime is coming soon.
 
-- **Write less code.** Using this apprach you define control styles once and focus only on interface declaration.
+- **Write less code.** Using this approach you define control styles once and focus only on interface declaration.
 
 - **Livewire table component.** Unique Livewire table with sorting, search, filters, actions, row select, column formatters and sub details. 
 
@@ -104,7 +104,42 @@ protected function getTable(): ?Table
 ```
 This component will generate a table with a user list with 4 columns.
 
-### Table properties
+### Table component properties and functions
+Class: `dimonka2\flatform\Livewire\TableComponent`
+
+| Property | Default | Usage |
+| -------- | ------- | ----- |
+|`idField`|'id'|ID field that needs to be is equal to key column name field. This field is required to be properly setup if you use **Table Select** or **Table Details** functions|
+|`selectAll`|false|Indicates whether user has clicked 'Select all' checkbox|
+|`search`|null|Current search string|
+|`searchDebounce`|500|Search input bounce time, see Livewire documentation|
+|`order`|""|Currently ordered column name. The format could be a name as a string or an array like ['fieldName' => 'DESC] |
+|`length`|10| Currently selected number of elements per page|
+|`class`||??|
+|`expanded`|[]|Array of expanded row IDs|
+|`filtered`|[]|Array of filter values|
+|`selected`|[]|Array of selected row IDs|
+|`info`||  // make it false to exclude info column|
+|`table`||Contains the current instance of Table definition|
+|`rowsReady`|null|Indicates that table rows are queried and prepared for rendering|
+|`scrollUp`|true|Scrolls page up to the table header after paginator click|
+
+Table component has also few functions, that can be called, defined or overridden:
+| Function | Defined | Parameters | Usage |
+| -------- | ------- | ---------- | ----- |
+|`getTable()`|yes||This is the main function that returns Table class that describes the table properties. This function has to return class `dimonka2\flatform\Form\Components\Table\Table`|
+|`getQuery()`|no||Enables defining table query as a separate function, it has to return `Builder` class|
+|`getSelect()`|no||Enables defining table Select as a separate function|
+|`getDetails()`|no||Enables defining table Details as a separate function|
+|`getActions()`|no||Enables defining table Actions as a separate function|
+|`getFilters()`|no||Enables defining table Filters as a separate function|
+|`getView()`|yes|$viewName|By overriding this function you may replace default table views by your own views blades|
+|`getLengthOptions()`|yes||Enables to override length option: number of items per page in filter dropdown|
+
+
+
+### Table definition properties
+Class: `dimonka2\flatform\Form\Components\Table\Table` 
 
 | Property | Default | Usage |
 | -------- | ------- | ----- |
@@ -120,7 +155,6 @@ This component will generate a table with a user list with 4 columns.
 |`rows`|null|Sub array with table rows definitions. You can define content of rows and columns without setting up `query` property|
 |`formatters`|[]|Lookup array for custom column formatters|
 |`formatFunction`|null|TD element format closure function|
-|`info`|null|Setting this property to `false` will hide info column|
 |`links`|null|Setting this property to `false` will hide pagination links|
 |`rowRenderCallback`|null|Callback required for a Livewire table to separate table from rows rendering, currently unused|
 |`order`|null|Default ordered column. Can be defined as a column name or as `false` to disable table ordering|
@@ -190,7 +224,7 @@ Table Select is an additional checkbox in most left column that enables to selec
 |`column`|???||
 |`disabled`|false|Setting this option to `true` will disable Table Select|
 |`width`|null|Checkbox column width style|
-|`selectCallback`|null|Callback function used internally by the TableComponent to determin whether the row is selcted|
+|`selectCallback`|null|Callback function used internally by the TableComponent to determine whether the row is selected|
 |`class`|null|Style classes that will be applied to the selected row TR element|
 
 Example of table with Select that will highlight selected rows using class `table-primary`:
@@ -274,15 +308,3 @@ Filter is a basic Flatform input control that is associated with persistent inpu
 |`list`|           | Item list for select, might be a closure|
 |`filterFunction`| | Filter callback in format: `function($query, $data) {}`|
 
-
-Table also has few functions, that can be defined or overridden:
-| Function | Parameters | Usage |
-| -------- | ---------- | ----- |
-|`getQuery()`||Enables defining table query as a separate function|
-|`getSelect()`||Enables defining table Select as a separate function|
-|`getDetails()`||Enables defining table Details as a separate function|
-|`getActions()`||Enables defining table Actions as a separate function|
-|`getFilters()`||Enables defining table Filters as a separate function|
-|`getView()`|$viewName|By overriding this function you may replace default table views by your own views blades|
-|`getTable()`|||
-    public function getLengthOptions()
