@@ -10,7 +10,7 @@ class Input extends Element
 {
     public const input_fields = [
         'name', 'label', 'value', 'help', 'placeholder',
-        'error', 'col', 'readonly', 'disabled', 'required',
+        'error', 'col', 'readonly', 'disabled', 'required', 'wire_ignore',
     ];
     protected $defaultOptions = ['id', 'class', 'style', 'name', 'placeholder', 'value', 'disabled', 'required'];
 
@@ -20,6 +20,7 @@ class Input extends Element
     public $help;
     public $error;
     public $readonly;
+    public $wire_ignore;
     public $disabled;
     public $required;
     public $col;
@@ -90,6 +91,7 @@ class Input extends Element
                 $col = $this->createElement(
                     ['col', 'col' => $this->col ? $this->col : 6, '+class' => 'form-group', ]);
             }
+            if($this->wire_ignore) $col->setAttribute('wire:ignore', '');
             return $this->context->renderElement($col, $html);
         }
     }

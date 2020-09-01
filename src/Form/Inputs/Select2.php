@@ -11,6 +11,7 @@ class Select2 extends Input
     protected $selected;
     protected $ajax_url;
     protected $tags;
+    public $wire_ignore = 1;
 
     protected function read(array $element)
     {
