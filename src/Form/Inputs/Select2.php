@@ -3,6 +3,7 @@
 namespace dimonka2\flatform\Form\Inputs;
 
 use dimonka2\flatform\Form\Input;
+use Illuminate\Database\Eloquent\Model;
 
 class Select2 extends Input
 {
@@ -23,16 +24,22 @@ class Select2 extends Input
     protected function renderOptions()
     {
         $html = '';
+        $selected = $this->selected;
         if(!is_null($this->list)) {
             foreach($this->list as $key => $value){
                 $option = ['value' => $key];
                 if(!is_null($this->selected) && isset($this->selected[$key])) $option['selected'] = '';
                 $html .= $this->context->renderArray($option, 'option', $value);
             }
-        } elseif(!is_null($this->selected)) {
-            foreach($this->selected as $key => $value){
-                $option = ['value' => $key, 'selected' => ''];
-                $html .= $this->context->renderArray($option, 'option', $value);
+        } elseif(!is_null($selected)) {
+            if(is_countable($selected)) {
+                foreach($selected as $key => $value){
+                    $option = ['value' => $key, 'selected' => ''];
+                    $html .= $this->context->renderArray($option, 'option', $value);
+                }
+            } elseif($selected instanceof Model) {
+                $option = ['value' => $selected->getKey(), 'selected' => ''];
+                $html .= $this->context->renderArray($option, 'option', $selected->name ?? $selected->title);
             }
         }
         return $html;
