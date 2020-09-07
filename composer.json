@@ -21,7 +21,7 @@
     "require": {
         "php": "^7",
         "laravelcollective/html": "^6 | ^7",
-        "livewire/livewire": "^1"
+        "livewire/livewire": "^1|^2"
     },
     "require-dev": {
         "phpunit/phpunit": "^7.5.15|^8.4|^9.0",
