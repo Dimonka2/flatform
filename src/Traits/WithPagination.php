@@ -11,7 +11,13 @@ trait WithPagination
 
     public function initializeWithPagination()
     {
-        $this->updatesQueryString = array_merge([$this->pageQueryString => ['except' => 1]], $this->updatesQueryString);
+        // fix for livewire 2.0
+        if(property_exists($this, 'updatesQueryString')) {
+            $qsProperty = 'updatesQueryString';
+        } else {
+            $qsProperty = 'queryString';
+        }
+        $this->{$qsProperty} = array_merge([$this->pageQueryString => ['except' => 1]], $this->{$qsProperty});
         $this->page = $this->resolvePage();
 
         Paginator::currentPageResolver(function () {

@@ -13,9 +13,15 @@ trait TableSearchQuery
         $table = $this->getTable();
         $defaultOrder = $table->setOrder($table->getOrder())->getOrder();
 
-        $this->updatesQueryString = array_merge([$this->searchQueryString => ['except' => '']], $this->updatesQueryString);
-        $this->updatesQueryString = array_merge([$this->filterQueryString => ['except' => []]], $this->updatesQueryString);
-        if($defaultOrder) $this->updatesQueryString = array_merge([$this->orderQueryString => ['except' => $defaultOrder]], $this->updatesQueryString);
+        // fix for livewire 2.0
+        if(property_exists($this, 'updatesQueryString')) {
+            $qsProperty = 'updatesQueryString';
+        } else {
+            $qsProperty = 'queryString';
+        }
+        $this->{$qsProperty} = array_merge([$this->searchQueryString => ['except' => '']], $this->{$qsProperty});
+        $this->{$qsProperty} = array_merge([$this->filterQueryString => ['except' => []]], $this->{$qsProperty});
+        if($defaultOrder) $this->{$qsProperty} = array_merge([$this->orderQueryString => ['except' => $defaultOrder]], $this->{$qsProperty});
         $this->search   = request()->query($this->searchQueryString , $this->search);
         $this->filtered = request()->query($this->filterQueryString , $this->filtered);
         if($defaultOrder) $this->order    = request()->query($this->orderQueryString  , $defaultOrder);
