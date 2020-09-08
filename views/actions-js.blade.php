@@ -6,7 +6,7 @@
     <script>
         document.addEventListener("livewire:load", function(event) {
             let id = "flatform-action";
-            window.livewire.hook('{{$context::isLivewireV1() ? 'afterDomUpdate': 'element.updated'}}', () => {
+            window.livewire.hook('{{$context::isLivewireV1() ? 'afterDomUpdate': 'message.processed'}}', () => {
                 if($("#" + id).length > 0) {
                     let formID = "#{{$actions::formID}}";
                     let form = $(formID + ":not(.form-shown)")
