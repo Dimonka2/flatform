@@ -11,9 +11,11 @@ use dimonka2\flatform\Form\ElementContainer;
 use dimonka2\flatform\Form\Contracts\IContext;
 use dimonka2\flatform\Form\Contracts\IElement;
 use dimonka2\flatform\Form\Contracts\IDataProvider;
+use dimonka2\flatform\Traits\LivewireVersion;
 
 class Context implements IContext
 {
+    use LivewireVersion;
     protected $mapping = [];    // id => element mapping
     protected $next_id = 100;   // id counter in order to avoid repeated ids
     protected static $renderCount; // this is an indicator that there is an ongoing rendering if it is not 0 or null

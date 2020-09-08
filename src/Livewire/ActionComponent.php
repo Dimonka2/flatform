@@ -6,9 +6,11 @@ use Closure;
 use Livewire\Component;
 use dimonka2\flatform\Flatform;
 use dimonka2\flatform\Actions\Action;
+use dimonka2\flatform\Traits\LivewireVersion;
 
 class ActionComponent extends Component
 {
+    use LivewireVersion;
     public $formData;
     public $url;
     public $reloadAction;
