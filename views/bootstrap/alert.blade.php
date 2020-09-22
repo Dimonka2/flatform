@@ -1,4 +1,4 @@
-<div class="alert alert-{{$element->color}}{{ $element->close ? ' fade show' : ''}}{{
+<div class="alert d-flex flex-row alert-{{$element->color}}{{ $element->close ? ' fade show' : ''}}{{
       isset($element->class) ? ' ' . $element->class : ''  }}" role="alert">
     @isset($element->icon)
         <div class="alert-icon"><i class="{{$element->icon}}"></i></div>
