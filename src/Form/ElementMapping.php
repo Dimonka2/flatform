@@ -53,7 +53,6 @@ class ElementMapping
         'form'          => Elements\Form::class,
         'img'           => Elements\Image::class,
         'col'           => Elements\Column::class,
-        'label'         => Elements\Label::class,
         'badge'         => Elements\Badge::class,
         'table'         => Elements\Table::class,
 
