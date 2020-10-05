@@ -3,9 +3,9 @@
 @endif
 {!! $html !!}
 
-@isset($element->error)
+@if($element->error)
     <div class="invalid-feedback">{!! $element->error !!}</div>
-@endisset
+@endif
 @isset($element->help)
     <span class="form-text text-muted">{!! $element->help !!}</span>
 @endisset

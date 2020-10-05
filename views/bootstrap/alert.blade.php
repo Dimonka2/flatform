@@ -1,7 +1,7 @@
 <div class="alert d-flex flex-row alert-{{$element->color}}{{ $element->close ? ' fade show' : ''}}{{
       isset($element->class) ? ' ' . $element->class : ''  }}" role="alert">
     @isset($element->icon)
-        <div class="alert-icon"><i class="{{$element->icon}}"></i></div>
+        <div class="alert-icon mr-2"><i class="{{$element->icon}}"></i></div>
     @endisset
     @if($element->hasTitle())
         <h4 class="alert-heading">{!! $element->getTitle() !!}</h4>
