@@ -4,7 +4,7 @@
             $('.datepicker:not(.datepicker-enabled)').each(function(i, obj) {
                 $(obj).addClass('datepicker-enabled');
                 $(obj).datepicker({
-                    dateFormat: '{{ config('flatform.form.date_format_js') }}'
+                    format: '{{ config('flatform.form.date_format_js') }}'
                 });
             });
         }
