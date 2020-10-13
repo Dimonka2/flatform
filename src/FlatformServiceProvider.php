@@ -38,6 +38,7 @@ class FlatformServiceProvider extends ServiceProvider
             \Livewire\Livewire::component('flatform.table-row', \dimonka2\flatform\Livewire\TableRowComponent::class);
             \Livewire\Livewire::component('flatform.actions', \dimonka2\flatform\Livewire\ActionComponent::class);
             \Livewire\Livewire::component('flatform.form', \dimonka2\flatform\Livewire\FormComponent::class);
+            \Livewire\Livewire::component('flatform.dropdown', \dimonka2\flatform\Livewire\DropdownComponent::class);
         }
         $this->registerMarcos();
     }
