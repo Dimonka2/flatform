@@ -32,6 +32,11 @@ class FlatformService
         return self::$context;
     }
 
+    public static function setOptions(array $options)
+    {
+        return self::context()->setOptions($options);
+    }
+
     public static function make($type, $definition = [])
     {
         return self::context()->make($type, $definition);

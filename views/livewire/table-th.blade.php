@@ -1,26 +1,26 @@
 @if($column)
-    @php($sort = $column->getSort() !== false)
+    @php
+        $sort = $column->getSort() !== false;
+        $arrowUpIcon = $order == 'ASC' ? '&#x1F819;' : '&#x2191;';
+        $arrowUpClass = $order == 'ASC' ? 'text-dark' : 'text-muted';
+        $arrowDownIcon = $order == 'DESC' ? '&#x1F81B;' : '&#x2193;';
+        $arrowDownClass = $order == 'DESC' ? 'text-dark' : 'text-muted';
+    @endphp
     <th class="text-nowrap text-truncate pr-0 {{$column->class . ' ' . $column->titleClass}}"
         @if($sort) wire:click.prevent='sortColumn("{{$column->getName()}}")' @endif
-        style="{{$column->getWidth() ? 'width:' . $column->getWidth() . ';': '' }} ">
+        style="cursor:pointer; {{$column->getWidth() ? 'width:' . $column->getWidth() . ';': '' }} ">
         @if($sort)
-            <a href="#" class="d-block">
-                <div class="float-right text-nowrap">
-                    @if($order == 'ASC')
-                        <span style='margin-right:-0.3rem;' class="text-dark">&#x1F819;</span>
-                    @else
-                        <span style='margin-right:-0.3rem;' class="text-muted">&#x2191;</span>
-                    @endif
-                    @if($order == 'DESC')
-                        <span class="text-dark mr-1">&#x1F81B;</span>
-                    @else
-                        <span class="text-muted mr-1">&#x2193;</span>
-                    @endif
-                </div>
+            <div class="d-flex">
                 <div class="text-slate-600 d-inline-block mr-3">
                     {!! $column->getTitle(true) !!}
                 </div>
-            </a>
+                <div class="text-nowrap ml-auto">
+                    <span style='margin-right:-0.3rem;' class="{{$arrowUpClass}}">
+                        {!!$arrowUpIcon!!}
+                    </span>
+                    <span class="{{$arrowDownClass}}">{!!$arrowDownIcon!!}</span>
+                </div>
+            </div>
         @else
             {!! $column->getTitle(true) !!}
         @endif
