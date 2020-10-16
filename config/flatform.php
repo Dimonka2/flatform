@@ -177,6 +177,13 @@ return [
         'sidebar' => ['type' => 'menu', 'template' => 'flatform::one.sidebar'],
     ],
 
+    'canvas' => [
+        'tabs' => ['type' => 'div', 'template' => 'flatform::canvas.tab-navs'],
+        'tab-content' => ['template' => 'flatform::canvas.tab-content',],
+        'alert' => ['template' => 'flatform::canvas.alert', ] ,
+    ],
+
+
     'aliases' => [
         'Form'  => Collective\Html\FormFacade::class,
         'HTML'  => Collective\Html\HtmlFacade::class,
