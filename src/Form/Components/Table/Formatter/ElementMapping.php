@@ -8,6 +8,7 @@ class ElementMapping
 
         // inputs
         'check'         => Check::class,
+        'checkbox'      => Checkbox::class,
         'date'          => Date::class,
         'number'        => Number::class,
         'state'         => State::class,
