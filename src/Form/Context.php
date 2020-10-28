@@ -7,11 +7,11 @@ use Illuminate\Support\MessageBag;
 use dimonka2\flatform\FlatformService;
 use dimonka2\flatform\Form\ElementFactory;
 use dimonka2\flatform\Form\Contracts\IForm;
-use dimonka2\flatform\Form\ElementContainer;
+use dimonka2\flatform\Traits\LivewireVersion;
 use dimonka2\flatform\Form\Contracts\IContext;
 use dimonka2\flatform\Form\Contracts\IElement;
+use dimonka2\flatform\Form\Contracts\IRenderer;
 use dimonka2\flatform\Form\Contracts\IDataProvider;
-use dimonka2\flatform\Traits\LivewireVersion;
 
 class Context implements IContext
 {
@@ -26,16 +26,20 @@ class Context implements IContext
     private $dataProvider;      // helps to register data elements for data providers
     protected $errors;
 
-    public const VOID_TAGS = ['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'param',
-         'source', 'track', 'wbr'];
-
     public function __construct()
     {
         $this->style_priority = FlatformService::config('flatform.form.style');
-        $this->factory = new ElementFactory($this);
+        $this->factory = new ElementFactory($this, strpos($this->style_priority, 'tailwind') !== false);
         if(app()->has('session')) {
             $this->errors = session('errors') ? session('errors')->getBags()['default'] ?? new MessageBag : null;
         }
+        debug($this);
+    }
+
+    protected function setStyle($style)
+    {
+        $this->style_priority = $style;
+        $this->factory->setTailwind(strpos($this->style_priority, 'tailwind') !== false);
     }
 
     public function setMapping($id, IElement $element)
@@ -70,75 +74,6 @@ class Context implements IContext
         return $this->createElement($template);
     }
 
-    public function render($elements = null)
-    {
-        if ($this->debug) {
-            debug($this);
-            debug($elements);
-        }
-        if(is_object($elements)){
-            return $elements->renderElement();
-        }
-
-        if(!self::$renderCount) return $this->_internalRender($elements);
-        self::$renderCount++;
-        try {
-            $html = $this->renderView(view('flatform::context')->with('elements', $elements));
-            self::$renderCount--;
-        } catch (\Throwable $th) {
-            self::$renderCount--;
-            throw $th;
-        }
-        return $html;
-    }
-
-    public function _internalRender($elements)
-    {
-        return $this->renderItem($elements);
-    }
-
-    public function renderView($view, ?string $toStack = null)
-    {
-        $html = $view->with('context', $this)->render();
-        if(!$toStack) return $html;
-        $push = $this->createElement(['push', 'name' => $toStack, 'text' => $html]);
-        return $push->renderElement();
-    }
-
-    public static function renderArray(array $element, $tag, $text = null)
-    {
-        $tag = strtolower($tag);
-        $voidElement = in_array($tag, self::VOID_TAGS);
-        $html = '<' . $tag;
-        foreach($element as $key => $value) {
-            if(is_scalar($value)) $html .= ' ' . $key . '="' . htmlentities($value) . '"';
-        }
-        if($voidElement) {
-            if(!is_null($text)) logger('Warning! Skipping inner HTML text for void element "' . $tag . '": ' . $text);
-            $html .= ' />';
-        } else {
-            $html .= '>' . $text . '</' . $tag . '>';
-        }
-        return $html;
-    }
-
-
-    public function renderElement(IElement $element, $aroundHTML = null)
-    {
-        $tag = $element->getTag();
-        $options = $element->getOptions([]);
-        return self::renderArray($options, $tag, $aroundHTML);
-    }
-
-    public function renderItem($item)
-    {
-        if(is_array($item)) {
-            $div = new ElementContainer([], $this);
-            return $div->readItems($item)->renderItems();
-        }
-        if(is_object($item)) return $item->renderElement();
-        return $item;
-    }
 
     public function getTemplate($tag)
     {
@@ -155,7 +90,8 @@ class Context implements IContext
     {
         // debug($options);
         // read possible options from argument
-        if(isset($options['style'])) $this->style_priority = $options['style'];
+        if(isset($options['style'])) $this->setStyle($options['style']);
+
         if(isset($options['assets'])) {
             $assets = $options['assets'];
             if(is_iterable($assets)) {
@@ -258,5 +194,30 @@ class Context implements IContext
     public function getErrors()
     {
         return $this->errors;
+    }
+
+    /**
+     * Get the value of debug
+     */
+    public function getDebug()
+    {
+        return $this->debug;
+    }
+
+    /**
+     * Set the value of debug
+     *
+     * @return  self
+     */
+    public function setDebug($debug)
+    {
+        $this->debug = $debug;
+
+        return $this;
+    }
+
+    public function getRenderer(): IRenderer
+    {
+        return Flatform::renderer();
     }
 }

@@ -6,6 +6,7 @@ use Illuminate\Support\Fluent;
 use dimonka2\flatform\FlatformService;
 use dimonka2\flatform\Form\Contracts\IContext;
 use dimonka2\flatform\Form\Contracts\IElement;
+use dimonka2\flatform\Form\Contracts\IRenderer;
 use dimonka2\flatform\Traits\SettingReaderTrait;
 
 class Element implements IElement
@@ -20,7 +21,7 @@ class Element implements IElement
     public $style;
     protected $onRender = null; // closure for rendering
 
-    protected $context; // rendering context
+    protected $context; // context
     protected $type;    // element tag and/or flatform template
     protected $hidden;
     protected $attributes;
@@ -30,6 +31,11 @@ class Element implements IElement
     protected $tooltip; // hints via "title" attribute
     protected $_data;   // data field in datatable
 
+
+    protected function renderer(): IRenderer
+    {
+        return $this->context->getRenderer();
+    }
 
     protected function read(array $element)
     {
@@ -222,7 +228,7 @@ class Element implements IElement
             $template = $this->template;
             if(!is_null($template) &&  $template != false) {
                 foreach(explode(';', $template) as $template) {
-                    $html = $this->context->renderView(
+                    $html = $this->renderer()->renderView(
                         view($template)
                         ->with('element', $this)
                         ->with('html', $html)
@@ -237,7 +243,7 @@ class Element implements IElement
     {
         // special case
         if($this->type == '_text') return $this->text;
-        return $this->context->renderElement($this, $this->text);
+        return $this->context->getRenderer()->renderElement($this, $this->text);
     }
 
     public function getTag()

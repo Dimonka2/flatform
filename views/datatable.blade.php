@@ -8,7 +8,7 @@
         var {{$jsdt}} = false;
 
         @if( $element->hasFilter() )
-        var filterClass = "{{\dimonka2\flatform\Form\Components\Datatable\DTFilter::filterClass}}";
+        var filterClass = "{{\dimonka2\flatform\Form\Bootstrap\Components\Datatable\DTFilter::filterClass}}";
         function addFilter(){
             if(!$('#{{$element->id}}').hasClass(filterClass+'_enabled')) {
                 $('#{{$element->id}}').addClass(filterClass+'_enabled');

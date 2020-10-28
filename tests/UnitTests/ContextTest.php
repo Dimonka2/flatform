@@ -4,8 +4,8 @@ namespace Tests\UnitTests;
 use Tests\TestCase;
 use dimonka2\flatform\Flatform;
 use dimonka2\flatform\Form\Context;
-use dimonka2\flatform\Form\Navs\Dropdown;
-use dimonka2\flatform\Form\Components\Table\Table;
+use dimonka2\flatform\Form\Bootstrap\Navs\Dropdown;
+use dimonka2\flatform\Form\Bootstrap\Components\Table\Table;
 
 class ContextTest extends TestCase
 {
@@ -52,6 +52,6 @@ class ContextTest extends TestCase
         $this->assertStringContainsString('No data available', $html);
 
         $context = Flatform::context();
-        $this->assertEquals('<div></div>', $context->render([[]]));
+        $this->assertEquals('<div></div>', $context->getRenderer()->render([[]]));
     }
 }

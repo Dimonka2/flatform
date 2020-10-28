@@ -1,7 +1,9 @@
 <?php
 namespace dimonka2\flatform;
 
-use dimonka2\flatform\Form\Context;
+use dimonka2\flatform\Form\Contracts\IContext;
+use dimonka2\flatform\Form\Contracts\IRenderer;
+
 class FlatformService
 {
     // partial view locations
@@ -9,7 +11,6 @@ class FlatformService
     private static $cssList = [];
     private static $jsList = [];
     private static $includes = [];
-    private static $context = null;
     private static $reloadAction;
 
     public static function render($element)
@@ -21,15 +22,17 @@ class FlatformService
             self::context()->setOptions($options);
         }
         if(isset($element['elements'])) $element = $element['elements'];
-        return self::context()->render($element);
+        return self::renderer()->render($element);
     }
 
-    public static function context(): Context
+    public static function renderer(): IRenderer
     {
-        if (!self::$context) {
-            self::$context = new Context();
-        }
-        return self::$context;
+        return app(FlatformServiceProvider::SINGLETON_BINDING_RENDERER);
+    }
+
+    public static function context(): IContext
+    {
+        return app(FlatformServiceProvider::SINGLETON_BINDING_CONTEXT);
     }
 
     public static function setOptions(array $options)
@@ -97,7 +100,7 @@ class FlatformService
             foreach(static::$jsList as $asset){
                 $html .= '<script src="' . asset($asset) .'"></script>';
             }
-            return $html . self::context()->renderView(view('flatform::actions-js'));
+            return $html . self::renderer()->renderView(view('flatform::actions-js'));
         }
         return static::$jsList;
     }
@@ -116,7 +119,7 @@ class FlatformService
             self::addCSS(self::config($pathPrefix . '.css'), $path);
             self::addJS(self::config($pathPrefix . '.js'), $path);
             $view = self::config($pathPrefix . '.view');
-            return $view ? self::context()->renderView(view($view)) : '';
+            return $view ? self::renderer()->renderView(view($view)) : '';
         }
     }
 

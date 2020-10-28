@@ -2,7 +2,7 @@
 
 namespace dimonka2\flatform\Helpers;
 use Illuminate\Http\Request;
-use dimonka2\flatform\Form\Components\Datatable\Datatable;
+use dimonka2\flatform\Form\Bootstrap\Components\Datatable\Datatable;
 
 class DatatableAjax
 {

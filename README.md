@@ -79,7 +79,7 @@ namespace App\Http\Livewire\User;
 use App\Models\User;
 use dimonka2\flatform\Flatform;
 use dimonka2\flatform\Livewire\TableComponent;
-use dimonka2\flatform\Form\Components\Table\Table;
+use dimonka2\flatform\Form\Bootstrap\Components\Table\Table;
 
 class UserList extends TableComponent
 {
@@ -127,7 +127,7 @@ Class: `dimonka2\flatform\Livewire\TableComponent`
 Table component has also few functions, that can be called, defined or overridden:
 | Function | Defined | Parameters | Usage |
 | -------- | ------- | ---------- | ----- |
-|`getTable()`|yes||This is the main function that returns Table class that describes the table properties. This function has to return class `dimonka2\flatform\Form\Components\Table\Table`|
+|`getTable()`|yes||This is the main function that returns Table class that describes the table properties. This function has to return class `dimonka2\flatform\Form\Bootstrap\Components\Table\Table`|
 |`getQuery()`|no||Enables defining table query as a separate function, it has to return `Builder` class|
 |`getSelect()`|no||Enables defining table Select as a separate function|
 |`getDetails()`|no||Enables defining table Details as a separate function|
@@ -139,7 +139,7 @@ Table component has also few functions, that can be called, defined or overridde
 
 
 ### Table definition properties
-Class: `dimonka2\flatform\Form\Components\Table\Table` 
+Class: `dimonka2\flatform\Form\Bootstrap\Components\Table\Table` 
 
 | Property | Default | Usage |
 | -------- | ------- | ----- |

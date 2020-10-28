@@ -6,18 +6,21 @@ use \ReflectionClass;
 use dimonka2\flatform\FlatformService;
 use dimonka2\flatform\Form\Contracts\IContext;
 use dimonka2\flatform\Form\Contracts\IElement;
+use dimonka2\flatform\Form\Bootstrap\BootstrapMapping;
+use dimonka2\flatform\Form\Tailwind\TailwindMapping;
 
 class ElementFactory
 {
     private $context;
     private $user_binds = [];
     private $binds = [];
+    private $tailwind = false;
 
-    public function __construct(IContext $context)
+    public function __construct(IContext $context, $tailwind = false)
     {
         $this->context = $context;
         $this->user_binds = FlatformService::config('flatform.bindings');
-        $this->binds = ElementMapping::bindings;
+        $this->setTailwind($tailwind);
     }
 
     protected static function _createElement(array $element, $context): IElement
@@ -123,4 +126,28 @@ class ElementFactory
         return self::_createElement($element, $this->context);
     }
 
+
+    /**
+     * Get the value of tailwind
+     */ 
+    public function getTailwind()
+    {
+        return $this->tailwind;
+    }
+
+    /**
+     * Set the value of tailwind
+     *
+     * @return  self
+     */ 
+    public function setTailwind($tailwind)
+    {
+        $this->tailwind = $tailwind;
+        if($tailwind) {
+            $this->binds = TailwindMapping::bindings;
+        }else{
+            $this->binds = BootstrapMapping::bindings;
+        }
+        return $this;
+    }
 }

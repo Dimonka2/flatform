@@ -6,10 +6,7 @@ use dimonka2\flatform\Form\Contracts\IElement;
 
 interface IContext
 {
-    public function renderElement(IElement $element, $aroundHTML = null);
-    public function renderView($view, ?string $toStack = null);
-    public static function renderArray(array $element, $tag, $text = null);
-    public function renderItem($item);
+    public function getRenderer(): IRenderer;
     public function createTemplate($template);
     public static function ensureType(array $element, $type);
 
@@ -18,6 +15,9 @@ interface IContext
     public function getTemplate($tag);
     public function setOptions(array $options);
     public function getError($name);
+
+    public function getDebug();
+    public function setDebug($debug);
 
     public function setMapping($id, IElement $element);
     public function getMapping($id): ?IElement;

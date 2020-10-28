@@ -2,7 +2,7 @@
 
 namespace dimonka2\flatform\Traits;
 use Illuminate\Http\Request;
-use dimonka2\flatform\Form\Components\Datatable\Datatable;
+use dimonka2\flatform\Form\Bootstrap\Components\Datatable\Datatable;
 use DB;
 
 trait DatatableAjaxTrait

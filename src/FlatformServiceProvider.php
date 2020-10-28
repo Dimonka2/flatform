@@ -2,8 +2,10 @@
 
 namespace dimonka2\flatform;
 
+use Illuminate\Routing\Router;
+use dimonka2\flatform\Form\Context;
+use dimonka2\flatform\Form\Renderer;
 use Illuminate\Support\Facades\Blade;
-use Illuminate\Support\Facades\Route;
 use dimonka2\flatform\FlatformService;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\ServiceProvider;
@@ -16,6 +18,9 @@ class FlatformServiceProvider extends ServiceProvider
      *
      * @return void
      */
+    public const SINGLETON_BINDING_RENDERER = 'flatformRenderer';
+    public const SINGLETON_BINDING_CONTEXT = 'flatformContext';
+
     private const config = 'flatform.php';
     public function register()
     {
@@ -30,9 +35,6 @@ class FlatformServiceProvider extends ServiceProvider
         $this->loadViewsFrom(
             FlatformService::config('flatform.views_directory', __DIR__.'/../views'), 'flatform');
 
-        Route::group($this->routeConfig(), function () {
-            $this->loadRoutesFrom(__DIR__.'/routes.php');
-        });
         if(FlatformService::livewire() ) {
             \Livewire\Livewire::component('flatform.table', \dimonka2\flatform\Livewire\TableComponent::class);
             \Livewire\Livewire::component('flatform.table-row', \dimonka2\flatform\Livewire\TableRowComponent::class);
@@ -67,22 +69,22 @@ class FlatformServiceProvider extends ServiceProvider
 
         }
         $this->app->bind('flatform', FlatformService::class);
+        $this->app->singleton(self::SINGLETON_BINDING_RENDERER, function ($app) {
+            return new Renderer();
+        });
+        $this->app->singleton(self::SINGLETON_BINDING_CONTEXT, function ($app) {
+            return new Context();
+        }); 
         $this->loadTranslationsFrom(__DIR__.'/../lang/', 'flatform');
+
+        // register middleware
+        $router = $this->app->make(Router::class);
+        $router->aliasMiddleware('style', FlatformMiddleware::class);
     }
 
     protected function getConfigFile(): string
     {
         return __DIR__ . '/../config/' . self::config;
-    }
-
-    protected function routeConfig()
-    {
-        return [
-            'namespace' => 'dimonka2\flatform\Http\Controllers',
-            'as' => 'flatform.',
-            'middleware' => FlatformService::config('flatform.actions.middleware'),
-            'prefix' => 'flatform',
-        ];
     }
 
     protected function registerMarcos()

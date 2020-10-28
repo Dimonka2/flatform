@@ -11,7 +11,7 @@ use dimonka2\flatform\Traits\WithPagination;
 use dimonka2\flatform\Form\Contracts\IElement;
 use dimonka2\flatform\Traits\TableSearchQuery;
 use dimonka2\flatform\Form\Contracts\IContainer;
-use dimonka2\flatform\Form\Components\Table\Table;
+use dimonka2\flatform\Form\Bootstrap\Components\Table\Table;
 
 class TableComponent extends Component
 {
