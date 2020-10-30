@@ -2,6 +2,7 @@
 
 namespace dimonka2\flatform\Form\Bootstrap;
 
+use dimonka2\flatform\Form\Form;
 use dimonka2\flatform\Form\Element;
 use dimonka2\flatform\Form\BladeDirective;
 use dimonka2\flatform\Form\ElementContainer;
@@ -54,7 +55,7 @@ class BootstrapMapping
         'button'        => Navs\Button::class,
 
         // basic Elements
-        'form'          => Elements\Form::class,
+        'form'          => Form::class,
         'img'           => Elements\Image::class,
         'col'           => Elements\Column::class,
         'badge'         => Elements\Badge::class,

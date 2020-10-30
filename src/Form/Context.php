@@ -33,7 +33,6 @@ class Context implements IContext
         if(app()->has('session')) {
             $this->errors = session('errors') ? session('errors')->getBags()['default'] ?? new MessageBag : null;
         }
-        debug($this);
     }
 
     protected function setStyle($style)

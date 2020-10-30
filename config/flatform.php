@@ -77,6 +77,30 @@ return [
         ],
     ],
 
+    'tailwind' => [
+        'link-form' => ['type' => 'form', 'class' => '', 'template' => false,],
+        'a' => ['class' => 'transition duration-150 ease-in-out', 'font-color' => 'indigo'],
+        'label' => ['class' => 'block text-sm font-medium leading-5 text-gray-700'],
+        'input' => ['class' => 'rounded-md shadow-sm block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5'],
+        'error-class' => ['+class' => 'border-red-600', ],
+        'input-error' => ['type' => 'p', 'class' => 'text-sm text-red-600 mt-1',],
+        'input-help' => ['type' => 'p', 'class' => 'text-xs text-gray-500 mt-1',],
+        'text' => ['+class' => 'form-input'],
+        'select' => ['+class' => 'form-select'],
+        'number' => ['+class' => 'form-input'],
+        'textarea' => ['+class' => 'form-textarea'],
+        'checkbox' => ['class' => 'mr-2 form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out', 'template' => false],
+        'radio' => ['class' => 'mr-2 form-radio h-4 w-4 text-indigo-600 transition duration-150 ease-in-out', 'template' => false],
+        'button' => ['class' => 'py-2 px-4 border text-sm leading-5 font-medium rounded-md shadow-sm focus:outline-none focus:shadow-outline-blue transition duration-150 ease-in-out', 'font-color' => false],
+        'button-primary' => ['+class' => 'text-white active:bg-indigo-600 bg-indigo-600 hover:bg-indigo-500 border-transparent'],
+        'button-secondary' => ['+class' => 'text-gray-700 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-50 active:text-gray-800 border-gray-300'],
+        'button-success' => ['+class' => 'text-white border-transparent bg-green-500 hover:bg-green-400 focus:outline-none focus:border-green-700 focus:shadow-outline-green'],
+        'button-danger' => ['+class' => 'text-white border-transparent bg-red-600 hover:bg-red-500 focus:outline-none focus:border-red-700 focus:shadow-outline-red'],
+        'badge' => ['type' => 'span',
+            'size' => 'xs', 'rounded' => 'full',
+            'class' => 'inline-block px-2 font-semibold tracking-wide'],
+    ],
+
     // template definitions
     'bootstrap' => [
         'date' => ['+class' => 'datepicker'],

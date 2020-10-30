@@ -1,20 +1,21 @@
 <?php
 
-namespace dimonka2\flatform\Form\Bootstrap\Elements;
+namespace dimonka2\flatform\Form;
 
+use dimonka2\flatform\Traits\RouteTrait;
 use dimonka2\flatform\Form\Contracts\IForm;
 use dimonka2\flatform\Form\ElementContainer;
-use dimonka2\flatform\Form\Bootstrap\Inputs\Hidden;
-use Form as LaForm;
 
 class Form extends ElementContainer implements IForm
 {
+    use RouteTrait;
     protected const form_fields = ['method', 'model', 'url', 'files', 'route'];
     protected $method;
     protected $model;
     protected $url;
     protected $route;
     protected $files;
+    protected $csrfToken;
 
     protected function read(array $element)
     {
@@ -23,35 +24,65 @@ class Form extends ElementContainer implements IForm
         $this->readSettings($element, self::form_fields);
         parent::read($element);
         $this->context->setForm(null);
+
     }
 
     public function getModelValue($name)
     {
         if($this->hasModel()){
             return data_get($this->model, $name);
-        } else {
-            return LaForm::getValueAttribute($name);
+        } 
+    }
+
+    protected function getAction()
+    {
+        if ($this->url) {
+            return $this->url;
         }
+
+        if ($this->route) return self::getRouteUrl($this->route);
+
+        return url()->current();
+    }
+
+
+    public function getOptions(array $keys)
+    {
+        $options = parent::getOptions($keys);
+        // 'method', 'url', 'files', 'route'
+
+        $method = strtoupper($this->method);
+        $options['method'] = $method !== 'GET' ? 'POST' : $method;
+        $options['action'] = $this->getAction();
+        $options['accept-charset'] = 'UTF-8';
+        
+        if ($this->files) {
+            $options['enctype'] = 'multipart/form-data';
+        }
+
+        return $options;
     }
 
     public function renderForm($aroundHTML = null)
     {
-        $options = $this->getOptions(['method', 'url', 'files', 'route']);
-        if(is_object($this->model)) {
-            $html = LaForm::model($this->model , $options);
-        } else  {
-            $html = LaForm::open($options);
+        $method = strtoupper($this->method);
+        if($method !== 'GET') {
+            $token = ! empty($this->csrfToken) ? $this->csrfToken : session()->token();
+            $this->addHiddenField('_token', $token);
+            if(in_array($method, ['DELETE', 'PATCH', 'PUT'])){
+                $this->addHiddenField('_method', $method); 
+            }
         }
-        $html .= $aroundHTML;
+
         $this->context->setForm($this);
-        $html .= $this->renderItems();
+        $html = $aroundHTML . $this->renderItems();
+        $html =  $this->renderer()->renderElement($this, $html);
         $this->context->setForm(null);
-        $html .= LaForm::close();
 
         return $html;
     }
 
-    public function addHiddenField($name, $value): Hidden
+    public function addHiddenField($name, $value)
     {
         $item = $this->createElement(['hidden', 'name' => $name, 'value' => $value]);
         $this[] = $item;

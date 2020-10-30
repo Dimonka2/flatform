@@ -61,6 +61,7 @@ class Renderer implements IRenderer
     {
         $tag = $element->getTag();
         $options = $element->getOptions([]);
+        assert(is_array($options), 'Options should be an array!');
         return self::renderArray($options, $tag, $aroundHTML);
     }
 

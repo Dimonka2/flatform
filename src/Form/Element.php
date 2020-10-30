@@ -243,7 +243,7 @@ class Element implements IElement
     {
         // special case
         if($this->type == '_text') return $this->text;
-        return $this->context->getRenderer()->renderElement($this, $this->text);
+        return $this->renderer()->renderElement($this, $this->text);
     }
 
     public function getTag()

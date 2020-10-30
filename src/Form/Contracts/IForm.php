@@ -17,4 +17,5 @@ interface IForm extends IContainer
     public function getFiles();
     public function setFiles($files);
 
+    public function getModelValue($name);
 }
