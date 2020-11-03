@@ -46,7 +46,6 @@ class Link extends ElementContainer
         parent::read($element);
         if(is_array($this->badge)) {
             $this->badge = $this->createElement($this->badge, 'badge');
-            if($this->badgeClass) $this->badge->addClass($this->badgeClass);
         }
     }
 
@@ -74,24 +73,37 @@ class Link extends ElementContainer
 
     public function getTitle()
     {
-        return (!is_null($this->icon) ?
-            $this->createElement(['class' => $this->icon], 'i')->render() . ' ' : '') .
+        return 
+            $this->renderIcon() . 
             $this->renderTitle() .
             $this->text .
-            $this->renderBadge().
-            ($this->items_in_title ? $this->renderItems() : '');
+            $this->renderBadge() .
+            $this->renderLinkItems();
     }
 
-    public function renderBadge()
+    protected function renderIcon()
+    {
+        if(!$this->icon) return;
+        return   $this->createElement(['class' => $this->icon], 'i')
+            ->addClass('mr-2')->render();
+    }
+
+    protected function renderLinkItems()
+    {
+        if(!$this->items_in_title) return;
+        return $this->renderItems();
+    }
+
+    protected function renderBadge()
     {
         if($this->badge){
-            if(is_object($this->badge)) {
-                return ' ' . $this->badge->renderElement();
-            } else {
-                $badge = ['text' => $this->badge, '+class' => 'ml-1'];
-                return $this->createElement($badge, 'badge')->renderElement();
+            $badge = $this->badge;
+            if(!is_object($badge)) {
+                $badge = ['text' => $this->badge, '+class' => 'ml-2'];
+                $badge = $this->createElement($badge, 'badge');
             }
-        } else return;
+            return $badge->renderElement();
+        }
     }
 
     protected function renderForm()

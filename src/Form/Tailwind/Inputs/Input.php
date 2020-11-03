@@ -36,9 +36,7 @@ class Input extends Element
             // add error
             if(is_array($errors) && count($errors) > 0) {
                 if($this->error !== false) $this->error = implode('<br/>', $errors);
-                $template = $this->context->getTemplate('error-class');
-                if(!is_null($template)) $this->processAttributes($template);
-                // debug($this->error);
+                $this->applyTemplate('error-class');
             }
         }
         parent::read($element);

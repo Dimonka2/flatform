@@ -5,7 +5,7 @@
             <div class="block-title">
                 <h2 class="h3 w-75 text-gray-900 mb-0">
                     {!! $element->icon ?? '' !!}
-                    {!! $element->getTitle() ?? '' !!}
+                    {!! $element->renderTitle() ?? '' !!}
                 </h2>
             </div>
             @if( $element->hasTools() )

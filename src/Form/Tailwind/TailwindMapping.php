@@ -13,6 +13,10 @@ class TailwindMapping
         'a'             => Navs\Link::class,
         'link'          => Navs\Link::class,
         'button'        => Navs\Button::class,
+        'dropdown'      => Navs\Dropdown::class,
+        'dd-item'       => Navs\DropdownItem::class,
+
+        'widget'        => Components\Widget::class,
 
         'hidden'        => Inputs\Hidden::class,
         'text'          => Inputs\Input::class,

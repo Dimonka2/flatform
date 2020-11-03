@@ -2,8 +2,11 @@
 
 namespace dimonka2\flatform\Form\Tailwind\Navs;
 
+use dimonka2\flatform\Form\Tailwind\ShadowTrait;
+
 class Button extends Link
 {
+    use ShadowTrait;
     protected $color = 'primary';
     protected $size;
     protected $toggle;
@@ -20,22 +23,27 @@ class Button extends Link
     {
         $color = strtolower($this->color);
         if(in_array($color, $this->builtInColors)) {
-            $template = $this->context->getTemplate('button-' . $color);
-            if(!is_null($template)) $this->processAttributes($template);
-            return;
+            return $this->applyTemplate('button-' . $color);
         }
     }
 
-    protected function addToggle()
+    protected function renderToggle()
     {
+        $this->addClass('gap-4');
         $toggle = $this->createElement(['include', 'name' => 'flatform::icons.chevron-down']);
-        $this[] = $toggle;
+        return $toggle->render();
+    }
+
+    public function getTitle()
+    {
+        if($this->color) $this->applyColor();
+        $html = parent::getTitle();
+        if($this->toggle) $html .= $this->renderToggle();
+        return $html;
     }
 
     public function getOptions(array $keys)
     {
-        if($this->toggle) $this->addToggle();
-        if($this->color) $this->applyColor();
         $options = parent::getOptions($keys);
         if($this->type == 'submit') $options['type'] = 'submit';
         return $options;

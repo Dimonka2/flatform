@@ -7,11 +7,13 @@ use dimonka2\flatform\FlatformService;
 use dimonka2\flatform\Form\Contracts\IContext;
 use dimonka2\flatform\Form\Contracts\IElement;
 use dimonka2\flatform\Form\Contracts\IRenderer;
+use dimonka2\flatform\Traits\ElementTraitSupport;
 use dimonka2\flatform\Traits\SettingReaderTrait;
 
 class Element implements IElement
 {
     use SettingReaderTrait;
+    use ElementTraitSupport;
 
     protected const assets = false;
     protected $defaultOptions;
@@ -31,7 +33,6 @@ class Element implements IElement
     protected $tooltip; // hints via "title" attribute
     protected $_data;   // data field in datatable
 
-
     protected function renderer(): IRenderer
     {
         return $this->context->getRenderer();
@@ -41,6 +42,7 @@ class Element implements IElement
     {
 
         $this->onRender = $this->readSingleSetting($element, 'onRender');
+        $this->callTraitFunction('read', $element);
         $attributes = $this->readSingleSetting($element, '_attributes');
         if(is_array($attributes)) $this->processAttributes($attributes);
 
@@ -61,9 +63,15 @@ class Element implements IElement
         return $this;
     }
 
+    public function applyTemplate($template)
+    {
+        $template = $this->context->getTemplate($template);
+        if(!is_null($template)) $this->processAttributes($template);
+        return $this;
+    }
+
     public function processAttributes($element)
     {
-
         foreach($element as $attribute => $value) {
             switch ($attribute) {
                 case '+class':
@@ -95,7 +103,7 @@ class Element implements IElement
         return $this->context->getTemplate($tag ?? $this->type);
     }
 
-    protected function createTemplate($template)
+    protected function createTemplate($template): IElement
     {
         return $this->context->createTemplate($template);
     }
@@ -125,6 +133,7 @@ class Element implements IElement
     {
         $this->attributes = new Fluent();
         $this->context = $context ?? FlatformService::context();
+        $this->initMethodMap();
         $onLoaded = $this->readSingleSetting($element, 'onLoaded');
         $this->read($element);
         if(is_callable($onLoaded)) call_user_func_array($onLoaded, [$this, $element]);
@@ -155,6 +164,7 @@ class Element implements IElement
                 $options['data-placement'] = "top";
             }
         }
+        $options = $this->callTraitFunction('getAttributes', $options);
         return $options->toArray();
     }
 
@@ -235,6 +245,7 @@ class Element implements IElement
                     );
                 }
             }
+            $html = $this->callTraitFunction('render', $html);
             return $html;
         }
     }
@@ -243,7 +254,12 @@ class Element implements IElement
     {
         // special case
         if($this->type == '_text') return $this->text;
-        return $this->renderer()->renderElement($this, $this->text);
+        return $this->renderer()->renderElement($this, $this->renderContent());
+    }
+
+    protected function renderContent()
+    {
+        return $this->text;
     }
 
     public function getTag()

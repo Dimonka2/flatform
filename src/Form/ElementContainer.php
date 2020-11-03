@@ -65,18 +65,21 @@ class ElementContainer extends Element implements IContainer, \ArrayAccess, \Cou
 
      public function render()
     {
-        $html = $this->text . $this->renderItems();
-        if($this->container) return $html;
-        if($html == '') $html = null;
-        return $this->renderer()->renderElement($this, $html);
+        if($this->container) return $this->renderContent();
+        return parent::render();
+    }
+
+    protected function renderContent()
+    {
+        return  $this->text . $this->renderItems();
     }
 
     public function renderItems()
     {
-        if(is_null($this->elements)) return;
+        if(!is_iterable($this->elements)) return;
         $html = '';
         foreach($this->elements as $element) {
-             $html .= $element->renderElement( null);
+             $html .= $element->renderElement();
         }
         return $html;
     }

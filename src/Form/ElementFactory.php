@@ -30,7 +30,7 @@ class ElementFactory
         return $reflection->newInstanceArgs([$element, $context]);
     }
 
-    protected static function transferIndexedElement(&$element1, &$element2, $index, $delimiter)
+    public static function transferIndexedElement(&$element1, &$element2, $index, $delimiter)
     {
         if(isset($element2[$index])) {
             $element1[$index] = (isset($element1[$index]) ? $element1[$index] . $delimiter : '') . $element2[$index];
@@ -38,7 +38,7 @@ class ElementFactory
         }
     }
 
-    protected function mergeTemplate($element, $template)
+    public function mergeTemplate($element, $template)
     {
         if(is_null($template)) return $element;
         self::transferIndexedElement($element, $template, '+style', ';');

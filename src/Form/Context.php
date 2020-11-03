@@ -117,6 +117,15 @@ class Context implements IContext
         return $element;
     }
 
+    public function mergeTemplate($element, $template)
+    {
+        $template = $this->getTemplate($template);
+        ElementFactory::transferIndexedElement($element, $template, '+style', ';');
+        ElementFactory::transferIndexedElement($element, $template, '+class', ' ');
+        ElementFactory::transferIndexedElement($element, $template, 'template', ';');
+        return array_merge($element, $template);
+    }
+
     public function getJsStack()
     {
         return FlatformService::config('flatform.form.js_stack', 'js');
@@ -126,7 +135,6 @@ class Context implements IContext
     {
         return FlatformService::config('flatform.form.css_stack', 'css');
     }
-
 
     // create specific elements
     public function make($type, $definition = []): ?IElement

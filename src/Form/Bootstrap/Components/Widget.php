@@ -19,7 +19,7 @@ class Widget extends ElementContainer
         return !is_null($this->title);
     }
 
-    public function getTitle()
+    public function renderTitle()
     {
         return $this->renderItem($this->title);
     }

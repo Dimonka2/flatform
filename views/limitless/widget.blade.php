@@ -4,7 +4,7 @@
         @if( $element->hasTitle() )
             <h6 class="card-title">
                 {!! $element->icon ?? '' !!}
-                {!! $element->getTitle() ?? '' !!}
+                {!! $element->renderTitle() ?? '' !!}
             </h6>
             @if( $element->hasTools() )
             <div class="header-elements">
