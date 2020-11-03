@@ -21,7 +21,7 @@ class Tabs extends ElementContainer
             $tab->items_in_title = false;
             $tab->requireID();
             $this->elements[] = $tab;
-
+            
             if(!$tab->getHidden() ){
                 if (!$this->activeID) {
                     $this->activeID = $tab->id;
@@ -39,25 +39,31 @@ class Tabs extends ElementContainer
     }
 
 
-    public function renderElement()
+    protected function renderContent()
     {
-        if($this->hidden) return;
-        $html = '';
-        $template = $this->template;
-        if($template != "") $html .= $this->renderer()->renderView(
-            view($template)
-            ->with('element', $this)
-            ->with('html', $html), $this->navsStack);
+        $container = new ElementContainer();
+        $container->container = true;
+        $nav = $this->createTemplate('tabs-nav');
+        $content = $this->createTemplate('tabs-content');
 
-        $template = $this->context->getTemplate('tab-content');
-        if(is_array($template) && isset($template['template'])){
-            $html .= $this->renderer()->renderView(view($template['template'])
-                ->with('element', $this)
-                ->with('html', $html), $this->contentStack
-            );
-        }
-        return $this->renderer()->renderElement($this, $html);
+        if(!$this->pills) $nav->addClass('border-b');
+        foreach ($this->elements as $tab) {
+            if(!$tab->getHidden() ){
+                $nav[] = $tab;
+                $tab->setParent($this);
+                
+            }
+        }        
+        $container[] = $nav; 
+        $container[] = $content;
+        return $container->renderElement();
     }
+
+    public function render()
+    {
+        return parent::render();
+    }
+    
 
     public function isTab(IElement $tab)
     {

@@ -1,4 +1,4 @@
-<div class="relative" x-data="{ open: false }" @click.away="open = false" @close.stop="open = false">
+<div class="{{$element->group_class}}" x-data="{ open: false }" @click.away="open = false" @close.stop="open = false">
     <div @click="open = ! open">
         {!! $element->renderButton() !!}
     </div>

@@ -39,6 +39,7 @@ class Button extends Link
         if($this->color) $this->applyColor();
         $html = parent::getTitle();
         if($this->toggle) $html .= $this->renderToggle();
+        $html = $this->renderItem([['div', 'class' => 'flex justify-center', 'text' => $html]]);
         return $html;
     }
 

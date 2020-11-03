@@ -9,6 +9,7 @@ trait ShadowTrait
     protected function readShadowTrait(array $element)
     {
         $this->shadow = $this->readSingleSetting($element, 'shadow');
+        return $element;
     }
 
     protected function getAttributesShadowTrait($attributes)

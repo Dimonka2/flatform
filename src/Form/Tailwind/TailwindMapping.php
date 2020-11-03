@@ -15,7 +15,8 @@ class TailwindMapping
         'button'        => Navs\Button::class,
         'dropdown'      => Navs\Dropdown::class,
         'dd-item'       => Navs\DropdownItem::class,
-
+        'tabs'          => Navs\Tabs::class,
+        'tab-item'      => Navs\Link::class,
         'widget'        => Components\Widget::class,
 
         'hidden'        => Inputs\Hidden::class,
