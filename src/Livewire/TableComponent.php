@@ -183,15 +183,21 @@ class TableComponent extends Component
 
     public function sortColumn($columnName)
     {
-        if (!($this->order[$columnName] ?? false)) {
-            $this->table = $this->getTable();
-            $sort = $this->table->getColumnSort($columnName);
+        $order = $this->order;
+        if(!$order) {
+            $table = $this->getTable();
+            $order = $table->setOrder($table->getOrder())->getOrder();
+        }
+
+        if (!($order[$columnName] ?? false)) {
+            if(!isset($table)) $table = $this->getTable();
+            $sort = $table->getColumnSort($columnName);
             if($sort) {
                 $this->order = [$columnName => $sort];
             }
         } else {
-            $order = $this->order[$columnName];
-            $this->order[$columnName] = ($order == 'DESC') ? 'ASC' : 'DESC';
+            $order = $order[$columnName];
+            $this->order = [$columnName => ($order == 'DESC') ? 'ASC' : 'DESC'];
         }
 
     }
@@ -427,4 +433,5 @@ class TableComponent extends Component
         if($this->search__set($property, $value)) return;
         // parent::__set($property, $value);
     }
+
 }

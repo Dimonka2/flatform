@@ -6,7 +6,7 @@ trait TableSearchQuery
 {
     protected $searchQueryString    = 'search';
     protected $filterQueryString    = 'filtered';
-    protected $orderQueryString     = 'sort';
+    protected $orderQueryString     = 'order';
 
     public function initializeTableSearchQuery()
     {
@@ -24,7 +24,6 @@ trait TableSearchQuery
         if($defaultOrder) $this->{$qsProperty} = array_merge([$this->orderQueryString => ['except' => $defaultOrder]], $this->{$qsProperty});
         $this->search   = request()->query($this->searchQueryString , $this->search);
         $this->filtered = request()->query($this->filterQueryString , $this->filtered);
-        if($defaultOrder) $this->order    = request()->query($this->orderQueryString  , $defaultOrder);
     }
 
     protected function search__get($property)
