@@ -6,12 +6,14 @@ trait TableSearchQuery
 {
     protected $searchQueryString    = 'search';
     protected $filterQueryString    = 'filtered';
-    protected $orderQueryString     = 'order';
+    protected $orderQueryString     = 'sort';
+    protected $defaultOrder;
 
     public function initializeTableSearchQuery()
     {
         $table = $this->getTable();
         $defaultOrder = $table->setOrder($table->getOrder())->getOrder();
+        $this->defaultOrder = $defaultOrder;
 
         // fix for livewire 2.0
         if(property_exists($this, 'updatesQueryString')) {
@@ -28,6 +30,7 @@ trait TableSearchQuery
 
     protected function search__get($property)
     {
+
         if ($property == $this->searchQueryString) {
             return [$this->search];
         } elseif ($property == $this->filterQueryString) {
@@ -39,7 +42,6 @@ trait TableSearchQuery
 
     protected function search__set($property, $value)
     {
-        // debug($property, $value);
         if ($property == $this->searchQueryString) {
             $this->search = $value;
             return $this;
@@ -56,7 +58,7 @@ trait TableSearchQuery
     {
         $data[$this->searchQueryString] = $this->search;
         $data[$this->filterQueryString] = $this->filtered;
-        $data[$this->orderQueryString]  = $this->order;
+        $data[$this->orderQueryString]  = $this->order ? $this->order : $this->defaultOrder;
         return $data;
     }
 

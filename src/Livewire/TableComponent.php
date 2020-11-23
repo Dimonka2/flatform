@@ -48,8 +48,7 @@ class TableComponent extends Component
         if($table->hasDetails()) {
             $this->addDetailsButton($table);
         }
-        // $this->addRowCallback($table);
-        // debug($this);
+
         return view($this->getView('table'))
             ->with('host', $this)
             ->with('table', $table);
@@ -109,22 +108,6 @@ class TableComponent extends Component
             $table->buildRows();
         }
         $this->rowsReady = true;
-    }
-
-    protected function addRowCallback($table)
-    {
-        $table->setRowRenderCallback(function($row, $html) {
-            $id = 'row_' . $row->{$this->idField} . '_' .
-                (int)$row->_details . '_' . (int) $row->_selected;
-            // logger($html);
-
-            $response = \Livewire\Livewire::mount('flatform.table-row', ['row' => $html, '_id' => $id]);
-            return $response->dom;
-
-            return Flatform::render([
-                ['livewire', 'name' => 'flatform.table-row', 'with' => ['row' => $html, '_id' => $id]]
-            ]);
-        });
     }
 
     protected function addSelectCheckbox($table)
@@ -412,7 +395,6 @@ class TableComponent extends Component
     public function getPublicPropertiesDefinedBySubClass()
     {
         $data = parent::getPublicPropertiesDefinedBySubClass();
-        $data[$this->searchQueryString] = $this->{$this->searchQueryString};
         $data = $this->addPaginatorPublicProperties($data);
         $data = $this->addSearchPublicProperties($data);
         return $data;
@@ -420,6 +402,7 @@ class TableComponent extends Component
 
     public function __get($property)
     {
+        // debug('Get: ' . $property);
         $p = $this->paginator__get($property);
         if(is_array($p)) return $p[0];
         $p = $this->search__get($property);
@@ -429,9 +412,10 @@ class TableComponent extends Component
 
     public function __set($property, $value)
     {
+        // debug('Set: ' . $property, $value);
         if($this->paginator__set($property, $value)) return;
         if($this->search__set($property, $value)) return;
-        // parent::__set($property, $value);
+        parent::__set($property, $value);
     }
 
 }

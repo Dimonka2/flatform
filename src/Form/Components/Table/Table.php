@@ -21,6 +21,7 @@ class Table extends ElementContainer
     protected $selected;
     protected $lengthOptions = [10, 20, 30, 50, 100];
     protected $evenOddClasses = ['even', 'odd'];
+    protected $addSelect; // fields that needs to be added to the query
     protected $query;
     protected $search;
     protected $select;
@@ -129,6 +130,7 @@ class Table extends ElementContainer
             'info',
             'links',
             'rowRenderCallback',
+            'addSelect',
         ]);
 
         $columns = self::readSingleSetting($element, 'columns');
@@ -151,6 +153,8 @@ class Table extends ElementContainer
         if(is_array($actions)) $this->createActions($actions);
 
         if($this->order) $this->preprocessOrder();
+
+        if($this->addSelect && !is_array($this->addSelect)) $this->addSelect = [$this->addSelect];
 
         parent::read($element);
         $this->requireID();
@@ -537,4 +541,16 @@ class Table extends ElementContainer
 
         return $this;
     }
+
+	public function getAddSelect() {
+		return $this->addSelect;
+	}
+
+	public function setAddSelect($addSelect) {
+        // convert to array
+        if(!is_array($addSelect)) $addSelect = [$addSelect];
+        $this->addSelect = $addSelect;
+        return $this;
+	}
+
 }

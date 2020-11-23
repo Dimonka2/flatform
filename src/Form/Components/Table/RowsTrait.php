@@ -4,6 +4,7 @@ namespace dimonka2\flatform\Form\Components\Table;
 
 use Illuminate\Support\Fluent;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 trait RowsTrait
 {
@@ -99,7 +100,12 @@ trait RowsTrait
         // $query = $query->limit($this->length)->offset($this->start ?? 0);
 
         // add select
-        $fields = [];
+        if($this->addSelect) {
+            $fields = $this->addSelect;
+        } else {
+            $fields = [];
+        }
+
         foreach($this->columns as $field) {
             if (!$field->noSelect && !$field->system) {
                 if($field->raw) {
@@ -136,6 +142,18 @@ trait RowsTrait
                     $value = $item->{$column->as ? $column->as : $column->name};
                 }
                 $nestedData[ $column->name ] = $value;
+            }
+            if($this->addSelect) {
+                foreach ($this->addSelect as $columnName) {
+                    if(strpos($columnName, ' as ')) {
+                        [$name, $alias] = preg_split('/\s+as\s+/', $columnName);
+                        $nestedData[$name] = $item->{$alias};
+                    } else {
+                        $nestedData[$columnName] = $item->{
+                            strpos($columnName, '.') ? Str::afterLast($columnName, '.') : $columnName
+                        };
+                    }
+                }
             }
             $nestedData[ '_item'] = $item;
             $this->addRow($nestedData);

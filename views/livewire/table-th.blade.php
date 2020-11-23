@@ -5,10 +5,13 @@
         $arrowUpClass = $order == 'ASC' ? 'text-dark' : 'text-muted';
         $arrowDownIcon = $order == 'DESC' ? '&#x1F81B;' : '&#x2193;';
         $arrowDownClass = $order == 'DESC' ? 'text-dark' : 'text-muted';
+        $style = ($column->getWidth() ? "width: {$column->getWidth()};" : '') .
+            ($sort ? " cursor:pointer;": "");
     @endphp
     <th class="text-nowrap text-truncate pr-0 {{$column->class . ' ' . $column->titleClass}}"
         @if($sort) wire:click.prevent='sortColumn("{{$column->getName()}}")' @endif
-        style="cursor:pointer; {{$column->getWidth() ? 'width:' . $column->getWidth() . ';': '' }} ">
+        style="{{$style}}"
+        >
         @if($sort)
             <div class="d-flex">
                 <div class="text-slate-600 d-inline-block mr-3">
