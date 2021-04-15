@@ -34,6 +34,19 @@ class Actions implements \ArrayAccess, \Countable, \IteratorAggregate
         }
     }
 
+    public function getInfoActions()
+    {
+        $actions = [];
+        foreach($this->items as $item) {
+            if(!$item->disabled && $item->hasPosition('info')){
+                $action = $item->getElement();
+                if(!isset($action['type'])) $action['type'] = $this->selectionType;
+                $actions[] = $action;
+            }
+        }
+        return $actions;
+    }
+
     public function getRowActions()
     {
 

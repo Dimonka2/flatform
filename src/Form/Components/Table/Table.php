@@ -225,6 +225,11 @@ class Table extends ElementContainer
         return !!$this->actions;
     }
 
+    public function getInfoActions()
+    {
+        return $this->hasActions() ? $this->actions->getInfoActions() : [];
+    }
+
     public function getSelectionActions()
     {
         return $this->hasActions() ? $this->actions->getSelectionActions() : [];

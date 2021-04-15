@@ -14,7 +14,6 @@ trait TableSearchQuery
         $table = $this->getTable();
         $defaultOrder = $table->setOrder($table->getOrder())->getOrder();
         $this->defaultOrder = $defaultOrder;
-
         // fix for livewire 2.0
         if(property_exists($this, 'updatesQueryString')) {
             $qsProperty = 'updatesQueryString';
@@ -24,8 +23,9 @@ trait TableSearchQuery
         $this->{$qsProperty} = array_merge([$this->searchQueryString => ['except' => '']], $this->{$qsProperty});
         $this->{$qsProperty} = array_merge([$this->filterQueryString => ['except' => []]], $this->{$qsProperty});
         if($defaultOrder) {
-            $this->{$qsProperty} = array_merge([$this->orderQueryString => array_merge(['except' => $defaultOrder], $this->order)],
-                $this->{$qsProperty});
+            if($this->order) $this->{$qsProperty} = array_merge([
+                    $this->orderQueryString => array_merge(['except' => $defaultOrder], $this->order)
+                ], $this->{$qsProperty});
         } else {
             $this->{$qsProperty} = array_merge([$this->orderQueryString => $this->order], $this->{$qsProperty});
         }

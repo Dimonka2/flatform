@@ -351,8 +351,11 @@ class TableComponent extends Component
                 if($total != $count) $this->info .= trans_choice('flatform::table.filtered', $count, ['filtered' => $count]);
             }
         }
-
-        return $this->table->renderItem($this->info);
+        $infoActions = $this->table->getInfoActions();
+        if(count($infoActions) > 0) {
+            $infoActions = $this->table->renderItem([['span', 'class' => 'mr-4', $infoActions]]);
+        } else $infoActions = null;
+        return  $infoActions . $this->table->renderItem($this->info);
     }
 
     // select/deselect all rows

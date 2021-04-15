@@ -12,7 +12,7 @@
         </li>
 
         @if($current > 3)
-            <li class="paginate_button page-item disabled">
+            <li id="spacer1" class="paginate_button page-item disabled">
                 <button class="page-link">…</button>
             </li>
         @endif
@@ -25,7 +25,7 @@
             @endfor
 
             @if($paginator->lastPage() - 2 > $current )
-            <li class="paginate_button page-item disabled">
+            <li id="spacer2" class="paginate_button page-item disabled">
                 <button class="page-link">…</button>
             </li>
             @endif

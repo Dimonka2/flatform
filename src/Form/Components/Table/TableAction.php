@@ -10,7 +10,7 @@ class TableAction
     protected $table;
 
     protected $name;            // action unique name
-    protected $position;        // array where action is rendered: 'selection', 'dropdown', 'row', 'row-dd'
+    protected $position;        // array where action is rendered: 'info', 'selection', 'dropdown', 'row', 'row-dd'
     protected $title;           // action title or label
     protected $disabled;        // disables action
     protected $callback;        // action callback
