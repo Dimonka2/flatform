@@ -23,7 +23,12 @@ trait TableSearchQuery
         }
         $this->{$qsProperty} = array_merge([$this->searchQueryString => ['except' => '']], $this->{$qsProperty});
         $this->{$qsProperty} = array_merge([$this->filterQueryString => ['except' => []]], $this->{$qsProperty});
-        if($defaultOrder) $this->{$qsProperty} = array_merge([$this->orderQueryString => ['except' => $defaultOrder]], $this->{$qsProperty});
+        if($defaultOrder) {
+            $this->{$qsProperty} = array_merge([$this->orderQueryString => array_merge(['except' => $defaultOrder], $this->order)],
+                $this->{$qsProperty});
+        } else {
+            $this->{$qsProperty} = array_merge([$this->orderQueryString => $this->order], $this->{$qsProperty});
+        }
         $this->search   = request()->query($this->searchQueryString , $this->search);
         $this->filtered = request()->query($this->filterQueryString , $this->filtered);
     }

@@ -6,7 +6,7 @@ use Illuminate\Support\Fluent;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
-trait RowsTrait
+trait RowBuilderTrait
 {
     protected $rows;   // collection of DTRow objects
 
@@ -117,8 +117,18 @@ trait RowsTrait
         }
 
         if($this->order){
+            $nullLastOrderFunction = null;
             foreach($this->order as $column => $direction) {
-                $query = $query->orderBy($column, $direction);
+                $index = $this->columns->getColumnIndex($column);
+                if($index){
+                    $field = $this->getColumn($index);
+                    if($field->nullLast) {
+                        if(!$nullLastOrderFunction) $nullLastOrderFunction = $this->getContext()->getNullLastOrderFunction($query);
+                        $query = $nullLastOrderFunction($column, $direction);
+                    } else {
+                        $query = $query->orderBy($column, $direction);
+                    }
+                }
             }
         }
 

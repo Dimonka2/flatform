@@ -16,6 +16,7 @@ class Column implements IDataProvider
     protected $title;           // column title
     protected $search;          // enables search
     protected $sort;            // disable sort by this column or make it "DESC"
+    protected $nullLast;        // NULLs will appear last if column is sorted
     protected $system;          // virtual field without sort and search
     protected $class;           // field class
     protected $titleClass;      // column title class
@@ -48,7 +49,7 @@ class Column implements IDataProvider
         $definition = ElementFactory::preprocessElement($definition, false);
 
         $this->readSettings($definition, [
-            'name', 'title', 'search', 'sort', 'system', 'class', 'titleClass', 'hide', 'width', 'noSelect', 'as', 'raw',
+            'name', 'title', 'search', 'sort', 'nullLast', 'system', 'class', 'titleClass', 'hide', 'width', 'noSelect', 'as', 'raw',
         ]);
         if($this->sort === null) $this->sort = !$this->system;
 
@@ -258,6 +259,26 @@ class Column implements IDataProvider
     public function setSort($sort)
     {
         $this->sort = $sort;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of nullLast
+     */
+    public function getNullLast()
+    {
+        return $this->nullLast;
+    }
+
+    /**
+     * Set the value of nullLast
+     *
+     * @return  self
+     */
+    public function setNullLast($nullLast)
+    {
+        $this->nullLast = $nullLast;
 
         return $this;
     }

@@ -2,6 +2,7 @@
 
 namespace dimonka2\flatform\Form;
 
+use Closure;
 use dimonka2\flatform\Flatform;
 use Illuminate\Support\MessageBag;
 use dimonka2\flatform\FlatformService;
@@ -258,5 +259,28 @@ class Context implements IContext
     public function getErrors()
     {
         return $this->errors;
+    }
+
+    /**
+     * Get Null Last order Function depending on database driver type
+     */
+
+    public function getNullLastOrderFunction($query): Closure
+    {
+        $driver = $query->getConnection()->getDriverName();
+        switch ($driver) {
+            case 'mysql':
+                return function($column, $direction) use ($query) {
+                    return $query->orderByRaw("ISNULL(`$column`), `$column` $direction");
+                };
+            case 'postgersql':
+                return function($column, $direction) use ($query) {
+                    return $query->orderByRaw($column . ' ' . $direction . ' NULLS LAST');
+                };
+            default: // no specific function identified..
+                return function($column, $direction) use ($query) {
+                    return $query->orderBy($column, $direction);
+                };
+        }
     }
 }

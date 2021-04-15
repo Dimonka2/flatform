@@ -12,7 +12,7 @@ use dimonka2\flatform\Form\Components\Table\Formatter\ElementMapping;
 class Table extends ElementContainer
 {
     use ColumnsTrait;
-    use RowsTrait;
+    use RowBuilderTrait;
     use OrderTrait;
     use FiltersTrait;
 
