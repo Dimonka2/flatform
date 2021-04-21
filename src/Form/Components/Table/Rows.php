@@ -23,7 +23,9 @@ class Rows implements \ArrayAccess, \Countable, \IteratorAggregate, IDataProvide
         $html = '';
         $table = $this->table;
         $tableFormat = $table->getFormatFunction();
+        $rowPreRenderCallback = $table->getRowPreRenderCallback();
         $rowRenderCallback = $table->getRowRenderCallback();
+
         $evenOdd = $table->getEvenOddClasses();
         $details = $table->hasDetails() ? $table->getDetails() : 0;
         $select = $table->hasSelect() ? $table->getSelect() : 0;
@@ -77,6 +79,7 @@ class Rows implements \ArrayAccess, \Countable, \IteratorAggregate, IDataProvide
             $def = ['tr',  $columns, 'class' => ''];
             if(is_array($evenOdd)) $def['class'] .= ' ' . $evenOdd[$i % 2];
             if($select && $row->_selected && $select->class) $def['class'] .= ' ' . $select->class;
+            if($rowPreRenderCallback instanceof Closure) $def = $rowPreRenderCallback($row, $def);
 
             $this->row = $row;
             $context->setDataProvider($this);

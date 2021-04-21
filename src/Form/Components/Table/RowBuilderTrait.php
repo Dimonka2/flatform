@@ -78,6 +78,30 @@ trait RowBuilderTrait
         return $query;
     }
 
+    public function prepareQuery($query)
+    {
+        if ( $this->search) {
+            $query = $this->addSearch($query, $this->search);
+        }
+
+        if($this->order){
+            $nullLastOrderFunction = null;
+            foreach($this->order as $column => $direction) {
+                $index = $this->columns->getColumnIndex($column);
+                if($index){
+                    $field = $this->getColumn($index);
+                    if($field->nullLast) {
+                        if(!$nullLastOrderFunction) $nullLastOrderFunction = $this->getContext()->getNullLastOrderFunction($query);
+                        $query = $nullLastOrderFunction($column, $direction);
+                    } else {
+                        $query = $query->orderBy($column, $direction);
+                    }
+                }
+            }
+        }
+        return $query;
+    }
+
     public function buildRows()
     {
         $query = $this->query;
@@ -93,9 +117,7 @@ trait RowBuilderTrait
             }
         }
 
-        if ( $this->search) {
-            $query = $this->addSearch($query, $this->search);
-        }
+        $query = $this->prepareQuery($query);
 
         // $query = $query->limit($this->length)->offset($this->start ?? 0);
 
@@ -112,22 +134,6 @@ trait RowBuilderTrait
                     $fields[] = DB::raw($field->raw . ($field->as ? ' as ' . $field->as : '' ) );
                 } else {
                     $fields[] =  $field->name . ($field->as ? ' as ' . $field->as : '' );
-                }
-            }
-        }
-
-        if($this->order){
-            $nullLastOrderFunction = null;
-            foreach($this->order as $column => $direction) {
-                $index = $this->columns->getColumnIndex($column);
-                if($index){
-                    $field = $this->getColumn($index);
-                    if($field->nullLast) {
-                        if(!$nullLastOrderFunction) $nullLastOrderFunction = $this->getContext()->getNullLastOrderFunction($query);
-                        $query = $nullLastOrderFunction($column, $direction);
-                    } else {
-                        $query = $query->orderBy($column, $direction);
-                    }
                 }
             }
         }

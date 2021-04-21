@@ -5,6 +5,7 @@
         @if(!$tab->getHidden())
         @php
             $active = $element->activeID == $tab->id;
+            $disabled = $tab->getAttribute('disabled');
         @endphp
         <li class="nav-item">
             @php
@@ -12,6 +13,7 @@
                 if($element->isTab($tab)){
 
                     if($active) $tab->addClass('active');
+                    if($disabled) $tab->addClass('disabled');
                     if(!$tab->getHref()) {
                         $tab->setAttribute('data-toggle', 'tab')
                             ->setAttribute('aria-selected', $active ? 'true' : 'false')

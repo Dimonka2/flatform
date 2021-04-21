@@ -33,7 +33,8 @@ class Table extends ElementContainer
     protected $links;               // make it false to hide links
     protected $rowRenderCallback;   // this needed for a livewire table to separate table from rows rendering
         // parameters ($row, $html, $details = false)
-
+    protected $rowPreRenderCallback;   // allows to update row definition before it is rendered to HTML
+        // parameters ($row, array $def): array
     protected $count;
     protected $filtered_count;
     protected $models;
@@ -130,6 +131,7 @@ class Table extends ElementContainer
             'info',
             'links',
             'rowRenderCallback',
+            'rowPreRenderCallback',
             'addSelect',
         ]);
 
@@ -558,4 +560,24 @@ class Table extends ElementContainer
         return $this;
 	}
 
+
+    /**
+     * Get the value of rowPreRenderCallback
+     */
+    public function getRowPreRenderCallback()
+    {
+        return $this->rowPreRenderCallback;
+    }
+
+    /**
+     * Set the value of rowPreRenderCallback
+     *
+     * @return  self
+     */
+    public function setRowPreRenderCallback($rowPreRenderCallback)
+    {
+        $this->rowPreRenderCallback = $rowPreRenderCallback;
+
+        return $this;
+    }
 }

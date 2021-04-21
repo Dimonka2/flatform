@@ -84,6 +84,13 @@ class TableComponent extends Component
             }
         }
 
+        // manually add data to the table using getData method
+        if(!$table->getQuery()){
+            if (method_exists(static::class, $method = 'getData')) {
+                $this->{$method}($table);
+            }
+        }
+
     }
 
     protected function ensureTable($prepareRows = false)
