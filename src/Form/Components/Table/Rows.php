@@ -35,6 +35,7 @@ class Rows implements \ArrayAccess, \Countable, \IteratorAggregate, IDataProvide
             $label = ['row', [['col', 'col' => 12, 'class' => 'd-flex', [['div', 'class' => 'mx-auto', 'text' => __('flatform::table.no_data')]]]]];
             $td = ['td', 'colspan' => $this->table->getVisibleColumnCount(), [$label]];
             $tr = ['tr', [$td]];
+
             $html = Flatform::render([$tr]);
             if($rowRenderCallback instanceof Closure) $html = $rowRenderCallback(null, $html);
             return $html;

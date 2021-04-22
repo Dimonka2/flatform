@@ -42,7 +42,7 @@
     </div>
     <div class="{{$class}}">
         <table class="{{ $table->class }}" id="{{$table->id}}">
-            <thead>
+            <thead class="{{ $table->getTheadClass() }}">
                 {!! $host->renderHeader($table) !!}
             </thead>
             <tbody>

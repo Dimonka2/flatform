@@ -21,6 +21,7 @@ class Table extends ElementContainer
     protected $selected;
     protected $lengthOptions = [10, 20, 30, 50, 100];
     protected $evenOddClasses = ['even', 'odd'];
+    protected $theadClass;
     protected $addSelect; // fields that needs to be added to the query
     protected $query;
     protected $search;
@@ -124,6 +125,7 @@ class Table extends ElementContainer
             'length',
             'lengthOptions',
             'evenOddClasses',
+            'theadClass',
             'query',
             'search',
             'formatters',
@@ -577,6 +579,26 @@ class Table extends ElementContainer
     public function setRowPreRenderCallback($rowPreRenderCallback)
     {
         $this->rowPreRenderCallback = $rowPreRenderCallback;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of theadClass
+     */
+    public function getTheadClass()
+    {
+        return $this->theadClass;
+    }
+
+    /**
+     * Set the value of theadClass
+     *
+     * @return  self
+     */
+    public function setTheadClass($theadClass)
+    {
+        $this->theadClass = $theadClass;
 
         return $this;
     }
