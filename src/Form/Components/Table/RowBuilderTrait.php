@@ -88,7 +88,7 @@ trait RowBuilderTrait
             $nullLastOrderFunction = null;
             foreach($this->order as $column => $direction) {
                 $index = $this->columns->getColumnIndex($column);
-                if($index){
+                if($index !== false){
                     $field = $this->getColumn($index);
                     if($field->nullLast) {
                         if(!$nullLastOrderFunction) $nullLastOrderFunction = $this->getContext()->getNullLastOrderFunction($query);

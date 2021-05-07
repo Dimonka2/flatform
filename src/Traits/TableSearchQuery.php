@@ -20,17 +20,13 @@ trait TableSearchQuery
         } else {
             $qsProperty = 'queryString';
         }
-        $this->{$qsProperty} = array_merge([$this->searchQueryString => ['except' => '']], $this->{$qsProperty});
-        $this->{$qsProperty} = array_merge([$this->filterQueryString => ['except' => []]], $this->{$qsProperty});
-        if($defaultOrder) {
-            if($this->order) $this->{$qsProperty} = array_merge([
-                    $this->orderQueryString => array_merge(['except' => $defaultOrder], $defaultOrder)
-                ], $this->{$qsProperty});
-        } else {
-            $this->{$qsProperty} = array_merge([$this->orderQueryString => $this->order], $this->{$qsProperty});
-        }
+        $this->{$qsProperty}[$this->searchQueryString] = ['except' => ''];
+        $this->{$qsProperty}[$this->filterQueryString] = ['except' => []];
+        $this->{$qsProperty}[$this->orderQueryString] = $defaultOrder ? ['except' => $defaultOrder] : [];
+
         $this->search   = request()->query($this->searchQueryString , $this->search);
         $this->filtered = request()->query($this->filterQueryString , $this->filtered);
+        $this->order = request()->query($this->orderQueryString , $this->order);
     }
 
     protected function search__get($property)
