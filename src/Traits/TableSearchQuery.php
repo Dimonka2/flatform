@@ -20,6 +20,7 @@ trait TableSearchQuery
         } else {
             $qsProperty = 'queryString';
         }
+        $this->{$qsProperty}['length'] = ['except' => '10'];
         $this->{$qsProperty}[$this->searchQueryString] = ['except' => ''];
         $this->{$qsProperty}[$this->filterQueryString] = ['except' => []];
         $this->{$qsProperty}[$this->orderQueryString] = $defaultOrder ? ['except' => $defaultOrder] : [];

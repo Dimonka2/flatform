@@ -84,6 +84,13 @@ trait RowBuilderTrait
             $query = $this->addSearch($query, $this->search);
         }
 
+        // apply filters
+        foreach($this->filters as $filter){
+            if(!$filter->getDisabled()){
+                $filter->apply($query, $filter->getValue());
+            }
+        }
+
         if($this->order){
             $nullLastOrderFunction = null;
             foreach($this->order as $column => $direction) {
@@ -108,19 +115,9 @@ trait RowBuilderTrait
         if(!$query) return;
         $this->rows->clear();
 
-        $this->count = $query->count();
-
-        // apply filters
-        foreach($this->filters as $filter){
-            if(!$filter->getDisabled()){
-                $filter->apply($query, $filter->getValue());
-            }
-        }
+        $this->count = $query->toBase()->getCountForPagination();
 
         $query = $this->prepareQuery($query);
-
-        $this->filtered_count = $query->count();
-        // $query = $query->limit($this->length)->offset($this->start ?? 0);
 
         // add select
         if($this->addSelect) {

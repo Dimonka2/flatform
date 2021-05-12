@@ -37,7 +37,6 @@ class Table extends ElementContainer
     protected $rowPreRenderCallback;   // allows to update row definition before it is rendered to HTML
         // parameters ($row, array $def): array
     protected $count;
-    protected $filtered_count;
     protected $models;
 
     // use FiltersTrait;
