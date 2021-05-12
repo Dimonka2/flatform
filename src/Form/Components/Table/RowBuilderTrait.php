@@ -160,7 +160,12 @@ trait RowBuilderTrait
                 $nestedData[ $column->name ] = $value;
             }
             if($this->addSelect) {
-                foreach ($this->addSelect as $columnName) {
+                foreach ($this->addSelect as $key => $columnName) {
+                    // make possible to add select as
+                    // 'selected' => DB::raw('COUNT(atable.id) AS selected')
+                    if(!is_integer($key)){
+                        $columnName = $key;
+                    }
                     if(strpos($columnName, ' as ')) {
                         [$name, $alias] = preg_split('/\s+as\s+/', $columnName);
                         $nestedData[$name] = $item->{$alias};
