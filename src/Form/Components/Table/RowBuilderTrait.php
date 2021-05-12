@@ -119,6 +119,7 @@ trait RowBuilderTrait
 
         $query = $this->prepareQuery($query);
 
+        $this->filtered_count = $query->count();
         // $query = $query->limit($this->length)->offset($this->start ?? 0);
 
         // add select
@@ -140,7 +141,7 @@ trait RowBuilderTrait
 
         $query = $query->addSelect($fields);
         $items = $query->paginate($this->length, ['*'], $this->id . '-p', $this->page);
-        $this->filtered_count = $items->total();
+
 
         $this->page = $items->currentPage();
         $this->models = $items;
