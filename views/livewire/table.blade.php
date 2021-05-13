@@ -54,6 +54,7 @@
     @if ($links)
         <div class="row">
             <div class="col-md-5">
+                {!! $host->getElement('info2') !!}
             </div>
             <div class="col-md-7">
                 <div class="pull-right">
