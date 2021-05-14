@@ -285,6 +285,7 @@ class Table extends ElementContainer
 
     public function getLinks($paginationView = null)
     {
+        if($this->links === false) return;
         return $this->models ? $this->models->links($paginationView) : null;
     }
 
