@@ -21,6 +21,7 @@ class TableComponent extends Component
     protected $idField = 'id';
 
     public $selectAll = false;
+    public $noHeader = false;
     public $search;
     public $searchDebounce = 500;
     public $order = "";

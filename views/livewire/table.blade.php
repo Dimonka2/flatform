@@ -42,9 +42,11 @@
     </div>
     <div class="{{$class}}">
         <table class="{{ $table->class }}" id="{{$table->id}}">
+            @if (!$noHeader)
             <thead class="{{ $table->getTheadClass() }}">
                 {!! $host->renderHeader($table) !!}
             </thead>
+            @endif
             <tbody>
                 {!! $table->getRows()->render($table->getContext()) !!}
             </tbody>
