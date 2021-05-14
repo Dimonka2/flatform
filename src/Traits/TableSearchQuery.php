@@ -7,6 +7,7 @@ trait TableSearchQuery
     protected $searchQueryString    = 'search';
     protected $filterQueryString    = 'filtered';
     protected $orderQueryString     = 'sort';
+    protected $lengthQueryString    = 'length';
     protected $defaultOrder;
 
     public function initializeTableSearchQuery()
@@ -20,11 +21,12 @@ trait TableSearchQuery
         } else {
             $qsProperty = 'queryString';
         }
-        $this->{$qsProperty}['length'] = ['except' => '10'];
+        $this->{$qsProperty}[$this->lengthQueryString] = ['except' => 10];
         $this->{$qsProperty}[$this->searchQueryString] = ['except' => ''];
         $this->{$qsProperty}[$this->filterQueryString] = ['except' => []];
         $this->{$qsProperty}[$this->orderQueryString] = $defaultOrder ? ['except' => $defaultOrder] : [];
 
+        $this->length   = intval(request()->query($this->lengthQueryString , $this->length));
         $this->search   = request()->query($this->searchQueryString , $this->search);
         $this->filtered = request()->query($this->filterQueryString , $this->filtered);
         $this->order = request()->query($this->orderQueryString , $this->order);
@@ -35,10 +37,15 @@ trait TableSearchQuery
 
         if ($property == $this->searchQueryString) {
             return [$this->search];
-        } elseif ($property == $this->filterQueryString) {
+        }
+        if ($property == $this->filterQueryString) {
             return [$this->filtered];
-        }elseif ($property == $this->orderQueryString) {
+        }
+        if ($property == $this->orderQueryString) {
             return [$this->order];
+        }
+        if ($property == $this->lengthQueryString) {
+            return [$this->length];
         }
     }
 
@@ -47,11 +54,17 @@ trait TableSearchQuery
         if ($property == $this->searchQueryString) {
             $this->search = $value;
             return $this;
-        } elseif($property == $this->filterQueryString) {
+        }
+        if($property == $this->filterQueryString) {
             $this->filtered = $value;
             return $this;
-        } elseif($property == $this->orderQueryString) {
+        }
+        if($property == $this->orderQueryString) {
             $this->order = $value;
+            return $this;
+        }
+        if($property == $this->lengthQueryString) {
+            $this->length = intval($value);
             return $this;
         }
     }
