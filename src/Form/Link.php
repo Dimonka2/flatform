@@ -14,6 +14,7 @@ class Link extends ElementContainer
     protected $badgeClass;
     protected $badgePill;
     protected $action;  // link to action
+    protected $titleTemplate;
     public $title;
     public $icon;
     public $form_class;
@@ -47,7 +48,7 @@ class Link extends ElementContainer
     protected function read(array $element)
     {
         $this->readSettings($element,
-            ['href', 'post', 'title', 'icon', 'form-class', 'group',
+            ['href', 'post', 'title', 'icon', 'form-class', 'group', 'titleTemplate',
             'badge', 'badgeColor', 'badgeClass', 'badgePill', 'action']);
         parent::read($element);
         if(is_array($this->badge)) {
@@ -80,6 +81,21 @@ class Link extends ElementContainer
 
     public function getTitle()
     {
+        if($this->titleTemplate){
+            $html = $this->renderTitle();
+            $template = $this->titleTemplate;
+            if(!is_null($template) &&  $template != false) {
+                foreach(explode(';', $template) as $template) {
+                    $html = $this->context->renderView(
+                        view($template)
+                        ->with('element', $this)
+                        ->with('html', $html)
+                    );
+                }
+            }
+            return $html;
+        }
+
         return (!is_null($this->icon) ?
             $this->createElement(['class' => $this->icon], 'i')->render() . ' ' : '') .
             $this->renderTitle() .
