@@ -6,14 +6,15 @@
         </div>
         <div class="col-lg-6">
             @if($table->hasSearch())
-            <div class="pull-right d-flex">
+            <div class="d-flex flex-row justify-content-end align-items-center" >
                 @if ($search !== false)
-                    <label class="d-inline">
-                        <span class="py-1 pr-2 d-inline"> @lang('flatform::table.search')</span>
-                        <input type="text" wire:model.debounce{{ $searchDebounce ? ('.' . $searchDebounce . 'ms') : '' }}='search' class="form-control form-control-sm d-inline-block w-auto">
+                    <label class="d-flex">
+                        <span class="mr-2"> @lang('flatform::table.search')</span>
+                        <input type="text" wire:model.debounce{{ $searchDebounce ? ('.' . $searchDebounce . 'ms') : '' }}='search'
+                            class="form-control form-control-sm">
                     </label>
                 @endif
-                <div class="d-inline ml-2 mr-2 btn-group" wire:ignore >
+                <div class="ml-2 mr-2" wire:ignore >
                    @form([
                        ['dropdown', 'toggle', 'group', 'color' => 'outline-secondary', 'size' => 'sm', 'shadow',
                             'icon' => 'fa fa-filter',
