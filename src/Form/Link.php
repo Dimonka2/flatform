@@ -21,12 +21,12 @@ class Link extends ElementContainer
     public $items_in_title = true;
     public $group;
 
-    protected function is_post()
+    public function is_post()
     {
         return !!$this->post;
     }
 
-    protected function is_link()
+    public function is_link()
     {
         return ($this->href !== null) && !$this->is_post();
     }
@@ -79,22 +79,25 @@ class Link extends ElementContainer
         } else return;
     }
 
+    protected function renderTemplatedTitle()
+    {
+        $html = $this->renderTitle();
+        $template = $this->titleTemplate;
+        if(!is_null($template) &&  $template != false) {
+            foreach(explode(';', $template) as $template) {
+                $html = $this->context->renderView(
+                    view($template)
+                    ->with('element', $this)
+                    ->with('html', $html)
+                );
+            }
+        }
+        return $html;
+    }
+
     public function getTitle()
     {
-        if($this->titleTemplate){
-            $html = $this->renderTitle();
-            $template = $this->titleTemplate;
-            if(!is_null($template) &&  $template != false) {
-                foreach(explode(';', $template) as $template) {
-                    $html = $this->context->renderView(
-                        view($template)
-                        ->with('element', $this)
-                        ->with('html', $html)
-                    );
-                }
-            }
-            return $html;
-        }
+        if($this->titleTemplate) return $this->renderTemplatedTitle();
 
         return (!is_null($this->icon) ?
             $this->createElement(['class' => $this->icon], 'i')->render() . ' ' : '') .

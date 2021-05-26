@@ -16,6 +16,8 @@ class DropdownItem extends Link
 
     public function getTitle()
     {
+        if($this->titleTemplate) return $this->renderTemplatedTitle();
+
         $html = '';
         if(!is_null($this->icon)) {
             $template = $this->createTemplate('dd-item-icon');
