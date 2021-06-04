@@ -40,7 +40,12 @@ class ElementContainer extends Element implements IContainer, \ArrayAccess, \Cou
             if(is_array($item)){
                 $item = $this->createElement($item);
             }
-            if($item instanceof IElement) $this[] = $item;
+            if($item instanceof IElement){
+                 $this[] = $item;
+            }elseif(is_scalar($item)){
+                // process scalar elements as text
+                $this->addTextElement($item);
+            }
         }
         return $this;
     }
