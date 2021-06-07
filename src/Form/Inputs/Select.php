@@ -4,8 +4,6 @@ namespace dimonka2\flatform\Form\Inputs;
 
 use dimonka2\flatform\Form\Input;
 
-use Form;
-
 class Select extends Input
 {
     protected $state_list;

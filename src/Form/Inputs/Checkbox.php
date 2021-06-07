@@ -9,10 +9,7 @@ class Checkbox extends Input
     public $label;
     public $checked;
 
-    protected function hasValue()
-    {
-        return false;
-    }
+    protected const hasValue = false;
 
     protected function read(array $element)
     {
@@ -25,8 +22,8 @@ class Checkbox extends Input
     public function getOptions(array $keys)
     {
         $options = parent::getOptions(['value']);
-        $checked = $this->checked;
-        if(is_null($checked) && $this->name) $checked = $this->needValue();
+        $checked = $this->needValue();
+        if(is_null($checked)) $checked = $this->checked;
         if($checked) $options['checked'] = '';
         if(!($options['value'] ?? false)) $options['value'] = 1;
         return $options;

@@ -3,7 +3,6 @@
 namespace dimonka2\flatform\Form;
 
 use Closure;
-use dimonka2\flatform\Flatform;
 use Illuminate\Support\MessageBag;
 use dimonka2\flatform\FlatformService;
 use dimonka2\flatform\Form\ElementFactory;
@@ -181,6 +180,27 @@ class Context implements IContext
             $element['type'] = $type;
         }
         return $element;
+    }
+
+    protected function transformKey($key)
+    {
+        return str_replace(['.', '[]', '[', ']'], ['_', '', '.', ''], $key);
+    }
+
+    public function getNamedValue($name, $value = null)
+    {
+        if (is_null($name)) {
+            return $value;
+        }
+
+        $request = request();
+        if($request) $value = $request->input($this->transformKey($name));
+
+        if (! is_null($value)) {
+            return $value;
+        }
+
+        if($this->form) return $this->form->getModelValue($name);
     }
 
     public function getJsStack()

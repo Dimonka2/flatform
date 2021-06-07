@@ -24,6 +24,7 @@ interface IContext
 
     public function getForm(): ?IForm;
     public function setForm(?IForm $form);
+    public function getNamedValue($name, $value = null);
 
     public function getDataProvider(): ?IDataProvider;
     public function setDataProvider(?IDataProvider $provider);

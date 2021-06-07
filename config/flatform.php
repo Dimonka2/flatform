@@ -14,7 +14,7 @@ return [
         // for example: 'top_offset_script' => '- $("#top-header").height()'
         'top_offset_script' => '',
     ],
-    'assets' =>[
+    'assets' => [
         'select2'   => [
             'path'  => 'admin/select2/',
             'view'  => 'flatform::select2',
@@ -184,10 +184,6 @@ return [
     ],
 
 
-    'aliases' => [
-        'Form'  => Collective\Html\FormFacade::class,
-        'HTML'  => Collective\Html\HtmlFacade::class,
-    ],
     // add application specific actions here
     'actions' => [
         // javascript run actions variable

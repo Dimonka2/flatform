@@ -3,7 +3,6 @@
 namespace dimonka2\flatform\Form;
 
 use dimonka2\flatform\Form\Element;
-use Form;
 
 
 class Input extends Element
@@ -25,6 +24,8 @@ class Input extends Element
     public $required;
     public $col;
 
+    protected const hasValue = true;
+
     protected function read(array $element)
     {
         $this->readSettings($element, self::input_fields);
@@ -45,23 +46,12 @@ class Input extends Element
 
     protected function needValue()
     {
-        if($this->hasValue() ) {
-            if($this->value) return $this->value;
-        }
-        if($this->name) {
-            // try to get value from the form
-            $form = $this->context->getForm();
-            if($form) {
-                return $form->getModelValue($this->name);
-            } else {
-                return Form::getValueAttribute($this->name);
-            }
-        }
+        return $this->context->getNamedValue($this->name, $this->hasValue() ? $this->value : null);
     }
 
     protected function hasValue()
     {
-        return true;
+        return static::hasValue;
     }
 
     public function render()

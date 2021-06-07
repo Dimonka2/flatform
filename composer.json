@@ -1,6 +1,6 @@
 {
     "name": "dimonka2/flatform",
-    "description": "Form helper for Laravel and laravelcollective/html",
+    "description": "Form helper for Laravel",
     "type": "library",
     "homepage": "https://github.com/Dimonka2",
     "license": "MIT",
@@ -12,14 +12,13 @@
     ],
     "keywords": [
         "laravel",
-        "laravelcollective",
         "php",
         "forms",
         "helper"
       ],
     "minimum-stability": "dev",
     "require": {
-        "php": "^7",
+        "php": "^7 | ^8",
         "laravelcollective/html": "^6 | ^7",
         "livewire/livewire": "^1 | ^2"
     },

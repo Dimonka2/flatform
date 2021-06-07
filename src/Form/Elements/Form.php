@@ -23,45 +23,74 @@ class Form extends ElementContainer implements IForm
         $this->readSettings($element, self::form_fields);
         parent::read($element);
         $this->context->setForm(null);
+
     }
 
     public function getModelValue($name)
     {
         if($this->hasModel()){
             return data_get($this->model, $name);
-        } else {
-            return LaForm::getValueAttribute($name);
         }
     }
 
-    public function renderForm($aroundHTML = null)
+    protected function getAction()
     {
-        $options = $this->getOptions(['method', 'url', 'files', 'route']);
-        if(is_object($this->model)) {
-            $html = LaForm::model($this->model , $options);
-        } else  {
-            $html = LaForm::open($options);
+        if($url = $this->url) return is_array($url) ? url()->to($url[0], array_slice($url, 1)) : url()->to($url);
+        if($route = $this->route) {
+            if (is_array($route)) {
+                $parameters = array_slice($route, 1);
+
+                if (array_keys($route) === [0, 1]) {
+                    $parameters = head($parameters);
+                }
+
+                return route($route[0], $parameters);
+            }
+
+            return route($route);
         }
-        $html .= $aroundHTML;
-        $this->context->setForm($this);
-        $html .= $this->renderItems();
-        $this->context->setForm(null);
-        $html .= LaForm::close();
-
-        return $html;
-    }
-
-    public function addHiddenField($name, $value): Hidden
-    {
-        $item = $this->createElement(['hidden', 'name' => $name, 'value' => $value]);
-        $this[] = $item;
-
-        return $item;
     }
 
     public function render()
     {
-        return $this->renderForm();
+        $this->context->setForm($this);
+        $html = parent::render();
+        $this->context->setForm(null);
+        return $html;
+    }
+
+    protected function isGetMethod()
+    {
+        return trim(strtolower($this->method)) == 'get';
+    }
+
+    public function renderItems()
+    {
+        $html = parent::renderItems();
+        if(!$this->isGetMethod()) {
+            $html .= $this->context->renderArray(
+                    ['type' => 'hidden', 'name' => '_token', 'value' => csrf_token()], 'input');
+            if(trim(strtolower($this->method)) != 'post') $html .= $this->context->renderArray(
+                    ['type' => 'hidden', 'name' => '_method', 'value' => $this->method], 'input');
+        }
+        return $html;
+    }
+
+    public function getOptions(array $keys)
+    {
+        $options = parent::getOptions($keys);
+        $options['method'] = $this->isGetMethod() ? 'get' : 'post';
+        $options['accept-charset'] = 'UTF-8';
+        $options['action'] = $this->getAction();
+        if($this->files) $options['enctype'] = 'multipart/form-data';
+        return $options;
+    }
+
+    public function addHiddenField($name, $value)
+    {
+        $this[] = $this->createElement(['hidden', 'name' => $name, 'value' => $value]);
+
+        return $this;
     }
 
     /**

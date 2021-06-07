@@ -6,9 +6,6 @@ use dimonka2\flatform\Form\Input;
 
 class File extends Input
 {
-    protected function hasValue()
-    {
-        return false;
-    }
+    protected const hasValue = false;
 
 }

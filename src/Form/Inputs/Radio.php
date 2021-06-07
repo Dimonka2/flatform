@@ -9,10 +9,7 @@ class Radio extends Input
     public $label;
     public $checked;
 
-    protected function hasValue()
-    {
-        return false;
-    }
+    protected const hasValue = false;
 
     protected function read(array $element)
     {

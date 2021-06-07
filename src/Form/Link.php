@@ -148,7 +148,7 @@ class Link extends ElementContainer
             'class' => $this->form_class,
             'template' => false,]);
         // debug($form);
-        return $form->renderForm( $this->renderLink() );
+        return $this->context->renderElement($form, $this->renderLink() );
 
     }
 
