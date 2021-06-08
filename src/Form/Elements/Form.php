@@ -26,11 +26,12 @@ class Form extends ElementContainer implements IForm
 
     }
 
-    public function getModelValue($name)
+    public function getModelValue($name, $value)
     {
         if($this->hasModel()){
             return data_get($this->model, $name);
         }
+        return $value;
     }
 
     protected function getAction()

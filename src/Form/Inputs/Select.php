@@ -49,7 +49,7 @@ class Select extends Input
         if($this->selected) {
             $selected = $this->selected;
         } else {
-            $selected = $this->value ? $this->value : $this->needValue();
+            $selected = $this->needValue();
         }
         $html = '';
         if($this->placeholder ?? false) $html .= $this->renderSingleOption("", $this->placeholder, $selected);

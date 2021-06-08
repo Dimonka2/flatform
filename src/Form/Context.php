@@ -194,13 +194,16 @@ class Context implements IContext
         }
 
         $request = request();
-        if($request) $value = $request->input($this->transformKey($name));
+        if($request) {
+            $transformed_name = $this->transformKey($name);
+            if($request->has($transformed_name)) return $request->input($transformed_name);
+        }
 
         if (! is_null($value)) {
             return $value;
         }
 
-        if($this->form) return $this->form->getModelValue($name);
+        if($this->form) return $this->form->getModelValue($name, $value);
     }
 
     public function getJsStack()
