@@ -72,6 +72,8 @@ class Rows implements \ArrayAccess, \Countable, \IteratorAggregate, IDataProvide
                         $td = ['td', 'text' => $val];
                     }
                     if($column->class) $td['class'] = $column->class;
+                    if($column->tdClass) $td['class'] =
+                        (isset($td['class']) ? $td['class'] . ' ' : '') . $column->tdClass;
                     if($column->width) $td['style'] = 'width:' . $column->width . ';';
                     $columns[] = $td;
                 }

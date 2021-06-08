@@ -20,6 +20,7 @@ class Column implements IDataProvider
     protected $system;          // virtual field without sort and search
     protected $class;           // field class
     protected $titleClass;      // column title class
+    protected $tdClass;         // column td class
     protected $hide;            // this column is not displayed
     protected $raw;             // this does mean that the select is calculated value and it should be used DB:raw select
     protected $noSelect;        // special case for some columns there is no need to add a select, like "count"
@@ -49,7 +50,9 @@ class Column implements IDataProvider
         $definition = ElementFactory::preprocessElement($definition, false);
 
         $this->readSettings($definition, [
-            'name', 'title', 'search', 'sort', 'nullLast', 'system', 'class', 'titleClass', 'hide', 'width', 'noSelect', 'as', 'raw',
+            'name', 'title', 'search', 'sort', 'nullLast', 'system',
+            'class', 'titleClass', 'tdClass',
+            'hide', 'width', 'noSelect', 'as', 'raw',
         ]);
         if($this->sort === null) $this->sort = !$this->system;
 
