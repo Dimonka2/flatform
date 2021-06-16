@@ -8,10 +8,20 @@
             @if($table->hasSearch())
             <div class="d-flex flex-row justify-content-end align-items-center" >
                 @if ($search !== false)
-                    <label class="d-flex">
+
+                    <label class="d-flex align-items-center mb-0">
                         <span class="mr-2"> @lang('flatform::table.search')</span>
-                        <input type="text" wire:model.debounce{{ $searchDebounce ? ('.' . $searchDebounce . 'ms') : '' }}='search'
-                            class="form-control form-control-sm">
+                        <div class="input-group">
+                            <input type="text" wire:model.debounce{{ $searchDebounce ? ('.' . $searchDebounce . 'ms') : '' }}='search'
+                                class="form-control form-control-sm">
+                            @form([
+                                ['class' => "input-group-append", 'hide' => ! $search, [
+                                    ['button', 'icon' => 'fa fa-times', 'size' => 'sm', 'color' => 'outline-primary',
+                                        'wire:click' => '$set("search", null)', ],
+                                ]]
+                            ])
+
+                        </div>
                     </label>
                 @endif
                 <div class="ml-2 mr-2" wire:ignore >
