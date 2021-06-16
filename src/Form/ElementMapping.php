@@ -22,7 +22,8 @@ class ElementMapping
         'hidden'        => Inputs\Hidden::class,
 
         // components
-        'widget'        => Components\Widget::class,
+        'widget'        => Components\Card::class,
+        'card'          => Components\Card::class,
         'modal'         => Components\Modal::class,
         'datatable'     => Components\Datatable\Datatable::class,
         'dt-details'    => Components\Datatable\DatatableDetails::class,

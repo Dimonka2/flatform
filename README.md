@@ -2,7 +2,7 @@
 
 
 [![Packagist](https://img.shields.io/packagist/v/dimonka2/flatform.svg)](https://packagist.org/packages/dimonka2/flatform)
-[![Packagist](https://img.shields.io/packagist/l/dimonka2/flatform.svg)](https://packagist.org/packages/dimonka2/flatform) 
+[![Packagist](https://img.shields.io/packagist/l/dimonka2/flatform.svg)](https://packagist.org/packages/dimonka2/flatform)
 [![Packagist](https://img.shields.io/packagist/dm/dimonka2/flatform.svg)]()
 
 
@@ -16,7 +16,7 @@ HTML control rendering helper for Laravel and Livewire
 
 - **Write less code.** Using this approach you define control styles once and focus only on interface declaration.
 
-- **Livewire table component.** Unique Livewire table with sorting, search, filters, actions, row select, column formatters and sub details. 
+- **Livewire table component.** Unique Livewire table with sorting, search, filters, actions, row select, column formatters and sub details.
 
 ## Install
 
@@ -38,7 +38,7 @@ Following text creates text inputs with labels
     ['row', [
         ['text', 'label' => 'First name', 'name' => 'first_name',],
         ['text', 'label' => 'Last name', 'name' => 'last_name',],
-    ]]                                
+    ]]
 ])
 ```
 
@@ -59,7 +59,7 @@ Depending on styles the code above will generate something like:
 
 ## Included elements, inputs and components
 * **Inputs**: text, password, number, textarea, select, file, date, checkbox, radio, hidden, select2, bootstrap select, summernote
-* **Components**: alert, breadcrumb, button, dropdown, progress, tabs, widget, datatable, table
+* **Components**: alert, breadcrumb, button, dropdown, progress, tabs, card, datatable, table
 * **Trait for datatable**
 * **HTML tags**: form, text, div, row (div with class "row"), col (div with class 'col-xx')
 * **Blade directives**: stack, include, yield, section, Livewire
@@ -139,7 +139,7 @@ Table component has also few functions, that can be called, defined or overridde
 
 
 ### Table definition properties
-Class: `dimonka2\flatform\Form\Components\Table\Table` 
+Class: `dimonka2\flatform\Form\Components\Table\Table`
 
 | Property | Default | Usage |
 | -------- | ------- | ----- |
@@ -156,7 +156,8 @@ Class: `dimonka2\flatform\Form\Components\Table\Table`
 |`formatters`|[]|Lookup array for custom column formatters|
 |`formatFunction`|null|TD element format closure function|
 |`links`|null|Setting this property to `false` will hide pagination links|
-|`rowRenderCallback`|null|Callback required for a Livewire table to separate table from rows rendering, currently unused|
+|`rowRenderCallback`|null|Callback required for a Livewire table to separate table from rows rendering, currently unused. Closure parameters: ($row, $html, $details = false)|
+|`rowPreRenderCallback`|null|Allows to update row definition before it is rendered to HTML. Closure parameters ($row, array $def): array|
 |`order`|null|Default ordered column. Can be defined as a column name or as `false` to disable table ordering|
 
 ### Table Column properties
@@ -168,16 +169,18 @@ Class: `dimonka2\flatform\Form\Components\Table\Table`
 |`sort`|ASC|Setting to false will disable sort by this column, setting column to "DESC" will make DESC as default (first) sort order|
 |`system`|false|Setting this property to true means a virtual (calculated) field without adding it to select query statement with disabled sort and search. Useful for calculated fields and menu elements|
 |`class`|null|Class will be added to column's TD and TH tag class attribute|
+|`titleClass`|null|Class will be added to column's TH tag class attribute|
+|`tdClass`|null|Class will be added to column's TD tag class attribute|
 |`hide`|false| `true` denotes that this column will not be rendered|
 |`raw`|null|This option might be used when you need a calculated value and it used as DB:raw select statement|
 |`noSelect`|null|Setting this to true denotes a special case for some columns are in a select statement and there is no need to add an extra select, like “count()”|
 |`as`|see usage|This property specifies field alias and how this column will be mapped to the Model attributes. If this field is undefined for a column fields with table name like `users.name` will have a replacement of dot to '__' e.g.  `users__name`|
 |`format`|null|Column format: callable (IColumnFormat), Flatform language definition or container|
-|`_format`|null|Quick column format: 'number','link', 'check', 'str'|
+|`_format`|null|Quick column format: 'number','link', 'check', 'str' or an array with additional parameters|
 |`width`|null|Column width style. Column width will be added to the header style and each TD tag style|
 
 ### Table Details properties
-Table Details is a pull down row that may contain any additional details connected to the row including even Livewire components. 
+Table Details is a pull down row that may contain any additional details connected to the row including even Livewire components.
 
 | Property | Default | Usage |
 | -------- | ------- | ----- |
@@ -238,7 +241,7 @@ protected function getTable(): ?Table
             ],
             'select' => [
                 'class' => 'table-primary',
-            ], 
+            ],
         ]);
 
         return $table;
@@ -269,14 +272,14 @@ Example of table with Table Select and Actions:
                     // ...
                 ],
                 'select' => [
-                ], 
+                ],
                 'actions' => [
                     // in this case we just calling a normal Livewire action for this action
                     ['title' => 'Disable selected users', 'position' => 'dropdown',
                         'icon' => 'fa fa-ban', 'wire:click.prevent' => 'disableUsers', 'href' => '#'],
                 ],
             ]);
-            
+
         }
     }
     // handle action
@@ -292,7 +295,7 @@ Example of table with Table Select and Actions:
             }
         }
         // reload table rows in order to populate changes
-        $this->reload();        
+        $this->reload();
     }
 ```
 
@@ -307,4 +310,3 @@ Filter is a basic Flatform input control that is associated with persistent inpu
 |`value`|          | Default value|
 |`list`|           | Item list for select, might be a closure|
 |`filterFunction`| | Filter callback in format: `function($query, $data) {}`|
-

@@ -4,7 +4,7 @@ namespace dimonka2\flatform\Form\Components;
 
 use dimonka2\flatform\Form\ElementContainer;
 
-class Widget extends ElementContainer
+class Card extends ElementContainer
 {
     public $icon;
     protected $title;

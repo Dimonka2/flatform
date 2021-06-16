@@ -124,7 +124,8 @@ return [
         'table-checkbox' => ['type' => 'checkbox', '+class' => 'kt-checkbox--single'],
         'dropdown' => ['type' => 'div', 'template' => 'flatform::metronic.dropdown'],
         'tabs' => ['type' => 'div', 'template' => 'flatform::metronic.tab-navs'],
-        'widget' => ['template' => 'flatform::metronic.widget'],
+        'widget' => ['type' => 'card'],
+        'card' => ['template' => 'flatform::metronic.card'],
         'progress' => ['template' => 'flatform::metronic.progress-bar', ],
 
         'dd-item' => ['+class' => 'dropdown-item kt-nav__link', 'template' => 'flatform::metronic.dd-item',],
@@ -170,7 +171,8 @@ return [
 
         'tabs' => ['type' => 'div', 'class' => 'js-wizard-simple block',
             'template' => 'flatform::one.tab-navs'],
-        'widget' => ['template' => 'flatform::one.widget'],
+        'widget' => ['type' => 'card'],
+        'card' => ['template' => 'flatform::one.card'],
         'breadcrumbs' => ['template' => 'flatform::one.breadcrumbs'],
         // templates
         'tab-content' => ['template' => 'flatform::one.tab-content',],
