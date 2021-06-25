@@ -357,4 +357,12 @@ class Element implements IElement
 
         return $this;
     }
+
+    /**
+     * Get the value of attributes
+     */
+    public function getAttributes()
+    {
+        return $this->attributes;
+    }
 }
