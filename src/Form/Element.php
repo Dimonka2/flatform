@@ -233,6 +233,15 @@ class Element implements IElement
         }
     }
 
+    public function renderAttributes()
+    {
+        $html = '';
+        foreach($this->attributes as $key => $value) {
+            if(is_scalar($value)) $html .= ' ' . $key . '="' . htmlentities($value) . '"';
+        }
+        return $html;
+    }
+
     public function render()
     {
         // special case
