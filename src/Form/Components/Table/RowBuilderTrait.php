@@ -68,10 +68,9 @@ trait RowBuilderTrait
     {
         $tablesearch = '%' . $term . '%';
         $query = $query->where(function($q) use ($tablesearch) {
+            $likeFunction = $this->getContext()->getCaseInsensitiveLikeFunction($q, $tablesearch);
             foreach($this->columns as $column) {
-                if ($column->search) {
-                    $q = $q->orWhere( $column->name, 'like', $tablesearch );
-                }
+                if ($column->search)  $likeFunction( $column->name );
             }
         });
 

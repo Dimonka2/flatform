@@ -297,6 +297,7 @@ class Context implements IContext
                     return $query->orderByRaw("ISNULL(`$column`), `$column` $direction");
                 };
             case 'postgersql':
+            case 'pgsql':
                 return function($column, $direction) use ($query) {
                     return $query->orderByRaw($column . ' ' . $direction . ' NULLS LAST');
                 };
@@ -305,5 +306,23 @@ class Context implements IContext
                     return $query->orderBy($column, $direction);
                 };
         }
+    }
+
+    public function getCaseInsensitiveLikeFunction($query, $term): Closure
+    {
+        $driver = $query->getConnection()->getDriverName();
+        switch ($driver) {
+            case 'postgersql':
+            case 'pgsql':
+                return function($column) use ($query, $term) {
+                    return $query->orWhere($column, 'ILIKE', $term);
+                };
+            default: // no specific function identified..
+             // 'mysql':
+                return function($column) use ($query, $term) {
+                    return $query->orWhere($column, 'like', $term);
+                };
+        }
+
     }
 }
