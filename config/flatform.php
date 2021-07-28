@@ -162,6 +162,24 @@ return [
         'breadcrumbs' => ['template' => 'flatform::metronic.breadcrumbs'],
 
     ],
+    'limitless' => [
+        'sidebar' => ['type' => 'menu', 'template' => 'flatform::limitless.menu'],
+        'menu-item' => ['badgeClass' => 'ml-auto align-self-center', 'badgeColor' => 'blue-400',],
+        'badge' => ['type' => 'span', 'class' => 'badge',
+            'onLoaded' => function(IElement $element, $def){
+            if($element->getAttribute('rounded')) $element->addClass('rounded-circle');
+            if($element->getColor()) $element->addClass('bg-' . $element->getColor());
+            if($element->getPill()) $element->addClass('badge-pill');
+        }],
+        'breadcrumbs' => ['template' => 'flatform::limitless.breadcrumbs'],
+        'widget' => ['type' => 'card'],
+        'card' => ['template' => 'flatform::limitless.card'],
+        'tabs' => ['type' => 'div', 'template' => 'flatform::limitless.tab-navs'],
+        'tab-content' => ['template' => 'flatform::limitless.tab-content',],
+        'table-dropdown' => ['type' => 'dropdown', 'icon' => "icon-menu9",
+            'size' => 'sm', 'color' =>  'clean btn-icon btn-icon-md',],
+
+    ],
 
     'one_templates' =>[
         'input' => ['template' => 'flatform::one.input', '+class' => ' form-control form-control-alt'],
