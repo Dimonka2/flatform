@@ -15,6 +15,8 @@ class Link extends ElementContainer
     protected $badgePill;
     protected $action;  // link to action
     protected $titleTemplate;
+    protected $confirm; // js confirmation of action
+
     public $title;
     public $icon;
     public $form_class;
@@ -49,12 +51,19 @@ class Link extends ElementContainer
     {
         $this->readSettings($element,
             ['href', 'post', 'title', 'icon', 'form-class', 'group', 'titleTemplate',
-            'badge', 'badgeColor', 'badgeClass', 'badgePill', 'action']);
+            'badge', 'badgeColor', 'badgeClass', 'badgePill',
+            'action', 'confirm']);
+
         parent::read($element);
         if(is_array($this->badge)) {
             $this->badge = $this->createElement($this->badge, 'badge');
             if($this->badgeClass) $this->badge->addClass($this->badgeClass);
         }
+    }
+
+    protected function confirmCode()
+    {
+        return "confirm('".  $this->confirm . "') || event.preventDefault()";
     }
 
     public function getOptions(array $keys)
@@ -63,6 +72,8 @@ class Link extends ElementContainer
         if($this->action) {
             $options['onclick'] = Action::formatClick($this->action);
         } else {
+            // add confirmation on click
+            if($this->confirm) $options['onClick'] = $this->confirmCode();
             if($this->is_link()) $options['href'] = $this->getUrl();
             if($this->is_post()) $options['type'] = 'submit';
         }
